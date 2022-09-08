@@ -1,0 +1,62 @@
+{
+  "name": "tailwind-frontend",
+  "private": true,
+  "version": "0.1.0",
+  "type": "commonjs",
+  "dependencies": {
+    "@progress/kendo-drawing": "^1.17.1",
+    "@progress/kendo-licensing": "^1.2.2",
+    "@progress/kendo-react-animation": "^5.6.0",
+    "@progress/kendo-react-buttons": "^5.6.0",
+    "@progress/kendo-react-charts": "^5.6.0",
+    "@progress/kendo-react-intl": "^5.6.0",
+    "@progress/kendo-theme-bootstrap": "^5.7.0",
+    "@reduxjs/toolkit": "*",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.0.2",
+    "hammerjs": "^2.0.8",
+    "react": "*",
+    "react-dom": "*",
+    "react-redux": "*",
+    "react-router-dom": "*",
+    "redux": "*",
+    "redux-thunk": "*",
+    "sass": "*",
+    "web-vitals": "*",
+    "webpack": "^5.74.0"
+  },
+  "scripts": {
+    "vite dev": "vite",
+    "vite build": "tsc && vite build",
+    "vite preview": "vite preview"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@types/node": "*",
+    "@types/react": "*",
+    "@types/react-dom": "*",
+    "@vitejs/plugin-react": "*",
+    "autoprefixer": "*",
+    "postcss": "*",
+    "tailwindcss": "*",
+    "typescript": "*",
+    "vite": "*"
+  }
+}
