@@ -3,13 +3,130 @@
 @tailwind utilities;
 @tailwind variants;
 
-body,
+.f-bold {
+	font-family: 'Montserrat';
+	font-weight: 700;
+}
+
+.f-medium {
+	font-family: 'Montserrat';
+	font-weight: 500;
+}
+
+*, .f-regular {
+	font-family: 'Montserrat';
+	font-weight: 400;
+}
+
+.f-light {
+	font-family: 'Montserrat';
+	font-weight: 300;
+}
+
+.f-thin {
+	font-family: 'Montserrat';
+	font-weight: 100;
+}
+
+:root {
+	--color-body: #F5F5F5;
+	--color-white: #FFFFFF;
+	--color-black-light: #D2D6DE;
+	--color-black-dark: #000000;
+	--color-black: #737373;
+	--color-error: #EC5844;
+	--color-success: #55BA47;
+	--color-primary: #00AEE8;
+	--color-primary-dark: #263B92;
+	--color-secondary: #D7D7D7;
+}
+
+
+
+.bg-color-white {
+	background-color: var(--color-white);
+}
+
+.color-white {
+	color: var(--color-white);
+}
+
+.color-error {
+	color: var(--color-error);
+}
+
+.color-success {
+	color: var(--color-success);
+}
+
+*, .color-black {
+	color: var(--color-black);
+}
+
+.color-black-dark {
+	color: var(--color-black-dark);
+}
+
+.color-black-light {
+	color: var(--color-black-light);
+}
+
+.border-color-black-light {
+	border: 1px solid var(--color-black-light);
+}
+
+.bg-color-secondary {
+	background-color: var(--color-secondary);
+}
+
+.bg-color-primary {
+	background-color: var(--color-primary);
+}
+
+.color-primary-dark {
+	color: var(--color-primary-dark);
+}
+
+.border-color-success {
+	border: 1px solid var(--color-success);
+}
+
+.border-color-error {
+	border: 1px solid var(--color-error);
+}
+
+.border-color-secondary {
+	border: 1px solid var(--color-secondary);
+}
+
+.border-color-error:focus {
+	outline: none !important;
+}
+
+.border-color-success:focus {
+	outline: none !important;
+}
+
+.border-color-black-light:focus {
+	outline: none !important;
+}
+
+
+.title {
+	font-size: 28px;
+}
+
+/* body,
 #root {
 	margin: 0;
 	height: 100vh;
 	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+} */
+
+body {
+	background-color: var(--color-body);
 }
 
 code {
