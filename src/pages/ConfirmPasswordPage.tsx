@@ -79,7 +79,7 @@ function ConfirmPasswordPage() {
             totalSteps={4}
             completedSteps={1}
             title="Create password"
-            buttonTitle="Log in"
+            buttonTitle="Next"
             buttonClasses="bg-color-primary color-white h-[45px]"
             buttonClick={()=> {
               savePasswords();

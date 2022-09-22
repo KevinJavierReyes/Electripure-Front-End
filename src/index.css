@@ -47,6 +47,10 @@
 	background-color: var(--color-white);
 }
 
+.color-primary {
+	color: var(--color-primary);
+}
+
 .color-white {
 	color: var(--color-white);
 }

@@ -77,6 +77,10 @@ function ConfirmEmailPhonePage() {
       });
       const status = response.status;
       if (status == 200) {
+        localStorage.setItem("session", JSON.stringify({
+          "phone": phoneValue,
+          "email": emailValue
+        }));
         navigate( `/confirm/${token}/step/3`);
       }
     }

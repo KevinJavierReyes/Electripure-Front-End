@@ -3,7 +3,7 @@ import Button from "../../components/Button";
 import Navbar from "../../components/Navbar";
 import StepperProgress from "../../components/StepperProgress";
 
-function Stepper(props: {children: any, totalSteps: number, completedSteps: number, title: String, buttonTitle: String, buttonClasses: String, buttonClick: MouseEventHandler }) {
+function Stepper(props: {children: any, totalSteps: number, completedSteps: number, title: String, buttonTitle: String, buttonClasses: String, buttonClick: MouseEventHandler, skipClick?: MouseEventHandler }) {
     return (
         <div className="w-full max-w-[500px] bg-color-white px-[60px] pt-[30px] pb-[50px] border-color-secondary rounded-sm">
           <StepperProgress totalSteps={props.totalSteps} completedSteps={props.completedSteps} />
@@ -12,6 +12,9 @@ function Stepper(props: {children: any, totalSteps: number, completedSteps: numb
             {props.children}
           </div>
           <Button title={props.buttonTitle} classes={props.buttonClasses} click={props.buttonClick} />
+          <div className={"justify-center items-center mt-[14px] " + (props.skipClick == null || props.skipClick == undefined  ? "hidden" : "flex")}>
+            <button className="color-black-dark text-sm underline" onClick={props.skipClick}>Skip for now</button>
+          </div>
         </div>
     );
 }
