@@ -26,10 +26,10 @@
     "webpack": "^5.74.0"
   },
   "scripts": {
-    "vite dev": "vite",
-    "vite build": "tsc && vite build",
-    "vite preview": "vite preview",
-    "predeploy": "npm run \"vite build\"",
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
   "eslintConfig": {
