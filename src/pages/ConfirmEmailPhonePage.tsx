@@ -4,6 +4,8 @@ import Navbar from "../components/Navbar";
 import Stepper from "../components/Stepper";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../components/Loading";
+import { toast, ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 function ConfirmEmailPhonePage() {
 
@@ -65,24 +67,36 @@ function ConfirmEmailPhonePage() {
       const baseUrl = 'http://flaskapi-env.eba-swfkr2ub.us-east-1.elasticbeanstalk.com/update_user'
       const url = `${baseUrl}?email=${emailValue}&cellphone=${phoneValue}&password=${password}&token=${token}`;
       setIsLoading(true);
-      const response = await fetch(url, {
+      await fetch(url, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({})
-      }).finally(()=> {
-        setIsLoading(false);
-      });
-      const status = response.status;
-      if (status == 200) {
+      })
+      .then((response) => {
+        const status = response.status;
+        if (status != 200) {
+          throw new Error("Something's wrong, try again later.");
+        }
+        toast.success("Account updated successfully!", {
+          "position": "bottom-right"
+        })
         localStorage.setItem("session", JSON.stringify({
           "phone": phoneValue,
           "email": emailValue
         }));
         navigate( `/confirm/${token}/step/3`);
-      }
+      })
+      .catch((err: any)=>{
+        console.log("show toast.");
+        toast.error(err.message, {
+          "position": "bottom-right"
+        });
+      }).finally(()=> {
+        setIsLoading(false);
+      });
     }
   }
 
@@ -135,6 +149,7 @@ function ConfirmEmailPhonePage() {
 
           </Stepper>
       </div>
+      <ToastContainer/>
     </React.Fragment>
   );
 }
