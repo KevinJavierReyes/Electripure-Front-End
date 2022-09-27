@@ -6,6 +6,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../components/Loading";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import ElectripureService from "./../service/electripure-service";
+import { UpdateUserRequest } from "./../interfaces/electripure-service";
+import { ResponseGeneric } from "../interfaces/base-service";
 
 function ConfirmEmailPhonePage() {
 
@@ -64,22 +67,17 @@ function ConfirmEmailPhonePage() {
       localStorage.setItem("phone", phoneValue);
       const password = localStorage.getItem("password");
       const token = localStorage.getItem("token");
-      const baseUrl = 'http://flaskapi-env.eba-swfkr2ub.us-east-1.elasticbeanstalk.com/update_user'
-      const url = `${baseUrl}?email=${emailValue}&cellphone=${phoneValue}&password=${password}&token=${token}`;
       setIsLoading(true);
-      await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({})
-      })
-      .then((response) => {
-        const status = response.status;
-        if (status != 200) {
-          throw new Error("Something's wrong, try again later.");
-        }
+      const payload: UpdateUserRequest = {
+        "email": emailValue,
+        "cellphone": phoneValue,
+        "password": password!,
+        "token": token!
+      };
+      const responseUpdateUser: ResponseGeneric = await ElectripureService.updateUser(payload).finally(()=> {
+        setIsLoading(false);
+      });
+      if (responseUpdateUser.success && responseUpdateUser.statusCode == 200) {
         toast.success("Account updated successfully!", {
           "position": "bottom-right"
         })
@@ -88,15 +86,7 @@ function ConfirmEmailPhonePage() {
           "email": emailValue
         }));
         navigate( `/confirm/${token}/step/3`);
-      })
-      .catch((err: any)=>{
-        console.log("show toast.");
-        toast.error(err.message, {
-          "position": "bottom-right"
-        });
-      }).finally(()=> {
-        setIsLoading(false);
-      });
+      }
     }
   }
 

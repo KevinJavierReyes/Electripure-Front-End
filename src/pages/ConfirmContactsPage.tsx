@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState, useEffect } from "react";
 import Input from "../components/Input";
 import Navbar from "../components/Navbar";
 import Stepper from "../components/Stepper";
@@ -6,10 +7,28 @@ import { useNavigate, useParams } from "react-router-dom";
 
 function ConfirmContactsPage() {
 
+  const [contacts, setContacts] = useState([{
+    "contactName": {
+      "value": "",
+      "message": "",
+      "status": -1
+    },
+    "email": {
+      "value": "",
+      "message": "",
+      "status": -1
+    },
+    "phone": {
+      "value": "",
+      "message": "",
+      "status": -1
+    },
+  }]);
+  const [isLoading, setIsLoading] = React.useState(false);
   const navigate = useNavigate();
   const { token } = useParams();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!localStorage.getItem("session")) {
       navigate( `/confirm/${token}/step/2`);
     }
@@ -34,7 +53,11 @@ function ConfirmContactsPage() {
 
               <p>If we aren’t able to get a hold of you who would be the best to reach out to?</p>
               <br/>
-              
+
+              {/* {contacts.map(()=> {
+
+              })}
+               */}
               <Input
                 name="contactName"
                 type="contactName"
