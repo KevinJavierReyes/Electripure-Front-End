@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState } from "react";
 import Input from "../components/Input";
 import Navbar from "../components/Navbar";
 import Stepper from "../components/Stepper";
@@ -9,68 +10,47 @@ import 'react-toastify/dist/ReactToastify.css';
 import ElectripureService from "./../service/electripure-service";
 import { UpdateUserRequest } from "./../interfaces/electripure-service";
 import { ResponseGeneric } from "../interfaces/base-service";
+import { STATE_INPUT_CONTROL } from "./../config/enum";
+import { validateCellphoneControl, validateEmailControl } from "../libs/form-validation";
+import { InputControl } from "../interfaces/form-control";
 
 function ConfirmEmailPhonePage() {
 
   const navigate = useNavigate();
   const { token } = useParams();
 
+  // Validate step 1 completed
   React.useEffect(() => {
     if (!localStorage.getItem("password") || !localStorage.getItem("token")) {
       navigate( `/confirm/${token}/step/1`);
     }
   });
 
+  const [emailControl, setEmailControl] = useState({
+    "value": "",
+    "message": "",
+    "state": STATE_INPUT_CONTROL.DEFAULT
+  });
+
+  const [cellphoneControl, setCellphoneControl] = useState({
+    "value": "",
+    "message": "",
+    "state": STATE_INPUT_CONTROL.DEFAULT
+  });
+
+  const [isLoading, setIsLoading] = useState(false);
   
 
-  // 0 => Error
-  // 1 => Success
-  const [emailStatus, setEmailStatus] = React.useState(-1);
-  const [phoneStatus, setPhoneStatus] = React.useState(-1);
-  const [emailMessage, setEmailMessage] = React.useState("");
-  const [phoneMessage, setPhoneMessage] = React.useState("");
-  const [emailValue, setEmailValue] = React.useState("");
-  const [phoneValue, setPhoneValue] = React.useState("");
-  const [isLoading, setIsLoading] = React.useState(false);
-
-  function validateEmail(email: string) : boolean {
-    let emailValid = false;
-    if (email == "") {
-      setEmailStatus(-1);
-      emailValid = false;
-    } else if (!email.match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
-      setEmailStatus(0);
-      setEmailMessage("Invalid email format")
-      emailValid = false;
-    } else {
-      setEmailStatus(-1);
-      emailValid = true;
-    }
-    return emailValid;
-  }
-
-  function validatePhone(phone:string) : boolean {
-    let phoneValid = false;
-    if (phone == "") {
-      setPhoneStatus(-1);
-      phoneValid = false;
-    } else {
-      setPhoneStatus(-1);
-      phoneValid = true;
-    }
-    return phoneValid;
-  }
-
   async function updateInfo() {
-    if (validateEmail(emailValue) && validatePhone(phoneValue)) {
-      localStorage.setItem("email", emailValue);
-      localStorage.setItem("phone", phoneValue);
+    if (emailControl.state == STATE_INPUT_CONTROL.OK && cellphoneControl.state == STATE_INPUT_CONTROL.OK) {
+      localStorage.setItem("email", emailControl.value);
+      localStorage.setItem("phone", cellphoneControl.value);
       const password = localStorage.getItem("password");
       const token = localStorage.getItem("token");
       setIsLoading(true);
       const payload: UpdateUserRequest = {
-        "email": emailValue,
-        "cellphone": phoneValue,
+        "email": emailControl.value,
+        "cellphone": cellphoneControl.value,
         "password": password!,
         "token": token!
       };
@@ -82,8 +62,8 @@ function ConfirmEmailPhonePage() {
           "position": "bottom-right"
         })
         localStorage.setItem("session", JSON.stringify({
-          "phone": phoneValue,
-          "email": emailValue
+          "phone": cellphoneControl.value,
+          "email": emailControl.value
         }));
         navigate( `/confirm/${token}/step/3`);
       }
@@ -114,28 +94,26 @@ function ConfirmEmailPhonePage() {
               placeholder="justin.smith@outcodesoftware.com"
               label="Email"
               change={(value: string)=> {
-                // console.log("Email: " + value);
-                validateEmail(value);
-                setEmailValue(value);
+                const newEmailControl: InputControl = validateEmailControl(value);
+                setEmailControl(newEmailControl);
               }}
-              success={emailStatus == 1}
-              messageSuccess={emailMessage}
-              error={emailStatus == 0}
-              messageError={emailMessage} />
+              success={emailControl.state == STATE_INPUT_CONTROL.OK}
+              messageSuccess={emailControl.message}
+              error={emailControl.state == STATE_INPUT_CONTROL.ERROR}
+              messageError={emailControl.message} />
             <Input
               name="phone"
               type="phone"
               placeholder="( 801 ) 250 - 2872"
               label="Cellphone"
               change={(value: string)=> {
-                // console.log("phone: " + value);
-                validatePhone(value);
-                setPhoneValue(value);
+                const newCellphoneControl: InputControl = validateCellphoneControl(value);
+                setCellphoneControl(newCellphoneControl);
               }}
-              success={phoneStatus == 1}
-              messageSuccess={phoneMessage}
-              error={phoneStatus == 0}
-              messageError={phoneMessage} />
+              success={cellphoneControl.state == STATE_INPUT_CONTROL.OK}
+              messageSuccess={cellphoneControl.message}
+              error={cellphoneControl.state == STATE_INPUT_CONTROL.ERROR}
+              messageError={cellphoneControl.message} />
 
           </Stepper>
       </div>

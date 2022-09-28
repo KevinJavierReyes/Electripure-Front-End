@@ -39,6 +39,7 @@
 	--color-primary: #00AEE8;
 	--color-primary-dark: #263B92;
 	--color-secondary: #D7D7D7;
+	--color-transparent: rgba(0,0,0,0);
 }
 
 
@@ -85,6 +86,10 @@
 
 .bg-color-primary {
 	background-color: var(--color-primary);
+}
+
+.bg-color-transparent {
+	background-color: var(--color-transparent);
 }
 
 .color-primary-dark {

@@ -2,7 +2,7 @@
 export interface InputControl {
     "value": string;
     "message": string;
-    "status": number
+    "state": number
 };
 
 export interface ContactGroup {

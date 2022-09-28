@@ -3,6 +3,9 @@ import Input from "../components/Input";
 import Navbar from "../components/Navbar";
 import Stepper from "../components/Stepper";
 import { useNavigate, useParams } from "react-router-dom";
+import { validatePasswordControl } from "./../libs/form-validation";
+import { InputControl } from "../interfaces/form-control";
+import { STATE_INPUT_CONTROL } from "./../config/enum";
 
 function ConfirmPasswordPage() {
 
@@ -12,63 +15,34 @@ function ConfirmPasswordPage() {
   localStorage.removeItem("password");
   localStorage.removeItem("token");
 
-  // 0 => Error
-  // 1 => Success
-  const [passwordStatus, setPasswordStatus] = React.useState(-1);
-  const [confirmPasswordStatus, setConfirmPasswordStatus] = React.useState(-1);
-  const [passwordMessage, setPasswordMessage] = React.useState("");
-  const [confirmPasswordMessage, setConfirmPasswordMessage] = React.useState("");
-  const [passwordValue, setPasswordValue] = React.useState("");
-  const [confirmPasswordValue, setConfirmPasswordValue] = React.useState("");
+  const [passwordControl, setPasswordControl] = React.useState({
+    "value": "",
+    "message": "",
+    "state": STATE_INPUT_CONTROL.DEFAULT
+  });
 
-  function validatePassword(password: string) : boolean {
-    let passwordValid = false;
-    // console.log("Password: " + password);
-    if (password == "") {
-      setPasswordStatus(-1);
-      passwordValid = false;
-    } else if (!password.match(/^[0-9a-zA-Z]{8,}$/)) {
-      setPasswordStatus(0);
-      setPasswordMessage("Use 8 or more characters with a mix of letters, numbers and characters.")
-      passwordValid = false;
-    } else {
-      setPasswordStatus(-1);
-      passwordValid = true;
-    }
-    return passwordValid;
-  }
-
-  function validateConfirmPassword(confirmPassword:string, password: string) : boolean {
-    let confirmPasswordValid = false;
-    // console.log("Password: " + password);
-    // console.log("Confirm Password: " + confirmPassword);
-    if (confirmPassword == "") {
-      setConfirmPasswordStatus(-1);
-      confirmPasswordValid = false;
-    } else if (!confirmPassword.match(/^[0-9a-zA-Z]{8,}$/)) {
-      setConfirmPasswordStatus(0);
-      setConfirmPasswordMessage("Use 8 or more characters with a mix of letters, numbers and characters.")
-      confirmPasswordValid = false;
-    } else {
-      if (validatePassword(password) && confirmPassword != password) {
-        setConfirmPasswordStatus(0);
-        setConfirmPasswordMessage("Passwords do not match.")
-        confirmPasswordValid = false;
-      } else {
-        setConfirmPasswordStatus(-1);
-        confirmPasswordValid = true;
-      }
-    }
-    return confirmPasswordValid;
-  }
+  const [confirmPasswordControl, setConfirmPasswordControl] = React.useState({
+    "value": "",
+    "message": "",
+    "state": STATE_INPUT_CONTROL.DEFAULT
+  });
 
   function savePasswords() {
-    if (validatePassword(passwordValue) && validateConfirmPassword(confirmPasswordValue, passwordValue)) {
-      localStorage.setItem("password", passwordValue);
+    if (passwordControl.state == STATE_INPUT_CONTROL.OK && confirmPasswordControl.state == STATE_INPUT_CONTROL.OK) {
+      localStorage.setItem("password", passwordControl.value);
       localStorage.setItem("token", token!);
       console.log("Passwords saved!!")
       navigate( `/confirm/${token}/step/2`);
     }
+  }
+
+  function validateConfirmPassword(value: string) {
+    const newPasswordControl: InputControl = validatePasswordControl(value);
+    if (newPasswordControl.state == STATE_INPUT_CONTROL.OK && newPasswordControl.value != passwordControl.value) {
+      newPasswordControl.state = STATE_INPUT_CONTROL.ERROR;
+      newPasswordControl.message = "Passwords do not match.";
+    }
+    setConfirmPasswordControl(newPasswordControl);
   }
 
   return (
@@ -94,29 +68,29 @@ function ConfirmPasswordPage() {
             <Input
               name="password"
               type="password"
-              placeholder=""
+              placeholder="*********"
               label="Password"
               change={(value: string)=> {
-                validatePassword(value);
-                setPasswordValue(value);
+                const newPasswordControl: InputControl = validatePasswordControl(value);
+                setPasswordControl(newPasswordControl);
+                validateConfirmPassword(confirmPasswordControl.value);
               }}
-              success={passwordStatus == 1}
-              messageSuccess={passwordMessage}
-              error={passwordStatus == 0}
-              messageError={passwordMessage} />
+              success={passwordControl.state == STATE_INPUT_CONTROL.OK}
+              messageSuccess={""}
+              error={passwordControl.state == STATE_INPUT_CONTROL.ERROR}
+              messageError={passwordControl.message} />
             <Input
               name="confirmPassword"
               type="password"
-              placeholder=""
+              placeholder="*********"
               label="Confirm password"
               change={(value: string)=> {
-                validateConfirmPassword(value, passwordValue)
-                setConfirmPasswordValue(value);
+                validateConfirmPassword(value);
               }}
-              success={confirmPasswordStatus == 1}
-              messageSuccess={confirmPasswordMessage}
-              error={confirmPasswordStatus == 0}
-              messageError={confirmPasswordMessage} />
+              success={confirmPasswordControl.state == STATE_INPUT_CONTROL.OK}
+              messageSuccess={""}
+              error={confirmPasswordControl.state == STATE_INPUT_CONTROL.ERROR}
+              messageError={confirmPasswordControl.message} />
 
           </Stepper>
       </div>

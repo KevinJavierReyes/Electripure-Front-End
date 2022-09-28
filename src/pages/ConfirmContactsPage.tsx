@@ -6,6 +6,13 @@ import Stepper from "../components/Stepper";
 import { useNavigate, useParams } from "react-router-dom";
 import { ContactGroup } from "./../interfaces/form-control";
 import { validateCellphone, validateName, validateEmail } from "./../libs/form-validation";
+import { STATE_INPUT_CONTROL } from "./../config/enum";
+import ElectripureService from "./../service/electripure-service";
+import { AddContactRequest } from "../interfaces/electripure-service";
+import { ResponseGeneric } from "../interfaces/base-service";
+import { toast, ToastContainer } from "react-toastify";
+import { Session } from "../interfaces/session";
+import Loading from "../components/Loading";
 
 function ConfirmContactsPage() {
 
@@ -13,32 +20,63 @@ function ConfirmContactsPage() {
     "contactName": {
       "value": "",
       "message": "",
-      "status": -1
+      "status": STATE_INPUT_CONTROL.DEFAULT
     },
     "email": {
       "value": "",
       "message": "",
-      "status": -1
+      "status": STATE_INPUT_CONTROL.DEFAULT
     },
     "phone": {
       "value": "",
       "message": "",
-      "status": -1
+      "status": STATE_INPUT_CONTROL.DEFAULT
     },
   }]));
 
+  let session: Session | null = null;
   const [isLoading, setIsLoading] = React.useState(false);
   const navigate = useNavigate();
   const { token } = useParams();
 
   // validate if exists session
-  // useEffect(() => {
-  //   if (!localStorage.getItem("session")) {
-  //     navigate( `/confirm/${token}/step/2`);
-  //   }
-  // });
+  useEffect(() => {
+    if (!localStorage.getItem("session")) {
+      session = JSON.parse(localStorage.getItem("session")!);
+      navigate( `/confirm/${token}/step/2`);
+    }
+  });
 
-  function next() {
+  async function next() {
+    const ctgs: ContactGroup[] = JSON.parse(contacts);
+    const ctgsErrorFiltered: ContactGroup[] = ctgs.filter((ctg: ContactGroup) => {
+      return ctg.contactName.state != STATE_INPUT_CONTROL.OK && ctg.email.state != STATE_INPUT_CONTROL.OK && ctg.phone.state != STATE_INPUT_CONTROL.OK;
+    });
+    if (ctgsErrorFiltered.length == 0) {
+      setIsLoading(true);
+      await Promise.all(ctgs.map(async (ctg: ContactGroup, index: number) => {
+        const payload: AddContactRequest = {
+          "user_email": session?.email!,
+          "contact_name": ctg.contactName.value,
+          "contact_email": ctg.email.value,
+          "contact_cellphone": ctg.phone.value
+        };
+        const responseAddContact: ResponseGeneric = await ElectripureService.addContact(payload);
+        if (responseAddContact.success) {
+          toast.success(`Contact ${index + 1} created!`, {
+            "position": "bottom-right"
+          });
+        } else {
+          toast.error(responseAddContact.error, {
+            "position": "bottom-right"
+          });
+        }
+      }));
+      setIsLoading(false);
+      setTimeout(()=> {
+        skip(); 
+      }, 1000);
+    }
   }
 
   function skip() {
@@ -51,17 +89,17 @@ function ConfirmContactsPage() {
       "contactName": {
         "value": "",
         "message": "",
-        "status": -1
+        "status": STATE_INPUT_CONTROL.DEFAULT
       },
       "email": {
         "value": "",
         "message": "",
-        "status": -1
+        "status": STATE_INPUT_CONTROL.DEFAULT
       },
       "phone": {
         "value": "",
         "message": "",
-        "status": -1
+        "status": STATE_INPUT_CONTROL.DEFAULT
       },
     }]));
   }
@@ -74,42 +112,41 @@ function ConfirmContactsPage() {
 
   function validateContact(contact: ContactGroup) {
     if (contact.contactName.value == "") {
-      contact.contactName.status = -1;
+      contact.contactName.state = STATE_INPUT_CONTROL.DEFAULT;
     } else {
       const nameResult = validateName(contact.contactName.value);
-      console.log(nameResult);
       if (nameResult.valid) {
-        contact.contactName.status = 2;
+        contact.contactName.state = STATE_INPUT_CONTROL.OK;
         contact.contactName.message = "";
       } else {
         contact.contactName.message = nameResult.error!;
-        contact.contactName.status = 0;
+        contact.contactName.state = STATE_INPUT_CONTROL.ERROR;
       }
     }
 
     if (contact.phone.value == "") {
-      contact.phone.status = -1;
+      contact.phone.state = STATE_INPUT_CONTROL.DEFAULT;
     } else {
       const cellphoneResult = validateCellphone(contact.phone.value);
       if (cellphoneResult.valid) {
-        contact.phone.status = 2;
+        contact.phone.state = STATE_INPUT_CONTROL.OK;
         contact.phone.message = "";
       } else {
         contact.phone.message = cellphoneResult.error!;
-        contact.phone.status = 0;
+        contact.phone.state = STATE_INPUT_CONTROL.ERROR;
       }
     }
 
     if (contact.email.value == "") {
-      contact.email.status = -1;
+      contact.email.state = STATE_INPUT_CONTROL.DEFAULT;
     } else {
       const emailResult = validateEmail(contact.email.value);
       if (emailResult.valid) {
-        contact.email.status = 2;
+        contact.email.state = STATE_INPUT_CONTROL.OK;
         contact.email.message = "";
       } else {
         contact.email.message = emailResult.error!;
-        contact.email.status = 0;
+        contact.email.state = STATE_INPUT_CONTROL.ERROR;
       }
     }
 
@@ -118,6 +155,7 @@ function ConfirmContactsPage() {
 
   return (
     <React.Fragment>
+      <Loading show={isLoading}/>
       <Navbar/>
       <div className="w-full flex justify-center items-center py-[60px]">
           <Stepper
@@ -150,9 +188,9 @@ function ConfirmContactsPage() {
                       });
                       setContact(contactValidated, index);
                     }}
-                    success={contact.contactName.status == 1}
-                    messageSuccess={contact.contactName.message}
-                    error={contact.contactName.status == 0}
+                    success={contact.contactName.state == STATE_INPUT_CONTROL.OK}
+                    messageSuccess={""}
+                    error={contact.contactName.state == STATE_INPUT_CONTROL.ERROR}
                     messageError={contact.contactName.message} />
                   <Input
                     name={"email" + index}
@@ -169,9 +207,9 @@ function ConfirmContactsPage() {
                       });
                       setContact(contactValidated, index);
                     }}
-                    success={contact.email.status == 1}
-                    messageSuccess={contact.email.message}
-                    error={contact.email.status == 0}
+                    success={contact.email.state == STATE_INPUT_CONTROL.OK}
+                    messageSuccess={""}
+                    error={contact.email.state == STATE_INPUT_CONTROL.ERROR}
                     messageError={contact.email.message} />
                   <Input
                     name={"phone" + index}
@@ -188,9 +226,9 @@ function ConfirmContactsPage() {
                       });
                       setContact(contactValidated, index);
                     }}
-                    success={contact.phone.status == 1}
-                    messageSuccess={contact.phone.message}
-                    error={contact.phone.status == 0}
+                    success={contact.phone.state == STATE_INPUT_CONTROL.OK}
+                    messageSuccess={""}
+                    error={contact.phone.state == STATE_INPUT_CONTROL.ERROR}
                     messageError={contact.phone.message} />
                 </div>;
               })}
@@ -200,6 +238,7 @@ function ConfirmContactsPage() {
               </div>
           </Stepper>
       </div>
+      <ToastContainer/>
     </React.Fragment>
   );
 }

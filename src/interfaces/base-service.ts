@@ -6,3 +6,4 @@ export interface ResponseGeneric {
     success: boolean;
     error: string | null;
 }
+
