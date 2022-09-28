@@ -1,6 +1,7 @@
 
 import * as React from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import FormCard from "../components/FormCard";
 import Input from "../components/Input";
@@ -11,6 +12,8 @@ import { buttonPrimaryStyle, buttonSecondaryStyle } from "./../utils/styles";
 
 
 function LoginPage() {
+
+    const navigate = useNavigate()
 
     const [passwordControl, setPasswordControl] = useState({
         "value": "",
@@ -23,6 +26,15 @@ function LoginPage() {
         "message": "",
         "state": -1
     });
+
+    function next() {
+      navigate( `/login/verify/select`);
+    }
+
+    function forgotPassword() {
+        navigate( `/reset`);
+    }
+  
     
     return (
         <React.Fragment>
@@ -62,10 +74,10 @@ function LoginPage() {
                 
 
                 <div className={"justify-center items-center mt-[20px] flex"}>
-                    <button className="color-black-dark text-sm underline" onClick={()=> {}}>Forgot your password?</button>
+                    <button className="color-black-dark text-sm underline" onClick={forgotPassword}>Forgot your password?</button>
                 </div>
 
-                <Button title="Log in" classes={buttonPrimaryStyle + " mt-[20px] mb-[50px]"} click={()=> {}} />
+                <Button title="Log in" classes={buttonPrimaryStyle + " mt-[20px] mb-[50px]"} click={next} />
 
                 <div className={"justify-center items-center mt-[0px] flex"}>
                     <span className="color-black-dark text-sm">Don’t have an account?</span>
