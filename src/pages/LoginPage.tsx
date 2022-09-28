@@ -79,7 +79,7 @@ function LoginPage() {
               </FormCard>
           </div>
         </React.Fragment>
-      );
+    );
 }
 
 export default LoginPage;
