@@ -8,10 +8,14 @@ import { ResponseGeneric } from "../interfaces/base-service";
 import { toast, ToastContainer } from "react-toastify";
 import { buttonSecondaryStyle } from "../utils/styles";
 import Button from "../components/Button";
+import PopUp from "../components/PopUp";
+import PopUpCreateUser from "../components/PopUpCreateUser";
 
 function UserListPage () {
 
     const [usersState, setUsersState] = useState("[]");
+
+  const [isLoading, setIsLoading] = useState(false);
 
     function deleteUser(user: any) {
         console.log(user);
@@ -147,7 +151,9 @@ function UserListPage () {
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m6-6H6" />
                                 </svg>
                             <span className="f-medium">Add new user</span></span>
-                        } classes={buttonSecondaryStyle + " max-w-[200px] bg-color-white rounded"} click={()=> {}} />
+                        } classes={buttonSecondaryStyle + " max-w-[200px] bg-color-white rounded"} click={()=> {
+                            setIsLoading(true);
+                        }} />
                         <span className="ml-[20px]"><h3 className="f-bold text-lg">User Management</h3></span>
                     </div>
 
@@ -156,7 +162,11 @@ function UserListPage () {
                     </div>
                 </div>
             </div>
-            <ToastContainer/>        
+            <PopUpCreateUser show={isLoading} title={"Lets get some basic information"} closeEvent={()=> {
+                console.log("Intent close");
+                setIsLoading(false);
+            }}/>
+            <ToastContainer/>      
         </Fragment>
     );
 }

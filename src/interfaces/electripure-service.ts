@@ -17,3 +17,11 @@ export interface AddContactRequest {
 export interface ResendEmailRequest {
     id: number;
 }
+
+export interface CreateUserRequest {
+    fullname: string;
+    email: string;
+    cellphone: string;
+    company: string;
+    role: string;
+}
