@@ -10,9 +10,9 @@ function Input(props: { success: boolean, messageSuccess: string, error: boolean
             <input
                 onChange={handleChange}
                 placeholder={props.placeholder}
-                className={"mt-[5px] w-full border h-[50px] px-[10px] " + (props.success ? "border-color-success color-success" : props.error ? "border-color-error color-error" : "border-color-black-light color-black-light")}
+                className={"mt-[5px] w-full border h-[50px] px-[10px] " + (props.success ? "border-color-success color-success" : props.error ? "border-color-error color-error" : "border-color-black-light color-black")}
                 id={props.name} type={props.type}/>
-            <span className={"" + (props.success ? "color-success" : props.error ? "color-error" : "color-black-light")}>
+            <span className={"" + (props.success ? "color-success" : props.error ? "color-error" : "color-black")}>
                 {props.success ? props.messageSuccess : props.error ? props.messageError : ""}
             </span>
         </div>

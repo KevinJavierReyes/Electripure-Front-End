@@ -1,4 +1,4 @@
-import { AddContactRequest, ResendEmailRequest, UpdateUserRequest } from "../interfaces/electripure-service";
+import { AddContactRequest, CreateUserRequest, ResendEmailRequest, UpdateUserRequest } from "../interfaces/electripure-service";
 import { BaseService } from "./base-service";
 import environment from "./../config/env";
 import { toast } from "react-toastify";
@@ -41,6 +41,17 @@ export default class ElectripureService extends BaseService {
 
   static async resendEmail(payload: ResendEmailRequest): Promise<ResponseGeneric> {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/resend_email?${this.jsonToQueryParams(payload)}`;
+    const response = await this.requestPost(url, payload);
+    if (!response.success) {
+      toast.error(response.error, {
+        "position": "bottom-right"
+      });
+    }
+    return response;
+  }
+
+  static async createUser(payload: CreateUserRequest): Promise<ResponseGeneric> {
+    const url = `${environment.ELECTRIPURE_ENDPOINT}/create_user?${this.jsonToQueryParams(payload)}`;
     const response = await this.requestPost(url, payload);
     if (!response.success) {
       toast.error(response.error, {

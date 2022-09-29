@@ -48,6 +48,25 @@ export function validatePassword(value: string): ValidationResult {
     };
 }
 
+export function validateNameControl(name: string): InputControl {
+    let input: InputControl = {
+        "value": name,
+        "message": "",
+        "state": -1
+    };
+    if (name == "") {
+        return input;
+    }
+    const validation: ValidationResult = validateName(input.value);
+    if (!validation.valid) {
+        input.state = 0;
+        input.message = validation.error!;
+    } else {
+        input.state = 1;
+    }
+    return input;
+}
+
 
 export function validateEmailControl(email: string): InputControl {
     let input: InputControl = {
