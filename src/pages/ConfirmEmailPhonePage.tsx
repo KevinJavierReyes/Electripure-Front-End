@@ -60,7 +60,7 @@ function ConfirmEmailPhonePage() {
       if (responseUpdateUser.success && responseUpdateUser.statusCode == 200) {
         toast.success("Account updated successfully!", {
           "position": "bottom-right"
-        })
+        });
         localStorage.setItem("session", JSON.stringify({
           "phone": cellphoneControl.value,
           "email": emailControl.value

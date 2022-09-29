@@ -13,6 +13,9 @@ import { buttonPrimaryStyle } from "../utils/styles";
 
 
 function  ResetPasswordPage() {
+    
+    const navigate = useNavigate();
+
     const [passwordControl, setPasswordControl] = React.useState({
         "value": "",
         "message": "",
@@ -34,7 +37,9 @@ function  ResetPasswordPage() {
     setConfirmPasswordControl(newPasswordControl);
     }
 
-    function next() {}
+    function next() {
+        navigate(`/user/list`);
+    }
 
     return (
         <React.Fragment>

@@ -13,3 +13,7 @@ export interface AddContactRequest {
     contact_email: string;
     contact_cellphone: string;
 }
+
+export interface ResendEmailRequest {
+    id: number;
+}

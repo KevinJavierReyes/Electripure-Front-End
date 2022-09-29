@@ -44,10 +44,6 @@
 
 
 
-.bg-color-white {
-	background-color: var(--color-white);
-}
-
 .color-primary {
 	color: var(--color-primary);
 }
@@ -83,6 +79,9 @@
 .bg-color-secondary {
 	background-color: var(--color-secondary);
 }
+.bg-color-success {
+	background-color: var(--color-success);
+}
 
 .bg-color-primary {
 	background-color: var(--color-primary);
@@ -90,6 +89,10 @@
 
 .bg-color-transparent {
 	background-color: var(--color-transparent);
+}
+
+.bg-color-white {
+	background-color: var(--color-white);
 }
 
 .color-primary-dark {

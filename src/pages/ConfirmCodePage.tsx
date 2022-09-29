@@ -1,6 +1,7 @@
 
 import * as React from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import FormCard from "../components/FormCard";
 import Input from "../components/Input";
@@ -12,11 +13,17 @@ import { buttonPrimaryStyle, buttonSecondaryStyle } from "./../utils/styles";
 
 function ConfirmCodePage() {
 
+    const navigate = useNavigate();
+
     const [codeControl, setCodeControl] = useState({
         "value": "",
         "message": "",
         "state": -1
     });
+
+    function next() {
+        navigate(`/user/list`);
+    }
     
     return (
         <React.Fragment>
@@ -48,7 +55,7 @@ function ConfirmCodePage() {
                     <button className="color-black-dark text-sm underline" onClick={()=> {}}>Resend code</button>
                 </div>
 
-                <Button title="Log in" classes={buttonPrimaryStyle + " mt-[20px] mb-[50px]"} click={()=> {}} />
+                <Button title="Log in" classes={buttonPrimaryStyle + " mt-[20px] mb-[50px]"} click={next} />
 
                 <div className="mb-[200px]"></div>
 

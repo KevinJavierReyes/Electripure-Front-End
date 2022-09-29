@@ -80,7 +80,7 @@ function ConfirmContactsPage() {
   }
 
   function skip() {
-    navigate(`/dashboard`);
+    navigate(`/user/list`);
   }
 
   function addContact() {

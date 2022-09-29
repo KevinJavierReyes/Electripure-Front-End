@@ -9,6 +9,7 @@ import SelectVerifyMethodPage from "../pages/SelectVerifyMethodPage";
 import RequestResetPasswordPage from "../pages/RequestResetPasswordPage";
 import ResetPasswordPage from "../pages/ResetPasswordPage";
 import ConfirmCodeSentPage from "../pages/ConfirmCodeSentPage";
+import UserListPage from "../pages/UserListPage";
 
 const AppRouter = () => {
   return (
@@ -20,6 +21,7 @@ const AppRouter = () => {
         <Route path="/reset" element={<RequestResetPasswordPage />} />
         <Route path="/reset/sent" element={<ConfirmCodeSentPage />} />
         <Route path="/reset/confirm" element={<ResetPasswordPage />} />
+        <Route path="/user/list" element={<UserListPage />} />
         <Route path="/confirm/:token/step/1" element={<ConfirmPasswordPage />} />
         <Route path="/confirm/:token/step/2" element={<ConfirmEmailPhonePage />} />
         <Route path="/confirm/:token/step/3" element={<ConfirmCaptchaPage />}  />

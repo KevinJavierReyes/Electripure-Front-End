@@ -1,0 +1,15 @@
+
+.datatable-container {
+    padding: 30px;
+    background-color: #FFFFFF;
+}
+
+.datatable-container tbody tr:nth-child(2n - 1) { 
+    background-color: #D7D7D7;
+}
+
+.datatable-container tr th *{
+    color: #1A1B1F;
+    font-family: 'Montserrat';
+	font-weight: 500;
+}
