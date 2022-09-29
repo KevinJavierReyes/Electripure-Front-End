@@ -27,9 +27,11 @@
     "webpack": "^5.74.0"
   },
   "scripts": {
-    "start:dev": "vite",
-    "vite build": "tsc && vite build",
-    "vite preview": "vite preview"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "eslintConfig": {
     "extends": [
@@ -55,9 +57,11 @@
     "@types/react-dom": "*",
     "@vitejs/plugin-react": "*",
     "autoprefixer": "*",
+    "gh-pages": "^4.0.0",
     "postcss": "*",
     "tailwindcss": "*",
     "typescript": "*",
     "vite": "*"
-  }
+  },
+  "homepage": "https://kevinjavierreyes.github.io/Electripure-Front-End"
 }
