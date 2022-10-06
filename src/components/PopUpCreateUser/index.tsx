@@ -13,8 +13,13 @@ import { ResponseGeneric } from "../../interfaces/base-service";
 import { CreateUserRequest } from "../../interfaces/electripure-service";
 import { toast } from "react-toastify";
 import Loading from "../Loading";
+import { useDispatch } from "react-redux";
+import { setLoading, showToast } from "../../actions/electripure";
 
 function PopUpCreateUser(props: { show: boolean, title: string, closeEvent: MouseEventHandler }) {
+
+
+  const dispatch = useDispatch();
 
   const [emailControl, setEmailControl] = useState({
     "value": "",
@@ -40,15 +45,14 @@ function PopUpCreateUser(props: { show: boolean, title: string, closeEvent: Mous
     "state": STATE_INPUT_CONTROL.OK
   });
 
-  const [isLoading, setIsLoading] = useState(false);
-
-
   async function next(e: any) {
     if (emailControl.state == STATE_INPUT_CONTROL.OK &&
       cellphoneControl.state == STATE_INPUT_CONTROL.OK  &&
       nameControl.state == STATE_INPUT_CONTROL.OK &&
       companyControl.state == STATE_INPUT_CONTROL.OK ) {
-        setIsLoading(true);
+        dispatch(setLoading({
+          loading: true
+        }));
         const payload: CreateUserRequest = {
           fullname: nameControl.value,
           email: emailControl.value,
@@ -56,16 +60,22 @@ function PopUpCreateUser(props: { show: boolean, title: string, closeEvent: Mous
           company: companyControl.value,
           role: "E - Admin"
         }
-        const responseAddContact: ResponseGeneric = await ElectripureService.createUser(payload).finally(()=>{setIsLoading(false)});
+        const responseAddContact: ResponseGeneric = await ElectripureService.createUser(payload).finally(()=>{
+          dispatch(setLoading({
+            loading: false
+          }));
+        });
         if (responseAddContact.success) {
-          toast.success(`User created!`, {
-            "position": "bottom-right"
-          });
+          dispatch(showToast({
+            message: `User created!`,
+            status: "success"
+          }));
           props.closeEvent(e);
         } else {
-          toast.error(responseAddContact.error, {
-            "position": "bottom-right"
-          });
+          dispatch(showToast({
+            "message": responseAddContact.error!,
+            "status": "error"
+          }));
         }
     }
   }
@@ -148,7 +158,6 @@ function PopUpCreateUser(props: { show: boolean, title: string, closeEvent: Mous
           </FormCard>
         </div>
       </PopUp>
-      <Loading show={isLoading}/>
     </Fragment>
     
   );
