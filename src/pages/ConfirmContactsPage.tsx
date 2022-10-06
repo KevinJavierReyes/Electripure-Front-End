@@ -13,6 +13,8 @@ import { ResponseGeneric } from "../interfaces/base-service";
 import { toast, ToastContainer } from "react-toastify";
 import { Session } from "../interfaces/session";
 import Loading from "../components/Loading";
+import { useDispatch } from "react-redux";
+import { setLoading, showToast } from "../actions/electripure";
 
 function ConfirmContactsPage() {
 
@@ -33,46 +35,44 @@ function ConfirmContactsPage() {
       "status": STATE_INPUT_CONTROL.DEFAULT
     },
   }]));
-
-  let session: Session | null = null;
-  const [isLoading, setIsLoading] = React.useState(false);
+  
   const navigate = useNavigate();
-  const { token } = useParams();
-
-  // validate if exists session
-  useEffect(() => {
-    if (!localStorage.getItem("session")) {
-      session = JSON.parse(localStorage.getItem("session")!);
-      navigate( `/confirm/${token}/step/2`);
-    }
-  });
-
-  async function next() {
+  const dispatch = useDispatch();
+  const email = localStorage.getItem("email");
+  
+  async function saveContacts() {
     const ctgs: ContactGroup[] = JSON.parse(contacts);
     const ctgsErrorFiltered: ContactGroup[] = ctgs.filter((ctg: ContactGroup) => {
       return ctg.contactName.state != STATE_INPUT_CONTROL.OK && ctg.email.state != STATE_INPUT_CONTROL.OK && ctg.phone.state != STATE_INPUT_CONTROL.OK;
     });
     if (ctgsErrorFiltered.length == 0) {
-      setIsLoading(true);
+      dispatch(setLoading({
+        loading: true
+      }));
       await Promise.all(ctgs.map(async (ctg: ContactGroup, index: number) => {
+        //TODO Email tiene que ser tomado desde el jwt
         const payload: AddContactRequest = {
-          "user_email": session?.email!,
+          "user_email": email!,
           "contact_name": ctg.contactName.value,
           "contact_email": ctg.email.value,
           "contact_cellphone": ctg.phone.value
         };
         const responseAddContact: ResponseGeneric = await ElectripureService.addContact(payload);
         if (responseAddContact.success) {
-          toast.success(`Contact ${index + 1} created!`, {
-            "position": "bottom-right"
-          });
+          dispatch(showToast({
+            "message": `Contact ${index + 1} created!`,
+            "status": "success"
+          }));
         } else {
-          toast.error(responseAddContact.error, {
-            "position": "bottom-right"
-          });
+          dispatch(showToast({
+            "message": responseAddContact.error!,
+            "status": "error"
+          }));
         }
       }));
-      setIsLoading(false);
+      dispatch(setLoading({
+        loading: false
+      }));
       setTimeout(()=> {
         skip(); 
       }, 1000);
@@ -155,7 +155,6 @@ function ConfirmContactsPage() {
 
   return (
     <React.Fragment>
-      <Loading show={isLoading}/>
       <Navbar/>
       <div className="w-full flex justify-center items-center py-[60px]">
           <Stepper
@@ -164,7 +163,7 @@ function ConfirmContactsPage() {
             title="Create your back up contacts"
             buttonTitle="Add contact"
             buttonClasses="bg-color-primary color-white h-[45px]"
-            buttonClick={next}
+            buttonClick={saveContacts}
             skipClick={skip}>
 
               <p>If we aren’t able to get a hold of you who would be the best to reach out to?</p>

@@ -18,6 +18,34 @@ export interface ResendEmailRequest {
     id: number;
 }
 
+export interface LoginRequest {
+    email: string;
+    password: string;
+}
+
+export interface ForgotPasswordRequest {
+    email: string;
+}
+
+export interface UpdatePasswordRequest {
+    token: string;
+    password: string;
+}
+
+export interface ValidateTokenRequest {
+    token: string;
+}
+
+export interface AuthorizationCodeRequest {
+    token_login: string;
+    tipo: "email" | "sms";
+}
+
+export interface AuthorizationCodeValidateRequest {
+    token_login: string;
+    code_auth: string;
+}
+
 export interface CreateUserRequest {
     fullname: string;
     email: string;

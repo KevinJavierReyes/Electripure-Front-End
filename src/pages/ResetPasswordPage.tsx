@@ -1,20 +1,26 @@
 
 import * as React from "react";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { sendUpdatePassword } from "../actions/electripure";
 import Button from "../components/Button";
 import FormCard from "../components/FormCard";
 import Input from "../components/Input";
 import Navbar from "../components/Navbar";
 import { STATE_INPUT_CONTROL } from "../config/enum";
 import { InputControl } from "../interfaces/form-control";
+import { ElectripureState } from "../interfaces/reducers";
 import { validateEmailControl, validatePasswordControl } from "../libs/form-validation";
 import { buttonPrimaryStyle } from "../utils/styles";
 
 
 function  ResetPasswordPage() {
     
+    const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { token } = useParams();
+    const toatMessage = useSelector((state: ElectripureState) => state.toastMessage);
 
     const [passwordControl, setPasswordControl] = React.useState({
         "value": "",
@@ -29,17 +35,28 @@ function  ResetPasswordPage() {
     });
 
     function validateConfirmPassword(value: string) {
-    const newPasswordControl: InputControl = validatePasswordControl(value);
-    if (newPasswordControl.state == STATE_INPUT_CONTROL.OK && newPasswordControl.value != passwordControl.value) {
-        newPasswordControl.state = STATE_INPUT_CONTROL.ERROR;
-        newPasswordControl.message = "Passwords do not match.";
-    }
-    setConfirmPasswordControl(newPasswordControl);
+        const newPasswordControl: InputControl = validatePasswordControl(value);
+        if (newPasswordControl.state == STATE_INPUT_CONTROL.OK && newPasswordControl.value != passwordControl.value) {
+            newPasswordControl.state = STATE_INPUT_CONTROL.ERROR;
+            newPasswordControl.message = "Passwords do not match.";
+        }
+        setConfirmPasswordControl(newPasswordControl);
     }
 
     function next() {
-        navigate(`/user/list`);
+        if (passwordControl.state == STATE_INPUT_CONTROL.OK && confirmPasswordControl.state == STATE_INPUT_CONTROL.OK) {
+            dispatch(sendUpdatePassword({
+                "password": passwordControl.value,
+                "token": token!
+            }));
+        }
     }
+
+    useEffect(()=>{
+        if (toatMessage == "Password updated!") {
+            navigate("/login");
+        }
+    }, [toatMessage])
 
     return (
         <React.Fragment>

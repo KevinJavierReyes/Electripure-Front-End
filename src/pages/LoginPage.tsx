@@ -1,17 +1,25 @@
 
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { login, setLoading, showToast } from "../actions/electripure";
 import Button from "../components/Button";
 import FormCard from "../components/FormCard";
 import Input from "../components/Input";
 import Navbar from "../components/Navbar";
+import { STATE_INPUT_CONTROL } from "../config/enum";
 import { InputControl } from "../interfaces/form-control";
+import { ElectripureState } from "../interfaces/reducers";
 import { validateEmailControl, validatePasswordControl } from "./../libs/form-validation";
 import { buttonPrimaryStyle, buttonSecondaryStyle } from "./../utils/styles";
 
 
 function LoginPage() {
+
+    const loginToken = useSelector((state: ElectripureState) => state.loginToken);
+
+    const dispatch = useDispatch();
 
     const navigate = useNavigate()
 
@@ -27,15 +35,25 @@ function LoginPage() {
         "state": -1
     });
 
-    function next() {
-      navigate( `/login/verify/select`);
+    function validateCredentials() {
+        if (passwordControl.state == STATE_INPUT_CONTROL.OK || emailControl.state == STATE_INPUT_CONTROL.OK) {
+            dispatch(login({
+                "email": emailControl.value,
+                "password": passwordControl.value,
+            }));
+        }
     }
-
+    
     function forgotPassword() {
         navigate( `/reset`);
     }
+
+    useEffect(()=> {
+        if (loginToken) {
+            navigate(`/login/verify/select`);
+        }
+    }, [loginToken])
   
-    
     return (
         <React.Fragment>
           <Navbar/>
@@ -53,9 +71,9 @@ function LoginPage() {
                         const newEmailControl: InputControl = validateEmailControl(value);
                         setEmailControl(newEmailControl);
                     }}
-                    success={emailControl.state == 1}
+                    success={emailControl.state == STATE_INPUT_CONTROL.OK && false}
                     messageSuccess={""}
-                    error={emailControl.state == 0}
+                    error={emailControl.state == STATE_INPUT_CONTROL.ERROR}
                     messageError={emailControl.message} />
                     <Input
                     name="password"
@@ -66,18 +84,17 @@ function LoginPage() {
                         const newPasswordControl: InputControl = validatePasswordControl(value);
                         setPasswordControl(newPasswordControl);
                     }}
-                    success={passwordControl.state == 1}
+                    success={passwordControl.state == STATE_INPUT_CONTROL.OK && false}
                     messageSuccess={""}
-                    error={passwordControl.state == 0}
+                    error={passwordControl.state == STATE_INPUT_CONTROL.ERROR}
                     messageError={passwordControl.message} />
                 </div>
                 
-
                 <div className={"justify-center items-center mt-[20px] flex"}>
                     <button className="color-black-dark text-sm underline" onClick={forgotPassword}>Forgot your password?</button>
                 </div>
 
-                <Button title="Log in" classes={buttonPrimaryStyle + " mt-[20px] mb-[50px]"} click={next} />
+                <Button title="Log in" classes={buttonPrimaryStyle + " mt-[20px] mb-[50px]"} click={validateCredentials} />
 
                 <div className={"justify-center items-center mt-[0px] flex"}>
                     <span className="color-black-dark text-sm">Don’t have an account?</span>
@@ -86,7 +103,6 @@ function LoginPage() {
                 <div className={"justify-center items-center mt-[20px] flex"}>
                     <Button title="Contact us" classes={buttonSecondaryStyle + " max-w-[150px]"} click={()=> {}} />
                 </div>
-
     
               </FormCard>
           </div>

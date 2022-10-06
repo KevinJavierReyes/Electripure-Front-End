@@ -4,24 +4,24 @@ import Input from "../components/Input";
 import Navbar from "../components/Navbar";
 import Stepper from "../components/Stepper";
 import { useNavigate, useParams } from "react-router-dom";
-import Loading from "../components/Loading";
-import { toast, ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
 import ElectripureService from "./../service/electripure-service";
 import { UpdateUserRequest } from "./../interfaces/electripure-service";
 import { ResponseGeneric } from "../interfaces/base-service";
 import { STATE_INPUT_CONTROL } from "./../config/enum";
 import { validateCellphoneControl, validateEmailControl } from "../libs/form-validation";
 import { InputControl } from "../interfaces/form-control";
+import { useDispatch } from "react-redux";
+import { setJwt, setLoading, showToast } from "../actions/electripure";
 
 function ConfirmEmailPhonePage() {
 
   const navigate = useNavigate();
   const { token } = useParams();
+  const dispatch = useDispatch();
 
   // Validate step 1 completed
   React.useEffect(() => {
-    if (!localStorage.getItem("password") || !localStorage.getItem("token")) {
+    if (!localStorage.getItem("password") || !localStorage.getItem("email") || !localStorage.getItem("token")) {
       navigate( `/confirm/${token}/step/1`);
     }
   });
@@ -36,10 +36,7 @@ function ConfirmEmailPhonePage() {
     "value": "",
     "message": "",
     "state": STATE_INPUT_CONTROL.DEFAULT
-  });
-
-  const [isLoading, setIsLoading] = useState(false);
-  
+  });  
 
   async function updateInfo() {
     if (emailControl.state == STATE_INPUT_CONTROL.OK && cellphoneControl.state == STATE_INPUT_CONTROL.OK) {
@@ -47,7 +44,9 @@ function ConfirmEmailPhonePage() {
       localStorage.setItem("phone", cellphoneControl.value);
       const password = localStorage.getItem("password");
       const token = localStorage.getItem("token");
-      setIsLoading(true);
+      dispatch(setLoading({
+        loading: true
+      }));
       const payload: UpdateUserRequest = {
         "email": emailControl.value,
         "cellphone": cellphoneControl.value,
@@ -55,16 +54,23 @@ function ConfirmEmailPhonePage() {
         "token": token!
       };
       const responseUpdateUser: ResponseGeneric = await ElectripureService.updateUser(payload).finally(()=> {
-        setIsLoading(false);
+        dispatch(setLoading({
+          loading: false
+        }));
       });
       if (responseUpdateUser.success && responseUpdateUser.statusCode == 200) {
-        toast.success("Account updated successfully!", {
-          "position": "bottom-right"
-        });
-        localStorage.setItem("session", JSON.stringify({
-          "phone": cellphoneControl.value,
-          "email": emailControl.value
+        //Create session
+        dispatch(setJwt({
+          "token": "KevinJWT"
         }));
+        dispatch(showToast({
+          message: "Account updated successfully!",
+          status: "success"
+        }));
+        // localStorage.setItem("session", JSON.stringify({
+        //   "phone": cellphoneControl.value,
+        //   "email": emailControl.value
+        // }));
         navigate( `/confirm/${token}/step/3`);
       }
     }
@@ -72,7 +78,6 @@ function ConfirmEmailPhonePage() {
 
   return (
     <React.Fragment>
-      <Loading show={isLoading}/>
       <Navbar/>
       <div className="w-full flex justify-center items-center py-[60px]">
           <Stepper
@@ -117,7 +122,6 @@ function ConfirmEmailPhonePage() {
 
           </Stepper>
       </div>
-      <ToastContainer/>
     </React.Fragment>
   );
 }
