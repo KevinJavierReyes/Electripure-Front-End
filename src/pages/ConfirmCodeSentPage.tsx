@@ -22,7 +22,7 @@ function ConfirmCodeSentPage() {
     });
 
     function next() {
-        navigate("/reset/confirm");
+        navigate("/login");
     }
     
     return (

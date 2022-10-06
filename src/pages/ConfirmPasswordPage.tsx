@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useEffect, useState, Fragment } from "react";
 import Input from "../components/Input";
 import Navbar from "../components/Navbar";
 import Stepper from "../components/Stepper";
@@ -6,26 +7,55 @@ import { useNavigate, useParams } from "react-router-dom";
 import { validatePasswordControl } from "./../libs/form-validation";
 import { InputControl } from "../interfaces/form-control";
 import { STATE_INPUT_CONTROL } from "./../config/enum";
+import ElectripureService from "../service/electripure-service";
+import { ResponseGeneric } from "../interfaces/base-service";
+import { useDispatch } from "react-redux";
+import { setLoading } from "../actions/electripure";
 
 function ConfirmPasswordPage() {
 
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { token } = useParams();
 
   localStorage.removeItem("password");
   localStorage.removeItem("token");
 
-  const [passwordControl, setPasswordControl] = React.useState({
+  const [passwordControl, setPasswordControl] = useState({
     "value": "",
     "message": "",
     "state": STATE_INPUT_CONTROL.DEFAULT
   });
 
-  const [confirmPasswordControl, setConfirmPasswordControl] = React.useState({
+  const [confirmPasswordControl, setConfirmPasswordControl] = useState({
     "value": "",
     "message": "",
     "state": STATE_INPUT_CONTROL.DEFAULT
   });
+
+  const [email, setEmailState] = useState("");
+  const [tokenValid, setTokenValidState] = useState(true);
+
+  useEffect(() => {
+      (async ()=> {
+        dispatch(setLoading({
+          loading: true
+        }));
+        const responseValidate: ResponseGeneric= await ElectripureService.validateToken({
+          "token":  token!
+        });
+        if (responseValidate.statusCode == 200 && responseValidate.success && responseValidate.data  && responseValidate.data.token_validated) {
+          setEmailState(responseValidate.data.email);
+          localStorage.setItem("email", responseValidate.data.email);
+          setTokenValidState(responseValidate.data.token_validated);
+        } else {
+          setTokenValidState(false);
+        }
+        dispatch(setLoading({
+          loading: false
+        }));
+      })();
+  }, [])
 
   function savePasswords() {
     if (passwordControl.state == STATE_INPUT_CONTROL.OK && confirmPasswordControl.state == STATE_INPUT_CONTROL.OK) {
@@ -45,8 +75,17 @@ function ConfirmPasswordPage() {
     setConfirmPasswordControl(newPasswordControl);
   }
 
+  if (!tokenValid) {
+    return  <Fragment>
+      <Navbar/>
+      <div className="w-full flex justify-center items-center py-[60px]">
+        <h2>Token expired.</h2>
+      </div>
+  </Fragment>
+  }
+
   return (
-    <React.Fragment>
+    <Fragment>
       <Navbar/>
       <div className="w-full flex justify-center items-center py-[60px]">
           <Stepper
@@ -60,7 +99,7 @@ function ConfirmPasswordPage() {
             }}>
 
             <p className="color-black-dark f-medium">Email</p>
-            <p>email@company.com</p>
+            <p>{email}</p>
             <br/>
             <p>Use 8 or more characters with a mix of letters, numbers and characters.</p>
             <br/>
@@ -94,7 +133,7 @@ function ConfirmPasswordPage() {
 
           </Stepper>
       </div>
-    </React.Fragment>
+    </Fragment>
   );
 }
 

@@ -1,18 +1,25 @@
 
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { sendVerificationCode, setLoginToken } from "../actions/electripure";
 import Button from "../components/Button";
 import FormCard from "../components/FormCard";
 import Input from "../components/Input";
 import Navbar from "../components/Navbar";
+import { STATE_INPUT_CONTROL } from "../config/enum";
 import { InputControl } from "../interfaces/form-control";
-import { validateEmailControl, validatePasswordControl } from "./../libs/form-validation";
+import { ElectripureState } from "../interfaces/reducers";
+import { validateCodeControl } from "./../libs/form-validation";
 import { buttonPrimaryStyle, buttonSecondaryStyle } from "./../utils/styles";
 
 
 function ConfirmCodePage() {
 
+    const electripureJwt = useSelector((state: ElectripureState) => state.electripureJwt);
+    const loginToken = useSelector((state: ElectripureState) => state.loginToken);
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const [codeControl, setCodeControl] = useState({
@@ -21,9 +28,20 @@ function ConfirmCodePage() {
         "state": -1
     });
 
-    function next() {
-        navigate(`/user/list`);
+    function sendCode() {
+        if (codeControl.state == STATE_INPUT_CONTROL.OK) {
+            dispatch(sendVerificationCode({
+                "code": codeControl.value,
+                "token": loginToken!
+            }));
+        }
     }
+
+    useEffect(()=> {
+        if (electripureJwt) {
+            navigate(`/user/list`);
+        }
+    }, [electripureJwt]);
     
     return (
         <React.Fragment>
@@ -39,10 +57,8 @@ function ConfirmCodePage() {
                     placeholder="000000"
                     label="6 digital code"
                     change={(value: string)=> {
-                        setCodeControl({
-                            ...codeControl,
-                            "value": value
-                        });
+                        const newCodeControl: InputControl = validateCodeControl(value);
+                        setCodeControl(newCodeControl);
                     }}
                     success={codeControl.state == 1}
                     messageSuccess={""}
@@ -55,7 +71,7 @@ function ConfirmCodePage() {
                     <button className="color-black-dark text-sm underline" onClick={()=> {}}>Resend code</button>
                 </div>
 
-                <Button title="Log in" classes={buttonPrimaryStyle + " mt-[20px] mb-[50px]"} click={next} />
+                <Button title="Log in" classes={buttonPrimaryStyle + " mt-[20px] mb-[50px]"} click={sendCode} />
 
                 <div className="mb-[200px]"></div>
 

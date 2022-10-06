@@ -1,0 +1,6 @@
+export const LOGIN = "LOGIN";
+export const SET_LOADING = "SET_LOADING";
+export const SET_JWT = "SET_JWT";
+export const SET_LOGIN_TOKEN = "SET_LOGIN_TOKEN";
+export const SET_TIMESTAMP_TWO_STEP_VERIFICATION = "SET_TIMESTAMP_TWO_STEP_VERIFICATION";
+export const SHOW_TOAST = "SHOW_TOAST";
