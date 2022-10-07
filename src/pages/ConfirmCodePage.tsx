@@ -39,6 +39,9 @@ function ConfirmCodePage() {
 
     useEffect(()=> {
         if (electripureJwt) {
+            if ( localStorage.getItem("rememberPassword") == "true") {
+                localStorage.setItem("electripureJwt", electripureJwt)
+            }
             navigate(`/user/list`);
         }
     }, [electripureJwt]);

@@ -3,7 +3,7 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { login, setLoading, showToast } from "../actions/electripure";
+import { login, setJwt, setLoading, showToast } from "../actions/electripure";
 import Button from "../components/Button";
 import FormCard from "../components/FormCard";
 import Input from "../components/Input";
@@ -13,15 +13,29 @@ import { InputControl } from "../interfaces/form-control";
 import { ElectripureState } from "../interfaces/reducers";
 import { validateEmailControl, validatePasswordControl } from "./../libs/form-validation";
 import { buttonPrimaryStyle, buttonSecondaryStyle } from "./../utils/styles";
+import Checkbox from "../components/Checkbox";
+
+
 
 
 function LoginPage() {
+
+    const electripureJwt = useSelector((state: ElectripureState) => state.electripureJwt) || localStorage.getItem("electripureJwt");
+  
+    useEffect(()=> {
+        if (electripureJwt) {
+            dispatch(setJwt({
+                "token": electripureJwt
+            }))
+        };
+    }, []);
+   
 
     const loginToken = useSelector((state: ElectripureState) => state.loginToken);
 
     const dispatch = useDispatch();
 
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const [passwordControl, setPasswordControl] = useState({
         "value": "",
@@ -34,6 +48,8 @@ function LoginPage() {
         "message": "",
         "state": -1
     });
+
+    const [remember, setRemember ] = useState(false);
 
     function validateCredentials() {
         if (passwordControl.state == STATE_INPUT_CONTROL.OK || emailControl.state == STATE_INPUT_CONTROL.OK) {
@@ -50,9 +66,16 @@ function LoginPage() {
 
     useEffect(()=> {
         if (loginToken) {
+            localStorage.setItem("rememberPassword", `${remember}`);
             navigate(`/login/verify/select`);
         }
     }, [loginToken])
+
+    useEffect(()=> {
+        if (electripureJwt) {
+            navigate(`/user/list`);
+        }
+    }, [electripureJwt])
   
     return (
         <React.Fragment>
@@ -88,6 +111,17 @@ function LoginPage() {
                     messageSuccess={""}
                     error={passwordControl.state == STATE_INPUT_CONTROL.ERROR}
                     messageError={passwordControl.message} />
+
+                    <Checkbox
+                        label="Remember password"
+                        name="rememberpassword"
+                        checked={(checked: boolean)=> {
+                            setRemember(checked);
+                        }}
+                        success={false}
+                        messageSuccess={""}
+                        error={false}
+                        messageError={""} / >
                 </div>
                 
                 <div className={"justify-center items-center mt-[20px] flex"}>
