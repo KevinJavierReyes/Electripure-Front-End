@@ -18,6 +18,7 @@ function NavbarMenu() {
         dispatch(setJwt({
             "token": null
         }));
+        localStorage.removeItem("electripureJwt");
         // navigate("/login");
     }
 

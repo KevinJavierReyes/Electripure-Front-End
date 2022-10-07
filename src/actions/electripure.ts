@@ -114,7 +114,7 @@ export const sendVerificationCode = (payload: SendVerificationCodePayload): any 
         }))
     }
     dispatch(setJwt({
-        token: "KevinJWT"
+        token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.OavGO9EIDazzQq08RNCmzUs4oj7EizPmBnb_NPh-i6M"
     }));
     dispatch(showToast({
         message: "Code correct!.",
@@ -122,7 +122,6 @@ export const sendVerificationCode = (payload: SendVerificationCodePayload): any 
     }))
     return;
 });
-
 
 export const sendForgotPassword = (payload: SendForgotPasswordPayload): any => (async (dispatch: any) => {
     dispatch(setLoading({
@@ -134,8 +133,6 @@ export const sendForgotPassword = (payload: SendForgotPasswordPayload): any => (
     dispatch(setLoading({
         loading: false
     }));
-    console.log("Forgot password response");
-    console.log(response);
     if(!response.success) {
         return dispatch(showToast({
             message: response.error!,
@@ -155,8 +152,6 @@ export const sendForgotPassword = (payload: SendForgotPasswordPayload): any => (
     return;
 });
 
-
-
 export const sendUpdatePassword = (payload: SendUpdatePasswordPayload): any => (async (dispatch: any) => {
     dispatch(setLoading({
         loading: true
@@ -168,8 +163,6 @@ export const sendUpdatePassword = (payload: SendUpdatePasswordPayload): any => (
     dispatch(setLoading({
         loading: false
     }));
-    console.log("send Update Password");
-    console.log(response);
     if(!response.success) {
         return dispatch(showToast({
             message: response.error!,

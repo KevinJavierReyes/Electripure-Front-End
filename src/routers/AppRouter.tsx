@@ -10,12 +10,15 @@ import RequestResetPasswordPage from "../pages/RequestResetPasswordPage";
 import ResetPasswordPage from "../pages/ResetPasswordPage";
 import ConfirmCodeSentPage from "../pages/ConfirmCodeSentPage";
 import UserListPage from "../pages/UserListPage";
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import Loading from "../components/Loading";
 import Toast from "../components/Toast";
 import { IsAuthenticated, IsAuthenticatedLoginToken } from "./Auth";
 
 const AppRouter = () => {
+
+
+
   return (
     <Fragment>
       <HashRouter>
