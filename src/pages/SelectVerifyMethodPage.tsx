@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { sendVerificationEmail, setLoading } from "../actions/electripure";
-import Button from "../components/Button";
+import {Button} from "../components/Button";
 import FormCard from "../components/FormCard";
 import Navbar from "../components/Navbar";
 import OptionCard from "../components/OptionCard";

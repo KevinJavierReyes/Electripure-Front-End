@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { sendUpdatePassword } from "../actions/electripure";
-import Button from "../components/Button";
+import {Button} from "../components/Button";
 import FormCard from "../components/FormCard";
 import Input from "../components/Input";
 import Navbar from "../components/Navbar";

@@ -28,6 +28,21 @@ export function validateCode (value: string): ValidationResult {
     };
 }
 
+
+export function validateCompany (value: string): ValidationResult {
+    if (!value.match(/.+/)) {
+        return {
+            "valid": false,
+            "error": "Company invalid."
+        }
+    }
+    return {
+        "valid": true,
+        "error": null
+    };
+}
+
+
 export function validateEmail (value: string): ValidationResult {
     if (!value.match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
         return {
@@ -160,6 +175,25 @@ export function validateCodeControl(code: string): InputControl {
         return input;
     }
     const validation: ValidationResult = validateCode(input.value);
+    if (!validation.valid) {
+        input.state = 0;
+        input.message = validation.error!;
+    } else {
+        input.state = 1;
+    }
+    return input;
+}
+
+export function validateCompanyControl(company: string): InputControl {
+    let input: InputControl = {
+        "value": company,
+        "message": "",
+        "state": -1
+    };
+    if (company == "") {
+        return input;
+    }
+    const validation: ValidationResult = validateCompany(input.value);
     if (!validation.valid) {
         input.state = 0;
         input.message = validation.error!;

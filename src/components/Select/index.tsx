@@ -6,7 +6,7 @@ function Select(props: { success: boolean, messageSuccess: string, error: boolea
         props.change(event.target.value);
     }
     return (
-        <div className="w-full py-[4px] my-[5px] styled-select">
+        <div className="w-full styled-select">
             <label htmlFor={props.name} className={"f-medium " + (props.success ? "color-success" : props.error ? "color-error" : "color-black-dark")}>{props.label}</label>
             <div className="h-[50px] w-full relative mt-[5px]">
                 <div className="w-full h-[50px] flex justify-end items-center pr-[10px]">

@@ -1,5 +1,5 @@
 import { MouseEventHandler } from "react";
-import Button from "../../components/Button";
+import {Button} from "../../components/Button";
 import Navbar from "../../components/Navbar";
 import StepperProgress from "../../components/StepperProgress";
 

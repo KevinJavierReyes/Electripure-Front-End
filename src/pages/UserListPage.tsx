@@ -1,21 +1,31 @@
-import { Fragment, useEffect, useState } from "react";
+import React from "react";
+import { useEffect, useState } from "react";
 import DataTable from "../components/DataTable";
-import NavbarInfo from "../components/NavbarInfo";
-import NavbarMenu from "../components/NavbarMenu";
+import NavbarInfo from "../components/Navigation/NavbarInfo";
+import NavbarMenu from "../components/Navigation/NavbarMenu";
 import { HeaderConfig, RowConfig, TableConfig } from "../components/DataTable/interfaces/datatable";
 import ElectripureService from "./../service/electripure-service";
 import { ResponseGeneric } from "../interfaces/base-service";
 import { toast, ToastContainer } from "react-toastify";
 import { buttonSecondaryStyle } from "../utils/styles";
-import Button from "../components/Button";
+import {Button} from "../components/Button";
 import PopUp from "../components/PopUp";
 import PopUpCreateUser from "../components/PopUpCreateUser";
+// Import modals
+import { ModalMiddle } from "./../components/Modal";
+import InputPhoto from "../components/InputPhoto";
+import CreateCompanyStep1Form from "../components/Form/CreateCompanyStep1Form";
+import CreateUserForm from "../components/Form/CreateUserForm";
+import { CreateUserDataForm } from "../interfaces/form";
+import Navegation from "../components/Navigation";
 
 function UserListPage () {
 
-    const [usersState, setUsersState] = useState("[]");
+  const [usersState, setUsersState] = useState("[]");
 
   const [isLoading, setIsLoading] = useState(false);
+
+  const [isShowModal, setShowModal] = useState(false);
 
     function deleteUser(user: any) {
         console.log(user);
@@ -138,9 +148,16 @@ function UserListPage () {
         })();
     }, []);
 
+    function submitCreateUserForm(data: CreateUserDataForm) {
+        console.log(data);
+    }
+
     return (
-        <Fragment>
-            <div className="w-full h-screen flex justify-start items-start">
+        <React.Fragment>
+            <Navegation>
+                <p>dsdsds</p>
+            </Navegation>
+            {/* <div className="w-full h-screen flex justify-start items-start">
                 <NavbarMenu></NavbarMenu>
                 <div className="px-[30px] pb-[5%] w-full">
                     <NavbarInfo />
@@ -152,7 +169,7 @@ function UserListPage () {
                                 </svg>
                             <span className="f-medium">Add new user</span></span>
                         } classes={buttonSecondaryStyle + " max-w-[200px] bg-color-white rounded"} click={()=> {
-                            setIsLoading(true);
+                            setShowModal(true);
                         }} />
                         <span className="ml-[20px]"><h3 className="f-bold text-lg">User Management</h3></span>
                     </div>
@@ -161,13 +178,21 @@ function UserListPage () {
                         {generateDataTable(JSON.parse(usersState))}
                     </div>
                 </div>
-            </div>
-            <PopUpCreateUser show={isLoading} title={"Lets get some basic information"} closeEvent={()=> {
+            </div> */}
+            {/* <PopUpCreateUser show={isLoading} title={"Lets get some basic information"} closeEvent={()=> {
                 console.log("Intent close");
                 setIsLoading(false);
             }}/>
-            <ToastContainer/>      
-        </Fragment>
+            <ToastContainer/> */}
+
+
+            {/* <ModalMiddle show={true}>
+                <CreateCompanyStep1Form/>
+            </ModalMiddle>     */}
+            <ModalMiddle show={isShowModal} onClose={()=>{setShowModal(false)}}>
+                <CreateUserForm onSubmit={submitCreateUserForm}/>
+            </ModalMiddle>  
+        </React.Fragment>
     );
 }
 

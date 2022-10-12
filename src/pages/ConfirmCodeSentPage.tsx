@@ -2,7 +2,7 @@
 import * as React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Button from "../components/Button";
+import {Button} from "../components/Button";
 import FormCard from "../components/FormCard";
 import Input from "../components/Input";
 import Navbar from "../components/Navbar";

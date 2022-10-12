@@ -5,3 +5,9 @@ export enum STATE_INPUT_CONTROL {
     ERROR = 0,
     OK = 1
 }
+
+export enum TYPE_SPACE {
+    INPUT_DISTANCE = 1,
+    INPUT_DISTANCE_VERTICAL = 2,
+    FORM_DISTANCE_VERTICAL = 3
+}

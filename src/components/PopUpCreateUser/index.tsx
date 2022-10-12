@@ -5,7 +5,7 @@ import { validateCellphoneControl, validateEmailControl, validateNameControl } f
 import FormCard from "../FormCard";
 import Input from "../Input";
 import PopUp from "../PopUp";
-import Button from "../Button";
+import {Button} from "../Button";
 import { buttonPrimaryStyle } from "../../utils/styles";
 import Select from "../Select";
 import ElectripureService from "./../../service/electripure-service";
