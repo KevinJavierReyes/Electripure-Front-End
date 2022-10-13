@@ -1,8 +1,8 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import DataTable from "../components/DataTable";
-import NavbarInfo from "../components/Navigation/NavbarInfo";
-import NavbarMenu from "../components/Navigation/NavbarMenu";
+import NavbarInfo from "../components/Navigation/NavigationBar";
+import NavbarMenu from "../components/Navigation/NavigationMenu";
 import { HeaderConfig, RowConfig, TableConfig } from "../components/DataTable/interfaces/datatable";
 import ElectripureService from "./../service/electripure-service";
 import { ResponseGeneric } from "../interfaces/base-service";

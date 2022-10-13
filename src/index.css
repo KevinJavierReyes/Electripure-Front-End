@@ -79,7 +79,8 @@
 }
 
 .border-color-black-light {
-	border: 1px solid var(--color-black-light);
+	/* border: 1px solid var(--color-black-light); */
+	border-color: var(--color-black-light);
 }
 
 .bg-color-secondary {
