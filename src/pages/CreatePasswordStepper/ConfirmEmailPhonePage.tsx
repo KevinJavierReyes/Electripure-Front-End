@@ -31,55 +31,12 @@ function ConfirmEmailPhonePage() {
       navigate( `/confirm/${token}/step/3`);
     }
   }, [toastMessage]);
-  // async function updateInfo() {
-  //   if (emailControl.state == STATE_INPUT_CONTROL.OK && cellphoneControl.state == STATE_INPUT_CONTROL.OK) {
-  //     localStorage.setItem("email", emailControl.value);
-  //     localStorage.setItem("phone", cellphoneControl.value);
-  //     const password = localStorage.getItem("password");
-  //     const token = localStorage.getItem("token");
-  //     dispatch(setLoading({
-  //       loading: true
-  //     }));
-  //     const payload: UpdateUserRequest = {
-  //       "email": emailControl.value,
-  //       "cellphone": cellphoneControl.value,
-  //       "password": password!,
-  //       "token": token!
-  //     };
-  //     const responseUpdateUser: ResponseGeneric = await ElectripureService.updateUser(payload).finally(()=> {
-  //       dispatch(setLoading({
-  //         loading: false
-  //       }));
-  //     });
-  //     if (responseUpdateUser.success && responseUpdateUser.statusCode == 200) {
-  //       //Create session
-  //       dispatch(setJwt({
-  //         "token": "KevinJWT"
-  //       }));
-  //       dispatch(showToast({
-  //         message: "Account updated successfully!",
-  //         status: "success"
-  //       }));
-  //       // localStorage.setItem("session", JSON.stringify({
-  //       //   "phone": cellphoneControl.value,
-  //       //   "email": emailControl.value
-  //       // }));
-  //       navigate( `/confirm/${token}/step/3`);
-  //     }
-  //   }
-  // }
 
   function submitConfirmEmailPhoneForm(data: ConfirmEmailPhoneDataForm) {
     localStorage.setItem("email", data.email);
     localStorage.setItem("phone", data.phone);
     const password = localStorage.getItem("password");
     const token = localStorage.getItem("token");
-    console.log({
-      password: password,
-      token: token,
-      email: data.email,
-      phone: data.phone
-    });
     dispatch(sendUpdateUser({
       "email": data.email,
       "cellphone": data.phone,

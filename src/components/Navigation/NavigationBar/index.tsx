@@ -1,6 +1,6 @@
 import { TYPE_SPACE } from "../../../config/enum";
-import { ButtonNotification } from "../../Button";
-import InputSearch from "../../InputSearch";
+import { ButtonNotification } from "../../FormInput/Button";
+import InputSearch from "../../FormInput/InputSearch";
 import Space from "../../Space";
 import logoUrl from "./../../assets/svg/Logo.svg";
 

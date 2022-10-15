@@ -1,7 +1,6 @@
 import ConfirmPasswordPage from "../pages/CreatePasswordStepper/CreatePasswordPage";
 import { BrowserRouter, HashRouter, Route, Routes } from "react-router-dom";
-import ConfirmEmailPhonePage from "../pages/CreatePasswordStepper/ConfirmEmailPhonePage";
-import ConfirmCaptchaPage from "../pages/ConfirmCaptchaPage";
+import ConfirmCaptchaPage from "../pages/CreatePasswordStepper/ConfirmCaptchaPage";
 import ConfirmContactsPage from "../pages/ConfirmContactsPage";
 import LoginPage from "../pages/LoginPage";
 import ConfirmCodePage from "../pages/ConfirmCodePage";
@@ -15,6 +14,8 @@ import Loading from "../components/Loading";
 import Toast from "../components/Toast";
 import { IsAuthenticated, IsAuthenticatedLoginToken } from "./Auth";
 import CreatePasswordPage from "../pages/CreatePasswordStepper/CreatePasswordPage";
+import ConfirmEmailPhonePage from "../pages/CreatePasswordStepper/ConfirmEmailPhonePage";
+import CreateBackupContactsPage from "../pages/CreatePasswordStepper/CreateBackupContactsPage";
 
 const AppRouter = () => {
 
@@ -33,9 +34,8 @@ const AppRouter = () => {
           {/* Confirm token */}
           <Route path="/confirm/:token/step/1" element={<CreatePasswordPage />} />
           <Route path="/confirm/:token/step/2" element={<ConfirmEmailPhonePage />} />
-          {/* 
           <Route path="/confirm/:token/step/3" element={<ConfirmCaptchaPage />}  />
-          <Route path="/confirm/:token/step/4" element={<IsAuthenticated><ConfirmContactsPage /></IsAuthenticated>}  /> */}
+          <Route path="/confirm/:token/step/4" element={<IsAuthenticated><CreateBackupContactsPage /></IsAuthenticated>}  />
 
           {/* Reset password */}
           {/* <Route path="/reset" element={<RequestResetPasswordPage />} />
@@ -43,7 +43,7 @@ const AppRouter = () => {
           <Route path="/reset/:token/confirm" element={<ResetPasswordPage />} /> */}
 
           {/* Dashboard */}
-          {/* <Route path="/user/list" element={<IsAuthenticated><UserListPage /></IsAuthenticated>} /> */}
+          <Route path="/user/list" element={<IsAuthenticated><UserListPage /></IsAuthenticated>} />
 
           {/* Else */}
           <Route path="*" element={<label className="mx-auto">No existe la ruta especificada</label>} />

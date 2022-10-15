@@ -18,3 +18,9 @@ export interface ConfirmEmailPhoneDataForm {
     email: string;
     phone: string;
 }
+
+export interface CreateBackupContactDataForm {
+    name: string;
+    email: string;
+    phone: string;
+}

@@ -26,6 +26,13 @@ export function ButtonSecondary( { children, onClick, classes= ""}: { children: 
     );
 }
 
+export function ButtonLink( { children, onClick, classes= ""}: { children: any, onClick: MouseEventHandler, classes?: string}) {
+    return (
+        <button className={"color-black-dark text-sm underline " + classes} onClick={onClick}>
+            {children}
+        </button>
+    );
+}
 
 export function ButtonNotification( { children, onClick, classes= "", notifications = 0}: { children: any, onClick: MouseEventHandler, notifications?: number, classes?: string}) {
     return (

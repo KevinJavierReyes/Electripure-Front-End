@@ -49,6 +49,17 @@
 }
 
 
+*, .color-black {
+	color: var(--color-black);
+}
+
+.color-black-dark {
+	color: var(--color-black-dark);
+}
+
+.color-black-light {
+	color: var(--color-black-light);
+}
 
 .color-primary {
 	color: var(--color-primary);
@@ -64,18 +75,6 @@
 
 .color-success {
 	color: var(--color-success);
-}
-
-*, .color-black {
-	color: var(--color-black);
-}
-
-.color-black-dark {
-	color: var(--color-black-dark);
-}
-
-.color-black-light {
-	color: var(--color-black-light);
 }
 
 .border-color-black-light {

@@ -91,3 +91,11 @@ export interface SendValidateTokenPayload {
     token: string;
 
 }
+
+export interface SendAddContactPayload {
+
+    name: string;
+    email: string;
+    phone: string;
+
+}

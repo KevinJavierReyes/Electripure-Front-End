@@ -3,9 +3,9 @@ import { STATE_INPUT_CONTROL, TYPE_SPACE } from "../../../config/enum";
 import { CreateUserDataForm } from "../../../interfaces/form";
 import { InputControl } from "../../../interfaces/form-control";
 import { validateCellphoneControl, validateCompanyControl, validateEmailControl, validateNameControl } from "../../../libs/form-validation";
-import { ButtonPrimary } from "../../Button";
-import InputSelect from "../../InputSelect";
-import InputText from "../../InputText";
+import { ButtonPrimary } from "../../FormInput/Button";
+import InputSelect from "../../FormInput/InputSelect";
+import InputText from "../../FormInput/InputText";
 import Space from "../../Space";
 import Title from "../../FormInput/Title";
 
