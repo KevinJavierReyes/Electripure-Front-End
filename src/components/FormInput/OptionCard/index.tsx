@@ -1,6 +1,6 @@
 
 import { MouseEventHandler } from "react";
-import { buttonPrimaryStyle, buttonSecondaryStyle } from "./../../utils/styles";
+import { buttonPrimaryStyle, buttonSecondaryStyle } from "./../../../utils/styles";
 
 function OptionCard(props: {title: string, description: string, children: any, click: MouseEventHandler}) {
     return (

@@ -13,6 +13,8 @@ function Space({type, show=true, classes=""}: { type?: TYPE_SPACE, show?: boolea
             return (<div className={"w-[15px] " + classes}></div>);
         case TYPE_SPACE.FORM_DISTANCE_VERTICAL:
             return (<div className={"w-[30px] " + classes}></div>);
+        case TYPE_SPACE.FORM_DISTANCE:
+            return (<div className={"h-[30px] " + classes}></div>);
         case TYPE_SPACE.TEXT_DISTANCE_VERTICAL:
             return (<div className={"w-[5px] " + classes}></div>);
         case TYPE_SPACE.TEXT_DISTANCE:

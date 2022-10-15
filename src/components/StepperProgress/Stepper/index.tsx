@@ -1,7 +1,7 @@
 import { MouseEventHandler } from "react";
-import {Button} from "../../components/Button";
-import Navbar from "../../components/Navbar";
-import StepperProgress from "../../components/StepperProgress";
+import {Button} from "../../FormInput/Button";
+import Navbar from "../../Navbar";
+import StepperProgress from "..";
 
 function Stepper(props: {children: any, totalSteps: number, completedSteps: number, title: String, buttonTitle: String, buttonClasses: String, buttonClick: MouseEventHandler, skipClick?: MouseEventHandler }) {
     return (

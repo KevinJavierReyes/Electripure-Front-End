@@ -53,3 +53,4 @@ export interface CreateUserRequest {
     company: string;
     role: string;
 }
+

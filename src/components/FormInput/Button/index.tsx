@@ -18,6 +18,15 @@ export function ButtonPrimary( { children, onClick, classes= ""}: { children: an
 }
 
 
+export function ButtonSecondary( { children, onClick, classes= ""}: { children: any, onClick: MouseEventHandler, classes?: string}) {
+    return (
+        <button className={"w-full rounded-sm border border-color-secondary h-[48px] color-white bg-color-white rounded " + classes} onClick={onClick}>
+            {children}
+        </button>
+    );
+}
+
+
 export function ButtonNotification( { children, onClick, classes= "", notifications = 0}: { children: any, onClick: MouseEventHandler, notifications?: number, classes?: string}) {
     return (
         <button className={"relative min-w-[40px] rounded-full border-color-black-light border bg-color-white min-h-[40px] flex justify-center items-center " + classes} onClick={onClick}>

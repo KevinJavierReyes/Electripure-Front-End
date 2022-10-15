@@ -1,9 +1,9 @@
 import { STATE_INPUT_CONTROL, TYPE_SPACE } from "../../../config/enum";
-import InputCheckbox from "../../InputCheckbox";
+import InputCheckbox from "../../FormInput/InputCheckbox";
 import InputPhoto from "../../InputPhoto";
 import InputText from "../../InputText";
 import Space from "../../Space";
-import Title from "../../Title";
+import Title from "../../FormInput/Title";
 
 
 function CreateCompanyStep1Form() {

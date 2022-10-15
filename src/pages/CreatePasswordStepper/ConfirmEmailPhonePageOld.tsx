@@ -1,17 +1,17 @@
 import * as React from "react";
 import { useState } from "react";
 import Input from "../components/Input";
-import Navbar from "../components/Navbar";
-import Stepper from "../components/Stepper";
+import Navbar from "../../components/Navbar";
+import Stepper from "../../components/StepperProgress/Stepper";
 import { useNavigate, useParams } from "react-router-dom";
-import ElectripureService from "./../service/electripure-service";
-import { UpdateUserRequest } from "./../interfaces/electripure-service";
-import { ResponseGeneric } from "../interfaces/base-service";
-import { STATE_INPUT_CONTROL } from "./../config/enum";
-import { validateCellphoneControl, validateEmailControl } from "../libs/form-validation";
-import { InputControl } from "../interfaces/form-control";
+import ElectripureService from "../../service/electripure-service";
+import { UpdateUserRequest } from "../../interfaces/electripure-service";
+import { ResponseGeneric } from "../../interfaces/base-service";
+import { STATE_INPUT_CONTROL } from "../../config/enum";
+import { validateCellphoneControl, validateEmailControl } from "../../libs/form-validation";
+import { InputControl } from "../../interfaces/form-control";
 import { useDispatch } from "react-redux";
-import { setJwt, setLoading, showToast } from "../actions/electripure";
+import { setJwt, setLoading, showToast } from "../../actions/electripure";
 
 function ConfirmEmailPhonePage() {
 

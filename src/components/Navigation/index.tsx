@@ -20,7 +20,7 @@ function Navegation({children}: {children: any}) {
                 <div onClick={toggleNavegation} className="absolute w-full h-full top-0 left-0">
 
                 </div>
-                <div className={"z-20 w-[80%] sm:w-[60%] md:w-[40%] lg:w-[350px] lg:relative absolute top-0 left-0"}>
+                <div className={"w-[80%] sm:w-[60%] md:w-[40%] lg:w-[350px] lg:relative absolute top-0 left-0 bg-color-white"}>
                     <NavigationMenu/>
                 </div>
             </div>

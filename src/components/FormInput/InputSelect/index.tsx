@@ -1,5 +1,4 @@
-import internal from "stream";
-import {STATE_INPUT_CONTROL} from "../../config/enum";
+import { STATE_INPUT_CONTROL } from "../../../config/enum";
 
 function InputSelect({ state, message, name, options, placeholder, label, onChange } : {
     state : STATE_INPUT_CONTROL,

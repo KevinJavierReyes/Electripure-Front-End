@@ -1,4 +1,4 @@
-import { STATE_INPUT_CONTROL } from "../../config/enum";
+import { STATE_INPUT_CONTROL } from "../../../config/enum";
 
 function InputCheckbox({ state, message, name, label, onChange }: { state: STATE_INPUT_CONTROL, message: string, name: string, label: string, onChange: (checked: boolean) => void }) {
     function handleChange(event: any) {

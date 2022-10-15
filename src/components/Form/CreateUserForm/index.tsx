@@ -7,7 +7,7 @@ import { ButtonPrimary } from "../../Button";
 import InputSelect from "../../InputSelect";
 import InputText from "../../InputText";
 import Space from "../../Space";
-import Title from "../../Title";
+import Title from "../../FormInput/Title";
 
 
 function CreateUserForm({onSubmit}: {onSubmit: (data: CreateUserDataForm) => void}) {
@@ -51,7 +51,7 @@ function CreateUserForm({onSubmit}: {onSubmit: (data: CreateUserDataForm) => voi
                 onSubmit({
                     email: emailControl.value,
                     cellphone: cellphoneControl.value,
-                    name: nameControl.value,
+                    fullname: nameControl.value,
                     company: companyControl.value,
                     role: roleControl.value
                 });
