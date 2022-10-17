@@ -27,8 +27,8 @@ const AppRouter = () => {
         <Routes>
           
           {/* Login */}
-          {/* <Route path="/login" element={<LoginPage />} />
-          <Route path="/login/verify/select" element={<IsAuthenticatedLoginToken><SelectVerifyMethodPage /></IsAuthenticatedLoginToken>} />
+          <Route path="/login" element={<LoginPage />} />
+          {/* <Route path="/login/verify/select" element={<IsAuthenticatedLoginToken><SelectVerifyMethodPage /></IsAuthenticatedLoginToken>} />
           <Route path="/login/verify/confirm" element={<IsAuthenticatedLoginToken><ConfirmCodePage /></IsAuthenticatedLoginToken>} /> */}
 
           {/* Confirm token */}

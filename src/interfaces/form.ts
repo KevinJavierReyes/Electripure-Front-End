@@ -24,3 +24,9 @@ export interface CreateBackupContactDataForm {
     email: string;
     phone: string;
 }
+
+export interface LoginDataForm {
+    email: string;
+    password: string;
+    remember: boolean;
+}
