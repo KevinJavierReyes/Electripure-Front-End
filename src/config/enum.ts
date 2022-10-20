@@ -19,3 +19,8 @@ export enum TYPE_SPACE {
     TEXT_DISTANCE = 5,
     FORM_DISTANCE = 6,
 }
+
+export enum VERIFICATION_CHANNEL {
+    SMS = 1,
+    EMAIL = 2
+}

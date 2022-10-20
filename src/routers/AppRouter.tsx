@@ -28,8 +28,8 @@ const AppRouter = () => {
           
           {/* Login */}
           <Route path="/login" element={<LoginPage />} />
-          {/* <Route path="/login/verify/select" element={<IsAuthenticatedLoginToken><SelectVerifyMethodPage /></IsAuthenticatedLoginToken>} />
-          <Route path="/login/verify/confirm" element={<IsAuthenticatedLoginToken><ConfirmCodePage /></IsAuthenticatedLoginToken>} /> */}
+          <Route path="/login/verify/select" element={<IsAuthenticatedLoginToken><SelectVerifyMethodPage /></IsAuthenticatedLoginToken>} />
+          {/* <Route path="/login/verify/confirm" element={<IsAuthenticatedLoginToken><ConfirmCodePage /></IsAuthenticatedLoginToken>} /> */}
 
           {/* Confirm token */}
           <Route path="/confirm/:token/step/1" element={<CreatePasswordPage />} />
@@ -38,9 +38,9 @@ const AppRouter = () => {
           <Route path="/confirm/:token/step/4" element={<IsAuthenticated><CreateBackupContactsPage /></IsAuthenticated>}  />
 
           {/* Reset password */}
-          {/* <Route path="/reset" element={<RequestResetPasswordPage />} />
+          <Route path="/reset" element={<RequestResetPasswordPage />} />
           <Route path="/reset/sent" element={<ConfirmCodeSentPage />} />
-          <Route path="/reset/:token/confirm" element={<ResetPasswordPage />} /> */}
+          <Route path="/reset/:token/confirm" element={<ResetPasswordPage />} />
 
           {/* Dashboard */}
           <Route path="/user/list" element={<IsAuthenticated><UserListPage /></IsAuthenticated>} />

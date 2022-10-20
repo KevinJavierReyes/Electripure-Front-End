@@ -3,9 +3,14 @@ import * as React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {Button} from "../components/Button";
+import Card from "../components/Card";
 import FormCard from "../components/FormCard";
+import { ButtonPrimary } from "../components/FormInput/Button";
+import Title from "../components/FormInput/Title";
 import Input from "../components/Input";
 import Navbar from "../components/Navbar";
+import Space from "../components/Space";
+import { TYPE_SPACE } from "../config/enum";
 import { InputControl } from "../interfaces/form-control";
 import { validateEmailControl } from "./../libs/form-validation";
 import { buttonPrimaryStyle } from "./../utils/styles";
@@ -15,11 +20,6 @@ function ConfirmCodeSentPage() {
 
     const navigate = useNavigate();
 
-    const [emailControl, setEmailControl] = useState({
-        "value": "",
-        "message": "",
-        "state": -1
-    });
 
     function next() {
         navigate("/login");
@@ -27,21 +27,23 @@ function ConfirmCodeSentPage() {
     
     return (
         <React.Fragment>
-          <Navbar/>
-          <div className="w-full flex justify-center items-center py-[60px]">
-              <FormCard
-                title="Reset password">
-
-                <div className="my-[30px]">
-                    <p>
+            <Navbar>
+                <div className="w-full max-w-[430px]">
+                <Space type={TYPE_SPACE.FORM_DISTANCE} />
+                <Card>
+                    <div className="px-[50px] pt-[20px] pb-[40px]">
+                        <Title title="Reset password"/>
+                        <p className="color-black-dark">
                         You have been emailed a temporary link that you can use to update your password. Please check your email account and click the link to change your password.
-                    </p>
+                        </p>
+                        <Space type={TYPE_SPACE.FORM_DISTANCE} />
+                        <ButtonPrimary onClick={next}>
+                            Back to log in
+                        </ButtonPrimary>
+                    </div>
+                </Card>
                 </div>
-                
-                <Button title="Back to log in" classes={buttonPrimaryStyle + " mt-[20px] mb-[50px]"} click={next} />
-    
-              </FormCard>
-          </div>
+            </Navbar>
         </React.Fragment>
     );
 }

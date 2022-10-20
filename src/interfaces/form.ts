@@ -1,3 +1,4 @@
+import { VERIFICATION_CHANNEL } from "../config/enum";
 
 
 
@@ -29,4 +30,16 @@ export interface LoginDataForm {
     email: string;
     password: string;
     remember: boolean;
+}
+
+export interface RequestResetPasswordDataForm {
+    email: string;
+}
+
+export interface ResetPasswordDataForm {
+    password: string;
+}
+
+export interface SelectVerifyMethodDataForm {
+    channel: VERIFICATION_CHANNEL;
 }

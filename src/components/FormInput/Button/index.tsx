@@ -20,7 +20,7 @@ export function ButtonPrimary( { children, onClick, classes= ""}: { children: an
 
 export function ButtonSecondary( { children, onClick, classes= ""}: { children: any, onClick: MouseEventHandler, classes?: string}) {
     return (
-        <button className={"w-full rounded-sm border border-color-secondary h-[48px] color-color-sencondary bg-color-white rounded " + classes} onClick={onClick}>
+        <button className={"w-full rounded-sm border border-color-secondary min-h-[48px] color-color-sencondary bg-color-white rounded " + classes} onClick={onClick}>
             {children}
         </button>
     );
