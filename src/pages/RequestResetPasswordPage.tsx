@@ -1,18 +1,16 @@
 
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { sendForgotPassword } from "../actions/electripure";
-import Button from "../components/Button";
-import FormCard from "../components/FormCard";
-import Input from "../components/Input";
+import Card from "../components/Card";
+import RequestResetPasswordForm from "../components/Form/RequestResentPasswordForm";
 import Navbar from "../components/Navbar";
-import { STATE_INPUT_CONTROL } from "../config/enum";
-import { InputControl } from "../interfaces/form-control";
+import Space from "../components/Space";
+import { TYPE_SPACE } from "../config/enum";
+import { RequestResetPasswordDataForm } from "../interfaces/form";
 import { ElectripureState } from "../interfaces/reducers";
-import { validateEmailControl } from "../libs/form-validation";
-import { buttonPrimaryStyle } from "../utils/styles";
 
 
 function  RequestResetPasswordPage() {
@@ -21,18 +19,10 @@ function  RequestResetPasswordPage() {
     const toatMessage = useSelector((state: ElectripureState) => state.toastMessage);
     const dispatch = useDispatch();
 
-    const [emailControl, setEmailControl] = useState({
-        "value": "",
-        "message": "",
-        "state": -1
-    });
-
-    function next() {
-        if (emailControl.state == STATE_INPUT_CONTROL.OK) {
-            dispatch(sendForgotPassword({
-                "email": emailControl.value
-            }));
-        }
+    function submitRequestResetPasswordForm(data: RequestResetPasswordDataForm) {
+        dispatch(sendForgotPassword({
+            "email": data.email
+        }));
     }
 
     useEffect(()=>{
@@ -43,38 +33,16 @@ function  RequestResetPasswordPage() {
     
     return (
         <React.Fragment>
-          <Navbar/>
-          <div className="w-full flex justify-center items-center py-[60px]">
-              <FormCard
-                title="Reset password">
-
-                <div className="my-[30px]">
-
-                    <p className="mb-[20px]">
-                        Enter your email below and we will email you a temporary reset link.
-                        <br/>
-                        <br/>
-                        The reset link will expire after 24 hours.
-                    </p>
-                    <Input
-                    name="email"
-                    type="email"
-                    placeholder="email@company.com"
-                    label="Email"
-                    change={(value: string)=> {
-                        const newEmailControl: InputControl = validateEmailControl(value);
-                        setEmailControl(newEmailControl);
-                    }}
-                    success={emailControl.state == 1}
-                    messageSuccess={""}
-                    error={emailControl.state == 0}
-                    messageError={emailControl.message} />
+            <Navbar>
+                <div className="w-full max-w-[430px]">
+                <Space type={TYPE_SPACE.FORM_DISTANCE} />
+                <Card>
+                    <div className="px-[50px] pt-[20px] pb-[40px]">
+                        <RequestResetPasswordForm onSubmit={submitRequestResetPasswordForm}  />
+                    </div>
+                </Card>
                 </div>
-                
-                <Button title="Log in" classes={buttonPrimaryStyle} click={next} />
-    
-              </FormCard>
-          </div>
+            </Navbar>
         </React.Fragment>
     );
 }

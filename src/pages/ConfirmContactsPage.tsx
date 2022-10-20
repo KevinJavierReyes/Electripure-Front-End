@@ -2,7 +2,7 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import Input from "../components/Input";
 import Navbar from "../components/Navbar";
-import Stepper from "../components/Stepper";
+import Stepper from "../components/StepperProgress/Stepper";
 import { useNavigate, useParams } from "react-router-dom";
 import { ContactGroup } from "./../interfaces/form-control";
 import { validateCellphone, validateName, validateEmail } from "./../libs/form-validation";

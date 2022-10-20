@@ -2,18 +2,18 @@ import { MouseEventHandler } from "react";
 
 
 export interface HeaderConfig {
-    key: string;
-    label: string;
-    sort?: MouseEventHandler;
+    key: string; // Column name
+    label: string; // Value displayed
+    sort?: MouseEventHandler; // Show the sort icon and emit click event
 }
 
 export interface CellConfig {
-    label: any;
-    value: any;
+    label: any; // Value displayed
+    value: any; // Origin Value
 }
 
 export interface RowConfig {
-    [key: string]: CellConfig;
+    [key: string]: CellConfig; // Column name
 }
 
 
