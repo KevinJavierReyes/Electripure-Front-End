@@ -43,6 +43,7 @@ function CreatePasswordPage() {
   function submitCreatePasswordForm(data: CreatePasswordDataForm) {
     localStorage.setItem("password", data.password);
     localStorage.setItem("token", token!);
+    localStorage.setItem("email", passwordUser.email!);
     navigate( `/confirm/${token}/step/2`);
   }
 

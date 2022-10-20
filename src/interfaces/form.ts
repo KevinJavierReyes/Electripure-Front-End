@@ -43,3 +43,7 @@ export interface ResetPasswordDataForm {
 export interface SelectVerifyMethodDataForm {
     channel: VERIFICATION_CHANNEL;
 }
+
+export interface ConfirmCodeDataForm {
+    code: string;
+}
