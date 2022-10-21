@@ -1,7 +1,7 @@
 import { STATE_INPUT_CONTROL, TYPE_SPACE } from "../../../config/enum";
 import InputCheckbox from "../../FormInput/InputCheckbox";
-import InputPhoto from "../../InputPhoto";
-import InputText from "../../InputText";
+import InputPhoto from "../../FormInput/InputPhoto";
+import InputText from "../../FormInput/InputText";
 import Space from "../../Space";
 import Title from "../../FormInput/Title";
 

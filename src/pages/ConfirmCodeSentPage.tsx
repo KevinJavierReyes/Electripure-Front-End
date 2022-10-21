@@ -1,20 +1,12 @@
 
 import * as React from "react";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {Button} from "../components/Button";
 import Card from "../components/Card";
-import FormCard from "../components/FormCard";
 import { ButtonPrimary } from "../components/FormInput/Button";
 import Title from "../components/FormInput/Title";
-import Input from "../components/Input";
 import Navbar from "../components/Navbar";
 import Space from "../components/Space";
 import { TYPE_SPACE } from "../config/enum";
-import { InputControl } from "../interfaces/form-control";
-import { validateEmailControl } from "./../libs/form-validation";
-import { buttonPrimaryStyle } from "./../utils/styles";
-
 
 function ConfirmCodeSentPage() {
 

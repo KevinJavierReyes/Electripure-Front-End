@@ -1,7 +1,5 @@
-import ConfirmPasswordPage from "../pages/CreatePasswordStepper/CreatePasswordPage";
-import { BrowserRouter, HashRouter, Route, Routes } from "react-router-dom";
+import { HashRouter, Route, Routes } from "react-router-dom";
 import ConfirmCaptchaPage from "../pages/CreatePasswordStepper/ConfirmCaptchaPage";
-import ConfirmContactsPage from "../pages/ConfirmContactsPage";
 import LoginPage from "../pages/LoginPage";
 import ConfirmCodePage from "../pages/ConfirmCodePage";
 import SelectVerifyMethodPage from "../pages/SelectVerifyMethodPage";
@@ -9,7 +7,7 @@ import RequestResetPasswordPage from "../pages/RequestResetPasswordPage";
 import ResetPasswordPage from "../pages/ResetPasswordPage";
 import ConfirmCodeSentPage from "../pages/ConfirmCodeSentPage";
 import UserListPage from "../pages/UserListPage";
-import { Fragment, useEffect } from "react";
+import { Fragment } from "react";
 import Loading from "../components/Loading";
 import Toast from "../components/Toast";
 import { IsAuthenticated, IsAuthenticatedLoginToken } from "./Auth";
