@@ -40,8 +40,8 @@ function DataTableUsers({}) {
                 "value": user.Role
             },
             "Contacts": {
-                "label": <span className="f-medium">{user.Company}</span>,
-                "value": user.Company
+                "label": <span className="f-medium">{user.Contacts}</span>,
+                "value": user.Contacts
             },
             "Status": {
                 "label": user.Status == "Active" ? <span className="color-success f-bold">{user.Status}</span> : <span><span className="color-error f-bold">{user.Status}</span><span className="cursor-pointer color-secondary underline f-light text-sm ml-[10px]" onClick={()=>{resendInvite(user)}}>resend invite</span></span>,
