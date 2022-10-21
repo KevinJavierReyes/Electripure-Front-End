@@ -1,6 +1,5 @@
 import { useEffect, Fragment } from "react";
 import Navbar from "../../components/Navbar";
-import Stepper from "../../components/StepperProgress/Stepper";
 import { useNavigate, useParams } from "react-router-dom";
 import { ElectripureState } from "../../interfaces/reducers";
 import { useSelector } from "react-redux";
