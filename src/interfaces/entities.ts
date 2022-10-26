@@ -10,3 +10,8 @@ export interface UserEntity {
     Status: string;
     date: string;
 }
+
+export interface CompanyEntity {
+    id: number;
+    name: String;
+}

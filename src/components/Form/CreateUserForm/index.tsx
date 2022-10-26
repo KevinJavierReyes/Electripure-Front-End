@@ -1,4 +1,4 @@
-import { useState } from "react"; 
+import { useEffect, useState } from "react"; 
 import { STATE_INPUT_CONTROL, TYPE_SPACE } from "../../../config/enum";
 import { CreateUserDataForm } from "../../../interfaces/form";
 import { InputControl } from "../../../interfaces/form-control";
@@ -8,9 +8,20 @@ import InputSelect from "../../FormInput/InputSelect";
 import InputText from "../../FormInput/InputText";
 import Space from "../../Space";
 import Title from "../../FormInput/Title";
+import { useDispatch, useSelector } from "react-redux";
+import { sendGetCompanies } from "../../../actions/electripure";
+import { ElectripureState } from "../../../interfaces/reducers";
+import { CompanyEntity } from "../../../interfaces/entities";
 
 
 function CreateUserForm({onSubmit}: {onSubmit: (data: CreateUserDataForm) => void}) {
+
+    const dispatch = useDispatch();
+    const companies: CompanyEntity[]= JSON.parse(useSelector((state: ElectripureState) => state.companies));
+
+    useEffect(()=> {
+        dispatch(sendGetCompanies({}));
+    }, []);
 
     const [emailControl, setEmailControl] = useState({
         "value": "",
@@ -96,15 +107,21 @@ function CreateUserForm({onSubmit}: {onSubmit: (data: CreateUserDataForm) => voi
                 }}/>
             
             <Space type={TYPE_SPACE.INPUT_DISTANCE}/>
-            <InputText
+            <InputSelect
                 name="company"
                 state={companyControl.state}
                 message={companyControl.message}
-                placeholder="Example Company"
+                options={companies.map((company: CompanyEntity) => {
+                    return {"value": company.name, "id": company.id}
+                })}
+                placeholder="Select a company"
                 label="Company"
-                onChange={(value: string) => {
-                    const newCompanyController = validateCompanyControl(value);
-                    setCompanyControl(newCompanyController);
+                onChange={(selected: {"value": any, "id": any}) => {
+                    setCompanyControl({
+                        ...companyControl,
+                        value: selected.id,
+                        state: STATE_INPUT_CONTROL.OK
+                    });
                 }}
             />
             <Space type={TYPE_SPACE.INPUT_DISTANCE}/>
@@ -118,11 +135,11 @@ function CreateUserForm({onSubmit}: {onSubmit: (data: CreateUserDataForm) => voi
                     {"value": "Company Admin", "id": 3},
                     {"value": "Site Manager", "id": 4}
                 ]}
-                placeholder="Select a company"
+                placeholder="Select a role"
                 label="Role"
                 onChange={(selected: {"value": any, "id": any}) => {
                     setRoleControl({
-                        ...companyControl,
+                        ...roleControl,
                         value: selected.value,
                         state: STATE_INPUT_CONTROL.OK
                     });
