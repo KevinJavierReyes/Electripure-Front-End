@@ -1,4 +1,4 @@
-import { UserEntity } from "./entities";
+import { UserEntity, CompanyEntity } from "./entities";
 
 
 export interface ElectripureState {
@@ -14,4 +14,5 @@ export interface ElectripureState {
     toastType: "success" | "error" | "warning" | "";
     timestampTwoStepVerification: number | null;
     users: string;
+    companies: string;
 }

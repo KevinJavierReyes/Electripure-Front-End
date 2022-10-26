@@ -1,12 +1,13 @@
-import { ActionNotification, LoginPayload, SendAddContactPayload, SendCreateUserPayload, SendForgotPasswordPayload, SendGetUsersPayload, SendResendEmailPayload, SendUpdatePasswordPayload, SendUpdateUserPayload, SendValidateTokenPayload, SendVerificationCodePayload, SendVerificationEmailPayload, SetJwtPayload, SetLoadingPayload, SetLoginTokenPayload, SetPasswordTokenPayload, SetPasswordUserPayload, SetTimestampTwoStepVerificationPayload, SetUsersPayload, ShowToastPayload } from "../interfaces/actions";
-import { LOGIN, SET_JWT, SET_LOADING, SET_LOGIN_TOKEN, SET_PASSWORD_TOKEN, SET_PASSWORD_USER, SET_TIMESTAMP_TWO_STEP_VERIFICATION, SET_USERS, SHOW_TOAST } from "./types";
+import { ActionNotification, LoginPayload, SendAddContactPayload, SendCreateUserPayload, SendForgotPasswordPayload, SendGetCompanyPayload, SendGetUsersPayload, SendResendEmailPayload, SendUpdatePasswordPayload, SendUpdateUserPayload, SendValidateTokenPayload, SendVerificationCodePayload, SendVerificationEmailPayload, SetCompaniesPayload, SetJwtPayload, SetLoadingPayload, SetLoginTokenPayload, SetPasswordTokenPayload, SetPasswordUserPayload, SetTimestampTwoStepVerificationPayload, SetUsersPayload, ShowToastPayload } from "../interfaces/actions";
+import { LOGIN, SET_COMPANIES, SET_JWT, SET_LOADING, SET_LOGIN_TOKEN, SET_PASSWORD_TOKEN, SET_PASSWORD_USER, SET_TIMESTAMP_TWO_STEP_VERIFICATION, SET_USERS, SHOW_TOAST } from "./types";
 import ElectripureService from "../service/electripure-service";
 import { ResponseGeneric } from "../interfaces/base-service";
 
 // Mappers
 import UserMapper from "./../mappers/user-mapper";
-import { UserEntity } from "../interfaces/entities";
+import { CompanyEntity, UserEntity } from "../interfaces/entities";
 import { AddContactRequest } from "../interfaces/electripure-service";
+import CompanyMapper from "../mappers/company-mapper";
 
 export const setLoading = (payload: SetLoadingPayload): ActionNotification => ({
     "type": SET_LOADING,
@@ -45,6 +46,11 @@ export const showToast = (payload: ShowToastPayload): ActionNotification => ({
 
 export const setUsers = (payload: SetUsersPayload) => ({
     "type": SET_USERS,
+    "payload": payload
+});
+
+export const setCompanies = (payload: SetCompaniesPayload) => ({
+    "type": SET_COMPANIES,
     "payload": payload
 });
 
@@ -265,6 +271,26 @@ export const sendCreateUser = (payload: SendCreateUserPayload) : any => (async (
         "status": "success"
     }));
     dispatch(sendGetUsers({}));
+});
+
+export const sendGetCompanies = (payload: SendGetCompanyPayload): any => (async (dispatch: any) => {
+    dispatch(setLoading({
+        loading: true
+    }));
+    const response: ResponseGeneric = await ElectripureService.getCompanies();
+    dispatch(setLoading({
+        loading: false
+    }));
+    if(!response.success) {
+        return dispatch(showToast({
+            message: response.error!,
+            status: "error"
+        }))
+    }
+    const companies: CompanyEntity[] = CompanyMapper.toCompanies(response.data);
+    dispatch(setCompanies({
+        "companies": companies
+    }));
 });
 
 // Create password stepper
