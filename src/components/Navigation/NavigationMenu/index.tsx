@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { setJwt, setLoginToken, setTimestampTwoStepVerification } from "../../../actions/electripure";
 import logoUrl from "./../../../assets/svg/Logo.svg";
 
+import DropdownSelector from "./DropdownSelector"
+
+
 function NavbarMenu() {
 
     const dispatch = useDispatch();
@@ -28,8 +31,9 @@ function NavbarMenu() {
                 <img src={logoUrl} className="h-[40px]"></img>
             </div>
             <div className="w-full px-[30px]">
-                <button onClick={logout}>Log out</button>
+                {/*<button onClick={logout}>Log out</button> */}
             </div>
+            <DropdownSelector />
         </div>
     );
 }

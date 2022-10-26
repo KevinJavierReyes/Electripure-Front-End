@@ -1,4 +1,4 @@
-import { UserEntity } from "./entities";
+import { UserEntity, CompanyEntity } from "./entities";
 
 
 export interface ActionNotification {
@@ -17,6 +17,10 @@ export interface SetLoadingPayload {
 
 export interface SetUsersPayload {
     users: UserEntity[]
+}
+
+export interface SetCompanyPayload {
+    companies: CompanyEntity[]
 }
 
 export interface SetTimestampTwoStepVerificationPayload {
@@ -66,6 +70,10 @@ export interface SendUpdatePasswordPayload {
 
 export interface SendGetUsersPayload {
 }
+
+export interface SendGetCompaniesPayload {
+}
+
 
 export interface SendResendEmailPayload {
     id: number;

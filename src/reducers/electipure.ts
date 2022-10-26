@@ -1,5 +1,5 @@
-import { SET_LOADING, SET_LOGIN_TOKEN, SET_TIMESTAMP_TWO_STEP_VERIFICATION, SHOW_TOAST, SET_JWT, SET_USERS, SET_PASSWORD_TOKEN, SET_PASSWORD_USER } from "../actions/types";
-import { ActionNotification, SetJwtPayload, SetLoadingPayload, SetLoginTokenPayload, SetPasswordTokenPayload, SetPasswordUserPayload, SetTimestampTwoStepVerificationPayload, SetUsersPayload, ShowToastPayload } from "../interfaces/actions";
+import { SET_LOADING, SET_LOGIN_TOKEN, SET_TIMESTAMP_TWO_STEP_VERIFICATION, SHOW_TOAST, SET_JWT, SET_USERS, SET_COMPANIES, SET_PASSWORD_TOKEN, SET_PASSWORD_USER } from "../actions/types";
+import { ActionNotification, SetJwtPayload, SetLoadingPayload, SetLoginTokenPayload, SetPasswordTokenPayload, SetPasswordUserPayload, SetTimestampTwoStepVerificationPayload, SetUsersPayload, SetCompanyPayload,  ShowToastPayload } from "../interfaces/actions";
 import { ElectripureState } from "../interfaces/reducers";
 
 const initialState: ElectripureState = {
@@ -11,7 +11,8 @@ const initialState: ElectripureState = {
     "timestampTwoStepVerification": null,
     "users": "[]",
     "passwordToken": null,
-    "passwordUser": "{}"
+    "passwordUser": "{}",
+    "companies": "[]"
 };
 
 export const electripureReducer = (state: ElectripureState = initialState, action: ActionNotification): ElectripureState => {
@@ -67,6 +68,13 @@ export const electripureReducer = (state: ElectripureState = initialState, actio
             return {
                 ...state,
                 "users": JSON.stringify(setUsersPayload.users)
+            };
+            break;
+        case SET_COMPANIES:
+            let setCompaniesPayload: SetCompanyPayload = action.payload as SetCompanyPayload;
+            return {
+                ...state,
+                "companies": JSON.stringify(setCompaniesPayload.companies)
             };
             break;
         default:

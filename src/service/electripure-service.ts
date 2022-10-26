@@ -96,5 +96,17 @@ export default class ElectripureService extends BaseService {
     }
     return response;
   }
-    
+  
+  // TODO test it out 
+  static async getCompanies(): Promise<ResponseGeneric> {
+    let data = {"id_user":"41"}
+    const url = `${environment.ELECTRIPURE_ENDPOINT}/get_companies_by_id`;
+    const response = await this.requestPost(url, data, {});
+    if (!response.success) {
+      toast.error(response.error, {
+        "position": "bottom-right"
+      });
+    }
+    return response;
+  }
 }
