@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 // Import interfaces
-import { CreateUserDataForm } from "../interfaces/form";
+import { BasicCompanyInformationDataForm, CreateUserDataForm, MainPointContactDataForm, SiteDetailDataForm, SiteManagerDataForm } from "../interfaces/form";
 
 // Import components
 import { ModalMiddle } from "./../components/Modal";
@@ -13,15 +13,46 @@ import DataTableUsers from "../components/DataTables/DataTableUsers";
 import { ButtonSecondary } from "../components/FormInput/Button";
 // Import actions
 import { sendCreateUser } from "../actions/electripure";
+import BasicCompanyInformationForm from "../components/Form/BasicCompanyInformationForm";
+import MainPointContactForm from "../components/Form/MainPointContactForm";
+import SiteManagerForm from "../components/Form/SiteManagerForm";
+import SiteDetailForm from "../components/Form/SiteDetailForm";
 
 function UserListPage () {
 
     const [isShowModal, setShowModal] = useState(false);
+    const [newCompanyRaw, setNewCompany] = useState("{}");
+    const [stepCreateCompany, setStepCreateCompany] = useState(1);
+    const newCompany = JSON.parse(newCompanyRaw);
     const dispatch = useDispatch();
 
     function submitCreateUserForm(data: CreateUserDataForm) {
         dispatch(sendCreateUser(data));
         setShowModal(false);
+    }
+
+    function submitBasicCompanyInformationForm(data: BasicCompanyInformationDataForm) {
+        setNewCompany(JSON.stringify({
+            ...newCompany,
+            "basicInformation": data
+        }));
+        setStepCreateCompany(2);
+    }
+
+    function submitMainPointContactForm(data: MainPointContactDataForm) {
+        setStepCreateCompany(3);
+    }
+
+    function submitSiteManagerForm(data: SiteManagerDataForm) {
+        setStepCreateCompany(4);
+    }
+
+    function submitSiteDetailForm(data: SiteDetailDataForm) {
+        setStepCreateCompany(5);
+    }
+
+    function previousStepCreateCompany() {
+        setStepCreateCompany(stepCreateCompany - 1);
     }
 
     return (
@@ -48,6 +79,12 @@ function UserListPage () {
             </Navegation>
             <ModalMiddle show={isShowModal} onClose={()=>{setShowModal(false)}}>
                 <CreateUserForm onSubmit={submitCreateUserForm}/>
+                {/* {
+                    stepCreateCompany == 1 ? <BasicCompanyInformationForm onSubmit={submitBasicCompanyInformationForm}/> :
+                    stepCreateCompany == 2 ? <MainPointContactForm onSubmit={submitMainPointContactForm} onPrevious={previousStepCreateCompany}/> :
+                    stepCreateCompany == 3 ? <SiteManagerForm onSubmit={submitSiteManagerForm} onPrevious={previousStepCreateCompany}/> :
+                    stepCreateCompany == 4 ? <SiteDetailForm onSubmit={submitSiteDetailForm} onPrevious={previousStepCreateCompany}/> : <div></div>
+                } */}
             </ModalMiddle>  
         </React.Fragment>
     );

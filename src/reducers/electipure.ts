@@ -1,5 +1,5 @@
-import { SET_LOADING, SET_LOGIN_TOKEN, SET_TIMESTAMP_TWO_STEP_VERIFICATION, SHOW_TOAST, SET_JWT, SET_USERS, SET_PASSWORD_TOKEN, SET_PASSWORD_USER, SET_COMPANIES } from "../actions/types";
-import { ActionNotification, SetJwtPayload, SetLoadingPayload, SetLoginTokenPayload, SetPasswordTokenPayload, SetPasswordUserPayload, SetTimestampTwoStepVerificationPayload, SetUsersPayload, ShowToastPayload, SetCompaniesPayload } from "../interfaces/actions";
+import { SET_LOADING, SET_LOGIN_TOKEN, SET_TIMESTAMP_TWO_STEP_VERIFICATION, SHOW_TOAST, SET_JWT, SET_USERS, SET_PASSWORD_TOKEN, SET_PASSWORD_USER, SET_COMPANIES, ADD_TASK } from "../actions/types";
+import { ActionNotification, SetJwtPayload, SetLoadingPayload, SetLoginTokenPayload, SetPasswordTokenPayload, SetPasswordUserPayload, SetTimestampTwoStepVerificationPayload, SetUsersPayload, ShowToastPayload, SetCompaniesPayload, AddTaskPayload } from "../interfaces/actions";
 import { ElectripureState } from "../interfaces/reducers";
 
 const initialState: ElectripureState = {
@@ -12,7 +12,8 @@ const initialState: ElectripureState = {
     "users": "[]",
     "companies": "[]",
     "passwordToken": null,
-    "passwordUser": "{}"
+    "passwordUser": "{}",
+    "tasks": "{}"
 };
 
 export const electripureReducer = (state: ElectripureState = initialState, action: ActionNotification): ElectripureState => {
@@ -54,6 +55,16 @@ export const electripureReducer = (state: ElectripureState = initialState, actio
                 return {
                     ...state,
                     "electripureJwt": setJwtPayload.token
+                };
+                break;
+        case ADD_TASK:
+                const tasks : any = JSON.parse(state.tasks);
+                let addTaskPayload : AddTaskPayload = action.payload as AddTaskPayload;
+                const taskKey: any = addTaskPayload.key;
+                tasks[taskKey] = addTaskPayload;
+                return {
+                    ...state,
+                    "tasks": JSON.stringify(tasks)
                 };
                 break;
         case SET_TIMESTAMP_TWO_STEP_VERIFICATION:

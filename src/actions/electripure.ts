@@ -1,5 +1,5 @@
-import { ActionNotification, LoginPayload, SendAddContactPayload, SendCreateUserPayload, SendForgotPasswordPayload, SendGetCompanyPayload, SendGetUsersPayload, SendResendEmailPayload, SendUpdatePasswordPayload, SendUpdateUserPayload, SendValidateTokenPayload, SendVerificationCodePayload, SendVerificationEmailPayload, SetCompaniesPayload, SetJwtPayload, SetLoadingPayload, SetLoginTokenPayload, SetPasswordTokenPayload, SetPasswordUserPayload, SetTimestampTwoStepVerificationPayload, SetUsersPayload, ShowToastPayload } from "../interfaces/actions";
-import { LOGIN, SET_COMPANIES, SET_JWT, SET_LOADING, SET_LOGIN_TOKEN, SET_PASSWORD_TOKEN, SET_PASSWORD_USER, SET_TIMESTAMP_TWO_STEP_VERIFICATION, SET_USERS, SHOW_TOAST } from "./types";
+import { ActionNotification, AddTaskPayload, LoginPayload, SendAddContactPayload, SendCreateUserPayload, SendForgotPasswordPayload, SendGetCompanyPayload, SendGetUsersPayload, SendImagePayload, SendResendEmailPayload, SendUpdatePasswordPayload, SendUpdateUserPayload, SendValidateTokenPayload, SendVerificationCodePayload, SendVerificationEmailPayload, SetCompaniesPayload, SetJwtPayload, SetLoadingPayload, SetLoginTokenPayload, SetPasswordTokenPayload, SetPasswordUserPayload, SetTimestampTwoStepVerificationPayload, SetUsersPayload, ShowToastPayload } from "../interfaces/actions";
+import { ADD_TASK, LOGIN, SET_COMPANIES, SET_JWT, SET_LOADING, SET_LOGIN_TOKEN, SET_PASSWORD_TOKEN, SET_PASSWORD_USER, SET_TIMESTAMP_TWO_STEP_VERIFICATION, SET_USERS, SHOW_TOAST } from "./types";
 import ElectripureService from "../service/electripure-service";
 import { ResponseGeneric } from "../interfaces/base-service";
 
@@ -8,6 +8,7 @@ import UserMapper from "./../mappers/user-mapper";
 import { CompanyEntity, UserEntity } from "../interfaces/entities";
 import { AddContactRequest } from "../interfaces/electripure-service";
 import CompanyMapper from "../mappers/company-mapper";
+import { TASK_STATE } from "../config/enum";
 
 export const setLoading = (payload: SetLoadingPayload): ActionNotification => ({
     "type": SET_LOADING,
@@ -51,6 +52,11 @@ export const setUsers = (payload: SetUsersPayload) => ({
 
 export const setCompanies = (payload: SetCompaniesPayload) => ({
     "type": SET_COMPANIES,
+    "payload": payload
+});
+
+export const addTask = (payload: AddTaskPayload) => ({
+    "type": ADD_TASK,
     "payload": payload
 });
 
@@ -382,5 +388,38 @@ export const sendAddContacts = (payload: SendAddContactPayload[]) : any => (asyn
     dispatch(showToast({
         "message": `Contacts created!`,
         "status": "success"
+    }));
+});
+
+// Create company
+
+export const SendImage = (payload : SendImagePayload): any => (async (dispatch: any) => {
+    dispatch(addTask({
+        "key": payload.taskKey,
+        "state": TASK_STATE.PENDING,
+        "result": null
+    }));
+    dispatch(setLoading({
+        loading: true
+    }));
+    const response: ResponseGeneric= await ElectripureService.uploadImage({ "image": payload.base64});
+    dispatch(setLoading({
+        loading: false
+    }));
+    if(!response.success) {
+        dispatch(showToast({
+            message: response.error!,
+            status: "error"
+        }));
+        return;
+    }
+    dispatch(addTask({
+        "key": payload.taskKey,
+        "state": TASK_STATE.COMPLETED,
+        "result": response.data.id
+    }));
+    dispatch(showToast({
+        message: "Image upload!",
+        status: "success"
     }));
 });

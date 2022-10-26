@@ -1,3 +1,4 @@
+import { TASK_STATE } from "../config/enum";
 import { CompanyEntity, UserEntity } from "./entities";
 
 
@@ -93,6 +94,11 @@ export interface SendUpdateUserPayload {
     token: string;
 }
 
+export interface SendImagePayload {
+    taskKey: string;
+    base64: string;
+}
+
 export interface SendValidateTokenPayload {
 
     token: string;
@@ -105,4 +111,11 @@ export interface SendAddContactPayload {
     email: string;
     phone: string;
 
+}
+
+
+export interface AddTaskPayload {
+    key: String;
+    state: TASK_STATE,
+    result: any
 }

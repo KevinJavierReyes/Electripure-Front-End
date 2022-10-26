@@ -54,3 +54,10 @@ export interface CreateUserRequest {
     role: string;
 }
 
+
+export interface UploadImageRequest {
+    image: string;
+}
+
+
+

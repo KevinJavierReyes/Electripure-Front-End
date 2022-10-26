@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { STATE_INPUT_CONTROL, TYPE_SPACE } from "../../../config/enum";
+import { INPUT_CONTROL_STATE, TYPE_SPACE } from "../../../config/enum";
 import { LoginDataForm } from "../../../interfaces/form";
 import { InputControl } from "../../../interfaces/form-control";
 import { validateEmailControl, validatePasswordControl } from "../../../libs/form-validation";
@@ -28,7 +28,7 @@ function LoginForm({ onSubmit, forgotPassword}: { onSubmit: (data: LoginDataForm
     });
 
     function submit() {
-        if (passwordControl.state === STATE_INPUT_CONTROL.OK && emailControl.state === STATE_INPUT_CONTROL.OK) {
+        if (passwordControl.state === INPUT_CONTROL_STATE.OK && emailControl.state === INPUT_CONTROL_STATE.OK) {
             onSubmit({
                 "email": emailControl.value,
                 "password": passwordControl.value,
@@ -65,7 +65,7 @@ function LoginForm({ onSubmit, forgotPassword}: { onSubmit: (data: LoginDataForm
         />
         <Space type={TYPE_SPACE.INPUT_DISTANCE} />
         <InputCheckbox
-            state={STATE_INPUT_CONTROL.DEFAULT}
+            state={INPUT_CONTROL_STATE.DEFAULT}
             message={""}
             name="rememberpassword"
             label="Remember password"

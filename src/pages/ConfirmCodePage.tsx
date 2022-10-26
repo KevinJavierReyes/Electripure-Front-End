@@ -6,7 +6,7 @@ import Card from "../components/Card";
 import ConfirmCodeForm from "../components/Form/ConfirmCodeForm";
 import Navbar from "../components/Navbar";
 import Space from "../components/Space";
-import { STATE_INPUT_CONTROL, TYPE_SPACE } from "../config/enum";
+import { INPUT_CONTROL_STATE, TYPE_SPACE } from "../config/enum";
 import { ConfirmCodeDataForm } from "../interfaces/form";
 import { InputControl } from "../interfaces/form-control";
 import { ElectripureState } from "../interfaces/reducers";

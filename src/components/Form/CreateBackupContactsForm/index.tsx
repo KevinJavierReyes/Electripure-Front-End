@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { STATE_INPUT_CONTROL, TYPE_SPACE } from "../../../config/enum";
+import { INPUT_CONTROL_STATE, TYPE_SPACE } from "../../../config/enum";
 import { CreateBackupContactDataForm } from "../../../interfaces/form";
 import { ContactGroup } from "../../../interfaces/form-control";
 import { validateCellphone, validateEmail, validateName } from "../../../libs/form-validation";
@@ -14,17 +14,17 @@ function CreateBackupContactsForm({ onSubmit }: { onSubmit: (data: CreateBackupC
         "contactName": {
           "value": "",
           "message": "",
-          "status": STATE_INPUT_CONTROL.DEFAULT
+          "status": INPUT_CONTROL_STATE.DEFAULT
         },
         "email": {
           "value": "",
           "message": "",
-          "status": STATE_INPUT_CONTROL.DEFAULT
+          "status": INPUT_CONTROL_STATE.DEFAULT
         },
         "phone": {
           "value": "",
           "message": "",
-          "status": STATE_INPUT_CONTROL.DEFAULT
+          "status": INPUT_CONTROL_STATE.DEFAULT
         },
     }]));
 
@@ -34,17 +34,17 @@ function CreateBackupContactsForm({ onSubmit }: { onSubmit: (data: CreateBackupC
           "contactName": {
             "value": "",
             "message": "",
-            "status": STATE_INPUT_CONTROL.DEFAULT
+            "status": INPUT_CONTROL_STATE.DEFAULT
           },
           "email": {
             "value": "",
             "message": "",
-            "status": STATE_INPUT_CONTROL.DEFAULT
+            "status": INPUT_CONTROL_STATE.DEFAULT
           },
           "phone": {
             "value": "",
             "message": "",
-            "status": STATE_INPUT_CONTROL.DEFAULT
+            "status": INPUT_CONTROL_STATE.DEFAULT
           },
         }]));
     }
@@ -57,44 +57,44 @@ function CreateBackupContactsForm({ onSubmit }: { onSubmit: (data: CreateBackupC
 
     function validateContact(contact: ContactGroup) {
         if (contact.contactName.value == "") {
-            contact.contactName.state = STATE_INPUT_CONTROL.DEFAULT;
+            contact.contactName.state = INPUT_CONTROL_STATE.DEFAULT;
             contact.contactName.message = "";
         } else {
             const nameResult = validateName(contact.contactName.value);
             if (nameResult.valid) {
-                contact.contactName.state = STATE_INPUT_CONTROL.OK;
+                contact.contactName.state = INPUT_CONTROL_STATE.OK;
                 contact.contactName.message = "";
             } else {
                 contact.contactName.message = nameResult.error!;
-                contact.contactName.state = STATE_INPUT_CONTROL.ERROR;
+                contact.contactName.state = INPUT_CONTROL_STATE.ERROR;
             }
         }
 
         if (contact.phone.value == "") {
-            contact.phone.state = STATE_INPUT_CONTROL.DEFAULT;
+            contact.phone.state = INPUT_CONTROL_STATE.DEFAULT;
             contact.phone.message = "";
         } else {
             const cellphoneResult = validateCellphone(contact.phone.value);
             if (cellphoneResult.valid) {
-                contact.phone.state = STATE_INPUT_CONTROL.OK;
+                contact.phone.state = INPUT_CONTROL_STATE.OK;
                 contact.phone.message = "";
             } else {
                 contact.phone.message = cellphoneResult.error!;
-                contact.phone.state = STATE_INPUT_CONTROL.ERROR;
+                contact.phone.state = INPUT_CONTROL_STATE.ERROR;
             }
         }
 
         if (contact.email.value == "") {
-            contact.email.state = STATE_INPUT_CONTROL.DEFAULT;
+            contact.email.state = INPUT_CONTROL_STATE.DEFAULT;
             contact.email.message = "";
         } else {
             const emailResult = validateEmail(contact.email.value);
             if (emailResult.valid) {
-                contact.email.state = STATE_INPUT_CONTROL.OK;
+                contact.email.state = INPUT_CONTROL_STATE.OK;
                 contact.email.message = "";
             } else {
                 contact.email.message = emailResult.error!;
-                contact.email.state = STATE_INPUT_CONTROL.ERROR;
+                contact.email.state = INPUT_CONTROL_STATE.ERROR;
             }
         }
 
@@ -104,7 +104,7 @@ function CreateBackupContactsForm({ onSubmit }: { onSubmit: (data: CreateBackupC
     function submit() {
         const ctgs: ContactGroup[] = JSON.parse(contacts);
         const ctgsErrorFiltered: ContactGroup[] = ctgs.filter((ctg: ContactGroup) => {
-          return ctg.contactName.state != STATE_INPUT_CONTROL.OK || ctg.email.state != STATE_INPUT_CONTROL.OK || ctg.phone.state != STATE_INPUT_CONTROL.OK;
+          return ctg.contactName.state != INPUT_CONTROL_STATE.OK || ctg.email.state != INPUT_CONTROL_STATE.OK || ctg.phone.state != INPUT_CONTROL_STATE.OK;
         });
         if (ctgsErrorFiltered.length == 0) {
             onSubmit(ctgs.map((group: ContactGroup): CreateBackupContactDataForm =>{

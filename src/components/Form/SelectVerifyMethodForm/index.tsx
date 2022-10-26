@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { STATE_INPUT_CONTROL, TYPE_SPACE, VERIFICATION_CHANNEL } from "../../../config/enum";
+import { INPUT_CONTROL_STATE, TYPE_SPACE, VERIFICATION_CHANNEL } from "../../../config/enum";
 import { ResetPasswordDataForm, SelectVerifyMethodDataForm } from "../../../interfaces/form";
 import { InputControl } from "../../../interfaces/form-control";
 import { validatePasswordControl } from "../../../libs/form-validation";
