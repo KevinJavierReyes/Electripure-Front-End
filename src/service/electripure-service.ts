@@ -52,6 +52,17 @@ export default class ElectripureService extends BaseService {
     return response;
   }
 
+  static async createCompany(payload: any) : Promise<ResponseGeneric> {
+    const url = `${environment.ELECTRIPURE_ENDPOINT}/create_company`;
+    const response = await this.requestPost(url, payload);
+    if (!response.success) {
+      toast.error(response.error, {
+        "position": "bottom-right"
+      });
+    }
+    return response;
+  }
+
   static async getUsers(): Promise<ResponseGeneric> {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/get_users`;
     const response = await this.requestPost(url, {});

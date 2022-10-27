@@ -450,3 +450,34 @@ export const SendImage = (payload : SendImagePayload): any => (async (dispatch: 
         status: "success"
     }));
 });
+
+
+
+export const sendAddCompany = (payload: any) : any => (async (dispatch: any) => {
+    dispatch(setLoading({
+        loading: true
+    }));
+    const response: ResponseGeneric= await ElectripureService.createCompany(payload);
+    dispatch(setLoading({
+        loading: false
+    }));
+    if(!response.success) {
+        dispatch(showToast({
+            message: response.error!,
+            status: "error"
+        }));
+        return;
+    };
+    if(!response.data.Log) {
+        dispatch(showToast({
+            message: "Problem creating company!",
+            status: "error"
+        }));
+        return;
+    };
+    dispatch(showToast({
+        message: "Company created!",
+        status: "success"
+    }));
+    return;
+});
