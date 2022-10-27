@@ -4,8 +4,6 @@ import { CreateMDPDataForm, SiteManagerDataForm } from '../../../interfaces/form
 import { InputControl, MDPGroup } from '../../../interfaces/form-control';
 import { validateCellphone, validateCellphoneControl, validateEmailControl, validateName, validateNameControl } from '../../../libs/form-validation';
 import { ButtonLink, ButtonPrimary, ButtonSecondary } from '../../FormInput/Button';
-import InputPhoto from "../../FormInput/InputPhoto";
-import InputSelect from '../../FormInput/InputRadioGroup';
 import InputText from "../../FormInput/InputText";
 import Title from "../../FormInput/Title";
 import Space from "../../Space";
@@ -13,7 +11,7 @@ import StepperProgress from "../../StepperProgress";
 
 
 
-function CreateMDPForm({onSubmit, onPrevious}: { onSubmit: (data: CreateMDPDataForm[]) => void, onPrevious: () => void}) {
+function CreateMDPForm({onSubmit, onPrevious}: { onSubmit: (data: CreateMDPDataForm[]) => void, onPrevious: () => void }) {
 
     const [mdps, setMdps] = useState(JSON.stringify([{
         "name": {
@@ -173,7 +171,8 @@ function CreateMDPForm({onSubmit, onPrevious}: { onSubmit: (data: CreateMDPDataF
         }
         return mdp;
     }
-    
+
+
     return (<div className="w-full bg-color-white p-[10px]">
         <div className="mx-auto w-full max-w-[400px]">
             <StepperProgress completedSteps={3} totalSteps={5}/>

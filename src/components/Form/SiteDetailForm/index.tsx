@@ -7,7 +7,7 @@ import { SiteDetailDataForm } from '../../../interfaces/form';
 import { ElectripureState } from '../../../interfaces/reducers';
 import { ButtonPrimary, ButtonSecondary } from '../../FormInput/Button';
 import InputPhoto from "../../FormInput/InputPhoto";
-import InputSelect from '../../FormInput/InputRadioGroup';
+import InputSelect from '../../FormInput/InputSelect';
 import InputText from "../../FormInput/InputText";
 import Title from "../../FormInput/Title";
 import Space from "../../Space";
@@ -15,7 +15,7 @@ import StepperProgress from "../../StepperProgress";
 
 
 
-function SiteDetailForm({onSubmit, onPrevious}: { onSubmit: (data: SiteDetailDataForm) => void, onPrevious: () => void }) {
+function SiteDetailForm({onSubmit, onPrevious, defaultData={}}: { onSubmit: (data: SiteDetailDataForm) => void, onPrevious: () => void, defaultData?: Partial<SiteDetailDataForm>}) {
 
     const dispatch = useDispatch();
 
@@ -169,6 +169,7 @@ function SiteDetailForm({onSubmit, onPrevious}: { onSubmit: (data: SiteDetailDat
                         label="Address"
                         placeholder="12345 Street Address"
                         state={addressControl.state}
+                        defaultValue={defaultData.address ?? ""}
                         message={addressControl.message}
                         onChange={(value: string) => {
                             setAddressControl({
@@ -183,6 +184,7 @@ function SiteDetailForm({onSubmit, onPrevious}: { onSubmit: (data: SiteDetailDat
                         name="address2"
                         label="Address 2 optional"
                         placeholder="Suite 890"
+                        defaultValue={defaultData.address2 ?? ""}
                         state={address2Control.state}
                         message={address2Control.message}
                         onChange={(value: string) => {
@@ -199,6 +201,7 @@ function SiteDetailForm({onSubmit, onPrevious}: { onSubmit: (data: SiteDetailDat
                             name="city"
                             label="City"
                             placeholder="City"
+                            defaultValue={defaultData.city ?? ""}
                             state={cityControl.state}
                             message={cityControl.message}
                             onChange={(value: string) => {
@@ -217,6 +220,7 @@ function SiteDetailForm({onSubmit, onPrevious}: { onSubmit: (data: SiteDetailDat
                                 "id": 1,
                                 "value": "State 01"
                             }]}
+                            defaultSelect={defaultData.state ?? "-1"}
                             placeholder="Select State"
                             state={stateControl.state}
                             message={stateControl.message}
@@ -224,7 +228,7 @@ function SiteDetailForm({onSubmit, onPrevious}: { onSubmit: (data: SiteDetailDat
                                 setStateControl({
                                     "state": INPUT_CONTROL_STATE.OK,
                                     "message": "",
-                                    "value": select.value
+                                    "value": select.id
                                 });
                             }}
                         />
@@ -233,6 +237,7 @@ function SiteDetailForm({onSubmit, onPrevious}: { onSubmit: (data: SiteDetailDat
                             name="zip"
                             label="Zipcode"
                             placeholder="Zip"
+                            defaultValue={defaultData.zip ?? ""}
                             state={zipControl.state}
                             message={zipControl.message}
                             onChange={(value: string) => {

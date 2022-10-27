@@ -1,12 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { INPUT_CONTROL_STATE } from "../../../config/enum";
 
-function InputText({ state, message, name, placeholder, label, onChange, valueDefault="" }: { state: INPUT_CONTROL_STATE, message: string, name: string, placeholder: string, label: string, onChange: (value: string) => void, valueDefault?: string }) {
-    const [value, setValue] = useState(valueDefault);
+function InputText({ state, message, name, placeholder, label, onChange, defaultValue="" }: { state: INPUT_CONTROL_STATE, message: string, name: string, placeholder: string, label: string, onChange: (value: string) => void, defaultValue?: string }) {
+    const [value, setValue] = useState(defaultValue);
     function handleChange(event: any) {
         setValue(event.target.value);
         onChange(event.target.value);
     }
+    useEffect(() => {
+        if (value != "") {
+            onChange(value);
+        }
+    }, []);
     return (
         <div className="w-full">
             <label htmlFor={name} className={"f-medium " + (state === INPUT_CONTROL_STATE.OK? "color-success" : state === INPUT_CONTROL_STATE.ERROR ? "color-error" : "color-black-dark")}>{label}</label>

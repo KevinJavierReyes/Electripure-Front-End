@@ -18,6 +18,17 @@ import DropdownSelector from "./DropdownSelector"
 
 function NavbarMenu() {
     const [isShowModal, setShowModal] = useState(false);
+    const [siteDefaultDataForm, setSiteDefaultDataForm] = useState(`{
+        "name": "",
+        "address": "",
+        "address2": "",
+        "city": "",
+        "state": "",
+        "zip": "",
+        "logo": "",
+        "rate": "",
+        "schematic": ""
+    }`);
     const toastMessage = useSelector((state: ElectripureState) => state.toastMessage);
     const dispatch = useDispatch();
     
@@ -38,6 +49,13 @@ function NavbarMenu() {
                 "zip": data.zip,
                 "imgId" : data.logo
             }
+        }));
+        setSiteDefaultDataForm(JSON.stringify({
+            "address": data.address,
+            "address2": data.address2,
+            "city": data.city,
+            "state": data.state,
+            "zip": data.zip
         }));
         console.log("Step 1", data);
         setStepCreateCompany(2);
@@ -161,7 +179,7 @@ function NavbarMenu() {
                     stepCreateCompany == 1 ? <BasicCompanyInformationForm onSubmit={submitBasicCompanyInformationForm}/> :
                     stepCreateCompany == 2 ? <MainPointContactForm onSubmit={submitMainPointContactForm} onPrevious={previousStepCreateCompany}/> :
                     stepCreateCompany == 3 ? <SiteManagerForm onSubmit={submitSiteManagerForm} onPrevious={previousStepCreateCompany}/> :
-                    stepCreateCompany == 4 ? <SiteDetailForm onSubmit={submitSiteDetailForm} onPrevious={previousStepCreateCompany}/> :
+                    stepCreateCompany == 4 ? <SiteDetailForm defaultData={JSON.parse(siteDefaultDataForm)} onSubmit={submitSiteDetailForm} onPrevious={previousStepCreateCompany}/> :
                     stepCreateCompany == 5 ? <CreateMDPForm onSubmit={submitCreateMDPForm} onPrevious={previousStepCreateCompany}/> :
                     stepCreateCompany == 6 ? <FinishCreateMDPForm onClose={()=>{setShowModal(false); setStepCreateCompany(1);}}/> : <div></div>
                 }

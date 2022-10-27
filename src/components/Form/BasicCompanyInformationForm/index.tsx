@@ -187,7 +187,7 @@ function BasicCompanyInformationForm({onSubmit}: { onSubmit: (data: BasicCompany
                             setStateControl({
                                 "state": INPUT_CONTROL_STATE.OK,
                                 "message": "",
-                                "value": select.value
+                                "value": select.id
                             });
                         }}
                     />
