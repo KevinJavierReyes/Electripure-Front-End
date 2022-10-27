@@ -47,3 +47,45 @@ export interface SelectVerifyMethodDataForm {
 export interface ConfirmCodeDataForm {
     code: string;
 }
+
+export interface BasicCompanyInformationDataForm {
+    company: string;
+    address: string;
+    address2: string;
+    city: string;
+    state: string;
+    zip: string;
+    logo: string;
+}
+
+export interface MainPointContactDataForm {
+    fullname: string;
+    email: string;
+    cellphone: string;
+}
+
+export interface SiteManagerDataForm {
+    fullname: string;
+    email: string;
+    cellphone: string;
+}
+
+export interface SiteDetailDataForm {
+    name: string;
+    address: string;
+    address2: string;
+    city: string;
+    state: string;
+    zip: string;
+    logo: string;
+    schematic: string;
+}
+
+export interface CreateMDPDataForm {
+    name: string;
+    meterId: string;
+    applianceId: string;
+    ampCap: string;
+    switchgearCap: string;
+    transformer: string;
+}

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { STATE_INPUT_CONTROL, TYPE_SPACE } from "../../../config/enum"
+import { INPUT_CONTROL_STATE, TYPE_SPACE } from "../../../config/enum"
 import { CreatePasswordDataForm } from "../../../interfaces/form";
 import { InputControl } from "../../../interfaces/form-control";
 import { validatePasswordControl } from "../../../libs/form-validation";
@@ -15,26 +15,26 @@ function CreatePasswordForm({email, onSubmit}: {email: string, onSubmit: (data: 
     const [passwordControl, setPasswordControl] = useState({
         "value": "",
         "message": "",
-        "state": STATE_INPUT_CONTROL.DEFAULT
+        "state": INPUT_CONTROL_STATE.DEFAULT
     });
 
     const [confirmPasswordControl, setConfirmPasswordControl] = useState({
         "value": "",
         "message": "",
-        "state": STATE_INPUT_CONTROL.DEFAULT
+        "state": INPUT_CONTROL_STATE.DEFAULT
     });
 
     function validateConfirmPassword(value: string) {
         const newPasswordControl: InputControl = validatePasswordControl(value);
-        if (newPasswordControl.state == STATE_INPUT_CONTROL.OK && newPasswordControl.value != passwordControl.value) {
-          newPasswordControl.state = STATE_INPUT_CONTROL.ERROR;
+        if (newPasswordControl.state == INPUT_CONTROL_STATE.OK && newPasswordControl.value != passwordControl.value) {
+          newPasswordControl.state = INPUT_CONTROL_STATE.ERROR;
           newPasswordControl.message = "Passwords do not match.";
         }
         setConfirmPasswordControl(newPasswordControl);
     }
 
     function submit() {
-        if (passwordControl.state == STATE_INPUT_CONTROL.OK && confirmPasswordControl.state == STATE_INPUT_CONTROL.OK) {
+        if (passwordControl.state == INPUT_CONTROL_STATE.OK && confirmPasswordControl.state == INPUT_CONTROL_STATE.OK) {
             onSubmit({
                 "password": passwordControl.value
             });

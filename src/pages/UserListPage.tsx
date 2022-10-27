@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 // Import interfaces
-import { CreateUserDataForm } from "../interfaces/form";
+import { BasicCompanyInformationDataForm, CreateUserDataForm, MainPointContactDataForm, SiteDetailDataForm, SiteManagerDataForm } from "../interfaces/form";
 
 // Import components
 import { ModalMiddle } from "./../components/Modal";
@@ -13,6 +13,10 @@ import DataTableUsers from "../components/DataTables/DataTableUsers";
 import { ButtonSecondary } from "../components/FormInput/Button";
 // Import actions
 import { sendCreateUser } from "../actions/electripure";
+import BasicCompanyInformationForm from "../components/Form/BasicCompanyInformationForm";
+import MainPointContactForm from "../components/Form/MainPointContactForm";
+import SiteManagerForm from "../components/Form/SiteManagerForm";
+import SiteDetailForm from "../components/Form/SiteDetailForm";
 
 function UserListPage () {
 

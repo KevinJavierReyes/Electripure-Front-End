@@ -1,4 +1,4 @@
-import { AddContactRequest, AuthorizationCodeRequest, AuthorizationCodeValidateRequest, CreateUserRequest, ForgotPasswordRequest, LoginRequest, ResendEmailRequest, UpdatePasswordRequest, UpdateUserRequest, ValidateTokenRequest } from "../interfaces/electripure-service";
+import { AddContactRequest, AuthorizationCodeRequest, AuthorizationCodeValidateRequest, CreateUserRequest, ForgotPasswordRequest, GetCompaniesByUserRequest, LoginRequest, ResendEmailRequest, UpdatePasswordRequest, UpdateUserRequest, UploadImageRequest, ValidateTokenRequest } from "../interfaces/electripure-service";
 import { BaseService } from "./base-service";
 import environment from "./../config/env";
 import { toast } from "react-toastify";
@@ -100,6 +100,28 @@ export default class ElectripureService extends BaseService {
   static async getCompanies(): Promise<ResponseGeneric> {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/get_companies`;
     const response = await this.requestPost(url, {});
+    if (!response.success) {
+      toast.error(response.error, {
+        "position": "bottom-right"
+      });
+    }
+    return response;
+  }
+  
+  static async getCompaniesByUser(payload: GetCompaniesByUserRequest): Promise<ResponseGeneric> {
+    const url = `${environment.ELECTRIPURE_ENDPOINT}/get_companies_by_id`;
+    const response = await this.requestPost(url, payload);
+    if (!response.success) {
+      toast.error(response.error, {
+        "position": "bottom-right"
+      });
+    }
+    return response;
+  }
+
+  static async uploadImage(payload: UploadImageRequest): Promise<ResponseGeneric> {
+    const url = `${environment.ELECTRIPURE_ENDPOINT}/update_image`;
+    const response = await this.requestPost(url, payload);
     if (!response.success) {
       toast.error(response.error, {
         "position": "bottom-right"

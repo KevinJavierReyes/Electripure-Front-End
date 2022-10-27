@@ -1,5 +1,5 @@
 import { Fragment, useState } from "react";
-import { STATE_NAVEGATION, TYPE_SPACE } from "../../config/enum";
+import { NAVEGATION_STATE, TYPE_SPACE } from "../../config/enum";
 import Space from "../Space";
 import NavigationBar from "./NavigationBar";
 import NavigationMenu from "./NavigationMenu";
@@ -8,15 +8,15 @@ import "./style.css";
 
 function Navegation({children}: {children: any}) {
 
-    const [stateNavegation, setStateNavegation] = useState(STATE_NAVEGATION.CLOSE);
+    const [stateNavegation, setStateNavegation] = useState(NAVEGATION_STATE.CLOSE);
 
     function toggleNavegation() {
-        (stateNavegation == STATE_NAVEGATION.OPEN ? setStateNavegation(STATE_NAVEGATION.CLOSE) : setStateNavegation(STATE_NAVEGATION.OPEN));
+        (stateNavegation == NAVEGATION_STATE.OPEN ? setStateNavegation(NAVEGATION_STATE.CLOSE) : setStateNavegation(NAVEGATION_STATE.OPEN));
     }
 
     return (<Fragment>
         <div className="flex relative">
-            <div className={"ease-linear duration-100 z-10 w-[100%] lg:w-[350px] h-full lg:relative fixed top-0 left-0 " + (stateNavegation == STATE_NAVEGATION.OPEN ? "open-navigation-container" : "close-navigation-container")}>
+            <div className={"ease-linear duration-100 z-10 w-[100%] lg:w-[350px] h-full lg:relative fixed top-0 left-0 " + (stateNavegation == NAVEGATION_STATE.OPEN ? "open-navigation-container" : "close-navigation-container")}>
                 <div onClick={toggleNavegation} className="absolute w-full h-full top-0 left-0">
 
                 </div>

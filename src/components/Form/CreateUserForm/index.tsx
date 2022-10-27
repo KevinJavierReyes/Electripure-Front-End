@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"; 
-import { STATE_INPUT_CONTROL, TYPE_SPACE } from "../../../config/enum";
+import { INPUT_CONTROL_STATE, TYPE_SPACE } from "../../../config/enum";
 import { CreateUserDataForm } from "../../../interfaces/form";
 import { InputControl } from "../../../interfaces/form-control";
 import { validateCellphoneControl, validateCompanyControl, validateEmailControl, validateNameControl } from "../../../libs/form-validation";
@@ -11,13 +11,13 @@ import Title from "../../FormInput/Title";
 import { useDispatch, useSelector } from "react-redux";
 import { sendGetCompanies } from "../../../actions/electripure";
 import { ElectripureState } from "../../../interfaces/reducers";
-import { CompanyEntity } from "../../../interfaces/entities";
+import { CompanyEntity, GlobalCompanyEntity } from "../../../interfaces/entities";
 
 
 function CreateUserForm({onSubmit}: {onSubmit: (data: CreateUserDataForm) => void}) {
 
     const dispatch = useDispatch();
-    const companies: CompanyEntity[]= JSON.parse(useSelector((state: ElectripureState) => state.companies));
+    const companies: GlobalCompanyEntity[]= JSON.parse(useSelector((state: ElectripureState) => state.globalCompanies));
 
     useEffect(()=> {
         dispatch(sendGetCompanies({}));
@@ -26,39 +26,39 @@ function CreateUserForm({onSubmit}: {onSubmit: (data: CreateUserDataForm) => voi
     const [emailControl, setEmailControl] = useState({
         "value": "",
         "message": "",
-        "state": STATE_INPUT_CONTROL.DEFAULT
+        "state": INPUT_CONTROL_STATE.DEFAULT
     });
     
     const [cellphoneControl, setCellphoneControl] = useState({
         "value": "",
         "message": "",
-        "state": STATE_INPUT_CONTROL.DEFAULT
+        "state": INPUT_CONTROL_STATE.DEFAULT
     });
 
     const [nameControl, setNameControl] = useState({
         "value": "",
         "message": "",
-        "state": STATE_INPUT_CONTROL.DEFAULT
+        "state": INPUT_CONTROL_STATE.DEFAULT
     });
 
     const [companyControl, setCompanyControl] = useState({
         "value": "",
         "message": "",
-        "state": STATE_INPUT_CONTROL.DEFAULT
+        "state": INPUT_CONTROL_STATE.DEFAULT
     });
 
     const [roleControl, setRoleControl] = useState({
         "value": "",
         "message": "",
-        "state": STATE_INPUT_CONTROL.DEFAULT
+        "state": INPUT_CONTROL_STATE.DEFAULT
     });
 
     function submit() {
-        if (emailControl.state === STATE_INPUT_CONTROL.OK &&
-            cellphoneControl.state === STATE_INPUT_CONTROL.OK &&
-            nameControl.state === STATE_INPUT_CONTROL.OK &&
-            companyControl.state === STATE_INPUT_CONTROL.OK &&
-            roleControl.state === STATE_INPUT_CONTROL.OK) {
+        if (emailControl.state === INPUT_CONTROL_STATE.OK &&
+            cellphoneControl.state === INPUT_CONTROL_STATE.OK &&
+            nameControl.state === INPUT_CONTROL_STATE.OK &&
+            companyControl.state === INPUT_CONTROL_STATE.OK &&
+            roleControl.state === INPUT_CONTROL_STATE.OK) {
                 onSubmit({
                     email: emailControl.value,
                     cellphone: cellphoneControl.value,
@@ -111,7 +111,7 @@ function CreateUserForm({onSubmit}: {onSubmit: (data: CreateUserDataForm) => voi
                 name="company"
                 state={companyControl.state}
                 message={companyControl.message}
-                options={companies.map((company: CompanyEntity) => {
+                options={companies.map((company: GlobalCompanyEntity) => {
                     return {"value": company.name, "id": company.id}
                 })}
                 placeholder="Select a company"
@@ -120,7 +120,7 @@ function CreateUserForm({onSubmit}: {onSubmit: (data: CreateUserDataForm) => voi
                     setCompanyControl({
                         ...companyControl,
                         value: selected.id,
-                        state: STATE_INPUT_CONTROL.OK
+                        state: INPUT_CONTROL_STATE.OK
                     });
                 }}
             />
@@ -141,7 +141,7 @@ function CreateUserForm({onSubmit}: {onSubmit: (data: CreateUserDataForm) => voi
                     setRoleControl({
                         ...roleControl,
                         value: selected.value,
-                        state: STATE_INPUT_CONTROL.OK
+                        state: INPUT_CONTROL_STATE.OK
                     });
                 }}
             />

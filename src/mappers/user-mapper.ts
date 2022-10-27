@@ -1,4 +1,4 @@
-import { UserEntity } from "../interfaces/entities";
+import { UserEntity, CompanyEntity } from "../interfaces/entities";
 
 
 function toUsers(users: any[]): UserEntity[] {
@@ -7,7 +7,13 @@ function toUsers(users: any[]): UserEntity[] {
     });
 }
 
+function toCompanies(companies: any[]): CompanyEntity[] {
+    return companies.map((company: any) => {
+        return company as CompanyEntity;
+    });
+}
 
 export default {
-    toUsers
+    toUsers,
+    toCompanies,
 };

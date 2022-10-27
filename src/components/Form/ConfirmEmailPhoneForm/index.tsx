@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { STATE_INPUT_CONTROL, TYPE_SPACE } from "../../../config/enum";
+import { INPUT_CONTROL_STATE, TYPE_SPACE } from "../../../config/enum";
 import { ConfirmEmailPhoneDataForm } from "../../../interfaces/form";
 import { InputControl } from "../../../interfaces/form-control";
 import { validateCellphoneControl, validateEmailControl } from "../../../libs/form-validation";
@@ -15,17 +15,17 @@ function ConfirmEmailPhoneForm({ onSubmit }: { onSubmit: (data: ConfirmEmailPhon
     const [emailControl, setEmailControl] = useState({
         "value": "",
         "message": "",
-        "state": STATE_INPUT_CONTROL.DEFAULT
+        "state": INPUT_CONTROL_STATE.DEFAULT
     });
 
     const [cellphoneControl, setCellphoneControl] = useState({
         "value": "",
         "message": "",
-        "state": STATE_INPUT_CONTROL.DEFAULT
+        "state": INPUT_CONTROL_STATE.DEFAULT
     });  
 
     function submit() {
-        if (emailControl.state == STATE_INPUT_CONTROL.OK && cellphoneControl.state == STATE_INPUT_CONTROL.OK) {
+        if (emailControl.state == INPUT_CONTROL_STATE.OK && cellphoneControl.state == INPUT_CONTROL_STATE.OK) {
             onSubmit({
                 "phone": cellphoneControl.value,
                 "email": emailControl.value

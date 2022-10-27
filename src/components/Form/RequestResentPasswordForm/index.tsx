@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { STATE_INPUT_CONTROL, TYPE_SPACE } from '../../../config/enum';
+import { INPUT_CONTROL_STATE, TYPE_SPACE } from '../../../config/enum';
 import { RequestResetPasswordDataForm } from "../../../interfaces/form";
 import { InputControl } from '../../../interfaces/form-control';
 import { validateEmailControl } from '../../../libs/form-validation';
@@ -18,7 +18,7 @@ function RequestResetPasswordForm({ onSubmit }: { onSubmit: (data: RequestResetP
     });
 
     function submit() {
-        if (emailControl.state === STATE_INPUT_CONTROL.OK) {
+        if (emailControl.state === INPUT_CONTROL_STATE.OK) {
             onSubmit({
                 "email": emailControl.value
             });

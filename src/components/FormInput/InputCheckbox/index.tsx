@@ -1,6 +1,6 @@
-import { STATE_INPUT_CONTROL } from "../../../config/enum";
+import { INPUT_CONTROL_STATE } from "../../../config/enum";
 
-function InputCheckbox({ state, message, name, label, onChange }: { state: STATE_INPUT_CONTROL, message: string, name: string, label: string, onChange: (checked: boolean) => void }) {
+function InputCheckbox({ state, message, name, label, onChange }: { state: INPUT_CONTROL_STATE, message: string, name: string, label: string, onChange: (checked: boolean) => void }) {
     function handleChange(event: any) {
         onChange(event.target.checked);
     }
@@ -10,11 +10,11 @@ function InputCheckbox({ state, message, name, label, onChange }: { state: STATE
                 <input
                         type="checkbox"
                         onChange={handleChange}
-                        className={`w-[20px] border h-[20px] mr-[10px] ${state === STATE_INPUT_CONTROL.OK ? "border-color-success color-success" : state === STATE_INPUT_CONTROL.ERROR ? "border-color-error color-error" : "border-color-black-light color-black"}`}
+                        className={`w-[20px] border h-[20px] mr-[10px] ${state === INPUT_CONTROL_STATE.OK ? "border-color-success color-success" : state === INPUT_CONTROL_STATE.ERROR ? "border-color-error color-error" : "border-color-black-light color-black"}`}
                         id={name}/>
-                <label htmlFor={name} className={`f-medium ${state === STATE_INPUT_CONTROL.OK ? "color-success" : state === STATE_INPUT_CONTROL.ERROR ? "color-error" : "color-black"}`}>{label}</label>    
+                <label htmlFor={name} className={`f-medium ${state === INPUT_CONTROL_STATE.OK ? "color-success" : state === INPUT_CONTROL_STATE.ERROR ? "color-error" : "color-black"}`}>{label}</label>    
            </div>
-           <span className={`${message == "" ? "hidden" : "inline"} ${state === STATE_INPUT_CONTROL.OK ? "color-success" : state === STATE_INPUT_CONTROL.ERROR ? "color-error" : "color-black"}`}>
+           <span className={`${message == "" ? "hidden" : "inline"} ${state === INPUT_CONTROL_STATE.OK ? "color-success" : state === INPUT_CONTROL_STATE.ERROR ? "color-error" : "color-black"}`}>
                 {message}
             </span>
         </div>

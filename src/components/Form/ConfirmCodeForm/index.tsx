@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { STATE_INPUT_CONTROL, TYPE_SPACE, VERIFICATION_CHANNEL } from "../../../config/enum";
+import { INPUT_CONTROL_STATE, TYPE_SPACE, VERIFICATION_CHANNEL } from "../../../config/enum";
 import { ConfirmCodeDataForm, ResetPasswordDataForm, SelectVerifyMethodDataForm } from "../../../interfaces/form";
 import { InputControl } from "../../../interfaces/form-control";
 import { validateCodeControl, validatePasswordControl } from "../../../libs/form-validation";
@@ -19,7 +19,7 @@ function ConfirmCodeForm({onSubmit, resendCode}: {onSubmit: (data: ConfirmCodeDa
     });
 
     function submit() {
-        if (codeControl.state == STATE_INPUT_CONTROL.OK) {
+        if (codeControl.state == INPUT_CONTROL_STATE.OK) {
             onSubmit({
                 "code": codeControl.value
             });

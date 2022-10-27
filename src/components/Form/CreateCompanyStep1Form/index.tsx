@@ -1,4 +1,4 @@
-import { STATE_INPUT_CONTROL, TYPE_SPACE } from "../../../config/enum";
+import { INPUT_CONTROL_STATE, TYPE_SPACE } from "../../../config/enum";
 import InputCheckbox from "../../FormInput/InputCheckbox";
 import InputPhoto from "../../FormInput/InputPhoto";
 import InputText from "../../FormInput/InputText";
@@ -16,7 +16,7 @@ function CreateCompanyStep1Form() {
             <Space type={TYPE_SPACE.FORM_DISTANCE_VERTICAL}/>
             <div className="w-full">
                 <InputText
-                    state={STATE_INPUT_CONTROL.DEFAULT}
+                    state={INPUT_CONTROL_STATE.DEFAULT}
                     message={""}
                     name={"company"}
                     placeholder={"Company Name"}
@@ -25,7 +25,7 @@ function CreateCompanyStep1Form() {
                 />
                 <Space type={TYPE_SPACE.INPUT_DISTANCE}/>
                 <InputText
-                    state={STATE_INPUT_CONTROL.DEFAULT}
+                    state={INPUT_CONTROL_STATE.DEFAULT}
                     message={""}
                     name={"address"}
                     placeholder={"12345 Street Address"}
@@ -33,7 +33,7 @@ function CreateCompanyStep1Form() {
                     onChange={(value: string) => {console.log(value)}}/>
                 <Space type={TYPE_SPACE.INPUT_DISTANCE}/>
                 <InputText
-                    state={STATE_INPUT_CONTROL.DEFAULT}
+                    state={INPUT_CONTROL_STATE.DEFAULT}
                     message={""}
                     name={"address2"}
                     placeholder={"Suite 890"}
@@ -43,7 +43,7 @@ function CreateCompanyStep1Form() {
                 <Space type={TYPE_SPACE.INPUT_DISTANCE}/>
                 <div className="w-full flex justify-center">
                     <InputText
-                        state={STATE_INPUT_CONTROL.DEFAULT}
+                        state={INPUT_CONTROL_STATE.DEFAULT}
                         message={""}
                         name={"city"}
                         placeholder={"City"}
@@ -52,7 +52,7 @@ function CreateCompanyStep1Form() {
                     />
                     <Space type={TYPE_SPACE.INPUT_DISTANCE_VERTICAL}/>
                     <InputText
-                        state={STATE_INPUT_CONTROL.DEFAULT}
+                        state={INPUT_CONTROL_STATE.DEFAULT}
                         message={""}
                         name={"state"}
                         placeholder={"State"}
@@ -61,7 +61,7 @@ function CreateCompanyStep1Form() {
                     />
                     <Space type={TYPE_SPACE.INPUT_DISTANCE_VERTICAL}/>
                     <InputText
-                        state={STATE_INPUT_CONTROL.DEFAULT}
+                        state={INPUT_CONTROL_STATE.DEFAULT}
                         message={""}
                         name={"zipcode"}
                         placeholder={"Zip"}
@@ -71,7 +71,7 @@ function CreateCompanyStep1Form() {
                 </div>
                 <Space type={TYPE_SPACE.INPUT_DISTANCE}/>
                 <InputCheckbox
-                    state={STATE_INPUT_CONTROL.DEFAULT}
+                    state={INPUT_CONTROL_STATE.DEFAULT}
                     message={""}
                     name={"meter"}
                     label={"This address will have a meter and appliance"}

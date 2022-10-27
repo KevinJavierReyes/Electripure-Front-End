@@ -1,14 +1,21 @@
 
 
-export enum STATE_INPUT_CONTROL {
+export enum INPUT_CONTROL_STATE {
     DEFAULT = -1,
     ERROR = 0,
     OK = 1
 }
 
-export enum STATE_NAVEGATION {
+export enum NAVEGATION_STATE {
     OPEN = 1,
     CLOSE = 0,
+}
+
+
+export enum TASK_STATE {
+    COMPLETED = 1,
+    ERROR = -1,
+    PENDING = 0,
 }
 
 export enum TYPE_SPACE {
