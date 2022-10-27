@@ -13,7 +13,7 @@ const SelectedCompanies = ({companySelected}: any) => {
         return a.company_name  === companySelected
     })
 
-
+    console.log(company)
     function settingEvent(e:any){
         let elements = document.getElementsByClassName('dropdown1')
         for(const element in elements) {

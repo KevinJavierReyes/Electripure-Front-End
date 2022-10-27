@@ -15,9 +15,7 @@ const DropdownSelector = () => {
     const companies: CompanyEntity[] = JSON.parse(useSelector((state: ElectripureState) => state.companies));
     const dispatch = useDispatch();
 
-    const handleClean = () => {
-        setSearchCompanyName("")
-    }
+    const handleClean = () => setSearchCompanyName(prev => "")
     
     const setValue = (e:any) => {
         setCompanySelected(prev => e.target.innerHTML)
@@ -40,7 +38,6 @@ const DropdownSelector = () => {
                 setFilteredData(companies)
             }
         }
-
 
     useEffect(()=>{
         dispatch(sendGetCompanies({}))
@@ -83,7 +80,7 @@ const DropdownSelector = () => {
                                     onChange={handleSearch}
                                     placeholder="Search Company"/>
                                 <div>
-                                    <ul>
+                                    <ul className="overflow-scroll">
                                     {
                                         searchCompanyName === "" || filteredData.length === 0 ? companies?.map((company, index) => (
                                         <li key={index} 

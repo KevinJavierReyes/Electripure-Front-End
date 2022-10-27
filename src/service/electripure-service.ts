@@ -32,6 +32,7 @@ export default class ElectripureService extends BaseService {
 
   static async updateUser(payload: UpdateUserRequest): Promise<ResponseGeneric> {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/update_user?${this.jsonToQueryParams(payload)}`;
+    console.log(url)
     const response = await this.requestPost(url, payload);
     if (!response.success) {
       toast.error(response.error, {
@@ -99,7 +100,7 @@ export default class ElectripureService extends BaseService {
   
   // TODO test it out 
   static async getCompanies(): Promise<ResponseGeneric> {
-    let data = {"id_user":"41"}
+    let data = {"id_user":"42"}
     const url = `${environment.ELECTRIPURE_ENDPOINT}/get_companies_by_id`;
     const response = await this.requestPost(url, data, {});
     if (!response.success) {

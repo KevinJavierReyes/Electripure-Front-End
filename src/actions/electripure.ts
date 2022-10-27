@@ -5,10 +5,10 @@ SendUpdateUserPayload, SendValidateTokenPayload, SendVerificationCodePayload,
 SendVerificationEmailPayload, SetJwtPayload, SetLoadingPayload,
 SetLoginTokenPayload, SetPasswordTokenPayload, SetPasswordUserPayload,
 SetTimestampTwoStepVerificationPayload, SetUsersPayload, ShowToastPayload,
-SetCompanyPayload } from "../interfaces/actions";
+SetCompanyPayload, SetCurrentUserPayload } from "../interfaces/actions";
 import { LOGIN, SET_JWT, SET_LOADING, SET_LOGIN_TOKEN, SET_PASSWORD_TOKEN,
 SET_PASSWORD_USER, SET_TIMESTAMP_TWO_STEP_VERIFICATION, SET_USERS, SHOW_TOAST,
-SET_COMPANIES } from "./types";
+SET_COMPANIES, SET_CURRENT_USER } from "./types";
 import ElectripureService from "../service/electripure-service";
 import { ResponseGeneric } from "../interfaces/base-service";
 
@@ -62,6 +62,10 @@ export const setCompanies = (payload: SetCompanyPayload) => ({
     "payload": payload
 });
 
+export const setCurrentUser = (payload: SetCurrentUserPayload) => ({
+    "type": SET_CURRENT_USER,
+    "payload": payload
+});
 // Login
 
 export const login = (payload: LoginPayload): any => (async (dispatch: any) => {
@@ -148,6 +152,12 @@ export const sendVerificationCode = (payload: SendVerificationCodePayload): any 
             status: "error"
         }))
     }
+    dispatch(setCurrentUser({
+        id: response.data.id,
+        fullname: response.data.fullname
+    }))
+    console.log(response.data.fullname)
+    console.log(response.data.id)
     dispatch(setJwt({
         token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.OavGO9EIDazzQq08RNCmzUs4oj7EizPmBnb_NPh-i6M"
     }));

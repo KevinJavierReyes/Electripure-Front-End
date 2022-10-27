@@ -23,6 +23,11 @@ export interface SetCompanyPayload {
     companies: CompanyEntity[]
 }
 
+export interface SetCurrentUserPayload {
+    id: number
+    fullname: string
+}
+
 export interface SetTimestampTwoStepVerificationPayload {
     timestamp: number | null;
 }
