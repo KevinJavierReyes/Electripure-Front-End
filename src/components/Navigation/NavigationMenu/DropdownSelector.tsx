@@ -39,16 +39,17 @@ const DropdownSelector = ( { onCreateCompany } : {onCreateCompany: () => void}) 
         if(filteredData.length !== 0){
             if (value != "") {
                 const sortResult = companies.filter((company: any) => {
-                return company.company_name.toLowerCase().includes(value.toLowerCase())
-                         })
+                    return company.company_name.toLowerCase().includes(value.toLowerCase())
+                });
                 setFilteredData(sortResult)
-                } else {
-                    setFilteredData(companies)
-                }
             } else {
                 setFilteredData(companies)
             }
+        } else {
+            setFilteredData(companies)
         }
+    }
+        
 
     useEffect(()=>{
         dispatch(sendGetCompaniesByUser({
