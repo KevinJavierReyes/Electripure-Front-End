@@ -35,11 +35,15 @@ function MainPointContactForm({onSubmit, onPrevious}: { onSubmit: (data: MainPoi
 
 
     function submit() {
-        onSubmit({
-            "fullname": "",
-            "email": "",
-            "cellphone": ""
-        });
+        if (fullnameControl.state == INPUT_CONTROL_STATE.OK &&
+            emailControl.state == INPUT_CONTROL_STATE.OK &&
+            cellphoneControl.state == INPUT_CONTROL_STATE.OK) {
+            onSubmit({
+                "fullname": fullnameControl.value,
+                "email": emailControl.value,
+                "cellphone": cellphoneControl.value
+            });
+        }
     }
 
     return (<div className="w-full bg-color-white p-[10px]">

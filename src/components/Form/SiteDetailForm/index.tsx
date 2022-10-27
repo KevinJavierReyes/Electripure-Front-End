@@ -94,7 +94,7 @@ function SiteDetailForm({onSubmit, onPrevious}: { onSubmit: (data: SiteDetailDat
 
         if (nameControl.state == INPUT_CONTROL_STATE.OK &&
             addressControl.state == INPUT_CONTROL_STATE.OK &&
-            address2Control.state == INPUT_CONTROL_STATE.OK &&
+            // address2Control.state == INPUT_CONTROL_STATE.OK &&
             cityControl.state == INPUT_CONTROL_STATE.OK &&
             stateControl.state == INPUT_CONTROL_STATE.OK &&
             zipControl.state == INPUT_CONTROL_STATE.OK &&

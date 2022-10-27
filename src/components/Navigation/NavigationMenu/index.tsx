@@ -123,10 +123,11 @@ function NavbarMenu() {
         setStepCreateCompany(stepCreateCompany - 1);
     }
 
-
     useEffect(() => {
         if (toastMessage == "Company created!") {
-            setStepCreateCompany(6);
+            // setStepCreateCompany(6);
+            setShowModal(false);
+            setStepCreateCompany(1);
         }
     }, [toastMessage])
 

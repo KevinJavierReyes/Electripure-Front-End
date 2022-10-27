@@ -13,7 +13,7 @@ import StepperProgress from "../../StepperProgress";
 
 
 
-function CreateMDPForm({onSubmit, onPrevious}: { onSubmit: (data: CreateMDPDataForm[]) => void, onPrevious: () => void }) {
+function CreateMDPForm({onSubmit, onPrevious}: { onSubmit: (data: CreateMDPDataForm[]) => void, onPrevious: () => void}) {
 
     const [mdps, setMdps] = useState(JSON.stringify([{
         "name": {
@@ -51,7 +51,12 @@ function CreateMDPForm({onSubmit, onPrevious}: { onSubmit: (data: CreateMDPDataF
     function submit() {
         const mdpgs: MDPGroup[] = JSON.parse(mdps);
         const mdpsErrorFiltered: MDPGroup[] = mdpgs.filter((mdpg: MDPGroup) => {
-            return mdpg.ampCap.state != INPUT_CONTROL_STATE.OK || mdpg.applianceId.state != INPUT_CONTROL_STATE.OK || mdpg.meterId.state != INPUT_CONTROL_STATE.OK || mdpg.name.state != INPUT_CONTROL_STATE.OK || mdpg.switchgearCap.state != INPUT_CONTROL_STATE.OK || mdpg.transformer.state != INPUT_CONTROL_STATE.OK;
+            return mdpg.ampCap.state != INPUT_CONTROL_STATE.OK ||
+                    // mdpg.applianceId.state != INPUT_CONTROL_STATE.OK ||
+                    // mdpg.meterId.state != INPUT_CONTROL_STATE.OK ||
+                    mdpg.name.state != INPUT_CONTROL_STATE.OK ||
+                    mdpg.switchgearCap.state != INPUT_CONTROL_STATE.OK ||
+                    mdpg.transformer.state != INPUT_CONTROL_STATE.OK;
         });
 
         if (mdpsErrorFiltered.length == 0) {
@@ -168,8 +173,7 @@ function CreateMDPForm({onSubmit, onPrevious}: { onSubmit: (data: CreateMDPDataF
         }
         return mdp;
     }
-
-
+    
     return (<div className="w-full bg-color-white p-[10px]">
         <div className="mx-auto w-full max-w-[400px]">
             <StepperProgress completedSteps={3} totalSteps={5}/>
