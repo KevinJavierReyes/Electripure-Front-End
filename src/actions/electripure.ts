@@ -155,12 +155,7 @@ export const sendVerificationCode = (payload: SendVerificationCodePayload): any 
             status: "error"
         }))
     }
-    dispatch(setCurrentUser({
-        id: response.data.id,
-        fullname: response.data.fullname
-    }))
-    console.log(response.data.fullname)
-    console.log(response.data.id)
+
     dispatch(setJwt({
         token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.OavGO9EIDazzQq08RNCmzUs4oj7EizPmBnb_NPh-i6M"
     }));
@@ -168,6 +163,10 @@ export const sendVerificationCode = (payload: SendVerificationCodePayload): any 
         message: "Code correct!.",
         status: "success"
     }))
+    dispatch(setCurrentUser({
+        currentUser: response.data.fullname
+    }))
+    console.log("Data from response", response.data.fullname)
     return;
 });
 

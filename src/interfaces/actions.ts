@@ -28,8 +28,7 @@ export interface SetGlobalCompaniesPayload {
     companies: GlobalCompanyEntity[]
 }
 export interface SetCurrentUserPayload {
-    id: number
-    fullname: string
+    currentUser: string
 }
 
 export interface SetTimestampTwoStepVerificationPayload {

@@ -12,7 +12,6 @@ import SiteDetailForm from "../../Form/SiteDetailForm";
 import SiteManagerForm from "../../Form/SiteManagerForm";
 import { ModalMiddle } from "../../Modal";
 import logoUrl from "./../../../assets/svg/Logo.svg";
-
 import DropdownSelector from "./DropdownSelector"
 
 
