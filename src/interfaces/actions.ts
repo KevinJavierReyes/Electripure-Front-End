@@ -24,8 +24,7 @@ export interface SetCompanyPayload {
 }
 
 export interface SetCurrentUserPayload {
-    id: number
-    fullname: string
+    currentUser: string
 }
 
 export interface SetTimestampTwoStepVerificationPayload {
