@@ -15,5 +15,6 @@ export interface ElectripureState {
     timestampTwoStepVerification: number | null;
     users: string;
     companies: string;
+    globalCompanies: string;
     tasks: string;
 }

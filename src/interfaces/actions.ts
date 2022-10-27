@@ -1,5 +1,5 @@
 import { TASK_STATE } from "../config/enum";
-import { CompanyEntity, UserEntity } from "./entities";
+import { CompanyEntity, GlobalCompanyEntity, UserEntity } from "./entities";
 
 
 export interface ActionNotification {
@@ -22,6 +22,10 @@ export interface SetUsersPayload {
 
 export interface SetCompaniesPayload {
     companies: CompanyEntity[]
+}
+
+export interface SetGlobalCompaniesPayload {
+    companies: GlobalCompanyEntity[]
 }
 
 export interface SetTimestampTwoStepVerificationPayload {
@@ -72,8 +76,15 @@ export interface SendUpdatePasswordPayload {
 export interface SendGetUsersPayload {
 }
 
-export interface SendGetCompanyPayload {
+export interface SendGetCompaniesByUserPayload {
+    userId: number;
 }
+
+
+export interface SendGetCompaniesPayload {
+    
+}
+
 
 export interface SendResendEmailPayload {
     id: number;
@@ -112,7 +123,6 @@ export interface SendAddContactPayload {
     phone: string;
 
 }
-
 
 export interface AddTaskPayload {
     key: String;

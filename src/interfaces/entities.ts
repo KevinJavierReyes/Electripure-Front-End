@@ -1,5 +1,23 @@
 import { TASK_STATE } from "../config/enum";
 
+type MDP = {
+    id: number;
+    name: string;
+}
+
+type Site = {
+    id: number;
+    link: string;
+    mdp_list: MDP[];
+}
+
+
+export interface CompanyEntity {
+    company_id: number;
+    company_name: string;
+    link: string;
+    list_sites: Site[];
+}
 
 
 export interface UserEntity {
@@ -12,7 +30,7 @@ export interface UserEntity {
     date: string;
 }
 
-export interface CompanyEntity {
+export interface GlobalCompanyEntity {
     id: number;
     name: String;
 }

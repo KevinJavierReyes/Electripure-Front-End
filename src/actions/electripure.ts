@@ -1,11 +1,11 @@
-import { ActionNotification, AddTaskPayload, LoginPayload, SendAddContactPayload, SendCreateUserPayload, SendForgotPasswordPayload, SendGetCompanyPayload, SendGetUsersPayload, SendImagePayload, SendResendEmailPayload, SendUpdatePasswordPayload, SendUpdateUserPayload, SendValidateTokenPayload, SendVerificationCodePayload, SendVerificationEmailPayload, SetCompaniesPayload, SetJwtPayload, SetLoadingPayload, SetLoginTokenPayload, SetPasswordTokenPayload, SetPasswordUserPayload, SetTimestampTwoStepVerificationPayload, SetUsersPayload, ShowToastPayload } from "../interfaces/actions";
-import { ADD_TASK, LOGIN, SET_COMPANIES, SET_JWT, SET_LOADING, SET_LOGIN_TOKEN, SET_PASSWORD_TOKEN, SET_PASSWORD_USER, SET_TIMESTAMP_TWO_STEP_VERIFICATION, SET_USERS, SHOW_TOAST } from "./types";
+import { ActionNotification, AddTaskPayload, LoginPayload, SendAddContactPayload, SendCreateUserPayload, SendForgotPasswordPayload, SendGetCompaniesByUserPayload, SendGetCompaniesPayload, SendGetUsersPayload, SendImagePayload, SendResendEmailPayload, SendUpdatePasswordPayload, SendUpdateUserPayload, SendValidateTokenPayload, SendVerificationCodePayload, SendVerificationEmailPayload, SetCompaniesPayload, SetGlobalCompaniesPayload, SetJwtPayload, SetLoadingPayload, SetLoginTokenPayload, SetPasswordTokenPayload, SetPasswordUserPayload, SetTimestampTwoStepVerificationPayload, SetUsersPayload, ShowToastPayload } from "../interfaces/actions";
+import { ADD_TASK, LOGIN, SET_COMPANIES, SET_GLOBAL_COMPANIES, SET_JWT, SET_LOADING, SET_LOGIN_TOKEN, SET_PASSWORD_TOKEN, SET_PASSWORD_USER, SET_TIMESTAMP_TWO_STEP_VERIFICATION, SET_USERS, SHOW_TOAST } from "./types";
 import ElectripureService from "../service/electripure-service";
 import { ResponseGeneric } from "../interfaces/base-service";
 
 // Mappers
 import UserMapper from "./../mappers/user-mapper";
-import { CompanyEntity, UserEntity } from "../interfaces/entities";
+import { CompanyEntity, GlobalCompanyEntity, UserEntity } from "../interfaces/entities";
 import { AddContactRequest } from "../interfaces/electripure-service";
 import CompanyMapper from "../mappers/company-mapper";
 import { TASK_STATE } from "../config/enum";
@@ -52,6 +52,11 @@ export const setUsers = (payload: SetUsersPayload) => ({
 
 export const setCompanies = (payload: SetCompaniesPayload) => ({
     "type": SET_COMPANIES,
+    "payload": payload
+});
+
+export const setGlobalCompanies = (payload: SetGlobalCompaniesPayload) => ({
+    "type": SET_GLOBAL_COMPANIES,
     "payload": payload
 });
 
@@ -238,6 +243,28 @@ export const sendGetUsers = (payload: SendGetUsersPayload): any => (async (dispa
     }));
 });
 
+export const sendGetCompaniesByUser = (payload: SendGetCompaniesByUserPayload): any => (async (dispatch: any) => {
+    dispatch(setLoading({
+        loading: true
+    }));
+    const response: ResponseGeneric = await ElectripureService.getCompaniesByUser({
+        "id_user": payload.userId
+    });
+    dispatch(setLoading({
+        loading: false
+    }));
+    if(!response.success) {
+        return dispatch(showToast({
+            message: response.error!,
+            status: "error"
+        }))
+    }
+    const companies: CompanyEntity[] = UserMapper.toCompanies(response.data);
+    dispatch(setCompanies({
+        "companies": companies
+    }));
+});
+
 export const sendResentEmail = (payload: SendResendEmailPayload) : any => (async (dispatch: any) => {
     dispatch(setLoading({
         loading: true
@@ -279,7 +306,7 @@ export const sendCreateUser = (payload: SendCreateUserPayload) : any => (async (
     dispatch(sendGetUsers({}));
 });
 
-export const sendGetCompanies = (payload: SendGetCompanyPayload): any => (async (dispatch: any) => {
+export const sendGetCompanies = (payload: SendGetCompaniesPayload): any => (async (dispatch: any) => {
     dispatch(setLoading({
         loading: true
     }));
@@ -293,8 +320,8 @@ export const sendGetCompanies = (payload: SendGetCompanyPayload): any => (async 
             status: "error"
         }))
     }
-    const companies: CompanyEntity[] = CompanyMapper.toCompanies(response.data);
-    dispatch(setCompanies({
+    const companies: GlobalCompanyEntity[] = CompanyMapper.toCompanies(response.data);
+    dispatch(setGlobalCompanies({
         "companies": companies
     }));
 });
