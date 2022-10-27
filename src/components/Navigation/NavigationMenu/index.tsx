@@ -12,7 +12,6 @@ import SiteDetailForm from "../../Form/SiteDetailForm";
 import SiteManagerForm from "../../Form/SiteManagerForm";
 import { ModalMiddle } from "../../Modal";
 import logoUrl from "./../../../assets/svg/Logo.svg";
-
 import DropdownSelector from "./DropdownSelector"
 
 
@@ -32,7 +31,7 @@ function NavbarMenu() {
     const toastMessage = useSelector((state: ElectripureState) => state.toastMessage);
     const dispatch = useDispatch();
     
-    const [newCompanyRaw, setNewCompany] = useState(`{  "id_user":41 } `);
+    const [newCompanyRaw, setNewCompany] = useState(`{  "id_user": 42 } `);
     const [stepCreateCompany, setStepCreateCompany] = useState(1);
     const newCompany = JSON.parse(newCompanyRaw);
 
