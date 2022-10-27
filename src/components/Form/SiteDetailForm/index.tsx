@@ -108,6 +108,7 @@ function SiteDetailForm({onSubmit, onPrevious}: { onSubmit: (data: SiteDetailDat
                     "city": cityControl.value,
                     "state": stateControl.value,
                     "zip": zipControl.value,
+                    "rate": rateControl.value,
                     "logo": logoControl.value,
                     "schematic": logoControl.value
                 });

@@ -32,6 +32,7 @@ export default class ElectripureService extends BaseService {
 
   static async updateUser(payload: UpdateUserRequest): Promise<ResponseGeneric> {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/update_user?${this.jsonToQueryParams(payload)}`;
+    console.log(url)
     const response = await this.requestPost(url, payload);
     if (!response.success) {
       toast.error(response.error, {

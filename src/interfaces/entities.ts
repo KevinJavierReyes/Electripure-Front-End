@@ -3,11 +3,13 @@ import { TASK_STATE } from "../config/enum";
 type MDP = {
     id: number;
     name: string;
+    sub_mdp: string[];
 }
 
 type Site = {
     id: number;
     link: string;
+    name: string;
     mdp_list: MDP[];
 }
 
