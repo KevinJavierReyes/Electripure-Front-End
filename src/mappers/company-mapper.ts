@@ -1,8 +1,8 @@
-import { CompanyEntity } from "../interfaces/entities";
+import { GlobalCompanyEntity } from "../interfaces/entities";
 
 
-function toCompanies(companies: any[]): CompanyEntity[] {
-    return companies.map((company): CompanyEntity => {
+function toCompanies(companies: any[]): GlobalCompanyEntity[] {
+    return companies.map((company): GlobalCompanyEntity => {
         return {
             "id": company.idCompany,
             "name": company.companyName

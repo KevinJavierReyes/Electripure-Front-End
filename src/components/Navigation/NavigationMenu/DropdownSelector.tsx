@@ -1,19 +1,30 @@
 import { Fragment, useState, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { ElectripureState } from "./../../../interfaces/reducers"
-import { sendGetCompanies } from "../../../actions/electripure"
+import { sendGetCompanies, sendGetCompaniesByUser } from "../../../actions/electripure"
 import { CompanyEntity } from "../../../interfaces/entities";
 
 import SelectedCompanies from "./SelectedCompanies"
+import { ModalMiddle } from "../../Modal";
+import BasicCompanyInformationForm from "../../Form/BasicCompanyInformationForm";
+import MainPointContactForm from "../../Form/MainPointContactForm";
+import SiteManagerForm from "../../Form/SiteManagerForm";
+import SiteDetailForm from "../../Form/SiteDetailForm";
 
-const DropdownSelector = () => {
-    const [ toggleSearch, setToggleSearch ] = useState(false)
-    const [ searchCompanyName, setSearchCompanyName ] = useState("")
-    const [ filteredData, setFilteredData ] = useState<CompanyEntity[]>([])
-    const [ companySelected, setCompanySelected ] = useState("")
-
-    const companies: CompanyEntity[] = JSON.parse(useSelector((state: ElectripureState) => state.companies));
+const DropdownSelector = ( { onCreateCompany } : {onCreateCompany: () => void}) => {
+    
     const dispatch = useDispatch();
+
+    // Toogle
+    const [ toggleSearch, setToggleSearch ] = useState(false);
+    // Keyword
+    const [ searchCompanyName, setSearchCompanyName ] = useState("");
+    // List filtered
+    const [ filteredData, setFilteredData ] = useState<CompanyEntity[]>([]);
+    // 
+    const [ companySelected, setCompanySelected ] = useState("")
+    // Companies
+    const companies: CompanyEntity[] = JSON.parse(useSelector((state: ElectripureState) => state.companies));
 
     const handleClean = () => {
         setSearchCompanyName("")
@@ -43,8 +54,10 @@ const DropdownSelector = () => {
 
 
     useEffect(()=>{
-        dispatch(sendGetCompanies({}))
-    }, [companySelected])
+        dispatch(sendGetCompaniesByUser({
+            "userId": 42
+        }));
+    }, [])
 
     return (
         <Fragment>
@@ -131,13 +144,7 @@ const DropdownSelector = () => {
                         </i>
                     </div>
                 </div>
-                <div className="w-[48px]
-                                cursor-pointer
-                                h-[48px]
-                                text-[32px]
-                                rounded-full
-                                text-center
-                                bg-[#D9D9D9]">
+                <div className="w-[48px] cursor-pointer h-[48px] text-[32px] rounded-full text-center bg-[#D9D9D9]" onClick={onCreateCompany}>
                     <span className="text-black" >
                         &#43;
                     </span>

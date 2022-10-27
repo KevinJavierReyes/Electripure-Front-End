@@ -7,7 +7,7 @@ function toUsers(users: any[]): UserEntity[] {
     });
 }
 
-function toCompany(companies: any[]): CompanyEntity[] {
+function toCompanies(companies: any[]): CompanyEntity[] {
     return companies.map((company: any) => {
         return company as CompanyEntity;
     });
@@ -15,5 +15,5 @@ function toCompany(companies: any[]): CompanyEntity[] {
 
 export default {
     toUsers,
-    toCompany,
+    toCompanies,
 };

@@ -11,13 +11,13 @@ import Title from "../../FormInput/Title";
 import { useDispatch, useSelector } from "react-redux";
 import { sendGetCompanies } from "../../../actions/electripure";
 import { ElectripureState } from "../../../interfaces/reducers";
-import { CompanyEntity } from "../../../interfaces/entities";
+import { CompanyEntity, GlobalCompanyEntity } from "../../../interfaces/entities";
 
 
 function CreateUserForm({onSubmit}: {onSubmit: (data: CreateUserDataForm) => void}) {
 
     const dispatch = useDispatch();
-    const companies: CompanyEntity[]= JSON.parse(useSelector((state: ElectripureState) => state.companies));
+    const companies: GlobalCompanyEntity[]= JSON.parse(useSelector((state: ElectripureState) => state.globalCompanies));
 
     useEffect(()=> {
         dispatch(sendGetCompanies({}));
@@ -111,7 +111,7 @@ function CreateUserForm({onSubmit}: {onSubmit: (data: CreateUserDataForm) => voi
                 name="company"
                 state={companyControl.state}
                 message={companyControl.message}
-                options={companies.map((company: CompanyEntity) => {
+                options={companies.map((company: GlobalCompanyEntity) => {
                     return {"value": company.name, "id": company.id}
                 })}
                 placeholder="Select a company"

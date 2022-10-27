@@ -54,6 +54,9 @@ export interface CreateUserRequest {
     role: string;
 }
 
+export interface GetCompaniesByUserRequest {
+    id_user: number
+}
 
 export interface UploadImageRequest {
     image: string;
