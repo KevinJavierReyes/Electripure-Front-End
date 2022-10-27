@@ -104,7 +104,19 @@ function NavbarMenu() {
             })
         }));
         console.log("Step 5", data);
-        dispatch(sendAddCompany(newCompany));
+        dispatch(sendAddCompany({
+            ...newCompany,
+            "MDP": data.map((mdpData: CreateMDPDataForm) => {
+                return {
+                    "siteName" : mdpData.name,
+                    "meterID" : mdpData.meterId,
+                    "applianceID" : mdpData.applianceId,
+                    "MDP" : mdpData.ampCap,
+                    "switchgear": mdpData.switchgearCap,
+                    "transformer": mdpData.transformer
+                };
+            })
+        }));
     }
 
     function previousStepCreateCompany() {
