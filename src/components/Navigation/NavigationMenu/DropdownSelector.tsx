@@ -80,7 +80,7 @@ const DropdownSelector = () => {
                                     onChange={handleSearch}
                                     placeholder="Search Company"/>
                                 <div>
-                                    <ul className="overflow-scroll">
+                                    <ul className="overflow-scroll h-[150px]">
                                     {
                                         searchCompanyName === "" || filteredData.length === 0 ? companies?.map((company, index) => (
                                         <li key={index} 
