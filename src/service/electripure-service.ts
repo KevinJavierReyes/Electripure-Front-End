@@ -32,6 +32,7 @@ export default class ElectripureService extends BaseService {
 
   static async updateUser(payload: UpdateUserRequest): Promise<ResponseGeneric> {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/update_user?${this.jsonToQueryParams(payload)}`;
+    console.log(url)
     const response = await this.requestPost(url, payload);
     if (!response.success) {
       toast.error(response.error, {
@@ -43,6 +44,17 @@ export default class ElectripureService extends BaseService {
 
   static async addContact(payload: AddContactRequest): Promise<ResponseGeneric> {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/add_contact?${this.jsonToQueryParams(payload)}`;
+    const response = await this.requestPost(url, payload);
+    if (!response.success) {
+      toast.error(response.error, {
+        "position": "bottom-right"
+      });
+    }
+    return response;
+  }
+
+  static async createCompany(payload: any) : Promise<ResponseGeneric> {
+    const url = `${environment.ELECTRIPURE_ENDPOINT}/create_company`;
     const response = await this.requestPost(url, payload);
     if (!response.success) {
       toast.error(response.error, {

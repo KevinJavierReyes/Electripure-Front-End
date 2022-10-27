@@ -78,6 +78,7 @@ export interface SiteDetailDataForm {
     state: string;
     zip: string;
     logo: string;
+    rate: string;
     schematic: string;
 }
 

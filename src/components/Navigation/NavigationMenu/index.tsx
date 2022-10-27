@@ -1,9 +1,12 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setJwt, setLoginToken, setTimestampTwoStepVerification } from "../../../actions/electripure";
-import { BasicCompanyInformationDataForm, MainPointContactDataForm, SiteDetailDataForm, SiteManagerDataForm } from "../../../interfaces/form";
+import { sendAddCompany, setJwt, setLoginToken, setTimestampTwoStepVerification } from "../../../actions/electripure";
+import { BasicCompanyInformationDataForm, CreateMDPDataForm, MainPointContactDataForm, SiteDetailDataForm, SiteManagerDataForm } from "../../../interfaces/form";
+import { ElectripureState } from "../../../interfaces/reducers";
 import BasicCompanyInformationForm from "../../Form/BasicCompanyInformationForm";
+import CreateMDPForm from "../../Form/CreateMDPForm";
+import FinishCreateMDPForm from "../../Form/FinishCreateMDPForm";
 import MainPointContactForm from "../../Form/MainPointContactForm";
 import SiteDetailForm from "../../Form/SiteDetailForm";
 import SiteManagerForm from "../../Form/SiteManagerForm";
@@ -15,38 +18,105 @@ import DropdownSelector from "./DropdownSelector"
 
 function NavbarMenu() {
     const [isShowModal, setShowModal] = useState(false);
+    const toastMessage = useSelector((state: ElectripureState) => state.toastMessage);
     const dispatch = useDispatch();
     
-    const [newCompanyRaw, setNewCompany] = useState("{}");
+    const [newCompanyRaw, setNewCompany] = useState(`{  "id_user":41 } `);
     const [stepCreateCompany, setStepCreateCompany] = useState(1);
     const newCompany = JSON.parse(newCompanyRaw);
 
-   
 
     function submitBasicCompanyInformationForm(data: BasicCompanyInformationDataForm) {
         setNewCompany(JSON.stringify({
             ...newCompany,
-            "basicInformation": data
+            "basicInformation": {
+                "companyName" : data.company,
+                "address" : data.address,
+                "address2" : data.address2,
+                "city" : data.city,
+                "state": data.state,
+                "zip": data.zip,
+                "imgId" : data.logo
+            }
         }));
+        console.log("Step 1", data);
         setStepCreateCompany(2);
     }
 
     function submitMainPointContactForm(data: MainPointContactDataForm) {
+        setNewCompany(JSON.stringify({
+            ...newCompany,
+            "mainPointContact" : {
+                "fullName" : data.fullname,
+                "email" : data.email,
+                "cellPhone" : data.cellphone
+            }
+        }));
+        console.log("Step 2", data);
         setStepCreateCompany(3);
+    
     }
 
     function submitSiteManagerForm(data: SiteManagerDataForm) {
+        setNewCompany(JSON.stringify({
+            ...newCompany,
+            "siteManager" : {
+                "fullName" : data.fullname,
+                "email" : data.email,
+                "cellPhone" : data.cellphone
+            }
+        }));
+        console.log("Step 3", data);
         setStepCreateCompany(4);
     }
 
     function submitSiteDetailForm(data: SiteDetailDataForm) {
+        setNewCompany(JSON.stringify({
+            ...newCompany,
+            "siteDetails" : {
+                "siteName" : data.name,
+                "address" : data.address,
+                "address2" : data.address2,
+                "city" : data.city,
+                "state": data.state,
+                "zip": data.zip,
+                "paymentSchedule" : data.rate,
+                "imgId" : data.logo,
+                "imgSchematic" : data.schematic
+            }
+        }));
+        console.log("Step 4", data);
         setStepCreateCompany(5);
+    }
+
+    function submitCreateMDPForm(data: CreateMDPDataForm[]) {
+        setNewCompany(JSON.stringify({
+            ...newCompany,
+            "MDP": data.map((mdpData: CreateMDPDataForm) => {
+                return {
+                    "siteName" : mdpData.name,
+                    "meterID" : mdpData.meterId,
+                    "applianceID" : mdpData.applianceId,
+                    "MDP" : mdpData.ampCap,
+                    "switchgear": mdpData.switchgearCap,
+                    "transformer": mdpData.transformer
+                };
+            })
+        }));
+        console.log("Step 5", data);
+        dispatch(sendAddCompany(newCompany));
     }
 
     function previousStepCreateCompany() {
         setStepCreateCompany(stepCreateCompany - 1);
     }
 
+
+    useEffect(() => {
+        if (toastMessage == "Company created!") {
+            setStepCreateCompany(6);
+        }
+    }, [toastMessage])
 
     // function logout() {
     //     dispatch(setTimestampTwoStepVerification({
@@ -73,12 +143,14 @@ function NavbarMenu() {
             <DropdownSelector onCreateCompany={()=> {
                 setShowModal(true);
             }}/>
-            <ModalMiddle show={isShowModal} onClose={()=>{setShowModal(false)}}>
+            <ModalMiddle show={isShowModal} onClose={()=>{setShowModal(false); setStepCreateCompany(1);}}>
                 {
                     stepCreateCompany == 1 ? <BasicCompanyInformationForm onSubmit={submitBasicCompanyInformationForm}/> :
                     stepCreateCompany == 2 ? <MainPointContactForm onSubmit={submitMainPointContactForm} onPrevious={previousStepCreateCompany}/> :
                     stepCreateCompany == 3 ? <SiteManagerForm onSubmit={submitSiteManagerForm} onPrevious={previousStepCreateCompany}/> :
-                    stepCreateCompany == 4 ? <SiteDetailForm onSubmit={submitSiteDetailForm} onPrevious={previousStepCreateCompany}/> : <div></div>
+                    stepCreateCompany == 4 ? <SiteDetailForm onSubmit={submitSiteDetailForm} onPrevious={previousStepCreateCompany}/> :
+                    stepCreateCompany == 5 ? <CreateMDPForm onSubmit={submitCreateMDPForm} onPrevious={previousStepCreateCompany}/> :
+                    stepCreateCompany == 6 ? <FinishCreateMDPForm onClose={()=>{setShowModal(false); setStepCreateCompany(1);}}/> : <div></div>
                 }
             </ModalMiddle>  
         </div>

@@ -10,3 +10,4 @@ export const SET_USERS = "SET_USERS";
 export const SET_COMPANIES = "SET_COMPANIES";
 export const SET_GLOBAL_COMPANIES = "SET_GLOBAL_COMPANIES";
 export const ADD_TASK = "SET_TASK";
+export const SET_CURRENT_USER = "SET_CURRENT_USER";

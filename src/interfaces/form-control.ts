@@ -12,3 +12,16 @@ export interface ContactGroup {
     phone: InputControl;
 
 }
+
+
+
+export interface MDPGroup {
+
+    name: InputControl;
+    meterId: InputControl;
+    applianceId: InputControl;
+    ampCap: InputControl;
+    switchgearCap: InputControl;
+    transformer: InputControl;
+    
+}

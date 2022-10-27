@@ -1,5 +1,5 @@
-import { ActionNotification, AddTaskPayload, LoginPayload, SendAddContactPayload, SendCreateUserPayload, SendForgotPasswordPayload, SendGetCompaniesByUserPayload, SendGetCompaniesPayload, SendGetUsersPayload, SendImagePayload, SendResendEmailPayload, SendUpdatePasswordPayload, SendUpdateUserPayload, SendValidateTokenPayload, SendVerificationCodePayload, SendVerificationEmailPayload, SetCompaniesPayload, SetGlobalCompaniesPayload, SetJwtPayload, SetLoadingPayload, SetLoginTokenPayload, SetPasswordTokenPayload, SetPasswordUserPayload, SetTimestampTwoStepVerificationPayload, SetUsersPayload, ShowToastPayload } from "../interfaces/actions";
-import { ADD_TASK, LOGIN, SET_COMPANIES, SET_GLOBAL_COMPANIES, SET_JWT, SET_LOADING, SET_LOGIN_TOKEN, SET_PASSWORD_TOKEN, SET_PASSWORD_USER, SET_TIMESTAMP_TWO_STEP_VERIFICATION, SET_USERS, SHOW_TOAST } from "./types";
+import { ActionNotification, AddTaskPayload, LoginPayload, SendAddContactPayload, SendCreateUserPayload, SendForgotPasswordPayload, SendGetCompaniesByUserPayload, SendGetCompaniesPayload, SendGetUsersPayload, SendImagePayload, SendResendEmailPayload, SendUpdatePasswordPayload, SendUpdateUserPayload, SendValidateTokenPayload, SendVerificationCodePayload, SendVerificationEmailPayload, SetCompaniesPayload, SetCurrentUserPayload, SetGlobalCompaniesPayload, SetJwtPayload, SetLoadingPayload, SetLoginTokenPayload, SetPasswordTokenPayload, SetPasswordUserPayload, SetTimestampTwoStepVerificationPayload, SetUsersPayload, ShowToastPayload } from "../interfaces/actions";
+import { ADD_TASK, LOGIN, SET_COMPANIES, SET_CURRENT_USER, SET_GLOBAL_COMPANIES, SET_JWT, SET_LOADING, SET_LOGIN_TOKEN, SET_PASSWORD_TOKEN, SET_PASSWORD_USER, SET_TIMESTAMP_TWO_STEP_VERIFICATION, SET_USERS, SHOW_TOAST } from "./types";
 import ElectripureService from "../service/electripure-service";
 import { ResponseGeneric } from "../interfaces/base-service";
 
@@ -65,6 +65,10 @@ export const addTask = (payload: AddTaskPayload) => ({
     "payload": payload
 });
 
+export const setCurrentUser = (payload: SetCurrentUserPayload) => ({
+    "type": SET_CURRENT_USER,
+    "payload": payload
+});
 // Login
 
 export const login = (payload: LoginPayload): any => (async (dispatch: any) => {
@@ -151,6 +155,12 @@ export const sendVerificationCode = (payload: SendVerificationCodePayload): any 
             status: "error"
         }))
     }
+    dispatch(setCurrentUser({
+        id: response.data.id,
+        fullname: response.data.fullname
+    }))
+    console.log(response.data.fullname)
+    console.log(response.data.id)
     dispatch(setJwt({
         token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.OavGO9EIDazzQq08RNCmzUs4oj7EizPmBnb_NPh-i6M"
     }));
@@ -449,4 +459,35 @@ export const SendImage = (payload : SendImagePayload): any => (async (dispatch: 
         message: "Image upload!",
         status: "success"
     }));
+});
+
+
+
+export const sendAddCompany = (payload: any) : any => (async (dispatch: any) => {
+    dispatch(setLoading({
+        loading: true
+    }));
+    const response: ResponseGeneric= await ElectripureService.createCompany(payload);
+    dispatch(setLoading({
+        loading: false
+    }));
+    if(!response.success) {
+        dispatch(showToast({
+            message: response.error!,
+            status: "error"
+        }));
+        return;
+    };
+    if(!response.data.Log) {
+        dispatch(showToast({
+            message: "Problem creating company!",
+            status: "error"
+        }));
+        return;
+    };
+    dispatch(showToast({
+        message: "Company created!",
+        status: "success"
+    }));
+    return;
 });
