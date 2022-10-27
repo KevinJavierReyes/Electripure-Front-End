@@ -4,8 +4,6 @@ import { MainPointContactDataForm } from '../../../interfaces/form';
 import { InputControl } from '../../../interfaces/form-control';
 import { validateCellphone, validateCellphoneControl, validateEmailControl, validateNameControl } from '../../../libs/form-validation';
 import { ButtonPrimary, ButtonSecondary } from '../../FormInput/Button';
-import InputPhoto from "../../FormInput/InputPhoto";
-import InputSelect from '../../FormInput/InputRadioGroup';
 import InputText from "../../FormInput/InputText";
 import Title from "../../FormInput/Title";
 import Space from "../../Space";
@@ -35,11 +33,15 @@ function MainPointContactForm({onSubmit, onPrevious}: { onSubmit: (data: MainPoi
 
 
     function submit() {
-        onSubmit({
-            "fullname": "",
-            "email": "",
-            "cellphone": ""
-        });
+        if (fullnameControl.state == INPUT_CONTROL_STATE.OK &&
+            emailControl.state == INPUT_CONTROL_STATE.OK &&
+            cellphoneControl.state == INPUT_CONTROL_STATE.OK) {
+            onSubmit({
+                "fullname": fullnameControl.value,
+                "email": emailControl.value,
+                "cellphone": cellphoneControl.value
+            });
+        }
     }
 
     return (<div className="w-full bg-color-white p-[10px]">

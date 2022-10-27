@@ -9,7 +9,7 @@ import { ElectripureState } from '../../../interfaces/reducers';
 import { validateCompanyControl } from '../../../libs/form-validation';
 import { ButtonPrimary } from '../../FormInput/Button';
 import InputPhoto from "../../FormInput/InputPhoto";
-import InputSelect from '../../FormInput/InputRadioGroup';
+import InputSelect from '../../FormInput/InputSelect';
 import InputText from "../../FormInput/InputText";
 import Title from "../../FormInput/Title";
 import Space from "../../Space";
@@ -75,7 +75,7 @@ function BasicCompanyInformationForm({onSubmit}: { onSubmit: (data: BasicCompany
     function submit() {
         if (companyControl.state == INPUT_CONTROL_STATE.OK &&
             addressControl.state == INPUT_CONTROL_STATE.OK &&
-            address2Control.state == INPUT_CONTROL_STATE.OK &&
+            // address2Control.state == INPUT_CONTROL_STATE.OK &&
             cityControl.state == INPUT_CONTROL_STATE.OK &&
             stateControl.state == INPUT_CONTROL_STATE.OK &&
             zipControl.state == INPUT_CONTROL_STATE.OK &&
@@ -177,7 +177,7 @@ function BasicCompanyInformationForm({onSubmit}: { onSubmit: (data: BasicCompany
                         name="state"
                         label="State"
                         options={[{
-                            "id": 1,
+                            "id": "1",
                             "value": "State 01"
                         }]}
                         placeholder="Select State"
@@ -187,7 +187,7 @@ function BasicCompanyInformationForm({onSubmit}: { onSubmit: (data: BasicCompany
                             setStateControl({
                                 "state": INPUT_CONTROL_STATE.OK,
                                 "message": "",
-                                "value": select.value
+                                "value": select.id
                             });
                         }}
                     />

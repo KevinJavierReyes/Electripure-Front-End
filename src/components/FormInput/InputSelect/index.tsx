@@ -1,13 +1,15 @@
+import { useEffect } from "react";
 import { INPUT_CONTROL_STATE } from "../../../config/enum";
 
-function InputSelect({ state, message, name, options, placeholder, label, onChange } : {
+function InputSelect({ state, message, name, options, placeholder, label, onChange, defaultSelect="-1"} : {
     state : INPUT_CONTROL_STATE,
     message : string,
     name : string,
     options : { id: any, value: any }[],
     placeholder : string,
     label : string,
-    onChange : (select : { "value": any, "id": any }) => void
+    onChange : (select : { "value": any, "id": any }) => void,
+    defaultSelect?: string
 }) {
 
     function handleChange(event : any) {
@@ -17,6 +19,20 @@ function InputSelect({ state, message, name, options, placeholder, label, onChan
             onChange(optionsFiltered[0]);
         }
     }
+
+    useEffect(()=> {
+        if (defaultSelect != "-1") {
+            console.log("defaultSelect");
+            console.log(defaultSelect);
+            console.log(options);
+            const optionSelected = options.filter((item: { id: any, value: any }) => { return item.id == defaultSelect; });
+            console.log(optionSelected);
+            if (optionSelected.length > 0) {
+                onChange(optionSelected[0]);
+            }
+        }
+    }, []);
+
     return (
         <div className="w-full styled-select">
             <label htmlFor={name}
@@ -31,9 +47,10 @@ function InputSelect({ state, message, name, options, placeholder, label, onChan
                 </div>
                 <select onChange={handleChange}
                     placeholder={placeholder}
+                    defaultValue={defaultSelect}
                     className={"bg-transparent absolute top-0 left-0 m-0 w-full border h-[50px] px-[10px] " + (state === INPUT_CONTROL_STATE.OK ? "border-color-success color-success" : state === INPUT_CONTROL_STATE.ERROR ? "border-color-error color-error" : "border-color-black-light color-black")}
                     id={name}>
-                    <option key={-1} value={ -1} selected disabled>{placeholder}</option>
+                    <option key={-1} value={-1} disabled>{placeholder}</option>
                     {
                         options.map((option : {
                             id: number,

@@ -4,8 +4,6 @@ import { CreateMDPDataForm, SiteManagerDataForm } from '../../../interfaces/form
 import { InputControl, MDPGroup } from '../../../interfaces/form-control';
 import { validateCellphone, validateCellphoneControl, validateEmailControl, validateName, validateNameControl } from '../../../libs/form-validation';
 import { ButtonLink, ButtonPrimary, ButtonSecondary } from '../../FormInput/Button';
-import InputPhoto from "../../FormInput/InputPhoto";
-import InputSelect from '../../FormInput/InputRadioGroup';
 import InputText from "../../FormInput/InputText";
 import Title from "../../FormInput/Title";
 import Space from "../../Space";
@@ -51,7 +49,12 @@ function CreateMDPForm({onSubmit, onPrevious}: { onSubmit: (data: CreateMDPDataF
     function submit() {
         const mdpgs: MDPGroup[] = JSON.parse(mdps);
         const mdpsErrorFiltered: MDPGroup[] = mdpgs.filter((mdpg: MDPGroup) => {
-            return mdpg.ampCap.state != INPUT_CONTROL_STATE.OK || mdpg.applianceId.state != INPUT_CONTROL_STATE.OK || mdpg.meterId.state != INPUT_CONTROL_STATE.OK || mdpg.name.state != INPUT_CONTROL_STATE.OK || mdpg.switchgearCap.state != INPUT_CONTROL_STATE.OK || mdpg.transformer.state != INPUT_CONTROL_STATE.OK;
+            return mdpg.ampCap.state != INPUT_CONTROL_STATE.OK ||
+                    // mdpg.applianceId.state != INPUT_CONTROL_STATE.OK ||
+                    // mdpg.meterId.state != INPUT_CONTROL_STATE.OK ||
+                    mdpg.name.state != INPUT_CONTROL_STATE.OK ||
+                    mdpg.switchgearCap.state != INPUT_CONTROL_STATE.OK ||
+                    mdpg.transformer.state != INPUT_CONTROL_STATE.OK;
         });
 
         if (mdpsErrorFiltered.length == 0) {

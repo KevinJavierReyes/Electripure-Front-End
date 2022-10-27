@@ -1,6 +1,6 @@
 import { INPUT_CONTROL_STATE } from "../../../config/enum";
 
-function InputSelect({ state, message, name, options, placeholder, label, onChange } : {
+function InputRadioGroup({ state, message, name, options, placeholder, label, onChange } : {
     state : INPUT_CONTROL_STATE,
     message : string,
     name : string,
@@ -51,4 +51,4 @@ function InputSelect({ state, message, name, options, placeholder, label, onChan
     );
 }
 
-export default InputSelect;
+export default InputRadioGroup;
