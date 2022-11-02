@@ -18,7 +18,7 @@ export function ButtonPrimary( { children, onClick, classes= ""}: { children: an
 }
 
 
-export function ButtonSecondary( { children, onClick, classes= ""}: { children: any, onClick: MouseEventHandler, classes?: string}) {
+export function ButtonSecondary( { children, onClick, classes= ""}: { children: any, onClick: ()=> void, classes?: string}) {
     return (
         <button className={"w-full rounded-sm border border-color-secondary min-h-[48px] color-color-sencondary bg-color-white rounded " + classes} onClick={onClick}>
             {children}
@@ -26,7 +26,7 @@ export function ButtonSecondary( { children, onClick, classes= ""}: { children: 
     );
 }
 
-export function ButtonLink( { children, onClick, classes= ""}: { children: any, onClick: MouseEventHandler, classes?: string}) {
+export function ButtonLink( { children, onClick, classes= ""}: { children: any, onClick: ()=> void, classes?: string}) {
     return (
         <button className={"color-black-dark text-sm underline " + classes} onClick={onClick}>
             {children}
@@ -34,7 +34,7 @@ export function ButtonLink( { children, onClick, classes= ""}: { children: any, 
     );
 }
 
-export function ButtonNotification( { children, onClick, classes= "", notifications = 0}: { children: any, onClick: MouseEventHandler, notifications?: number, classes?: string}) {
+export function ButtonNotification( { children, onClick, classes= "", notifications = 0}: { children: any, onClick: ()=> void, notifications?: number, classes?: string}) {
     return (
         <button className={"relative min-w-[40px] rounded-full border-color-black-light border bg-color-white min-h-[40px] flex justify-center items-center " + classes} onClick={onClick}>
             <div className={"f-medium text-xs rounded-full color-white w-[20px] h-[20px] absolute top-[-10px] right-[-10px] bg-color-primary flex justify-center items-center " + (notifications > 0 ? "" : "hidden")}>

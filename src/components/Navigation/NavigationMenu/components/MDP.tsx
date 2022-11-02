@@ -1,8 +1,10 @@
-import { Fragment, useState } from "react"
-import img from "./item_img.svg"
+import { Fragment, useState } from "react";
+import img from "./item_img.svg";
+import { useNavigate } from "react-router-dom";
 
 const MDP = (mdp: any) => {
-    const [ togglesubData, setSubToggleData ] = useState(false)
+    const [ togglesubData, setSubToggleData ] = useState(false);
+    const navigate = useNavigate();
     return (
         <Fragment>
             <div className="">
@@ -34,9 +36,9 @@ const MDP = (mdp: any) => {
                     </div>
                 </div>
                 { mdp['mdp'].sub_mdp?.map((sub_mdp:any, index_sub_mdp: any) => (
-                <div key={index_sub_mdp} className={togglesubData? "text-left m-1 text-black w-[80%] pl-[40px]" : "hidden" }>
-                    <p><strong>{sub_mdp}</strong></p>
-                </div>
+                    <div key={index_sub_mdp} className={togglesubData? "text-left m-1 text-black w-[80%] pl-[40px]" : "hidden" }>
+                        { sub_mdp == "Amps & Vots" ? <p><strong className="cursor-pointer" onClick={ () => {  navigate("/dashboard/apmsvots") } }>{sub_mdp}</strong></p> : <p><strong>{sub_mdp}</strong></p>}
+                    </div>
                 ))}
             </div>
         </Fragment>

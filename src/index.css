@@ -3,15 +3,7 @@
 @tailwind utilities;
 @tailwind variants;
 
-.f-bold {
-	font-family: 'Montserrat';
-	font-weight: 700;
-}
 
-.f-semibold {
-	font-family: 'Montserrat';
-	font-weight: 600;
-}
 
 .f-medium {
 	font-family: 'Montserrat';
@@ -33,6 +25,16 @@
 	font-weight: 100;
 }
 
+
+.f-bold {
+	font-family: 'Montserrat';
+	font-weight: 700;
+}
+
+.f-semibold {
+	font-family: 'Montserrat';
+	font-weight: 600;
+}
 :root {
 	--color-body: #F5F5F5;
 	--color-white: #FFFFFF;
@@ -121,6 +123,11 @@
 	border-color: var(--color-secondary);;
 }
 
+
+.border-color-primary {
+	border-color: var(--color-primary);;
+}
+
 .border-color-error:focus {
 	outline: none !important;
 }
@@ -157,4 +164,6 @@ code {
     -webkit-appearance:none; /* Safari and Chrome */
     appearance:none;
 
-} 
+}
+
+

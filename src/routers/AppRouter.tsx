@@ -15,6 +15,7 @@ import CreatePasswordPage from "../pages/CreatePasswordStepper/CreatePasswordPag
 import ConfirmEmailPhonePage from "../pages/CreatePasswordStepper/ConfirmEmailPhonePage";
 import CreateBackupContactsPage from "../pages/CreatePasswordStepper/CreateBackupContactsPage";
 import CompanyListPage from "../pages/CompanyListPage";
+import AmpsVoltsPage from "../pages/AmpsVoltsPage";
 
 const AppRouter = () => {
 
@@ -43,6 +44,7 @@ const AppRouter = () => {
 
           {/* Dashboard */}
           <Route path="/user/list" element={<IsAuthenticated><UserListPage /></IsAuthenticated>} />
+          <Route path="dashboard/apmsvots" element={<IsAuthenticated><AmpsVoltsPage /></IsAuthenticated>} />
           <Route path="/company/list" element={<IsAuthenticated><CompanyListPage /></IsAuthenticated>} />
 
           {/* Else */}
