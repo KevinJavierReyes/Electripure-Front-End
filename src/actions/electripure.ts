@@ -168,10 +168,11 @@ export const sendVerificationCode = (payload: SendVerificationCodePayload): any 
         message: "Code correct!.",
         status: "success"
     }))
+    console.log("Response from authentication", response.data)
     dispatch(setCurrentUser({
-        currentUser: response.data.fullname
+        id: response.data.id,
+        fullname: response.data.fullname
     }))
-    console.log("Data from response", response.data.fullname)
     return;
 });
 

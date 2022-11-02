@@ -23,15 +23,15 @@ function AmpsGraph () {
 
     const [tapIndex, setTapIndex] = useState(1);
     const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-    // ChartJS.register(
-    //     CategoryScale,
-    //     LinearScale,
-    //     PointElement,
-    //     LineElement,
-    //     Title,
-    //     Tooltip,
-    //     Legend
-    //   );
+    ChartJS.register(
+        CategoryScale,
+        LinearScale,
+        PointElement,
+        LineElement,
+        Title,
+        Tooltip,
+        Legend
+      );
       
     const options = {
         responsive: true,
