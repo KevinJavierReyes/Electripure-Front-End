@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { ElectripureState } from "./../../../interfaces/reducers"
 import { sendGetCompanies, sendGetCompaniesByUser } from "../../../actions/electripure"
 import { CompanyEntity } from "../../../interfaces/entities";
+import { CreateUserData } from "../../../interfaces/form"
 
 import SelectedCompanies from "./SelectedCompanies"
 import { ModalMiddle } from "../../Modal";
@@ -27,6 +28,10 @@ const DropdownSelector = ( { onCreateCompany } : {onCreateCompany: () => void}) 
     const companies: CompanyEntity[] = JSON.parse(useSelector((state: ElectripureState) => state.companies));
 
     const handleClean = () => setSearchCompanyName(prev => "")
+    
+    // get user to make a request with specific user
+    // let userData = JSON.parse(useSelector((state: ElectripureState) => state.currentUser));
+    // let user = userData
     
     const setValue = (e:any) => {
         setCompanySelected(prev => e.target.innerHTML)
@@ -55,23 +60,26 @@ const DropdownSelector = ( { onCreateCompany } : {onCreateCompany: () => void}) 
         dispatch(sendGetCompaniesByUser({
             "userId": 42
         }));
-    }, [])
+    }, [companySelected]);
 
     return (
         <Fragment>
             <div className="flex w-[82%] gap-[22px] justify-between">
-                <div className="w-[222px]
+                <div className={`w-[230px]
                                 flex
+                                absolute
+                                bg-white
+                                rounded-md
+                                shadow-md
                                 justify-around
-                                max-h-[350px]
+                                ${toggleSearch?'h-[350px]':'h-[50px]'}
                                 border-[1px]
                                 border-solid
-                                border-[#D2D6DE]"
-                     >
+                                border-[#D2D6DE]`}>
                     <div className="w-[82%]">
                     {
                         toggleSearch?
-                        <div className="mt-[40px] relative w-[200px]">
+                        <div className="mt-[40px] relative w-[210px] h-[290px]">
                             <div>
                                 <div className="rotate-90 w-[40px] h-[40px] relative bottom-[-45px] text-center">
                                 { searchCompanyName.length === 0? 
@@ -93,8 +101,8 @@ const DropdownSelector = ( { onCreateCompany } : {onCreateCompany: () => void}) 
                                     value={searchCompanyName}
                                     onChange={handleSearch}
                                     placeholder="Search Company"/>
-                                <div>
-                                    <ul className="overflow-scroll h-[150px]">
+                                <div className="h-[170px]">
+                                    <ul className="overflow-scroll h-full">
                                     {
                                         searchCompanyName === "" || filteredData.length === 0 ? companies?.map((company, index) => (
                                         <li key={index} 
@@ -142,7 +150,7 @@ const DropdownSelector = ( { onCreateCompany } : {onCreateCompany: () => void}) 
                         </i>
                     </div>
                 </div>
-                <div className="w-[48px] cursor-pointer h-[48px] text-[32px] rounded-full text-center bg-[#D9D9D9]" onClick={onCreateCompany}>
+                <div className="w-[48px] cursor-pointer absolute right-[30px] h-[48px] text-[32px] rounded-full text-center bg-[#D9D9D9]" onClick={onCreateCompany}>
                     <span className="text-black" >
                         &#43;
                     </span>

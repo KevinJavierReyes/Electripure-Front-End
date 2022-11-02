@@ -21,6 +21,16 @@ export interface CompanyEntity {
     list_sites: Site[];
 }
 
+export interface CompanyRowEntity {
+    id: number;
+    name: string;
+    mdps: number;
+    sites: number;
+    users: number;
+    status: string;
+    date: string;
+}
+
 
 export interface UserEntity {
     id: number;

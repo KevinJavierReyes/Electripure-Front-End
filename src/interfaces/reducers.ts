@@ -14,6 +14,7 @@ export interface ElectripureState {
     toastType: "success" | "error" | "warning" | "";
     timestampTwoStepVerification: number | null;
     users: string;
+    companiesTable: string; 
     companies: string;
     globalCompanies: string;
     tasks: string;

@@ -1,4 +1,4 @@
-import { GlobalCompanyEntity } from "../interfaces/entities";
+import { CompanyRowEntity, GlobalCompanyEntity } from "../interfaces/entities";
 
 
 function toCompanies(companies: any[]): GlobalCompanyEntity[] {
@@ -10,6 +10,21 @@ function toCompanies(companies: any[]): GlobalCompanyEntity[] {
     })
 }
 
+function toCompaniesRows(companies: any[]): CompanyRowEntity[] {
+    return companies.map((company: any): CompanyRowEntity => {
+        return {
+            "id": company.id,
+            "name": company.company_name,
+            "mdps": company.sites_count,
+            "sites": company.MDP_count,
+            "users": company.users_count,
+            "status": company.Status,
+            "date": company.DateAdd
+        };
+    })
+}
+
 export default {
-    toCompanies
+    toCompanies,
+    toCompaniesRows
 };
