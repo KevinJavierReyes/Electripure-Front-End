@@ -21,6 +21,8 @@ function DataTableUsers({}) {
         dispatch(sendResentEmail({"id": user.id}))
     }
      
+    // TODO ask if we need to pass the current user to get a list related to
+    // that specific user
     useEffect(() => {
         dispatch(sendGetUsers({}));
     }, []);

@@ -1,7 +1,6 @@
 import * as React from "react";
-import Input from "../components/Input";
-import Navbar from "../../components/Navbar";
-import Stepper from "../../components/StepperProgress/Stepper";
+import Navbar from "./../components/Navbar";
+import Stepper from "./../components/StepperProgress/Stepper";
 import { useNavigate, useParams } from "react-router-dom";
 
 function ConfirmCaptchaPage() {

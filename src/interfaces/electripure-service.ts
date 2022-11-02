@@ -1,4 +1,6 @@
-
+export interface UserData {
+    id_user: number;
+}
 
 export interface UpdateUserRequest {
     email: string;

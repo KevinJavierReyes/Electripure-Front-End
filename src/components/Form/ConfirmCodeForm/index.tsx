@@ -27,7 +27,7 @@ function ConfirmCodeForm({onSubmit, resendCode}: {onSubmit: (data: ConfirmCodeDa
     }
     
     return (<div className="w-full bg-color-white p-[10px]">
-        <Title title="Enter your autherization code"></Title>
+        <Title title="Enter your authorization code"></Title>
         <p>How would you like to recieve your autherization code?</p>
         <br/>
         <InputText

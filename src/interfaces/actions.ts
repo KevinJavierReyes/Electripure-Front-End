@@ -16,15 +16,16 @@ export interface SetLoadingPayload {
 }
 
 export interface SetUsersPayload {
-    users: UserEntity[]
+    users: UserEntity[];
 }
 
 export interface SetCompanyPayload {
-    companies: CompanyEntity[]
+    companies: CompanyEntity[];
 }
 
 export interface SetCurrentUserPayload {
-    currentUser: string
+    id: number;
+    fullname: string;
 }
 
 export interface SetTimestampTwoStepVerificationPayload {
@@ -76,6 +77,7 @@ export interface SendGetUsersPayload {
 }
 
 export interface SendGetCompaniesPayload {
+    id_user: number;
 }
 
 

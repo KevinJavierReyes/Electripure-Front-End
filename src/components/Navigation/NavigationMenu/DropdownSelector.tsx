@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { ElectripureState } from "./../../../interfaces/reducers"
 import { sendGetCompanies } from "../../../actions/electripure"
 import { CompanyEntity } from "../../../interfaces/entities";
+import { CreateUserData } from "../../../interfaces/form"
 
 import SelectedCompanies from "./SelectedCompanies"
 
@@ -16,6 +17,10 @@ const DropdownSelector = () => {
     const dispatch = useDispatch();
 
     const handleClean = () => setSearchCompanyName(prev => "")
+    
+    // get user to make a request with specific user
+    let userData = useSelector((state: ElectripureState) => state.currentUser)
+    let user = userData
     
     const setValue = (e:any) => {
         setCompanySelected(prev => e.target.innerHTML)
@@ -38,26 +43,29 @@ const DropdownSelector = () => {
                 setFilteredData(companies)
             }
         }
-
+    
     useEffect(()=>{
-        dispatch(sendGetCompanies({}))
+        dispatch(sendGetCompanies({"id_user": user.id}))
     }, [companySelected])
 
     return (
         <Fragment>
             <div className="flex w-[82%] gap-[22px] justify-between">
-                <div className="w-[222px]
+                <div className={`w-[230px]
                                 flex
+                                absolute
+                                bg-white
+                                rounded-md
+                                shadow-md
                                 justify-around
-                                max-h-[350px]
+                                ${toggleSearch?'h-[350px]':'h-[50px]'}
                                 border-[1px]
                                 border-solid
-                                border-[#D2D6DE]"
-                     >
+                                border-[#D2D6DE]`}>
                     <div className="w-[82%]">
                     {
                         toggleSearch?
-                        <div className="mt-[40px] relative w-[200px]">
+                        <div className="mt-[40px] relative w-[210px] h-[290px]">
                             <div>
                                 <div className="rotate-90 w-[40px] h-[40px] relative bottom-[-45px] text-center">
                                 { searchCompanyName.length === 0? 
@@ -79,8 +87,8 @@ const DropdownSelector = () => {
                                     value={searchCompanyName}
                                     onChange={handleSearch}
                                     placeholder="Search Company"/>
-                                <div>
-                                    <ul className="overflow-scroll h-[150px]">
+                                <div className="h-[170px]">
+                                    <ul className="overflow-scroll h-full">
                                     {
                                         searchCompanyName === "" || filteredData.length === 0 ? companies?.map((company, index) => (
                                         <li key={index} 
@@ -130,6 +138,8 @@ const DropdownSelector = () => {
                 </div>
                 <div className="w-[48px]
                                 cursor-pointer
+                                absolute
+                                right-[30px]
                                 h-[48px]
                                 text-[32px]
                                 rounded-full

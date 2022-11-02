@@ -1,4 +1,7 @@
-import { AddContactRequest, AuthorizationCodeRequest, AuthorizationCodeValidateRequest, CreateUserRequest, ForgotPasswordRequest, LoginRequest, ResendEmailRequest, UpdatePasswordRequest, UpdateUserRequest, ValidateTokenRequest } from "../interfaces/electripure-service";
+import { AddContactRequest, AuthorizationCodeRequest,
+AuthorizationCodeValidateRequest, CreateUserRequest, ForgotPasswordRequest,
+LoginRequest, ResendEmailRequest, UpdatePasswordRequest, UpdateUserRequest,
+ValidateTokenRequest, UserData } from "../interfaces/electripure-service";
 import { BaseService } from "./base-service";
 import environment from "./../config/env";
 import { toast } from "react-toastify";
@@ -32,7 +35,6 @@ export default class ElectripureService extends BaseService {
 
   static async updateUser(payload: UpdateUserRequest): Promise<ResponseGeneric> {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/update_user?${this.jsonToQueryParams(payload)}`;
-    console.log(url)
     const response = await this.requestPost(url, payload);
     if (!response.success) {
       toast.error(response.error, {
@@ -99,10 +101,10 @@ export default class ElectripureService extends BaseService {
   }
   
   // TODO test it out 
-  static async getCompanies(): Promise<ResponseGeneric> {
-    let data = {"id_user":"42"}
+  static async getCompanies(payload: UserData): Promise<ResponseGeneric> {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/get_companies_by_id`;
-    const response = await this.requestPost(url, data, {});
+    console.log("Payload", payload)
+    const response = await this.requestPost(url, payload, {});
     if (!response.success) {
       toast.error(response.error, {
         "position": "bottom-right"

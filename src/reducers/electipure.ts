@@ -13,7 +13,7 @@ const initialState: ElectripureState = {
     "passwordToken": null,
     "passwordUser": "{}",
     "companies": "[]",
-    "currentUser": "",
+    "currentUser": "{}",
 };
 
 export const electripureReducer = (state: ElectripureState = initialState, action: ActionNotification): ElectripureState => {
@@ -80,10 +80,14 @@ export const electripureReducer = (state: ElectripureState = initialState, actio
             break;
         case SET_CURRENT_USER:
             let setCurrentUserPayload: SetCurrentUserPayload = action.payload as SetCurrentUserPayload;
-            console.log("current user", setCurrentUserPayload)
+            console.log("current user", setCurrentUserPayload.id, setCurrentUserPayload.fullname)
             return {
                 ...state,
-                "currentUser": setCurrentUserPayload.currentUser
+                "currentUser": {
+                    id: setCurrentUserPayload.id,
+                    fullname: setCurrentUserPayload.fullname,
+                }
+
             };
             break;
         default:

@@ -1,6 +1,9 @@
 import { VERIFICATION_CHANNEL } from "../config/enum";
 
-
+export interface CreateUserData {
+    id: number;
+    fullname: string;
+}
 
 export interface CreateUserDataForm {
     email: string;
