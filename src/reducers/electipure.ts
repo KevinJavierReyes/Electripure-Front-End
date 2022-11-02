@@ -1,5 +1,5 @@
-import { SET_LOADING, SET_LOGIN_TOKEN, SET_TIMESTAMP_TWO_STEP_VERIFICATION, SHOW_TOAST, SET_JWT, SET_USERS, SET_PASSWORD_TOKEN, SET_PASSWORD_USER, SET_COMPANIES, ADD_TASK, SET_GLOBAL_COMPANIES, SET_CURRENT_USER } from "../actions/types";
-import { ActionNotification, SetJwtPayload, SetLoadingPayload, SetLoginTokenPayload, SetPasswordTokenPayload, SetPasswordUserPayload, SetTimestampTwoStepVerificationPayload, SetUsersPayload, ShowToastPayload, SetCompaniesPayload, AddTaskPayload, SetGlobalCompaniesPayload, SetCurrentUserPayload } from "../interfaces/actions";
+import { SET_LOADING, SET_LOGIN_TOKEN, SET_TIMESTAMP_TWO_STEP_VERIFICATION, SHOW_TOAST, SET_JWT, SET_USERS, SET_PASSWORD_TOKEN, SET_PASSWORD_USER, SET_COMPANIES, ADD_TASK, SET_GLOBAL_COMPANIES, SET_CURRENT_USER, SET_COMPANIES_TABLE } from "../actions/types";
+import { ActionNotification, SetJwtPayload, SetLoadingPayload, SetLoginTokenPayload, SetPasswordTokenPayload, SetPasswordUserPayload, SetTimestampTwoStepVerificationPayload, SetUsersPayload, ShowToastPayload, SetCompaniesPayload, AddTaskPayload, SetGlobalCompaniesPayload, SetCurrentUserPayload, SetCompaniesTablePayload } from "../interfaces/actions";
 import { ElectripureState } from "../interfaces/reducers";
 
 const initialState: ElectripureState = {
@@ -10,6 +10,7 @@ const initialState: ElectripureState = {
     "toastType": "",
     "timestampTwoStepVerification": null,
     "users": "[]",
+    "companiesTable": "[]",
     "globalCompanies": "[]",
     "companies": "[]",
     "passwordToken": null,
@@ -81,6 +82,13 @@ export const electripureReducer = (state: ElectripureState = initialState, actio
             return {
                 ...state,
                 "users": JSON.stringify(setUsersPayload.users)
+            };
+            break;
+        case SET_COMPANIES_TABLE:
+            let setCompaniesTablePayload: SetCompaniesTablePayload = action.payload as SetCompaniesTablePayload;
+            return {
+                ...state,
+                "companiesTable": JSON.stringify(setCompaniesTablePayload.companies)
             };
             break;
         case SET_COMPANIES:

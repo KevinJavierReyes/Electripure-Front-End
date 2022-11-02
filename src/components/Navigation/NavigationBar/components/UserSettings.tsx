@@ -9,11 +9,11 @@ import deviceImg from "./../assets/device_management.svg"
 import chageLogImg from "./../assets/change_log.svg"
 import settingsImg from "./../assets/settings.svg"
 import logoutImg from "./../assets/logout.svg"
-
+import { useNavigate } from "react-router-dom";
 
 const UserSettings = () => {
     const dispatch = useDispatch();
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
 
     function logout() {
         dispatch(setTimestampTwoStepVerification({
@@ -32,15 +32,15 @@ const UserSettings = () => {
         <Fragment>
             <div className="flex hover:bg-slate-100 rounded-lg cursor-pointer" >
                 <img src={companyImg} alt="" />
-                <p className="m-[15px]" onClick={()=>{}}>Company management</p>
+                <p className="m-[15px]" onClick={()=>{ navigate("/company/list") }}>Company management</p>
             </div>
             <div className="flex hover:bg-slate-100 rounded-lg cursor-pointer">
                 <img src={userImg} alt="" />
-                <p className="m-[15px]" onClick={()=>{}}>Users management</p>
+                <p className="m-[15px]" onClick={()=>{navigate("/user/list")}}>Users management</p>
             </div>
             <div className="flex hover:bg-slate-100 rounded-lg cursor-pointer">
                 <img src={deviceImg} alt="" />
-                <p className="m-[15px]" onClick={()=>{}}>Device management</p>
+                <p className="m-[15px]" onClick={()=>{navigate("/device/list")}}>Device management</p>
             </div>
             <div className="flex hover:bg-slate-100 rounded-lg cursor-pointer">
                 <img src={chageLogImg} alt="" />

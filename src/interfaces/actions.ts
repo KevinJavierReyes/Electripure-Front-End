@@ -1,5 +1,5 @@
 import { TASK_STATE } from "../config/enum";
-import { CompanyEntity, GlobalCompanyEntity, UserEntity } from "./entities";
+import { CompanyEntity, CompanyRowEntity, GlobalCompanyEntity, UserEntity } from "./entities";
 
 
 export interface ActionNotification {
@@ -19,6 +19,11 @@ export interface SetLoadingPayload {
 export interface SetUsersPayload {
     users: UserEntity[]
 }
+
+export interface SetCompaniesTablePayload {
+    companies: CompanyRowEntity[]
+}
+
 
 export interface SetCompaniesPayload {
     companies: CompanyEntity[]
@@ -91,6 +96,11 @@ export interface SendGetCompaniesPayload {
 
 export interface SendResendEmailPayload {
     id: number;
+}
+
+
+export interface SendGetCompaniesTablePayload {
+
 }
 
 export interface SendCreateUserPayload {

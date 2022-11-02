@@ -14,6 +14,7 @@ import { IsAuthenticated, IsAuthenticatedLoginToken } from "./Auth";
 import CreatePasswordPage from "../pages/CreatePasswordStepper/CreatePasswordPage";
 import ConfirmEmailPhonePage from "../pages/CreatePasswordStepper/ConfirmEmailPhonePage";
 import CreateBackupContactsPage from "../pages/CreatePasswordStepper/CreateBackupContactsPage";
+import CompanyListPage from "../pages/CompanyListPage";
 
 const AppRouter = () => {
 
@@ -42,6 +43,7 @@ const AppRouter = () => {
 
           {/* Dashboard */}
           <Route path="/user/list" element={<IsAuthenticated><UserListPage /></IsAuthenticated>} />
+          <Route path="/company/list" element={<IsAuthenticated><CompanyListPage /></IsAuthenticated>} />
 
           {/* Else */}
           <Route path="*" element={<label className="mx-auto">No existe la ruta especificada</label>} />
