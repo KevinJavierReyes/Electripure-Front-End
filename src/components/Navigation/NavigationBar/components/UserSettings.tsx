@@ -32,15 +32,15 @@ const UserSettings = () => {
         <Fragment>
             <div className="flex hover:bg-slate-100 rounded-lg cursor-pointer" >
                 <img src={companyImg} alt="" />
-                <p className="m-[15px]" onClick={()=>{ navigate("/company/list") }}>Company management</p>
+                <p className="m-[15px]" onClick={()=>{ navigate("/dashboard/company/list") }}>Company management</p>
             </div>
             <div className="flex hover:bg-slate-100 rounded-lg cursor-pointer">
                 <img src={userImg} alt="" />
-                <p className="m-[15px]" onClick={()=>{navigate("/user/list")}}>Users management</p>
+                <p className="m-[15px]" onClick={()=>{navigate("/dashboard/user/list")}}>Users management</p>
             </div>
             <div className="flex hover:bg-slate-100 rounded-lg cursor-pointer">
                 <img src={deviceImg} alt="" />
-                <p className="m-[15px]" onClick={()=>{navigate("/device/list")}}>Device management</p>
+                <p className="m-[15px]" onClick={()=>{navigate("/dashboard/device/list")}}>Device management</p>
             </div>
             <div className="flex hover:bg-slate-100 rounded-lg cursor-pointer">
                 <img src={chageLogImg} alt="" />

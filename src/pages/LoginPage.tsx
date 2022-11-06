@@ -53,7 +53,7 @@ function LoginPage() {
 
     useEffect(()=> {
         if (electripureJwt) {
-            navigate(`/user/list`);
+            navigate(`/dashboard`);
         }
     }, [electripureJwt])
   
