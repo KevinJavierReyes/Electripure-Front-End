@@ -30,8 +30,7 @@ const DropdownSelector = ( { onCreateCompany } : {onCreateCompany: () => void}) 
     const handleClean = () => setSearchCompanyName(prev => "")
     
     // get user to make a request with specific user
-    // let userData = JSON.parse(useSelector((state: ElectripureState) => state.currentUser));
-    // let user = userData
+    const user_id = localStorage.getItem('user_id');
     
     const setValue = (e:any) => {
         setCompanySelected(prev => e.target.innerHTML)
@@ -58,7 +57,7 @@ const DropdownSelector = ( { onCreateCompany } : {onCreateCompany: () => void}) 
 
     useEffect(()=>{
         dispatch(sendGetCompaniesByUser({
-            "userId": 42
+            "userId": Number(user_id)
         }));
     }, [companySelected]);
 

@@ -18,14 +18,19 @@ function ConfirmCodePage() {
 
     const electripureJwt = useSelector((state: ElectripureState) => state.electripureJwt);
     const loginToken = useSelector((state: ElectripureState) => state.loginToken);
+    const current_user = useSelector((state: ElectripureState) => state.currentUser);
+    console.log(current_user);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     useEffect(()=> {
         if (electripureJwt) {
-            if (localStorage.getItem("rememberPassword") == "true") {
-                localStorage.setItem("electripureJwt", electripureJwt)
-            }
+            localStorage.setItem("electripureJwt", electripureJwt)
+            //if (localStorage.getItem("rememberPassword") == "true") {
+            //    localStorage.setItem("electripureJwt", electripureJwt)
+            //}
+            localStorage.setItem("current_user", current_user.fullname);
+            localStorage.setItem("user_id", current_user.id);
             navigate(`/user/list`);
         }
     }, [electripureJwt]);

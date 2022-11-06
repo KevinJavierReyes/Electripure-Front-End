@@ -9,30 +9,36 @@ export default class ElectripureService extends BaseService {
   static async login(payload: LoginRequest): Promise<ResponseGeneric> {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/login?${this.jsonToQueryParams(payload)}`;
     const response = await this.requestPost(url, payload);
+    console.log("login:", response)
     return response;
   }
   
   static async validateToken(payload: ValidateTokenRequest): Promise<ResponseGeneric> {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/validate_token?${this.jsonToQueryParams(payload)}`;
     const response = await this.requestPost(url, payload);
+    console.log("validate token",response)
     return response;
   }
 
   static async authorizationCode(payload: AuthorizationCodeRequest): Promise<ResponseGeneric> {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/autherization_code?${this.jsonToQueryParams(payload)}`;
     const response = await this.requestPost(url, payload);
+    console.log("Authorization code", response)
     return response;
   }
 
   static async authorizationCodeValidate(payload: AuthorizationCodeValidateRequest): Promise<ResponseGeneric> {
+    // make the changes here 
     const url = `${environment.ELECTRIPURE_ENDPOINT}/autherization_code_validate?${this.jsonToQueryParams(payload)}`;
     const response = await this.requestPost(url, payload);
+    console.log("authorization validated", response)
     return response;
   }
 
   static async updateUser(payload: UpdateUserRequest): Promise<ResponseGeneric> {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/update_user?${this.jsonToQueryParams(payload)}`;
-    const response = await this.requestPost(url, payload);
+    const header_auth = {"Authorization" : `Bearer ${localStorage.getItem('electripureJwt')}`}
+    const response = await this.requestPost(url, payload, header_auth);
     if (!response.success) {
       toast.error(response.error, {
         "position": "bottom-right"
@@ -43,7 +49,8 @@ export default class ElectripureService extends BaseService {
 
   static async addContact(payload: AddContactRequest): Promise<ResponseGeneric> {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/add_contact?${this.jsonToQueryParams(payload)}`;
-    const response = await this.requestPost(url, payload);
+    const header_auth = {"Authorization" : `Bearer ${localStorage.getItem('electripureJwt')}`}
+    const response = await this.requestPost(url, payload, header_auth);
     if (!response.success) {
       toast.error(response.error, {
         "position": "bottom-right"
@@ -54,7 +61,8 @@ export default class ElectripureService extends BaseService {
 
   static async createCompany(payload: any) : Promise<ResponseGeneric> {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/create_company`;
-    const response = await this.requestPost(url, payload);
+    const header_auth = {"Authorization" : `Bearer ${localStorage.getItem('electripureJwt')}`}
+    const response = await this.requestPost(url, payload, header_auth);
     if (!response.success) {
       toast.error(response.error, {
         "position": "bottom-right"
@@ -65,7 +73,8 @@ export default class ElectripureService extends BaseService {
 
   static async getUsers(): Promise<ResponseGeneric> {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/get_users`;
-    const response = await this.requestPost(url, {});
+    const header_auth = {"Authorization" : `Bearer ${localStorage.getItem('electripureJwt')}`}
+    const response = await this.requestPost(url, {}, header_auth);
     if (!response.success) {
       toast.error(response.error, {
         "position": "bottom-right"
@@ -76,7 +85,8 @@ export default class ElectripureService extends BaseService {
 
   static async resendEmail(payload: ResendEmailRequest): Promise<ResponseGeneric> {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/resend_email?${this.jsonToQueryParams(payload)}`;
-    const response = await this.requestPost(url, payload);
+    const header_auth = {"Authorization" : `Bearer ${localStorage.getItem('electripureJwt')}`}
+    const response = await this.requestPost(url, payload, header_auth);
     if (!response.success) {
       toast.error(response.error, {
         "position": "bottom-right"
@@ -99,7 +109,8 @@ export default class ElectripureService extends BaseService {
 
   static async createUser(payload: CreateUserRequest): Promise<ResponseGeneric> {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/create_user?${this.jsonToQueryParams(payload)}`;
-    const response = await this.requestPost(url, payload);
+    const header_auth = {"Authorization" : `Bearer ${localStorage.getItem('electripureJwt')}`}
+    const response = await this.requestPost(url, payload, header_auth);
     if (!response.success) {
       toast.error(response.error, {
         "position": "bottom-right"
@@ -110,7 +121,8 @@ export default class ElectripureService extends BaseService {
 
   static async getCompanies(): Promise<ResponseGeneric> {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/get_companies`;
-    const response = await this.requestPost(url, {});
+    const header_auth = {"Authorization" : `Bearer ${localStorage.getItem('electripureJwt')}`}
+    const response = await this.requestPost(url, {}, header_auth);
     if (!response.success) {
       toast.error(response.error, {
         "position": "bottom-right"
@@ -121,7 +133,8 @@ export default class ElectripureService extends BaseService {
 
   static async getCompaniesTable(): Promise<ResponseGeneric> {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/get_companies_table`;
-    const response = await this.requestPost(url, {});
+    const header_auth = {"Authorization" : `Bearer ${localStorage.getItem('electripureJwt')}`}
+    const response = await this.requestPost(url, {}, header_auth);
     if (!response.success) {
       toast.error(response.error, {
         "position": "bottom-right"
@@ -132,7 +145,8 @@ export default class ElectripureService extends BaseService {
   
   static async getCompaniesByUser(payload: GetCompaniesByUserRequest): Promise<ResponseGeneric> {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/get_companies_by_id`;
-    const response = await this.requestPost(url, payload);
+    const header_auth = {"Authorization" : `Bearer ${localStorage.getItem('electripureJwt')}`}
+    const response = await this.requestPost(url, payload, header_auth);
     if (!response.success) {
       toast.error(response.error, {
         "position": "bottom-right"
@@ -143,7 +157,8 @@ export default class ElectripureService extends BaseService {
 
   static async uploadImage(payload: UploadImageRequest): Promise<ResponseGeneric> {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/update_image`;
-    const response = await this.requestPost(url, payload);
+    const header_auth = {"Authorization" : `Bearer ${localStorage.getItem('electripureJwt')}`}
+    const response = await this.requestPost(url, payload, header_auth);
     if (!response.success) {
       toast.error(response.error, {
         "position": "bottom-right"

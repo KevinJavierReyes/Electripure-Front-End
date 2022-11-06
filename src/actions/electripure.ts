@@ -160,15 +160,13 @@ export const sendVerificationCode = (payload: SendVerificationCodePayload): any 
             status: "error"
         }))
     }
-
     dispatch(setJwt({
-        token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.OavGO9EIDazzQq08RNCmzUs4oj7EizPmBnb_NPh-i6M"
+        token: `${response.data['token']}`
     }));
     dispatch(showToast({
         message: "Code correct!.",
         status: "success"
     }))
-    console.log("Response from authentication", response.data)
     dispatch(setCurrentUser({
         id: response.data.id,
         fullname: response.data.fullname
@@ -379,6 +377,7 @@ export const sendUpdateUser = (payload: SendUpdateUserPayload): any => (async (d
         return;
     }
     //Create session
+    console.log("send update user", response)
     dispatch(setJwt({
         "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.OavGO9EIDazzQq08RNCmzUs4oj7EizPmBnb_NPh-i6M"
     }));
