@@ -1,5 +1,5 @@
-import { SET_LOADING, SET_LOGIN_TOKEN, SET_TIMESTAMP_TWO_STEP_VERIFICATION, SHOW_TOAST, SET_JWT, SET_USERS, SET_PASSWORD_TOKEN, SET_PASSWORD_USER, SET_COMPANIES, ADD_TASK, SET_GLOBAL_COMPANIES, SET_CURRENT_USER, SET_COMPANIES_TABLE } from "../actions/types";
-import { ActionNotification, SetJwtPayload, SetLoadingPayload, SetLoginTokenPayload, SetPasswordTokenPayload, SetPasswordUserPayload, SetTimestampTwoStepVerificationPayload, SetUsersPayload, ShowToastPayload, SetCompaniesPayload, AddTaskPayload, SetGlobalCompaniesPayload, SetCurrentUserPayload, SetCompaniesTablePayload } from "../interfaces/actions";
+import { SET_LOADING, SET_LOGIN_TOKEN, SET_TIMESTAMP_TWO_STEP_VERIFICATION, SHOW_TOAST, SET_JWT, SET_USERS, SET_PASSWORD_TOKEN, SET_PASSWORD_USER, SET_COMPANIES, ADD_TASK, SET_GLOBAL_COMPANIES, SET_CURRENT_USER, SET_COMPANIES_TABLE, SET_VOLTS_DATA, SET_AMPS_DATA, FILTER_VOLTS_DATA, FILTER_AMPS_DATA } from "../actions/types";
+import { ActionNotification, SetJwtPayload, SetLoadingPayload, SetLoginTokenPayload, SetPasswordTokenPayload, SetPasswordUserPayload, SetTimestampTwoStepVerificationPayload, SetUsersPayload, ShowToastPayload, SetCompaniesPayload, AddTaskPayload, SetGlobalCompaniesPayload, SetCurrentUserPayload, SetCompaniesTablePayload, SetAmpsDataPayload, SetVoltsDataPayload, FilterVoltsDataPayload, FilterAmpsDataPayload } from "../interfaces/actions";
 import { ElectripureState } from "../interfaces/reducers";
 
 const initialState: ElectripureState = {
@@ -16,7 +16,13 @@ const initialState: ElectripureState = {
     "passwordToken": null,
     "passwordUser": "{}",
     "tasks": "{}",
-    "currentUser": ""
+    "currentUser": "",
+    "ampsData": `{ "timestamp": [] }`,
+    "ampsDataFiltered": `{ "timestamp": [] }`,
+    "ampsDataToggle": `{}`,
+    "voltsData": `{ "timestamp": [] }`,
+    "voltsDataFiltered": `{ "timestamp": [] }`,
+    "voltsDataToogle": `{}`
 };
 
 export const electripureReducer = (state: ElectripureState = initialState, action: ActionNotification): ElectripureState => {
@@ -114,6 +120,54 @@ export const electripureReducer = (state: ElectripureState = initialState, actio
                     id: setCurrentUserPayload.id,
                     fullname: setCurrentUserPayload.fullname,
                 })
+            };
+            break;
+        case SET_AMPS_DATA:
+            let setAmpsDataPayload: SetAmpsDataPayload = action.payload as SetAmpsDataPayload;
+            return {
+                ...state,
+                "ampsData": JSON.stringify(setAmpsDataPayload.data),
+                // "ampsDataFiltered": JSON.stringify(setAmpsDataPayload.data)
+            };
+            break;
+        case SET_VOLTS_DATA:
+            let setVoltsDataPayload: SetVoltsDataPayload = action.payload as SetVoltsDataPayload;
+            return {
+                ...state,
+                "voltsData": JSON.stringify(setVoltsDataPayload.data),
+                "voltsDataFiltered": JSON.stringify(setVoltsDataPayload.data)
+            };
+            break;
+        case FILTER_VOLTS_DATA:
+            let filterVoltsDataPayload: FilterVoltsDataPayload = action.payload as FilterVoltsDataPayload;
+            let voltsData: any = JSON.parse(state.voltsData);
+            let voltsDataFiltered: any = {};
+            Object.keys(filterVoltsDataPayload).forEach((key: string) => {
+                if (key == "timestamp") {
+                    voltsDataFiltered[key] = voltsData[key];
+                } else if(filterVoltsDataPayload[key] && voltsData.hasOwnProperty(key)) {
+                    voltsDataFiltered[key] = voltsData[key];
+                }
+            });
+            return {
+                ...state,
+                "voltsDataFiltered": JSON.stringify(voltsDataFiltered)
+            };
+            break;
+        case FILTER_AMPS_DATA:
+            let filterAmpsDataPayload: FilterAmpsDataPayload = action.payload as FilterAmpsDataPayload;
+            let ampsData: any = JSON.parse(state.ampsData);
+            let ampsDataFiltered: any = {};
+            Object.keys(filterAmpsDataPayload).forEach((key: string) => {
+                if(filterAmpsDataPayload[key] && ampsData.hasOwnProperty(key)) {
+                    ampsDataFiltered[key] = ampsData[key];
+                }
+            });
+            ampsDataFiltered["timestamp"] = ampsData["timestamp"];
+            return {
+                ...state,
+                "ampsDataToggle": JSON.stringify(filterAmpsDataPayload),
+                "ampsDataFiltered": JSON.stringify(ampsDataFiltered)
             };
             break;
         default:

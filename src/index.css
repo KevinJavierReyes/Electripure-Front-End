@@ -84,6 +84,10 @@
 	border-color: var(--color-black-light);
 }
 
+.bg-color-white {
+	background-color: var(--color-white);
+}
+
 .bg-color-secondary {
 	background-color: var(--color-secondary);
 }
@@ -103,9 +107,7 @@
 	background-color: var(--color-transparent);
 }
 
-.bg-color-white {
-	background-color: var(--color-white);
-}
+
 
 .color-primary-dark {
 	color: var(--color-primary-dark);

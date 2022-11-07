@@ -22,11 +22,7 @@ function InputSelect({ state, message, name, options, placeholder, label, onChan
 
     useEffect(()=> {
         if (defaultSelect != "-1") {
-            console.log("defaultSelect");
-            console.log(defaultSelect);
-            console.log(options);
             const optionSelected = options.filter((item: { id: any, value: any }) => { return item.id == defaultSelect; });
-            console.log(optionSelected);
             if (optionSelected.length > 0) {
                 onChange(optionSelected[0]);
             }

@@ -1,4 +1,4 @@
-import { AddContactRequest, AuthorizationCodeRequest, AuthorizationCodeValidateRequest, CreateUserRequest, ForgotPasswordRequest, GetCompaniesByUserRequest, LoginRequest, ResendEmailRequest, UpdatePasswordRequest, UpdateUserRequest, UploadImageRequest, ValidateTokenRequest } from "../interfaces/electripure-service";
+import { AddContactRequest, AuthorizationCodeRequest, AuthorizationCodeValidateRequest, CreateUserRequest, ForgotPasswordRequest, GetAmpsDataRequest, GetCompaniesByUserRequest, LoginRequest, ResendEmailRequest, UpdatePasswordRequest, UpdateUserRequest, UploadImageRequest, ValidateTokenRequest } from "../interfaces/electripure-service";
 import { BaseService } from "./base-service";
 import environment from "./../config/env";
 import { toast } from "react-toastify";
@@ -151,5 +151,15 @@ export default class ElectripureService extends BaseService {
     }
     return response;
   }
-    
+  
+  static async getAmpsDataGraph(payload: GetAmpsDataRequest) : Promise<ResponseGeneric> {
+    const url = `${environment.ELECTRIPURE_ENDPOINT}/get_chart1_A`;
+    const response = await this.requestPost(url, payload);
+    if (!response.success) {
+      toast.error(response.error, {
+        "position": "bottom-right"
+      });
+    }
+    return response;
+  }
 }

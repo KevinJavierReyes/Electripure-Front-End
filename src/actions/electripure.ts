@@ -1,5 +1,5 @@
-import { ActionNotification, AddTaskPayload, LoginPayload, SendAddContactPayload, SendCreateUserPayload, SendForgotPasswordPayload, SendGetCompaniesByUserPayload, SendGetCompaniesPayload, SendGetCompaniesTablePayload, SendGetUsersPayload, SendImagePayload, SendResendEmailPayload, SendUpdatePasswordPayload, SendUpdateUserPayload, SendValidateTokenPayload, SendVerificationCodePayload, SendVerificationEmailPayload, SetCompaniesPayload, SetCompaniesTablePayload, SetCurrentUserPayload, SetGlobalCompaniesPayload, SetJwtPayload, SetLoadingPayload, SetLoginTokenPayload, SetPasswordTokenPayload, SetPasswordUserPayload, SetTimestampTwoStepVerificationPayload, SetUsersPayload, ShowToastPayload } from "../interfaces/actions";
-import { ADD_TASK, LOGIN, SET_COMPANIES, SET_COMPANIES_TABLE, SET_CURRENT_USER, SET_GLOBAL_COMPANIES, SET_JWT, SET_LOADING, SET_LOGIN_TOKEN, SET_PASSWORD_TOKEN, SET_PASSWORD_USER, SET_TIMESTAMP_TWO_STEP_VERIFICATION, SET_USERS, SHOW_TOAST } from "./types";
+import { ActionNotification, AddTaskPayload, FilterAmpsDataPayload, FilterVoltsDataPayload, LoginPayload, SendAddContactPayload, SendCreateUserPayload, SendForgotPasswordPayload, SendGetAmpsDataPayload, SendGetCompaniesByUserPayload, SendGetCompaniesPayload, SendGetCompaniesTablePayload, SendGetUsersPayload, SendImagePayload, SendResendEmailPayload, SendUpdatePasswordPayload, SendUpdateUserPayload, SendValidateTokenPayload, SendVerificationCodePayload, SendVerificationEmailPayload, SetAmpsDataPayload, SetCompaniesPayload, SetCompaniesTablePayload, SetCurrentUserPayload, SetGlobalCompaniesPayload, SetJwtPayload, SetLoadingPayload, SetLoginTokenPayload, SetPasswordTokenPayload, SetPasswordUserPayload, SetTimestampTwoStepVerificationPayload, SetUsersPayload, SetVoltsDataPayload, ShowToastPayload } from "../interfaces/actions";
+import { ADD_TASK, FILTER_AMPS_DATA, FILTER_VOLTS_DATA, LOGIN, SET_AMPS_DATA, SET_COMPANIES, SET_COMPANIES_TABLE, SET_CURRENT_USER, SET_GLOBAL_COMPANIES, SET_JWT, SET_LOADING, SET_LOGIN_TOKEN, SET_PASSWORD_TOKEN, SET_PASSWORD_USER, SET_TIMESTAMP_TWO_STEP_VERIFICATION, SET_USERS, SET_VOLTS_DATA, SHOW_TOAST } from "./types";
 import ElectripureService from "../service/electripure-service";
 import { ResponseGeneric } from "../interfaces/base-service";
 
@@ -74,6 +74,30 @@ export const setCurrentUser = (payload: SetCurrentUserPayload) => ({
     "type": SET_CURRENT_USER,
     "payload": payload
 });
+
+export const setAmpsData = (payload: SetAmpsDataPayload) => ({
+    "type": SET_AMPS_DATA,
+    "payload": payload
+});
+
+export const setVoltsData = (payload: SetVoltsDataPayload) => ({
+    "type": SET_VOLTS_DATA,
+    "payload": payload
+});
+
+
+
+export const filterAmpsData = (payload: FilterAmpsDataPayload) => ({
+    "type": FILTER_AMPS_DATA,
+    "payload": payload
+});
+
+export const filterVoltsData = (payload: FilterVoltsDataPayload) => ({
+    "type": FILTER_VOLTS_DATA,
+    "payload": payload
+});
+
+
 // Login
 
 export const login = (payload: LoginPayload): any => (async (dispatch: any) => {
@@ -515,4 +539,37 @@ export const sendAddCompany = (payload: any) : any => (async (dispatch: any) => 
         status: "success"
     }));
     return;
+});
+
+
+
+// Amps and Vots
+
+export const sendGetAmpsDataGraph = (payload: SendGetAmpsDataPayload): any => (async (dispatch: any) => {
+    dispatch(setLoading({
+        loading: true
+    }));
+    const response: ResponseGeneric= await ElectripureService.getAmpsDataGraph({
+        date_min: payload.dateMin,
+        device: payload.device
+    });
+    dispatch(setLoading({
+        loading: false
+    }));
+    if(!response.success) {
+        dispatch(showToast({
+            message: response.error!,
+            status: "error"
+        }));
+        return;
+    };
+    let data: any = response.data;
+    dispatch(setAmpsData({
+        "data": {
+            "Amps Line A": data["A1_data"],
+            "Amps Line B": data["A2_data"],
+            "Amps Line C": data["A3_data"],
+            "timestamp": data["TS_data"]
+        }
+    }));
 });
