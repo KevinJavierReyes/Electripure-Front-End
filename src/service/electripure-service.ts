@@ -9,21 +9,18 @@ export default class ElectripureService extends BaseService {
   static async login(payload: LoginRequest): Promise<ResponseGeneric> {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/login?${this.jsonToQueryParams(payload)}`;
     const response = await this.requestPost(url, payload);
-    console.log("login:", response)
     return response;
   }
   
   static async validateToken(payload: ValidateTokenRequest): Promise<ResponseGeneric> {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/validate_token?${this.jsonToQueryParams(payload)}`;
     const response = await this.requestPost(url, payload);
-    console.log("validate token",response)
     return response;
   }
 
   static async authorizationCode(payload: AuthorizationCodeRequest): Promise<ResponseGeneric> {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/autherization_code?${this.jsonToQueryParams(payload)}`;
     const response = await this.requestPost(url, payload);
-    console.log("Authorization code", response)
     return response;
   }
 
@@ -31,7 +28,6 @@ export default class ElectripureService extends BaseService {
     // make the changes here 
     const url = `${environment.ELECTRIPURE_ENDPOINT}/autherization_code_validate?${this.jsonToQueryParams(payload)}`;
     const response = await this.requestPost(url, payload);
-    console.log("authorization validated", response)
     return response;
   }
 

@@ -215,6 +215,20 @@ export const sendUpdatePassword = (payload: SendUpdatePasswordPayload): any => (
     dispatch(setLoading({
         loading: false
     }));
+    if(response.data.message == 'Token is invalid!'){
+        dispatch(setTimestampTwoStepVerification({
+            "timestamp": null
+        }));
+        dispatch(setLoginToken({
+            "token": null
+        }));
+        dispatch(setJwt({
+            "token": null
+        }));
+        localStorage.removeItem("electripureJwt");
+        localStorage.removeItem("user_id");
+        localStorage.removeItem("current_user");
+    }
     if(!response.success) {
         return dispatch(showToast({
             message: response.error!,
@@ -244,6 +258,20 @@ export const sendGetUsers = (payload: SendGetUsersPayload): any => (async (dispa
     dispatch(setLoading({
         loading: false
     }));
+    if(response.data.message == 'Token is invalid!'){
+        dispatch(setTimestampTwoStepVerification({
+            "timestamp": null
+        }));
+        dispatch(setLoginToken({
+            "token": null
+        }));
+        dispatch(setJwt({
+            "token": null
+        }));
+        localStorage.removeItem("electripureJwt");
+        localStorage.removeItem("user_id");
+        localStorage.removeItem("current_user");
+    }
     if(!response.success) {
         return dispatch(showToast({
             message: response.error!,
@@ -266,6 +294,21 @@ export const sendGetCompaniesByUser = (payload: SendGetCompaniesByUserPayload): 
     dispatch(setLoading({
         loading: false
     }));
+    if(response.data.message == 'Token is invalid!'){
+        dispatch(setTimestampTwoStepVerification({
+            "timestamp": null
+        }));
+        dispatch(setLoginToken({
+            "token": null
+        }));
+        dispatch(setJwt({
+            "token": null
+        }));
+        localStorage.removeItem("electripureJwt");
+        localStorage.removeItem("user_id");
+        localStorage.removeItem("current_user");
+    }
+    
     if(!response.success) {
         return dispatch(showToast({
             message: response.error!,
@@ -306,6 +349,20 @@ export const sendCreateUser = (payload: SendCreateUserPayload) : any => (async (
     dispatch(setLoading({
         loading: false
     }));
+    if(response.data.message == 'Token is invalid!'){
+        dispatch(setTimestampTwoStepVerification({
+            "timestamp": null
+        }));
+        dispatch(setLoginToken({
+            "token": null
+        }));
+        dispatch(setJwt({
+            "token": null
+        }));
+        localStorage.removeItem("electripureJwt");
+        localStorage.removeItem("user_id");
+        localStorage.removeItem("current_user");
+    }
     if(!response.success) {
         return dispatch(showToast({
             message: response.error!,
@@ -327,6 +384,20 @@ export const sendGetCompaniesTable = (payload: SendGetCompaniesTablePayload) : a
     dispatch(setLoading({
         loading: false
     }));
+    if(response.data.message == 'Token is invalid!'){
+        dispatch(setTimestampTwoStepVerification({
+            "timestamp": null
+        }));
+        dispatch(setLoginToken({
+            "token": null
+        }));
+        dispatch(setJwt({
+            "token": null
+        }));
+        localStorage.removeItem("electripureJwt");
+        localStorage.removeItem("user_id");
+        localStorage.removeItem("current_user");
+    }
     if(!response.success) {
         return dispatch(showToast({
             message: response.error!,
@@ -347,6 +418,20 @@ export const sendGetCompanies = (payload: SendGetCompaniesPayload): any => (asyn
     dispatch(setLoading({
         loading: false
     }));
+    if(response.data.message == 'Token is invalid!'){
+        dispatch(setTimestampTwoStepVerification({
+            "timestamp": null
+        }));
+        dispatch(setLoginToken({
+            "token": null
+        }));
+        dispatch(setJwt({
+            "token": null
+        }));
+        localStorage.removeItem("electripureJwt");
+        localStorage.removeItem("user_id");
+        localStorage.removeItem("current_user");
+    }
     if(!response.success) {
         return dispatch(showToast({
             message: response.error!,
@@ -369,6 +454,20 @@ export const sendUpdateUser = (payload: SendUpdateUserPayload): any => (async (d
     dispatch(setLoading({
         loading: false
     }));
+    if(response.data.message == 'Token is invalid!'){
+        dispatch(setTimestampTwoStepVerification({
+            "timestamp": null
+        }));
+        dispatch(setLoginToken({
+            "token": null
+        }));
+        dispatch(setJwt({
+            "token": null
+        }));
+        localStorage.removeItem("electripureJwt");
+        localStorage.removeItem("user_id");
+        localStorage.removeItem("current_user");
+    }
     if(!response.success) {
         dispatch(showToast({
             message: response.error!,
@@ -377,10 +476,10 @@ export const sendUpdateUser = (payload: SendUpdateUserPayload): any => (async (d
         return;
     }
     //Create session
-    console.log("send update user", response)
-    dispatch(setJwt({
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.OavGO9EIDazzQq08RNCmzUs4oj7EizPmBnb_NPh-i6M"
-    }));
+    //console.log("send update user", response)
+    //dispatch(setJwt({
+    //    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.OavGO9EIDazzQq08RNCmzUs4oj7EizPmBnb_NPh-i6M"
+    //}));
     dispatch(showToast({
         message: "Account updated successfully!",
         status: "success"
@@ -495,6 +594,20 @@ export const sendAddCompany = (payload: any) : any => (async (dispatch: any) => 
     dispatch(setLoading({
         loading: false
     }));
+    if(response.data.message == 'Token is invalid!'){
+        dispatch(setTimestampTwoStepVerification({
+            "timestamp": null
+        }));
+        dispatch(setLoginToken({
+            "token": null
+        }));
+        dispatch(setJwt({
+            "token": null
+        }));
+        localStorage.removeItem("electripureJwt");
+        localStorage.removeItem("user_id");
+        localStorage.removeItem("current_user");
+    }
     if(!response.success) {
         dispatch(showToast({
             message: response.error!,
