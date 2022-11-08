@@ -18,7 +18,7 @@ function ConfirmCodePage() {
 
     const electripureJwt = useSelector((state: ElectripureState) => state.electripureJwt);
     const loginToken:string = useSelector((state: ElectripureState) => state.loginToken)!;
-    const current_user = JSON.parse(useSelector((state: ElectripureState) => state.currentUser));
+    const current_user = JSON.parse(useSelector((state: ElectripureState) => state.currentUser) ?? "{}");
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -34,7 +34,7 @@ function ConfirmCodePage() {
             localStorage.setItem("electripureJwt", electripureJwt)
             localStorage.setItem("current_user", current_user.fullname);
             localStorage.setItem("user_id", current_user.id);
-            navigate(`/dashboard`);
+            navigate(`/dashboard/user/list`);
         }
     }, [electripureJwt]);
 

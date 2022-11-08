@@ -16,7 +16,7 @@ const initialState: ElectripureState = {
     "passwordToken": null,
     "passwordUser": "{}",
     "tasks": "{}",
-    "currentUser": "",
+    "currentUser": null,
     "ampsData": `{ "timestamp": [] }`,
     "ampsDataFiltered": `{ "timestamp": [] }`,
     "ampsDataToggle": `{}`,
@@ -115,10 +115,10 @@ export const electripureReducer = (state: ElectripureState = initialState, actio
             let setCurrentUserPayload: SetCurrentUserPayload = action.payload as SetCurrentUserPayload;
             return {
                 ...state,
-                "currentUser": {
+                "currentUser": JSON.stringify({
                     id: setCurrentUserPayload.id,
                     fullname: setCurrentUserPayload.fullname,
-                }
+                })
             };
             break;
         case SET_AMPS_DATA:

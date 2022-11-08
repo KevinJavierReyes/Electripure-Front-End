@@ -47,7 +47,7 @@ const AppRouter = () => {
           <Route path="/dashboard" element={<IsAuthenticated><DashboardPage /></IsAuthenticated>}>
             <Route path="user/list" element={<UserListPage />} />
             <Route path="company/list" element={<CompanyListPage />} />
-            <Route path="apmsvots" element={<AmpsVoltsPage />} />
+            <Route path="apmsvolts" element={<AmpsVoltsPage />} />
           </Route>
 
           {/* Else */}

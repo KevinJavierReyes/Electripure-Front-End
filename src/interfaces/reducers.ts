@@ -18,7 +18,7 @@ export interface ElectripureState {
     companies: string;
     globalCompanies: string;
     tasks: string;
-    currentUser: string;
+    currentUser: string | null;
     ampsData: string; //{ "Amps Line A": number[], "Amps Line B": number[], "Amps Line C": number[], "timestamp": [] }
     ampsDataFiltered: string; //{ "Amps Line A": number[], "Amps Line B": number[], "Amps Line C": number[], "timestamp": [] }
     ampsDataToggle: string; //{ "Amps Line A": boolean, "Amps Line B": boolean, "Amps Line C": boolean }
