@@ -1,7 +1,7 @@
 import { useState, useEffect, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { sendVerificationCode, setLoginToken } from "../actions/electripure";
+import { sendVerificationCode, setLoginToken, sendVerificationEmail } from "../actions/electripure";
 import Card from "../components/Card";
 import ConfirmCodeForm from "../components/Form/ConfirmCodeForm";
 import Navbar from "../components/Navbar";
@@ -17,20 +17,26 @@ import { buttonPrimaryStyle, buttonSecondaryStyle } from "./../utils/styles";
 function ConfirmCodePage() {
 
     const electripureJwt = useSelector((state: ElectripureState) => state.electripureJwt);
-    const loginToken = useSelector((state: ElectripureState) => state.loginToken);
+    const loginToken:string = useSelector((state: ElectripureState) => state.loginToken)!;
+    const current_user = JSON.parse(useSelector((state: ElectripureState) => state.currentUser));
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    function resendCode() {
+        dispatch(sendVerificationEmail({
+            "token": loginToken
+        }));
+        console.log('resend code')
+    }
+
     useEffect(()=> {
         if (electripureJwt) {
-            if (localStorage.getItem("rememberPassword") == "true") {
-                localStorage.setItem("electripureJwt", electripureJwt)
-            }
+            localStorage.setItem("electripureJwt", electripureJwt)
+            localStorage.setItem("current_user", current_user.fullname);
+            localStorage.setItem("user_id", current_user.id);
             navigate(`/dashboard`);
         }
     }, [electripureJwt]);
-
-    function resendCode() {}
 
     function submitConfirmCodeForm(data: ConfirmCodeDataForm) {
         dispatch(sendVerificationCode({

@@ -26,6 +26,8 @@ const UserSettings = () => {
             "token": null
         }));
         localStorage.removeItem("electripureJwt");
+        localStorage.removeItem("user_id");
+        localStorage.removeItem("current_user");
         // navigate("/login");
     }
     return (

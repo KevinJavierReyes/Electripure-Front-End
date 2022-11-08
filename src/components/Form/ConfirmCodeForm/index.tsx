@@ -1,3 +1,5 @@
+import { useDispatch, useSelector } from "react-redux";  
+import { ElectripureState } from "./../../../interfaces/reducers"; 
 import { useState } from "react";
 import { INPUT_CONTROL_STATE, TYPE_SPACE, VERIFICATION_CHANNEL } from "../../../config/enum";
 import { ConfirmCodeDataForm, ResetPasswordDataForm, SelectVerifyMethodDataForm } from "../../../interfaces/form";
@@ -17,7 +19,10 @@ function ConfirmCodeForm({onSubmit, resendCode}: {onSubmit: (data: ConfirmCodeDa
         "message": "",
         "state": -1
     });
-
+    const loginToken: string = useSelector((state: ElectripureState) => state.loginToken)!;
+    
+    // TODO implement resend code 
+    
     function submit() {
         if (codeControl.state == INPUT_CONTROL_STATE.OK) {
             onSubmit({
@@ -25,6 +30,7 @@ function ConfirmCodeForm({onSubmit, resendCode}: {onSubmit: (data: ConfirmCodeDa
             });
         }
     }
+    
     
     return (<div className="w-full bg-color-white p-[10px]">
         <Title title="Enter your authorization code"></Title>

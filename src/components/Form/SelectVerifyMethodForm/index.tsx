@@ -24,7 +24,7 @@ function SelectVerifyMethodForm({onSubmit}: {onSubmit: (data: SelectVerifyMethod
                     <p className="color-black-dark f-medium">Email</p>
                 </div>       
             </ButtonSecondary>    
-            <Space type={TYPE_SPACE.INPUT_DISTANCE_VERTICAL}/>
+            {/* <Space type={TYPE_SPACE.INPUT_DISTANCE_VERTICAL}/>
             <ButtonSecondary classes="h-[101px] w-[100px]"  onClick={()=> {onSubmit({"channel": VERIFICATION_CHANNEL.SMS})}}>
                 <div className="flex flex-col justify-center items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-10 h-10">
@@ -32,7 +32,8 @@ function SelectVerifyMethodForm({onSubmit}: {onSubmit: (data: SelectVerifyMethod
                     </svg>
                     <p className="color-black-dark f-medium">SMS</p>
                 </div>       
-            </ButtonSecondary>    
+            </ButtonSecondary> */}
+
 
             {/* <div className="my-[10px] w-full">
                         <OptionCard title="Email" description="jus*********@out***.com" click={selectMethodEmail}>

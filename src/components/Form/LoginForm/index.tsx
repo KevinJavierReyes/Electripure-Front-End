@@ -64,7 +64,7 @@ function LoginForm({ onSubmit, forgotPassword}: { onSubmit: (data: LoginDataForm
             }}
         />
         <Space type={TYPE_SPACE.INPUT_DISTANCE} />
-        <InputCheckbox
+        {/*<InputCheckbox
             state={INPUT_CONTROL_STATE.DEFAULT}
             message={""}
             name="rememberpassword"
@@ -72,7 +72,7 @@ function LoginForm({ onSubmit, forgotPassword}: { onSubmit: (data: LoginDataForm
             onChange={(checked: boolean)=> {
                 setRemember(checked);
             }}
-        />
+        /> */}
         <Space type={TYPE_SPACE.INPUT_DISTANCE} />
         <div className={"justify-center items-center flex"}>
             <ButtonLink onClick={forgotPassword}>
