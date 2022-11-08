@@ -25,23 +25,8 @@ import { filterAmpsData, sendGetAmpsDataGraph } from "../../../actions/electripu
 import { ElectripureState } from "../../../interfaces/reducers";
 import { AmpsDataEntity } from "../../../interfaces/entities";
 import { timestampToDateLocal, unixTimestampToLocal } from "../../../libs/dateformat";
-  
-const GraphTooltip = ({ data }: {data:any}) => {
-  return (
-    <div
-      style={{
-        padding: 20,
-        position: 'absolute',
-        border: '1px solid',
-        borderColor: '#fff8f9',
-        backgroundColor: 'rgba(53,53,53,0.81)',
-        borderRadius: 4,
-        top: data.top,
-        left: data.left,
-      }}
-    ></div>
-  );
-};
+import { useHref } from "react-router-dom";
+
 
 function AmpsGraph () {
   const dispatch = useDispatch();
@@ -84,6 +69,15 @@ function AmpsGraph () {
   );
   const options:ChartOptions = {
     "responsive": true,
+    interaction: {
+      intersect:false,
+      axis: "x"
+    },
+    elements: {
+      point: {
+        radius: 0
+      }
+    },
     "plugins": {
       "legend": {
         "display": false,
@@ -94,26 +88,29 @@ function AmpsGraph () {
         "text": '',
       },
       "tooltip": {
-        enabled: true,
-        callbacks: {
+        "enabled": true,
+        "callbacks": {
           label: (tooltipItem: any) => {
             return `${tooltipItem.dataset.label}: ${tooltipItem.dataset.data[tooltipItem.dataIndex]}`;
           },
         }
-      }
+      },
     }
   };
   const data = {
     "labels": timestamps.map((timestamp: number) => {
       return unixTimestampToLocal(timestamp);
     }),
+    // "labels": timestamps,
     "datasets": labels.map((label: string) => {
       return {
         "label": label,
+        // "borderWidth": 0.5,
+        // "fill": false,
         "data": ampsDataFiltered[label]!,
         "borderColor": colors[label] ?? colors["default"],
         "backgroundColor": colors[label] ?? colors["default"],
-        "pointRadius": "0"
+        // "pointRadius": "0"
       };
     })
   };
@@ -129,8 +126,9 @@ function AmpsGraph () {
         }));
       }}/>
       <div className="w-full p-[30px]">
-          <Line className="max-w-full" options={options} data={data}  />
+          <Line className="max-w-full" options={options} data={data} />
       </div>
+      
       <div className="flex justify-center flex-wrap p-[30px]">
           <div className="w-auto">
               <InputCheckbox

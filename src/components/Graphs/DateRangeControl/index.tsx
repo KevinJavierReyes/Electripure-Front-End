@@ -38,7 +38,7 @@ function DateRangeControl({ defaultTypeRange = 1, onChange, defaultStart, defaul
         if (endDate > -1 && startDate > -1) {
             onChange(new Date(startDate), new Date(endDate));
         }
-    }, [endDate]);
+    }, [`${startDate}-${endDate}`]);
 
     function onChangeDateRangeCustom(start: Date, end: Date) {
         setStartDate(start.getTime());
