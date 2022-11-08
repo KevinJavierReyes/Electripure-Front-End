@@ -1,4 +1,4 @@
-import { HashRouter, Route, Routes } from "react-router-dom";
+import { HashRouter, Route, Routes, Navigate } from "react-router-dom";
 import ConfirmCaptchaPage from "../pages/CreatePasswordStepper/ConfirmCaptchaPage";
 import LoginPage from "../pages/LoginPage";
 import ConfirmCodePage from "../pages/ConfirmCodePage";
@@ -16,6 +16,7 @@ import ConfirmEmailPhonePage from "../pages/CreatePasswordStepper/ConfirmEmailPh
 import CreateBackupContactsPage from "../pages/CreatePasswordStepper/CreateBackupContactsPage";
 import CompanyListPage from "../pages/CompanyListPage";
 import AmpsVoltsPage from "../pages/AmpsVoltsPage";
+import DashboardPage from "../pages/DashboardPage";
 
 const AppRouter = () => {
 
@@ -43,12 +44,15 @@ const AppRouter = () => {
           <Route path="/reset/:token/confirm" element={<ResetPasswordPage />} />
 
           {/* Dashboard */}
-          <Route path="/user/list" element={<IsAuthenticated><UserListPage /></IsAuthenticated>} />
-          <Route path="dashboard/apmsvots" element={<IsAuthenticated><AmpsVoltsPage /></IsAuthenticated>} />
-          <Route path="/company/list" element={<IsAuthenticated><CompanyListPage /></IsAuthenticated>} />
+          <Route path="/dashboard" element={<IsAuthenticated><DashboardPage /></IsAuthenticated>}>
+            <Route path="user/list" element={<UserListPage />} />
+            <Route path="company/list" element={<CompanyListPage />} />
+            <Route path="apmsvolts" element={<AmpsVoltsPage />} />
+          </Route>
 
           {/* Else */}
-          <Route path="*" element={<label className="mx-auto">No existe la ruta especificada</label>} />
+          <Route path="*" element={<Navigate to="/login"/>} />
+          {/* <Route path="*" element={<label className="mx-auto">No existe la ruta especificada</label>} /> */}
 
         </Routes>
       </HashRouter>

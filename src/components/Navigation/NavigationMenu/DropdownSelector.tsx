@@ -30,8 +30,7 @@ const DropdownSelector = ( { onCreateCompany } : {onCreateCompany: () => void}) 
     const handleClean = () => setSearchCompanyName(prev => "")
     
     // get user to make a request with specific user
-    // let userData = JSON.parse(useSelector((state: ElectripureState) => state.currentUser));
-    // let user = userData
+    const user_id = localStorage.getItem('user_id');
     
     const setValue = (e:any) => {
         setCompanySelected(prev => e.target.innerHTML)
@@ -58,7 +57,7 @@ const DropdownSelector = ( { onCreateCompany } : {onCreateCompany: () => void}) 
 
     useEffect(()=>{
         dispatch(sendGetCompaniesByUser({
-            "userId": 42
+            "userId": Number(user_id)
         }));
     }, [companySelected]);
 
@@ -76,11 +75,11 @@ const DropdownSelector = ( { onCreateCompany } : {onCreateCompany: () => void}) 
                                 border-[1px]
                                 border-solid
                                 border-[#D2D6DE]`}>
-                    <div className="w-[82%]">
+                    <div className="w-[80%]">
                     {
                         toggleSearch?
                         <div className="mt-[40px] relative w-[210px] h-[290px]">
-                            <div>
+                            <div className="pl-[15px]">
                                 <div className="rotate-90 w-[40px] h-[40px] relative bottom-[-45px] text-center">
                                 { searchCompanyName.length === 0? 
                                 <span className="text-[26px] text-black font-extrabold">&#9740;</span>
@@ -89,7 +88,7 @@ const DropdownSelector = ( { onCreateCompany } : {onCreateCompany: () => void}) 
                                       className="text-[26px] 
                                                  relative 
                                                  cursor-pointer
-                                                 bottom-[158px] 
+                                                 bottom-[153px] 
                                                  h-full 
                                                  block 
                                                  bg-white">&#10005;</span>
@@ -130,15 +129,18 @@ const DropdownSelector = ( { onCreateCompany } : {onCreateCompany: () => void}) 
                             </div>
                         </div>
                         :
-                        <div className="relative top-[10px]">
+                        <div className="relative top-[10px] left-[15px]">
                             { companySelected? companySelected :"Select Company"}
                         </div>
                     }
                     </div>
-                    <div className="relative top-[8px] right-[5px]"
-                         onClick={() => setToggleSearch(!toggleSearch) }>
+                    <div className="relative w-[45px] h-[45px] cursor-pointer" 
+                         onClick={() => setToggleSearch(!toggleSearch)}>
                         <i 
-                           className={`cursor-pointer
+                           className={`
+                                       relative
+                                       top-[10px]
+                                       left-[20px]
                                        border-solid
                                        border-black
                                        divide-x-[3px]

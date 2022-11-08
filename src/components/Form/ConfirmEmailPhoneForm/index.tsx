@@ -9,7 +9,6 @@ import Title from "../../FormInput/Title";
 import Space from "../../Space";
 
 
-
 function ConfirmEmailPhoneForm({ onSubmit }: { onSubmit: (data: ConfirmEmailPhoneDataForm) => void }) {
 
     const [emailControl, setEmailControl] = useState({

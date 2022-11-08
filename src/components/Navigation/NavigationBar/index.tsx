@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { ElectripureState } from "./../../../interfaces/reducers"
 import { TYPE_SPACE } from "../../../config/enum";
@@ -12,18 +12,20 @@ import UserSettings from "./components/UserSettings"
 
 function NavigationBar() {
     const [ toggleSettings, setToggleSettings ] = useState(false)
-    let user = useSelector((state: ElectripureState) => state.currentUser)
-    console.log("the length of user", user.fullname)
-    let first_name = undefined;
-    let surname = undefined;
-    if(user.fullname === undefined){
-        first_name = ""
-        surname = ""
-
+    const user = localStorage.getItem('current_user');
+    let name;
+    let surname;
+    if(user){
+        name = user.split(" ")[0];
+        surname = user.split(" ")[1];
     } else {
-        first_name = user.fullname.split(" ")[0]
-        surname = user.fullname.split(" ")[1]
+        name = " ";
+        surname = " ";
     }
+
+    useEffect(() =>{
+    
+    }, []);
 
     return (
         <div className="w-full md:h-[65px]	flex justify-between items-start md:items-center px-[30px] md:flex-nowrap flex-wrap flex-col-reverse md:flex-row">
@@ -48,7 +50,7 @@ function NavigationBar() {
                 <div className="flex justify-center items-center flex-nowrap">
                     <span className="flex justify-center items-center flex-nowrap">
                         <span className="f-semibold">{surname},&nbsp;</span>
-                        <span className="f-semibold color-black-dark"> {first_name}</span>
+                        <span className="f-semibold color-black-dark"> {name}</span>
                     </span>
                     <Space type={TYPE_SPACE.FORM_DISTANCE_VERTICAL} />
                     <Space type={TYPE_SPACE.TEXT_DISTANCE} classes="w-full sm:hidden"/>
@@ -67,8 +69,7 @@ function NavigationBar() {
                         </ButtonNotification>
                         <Space type={TYPE_SPACE.TEXT_DISTANCE_VERTICAL}/>
                         <ButtonNotification onClick={() => setToggleSettings(!toggleSettings)}>
-                            {/*<span className="f-bold">{user.length !== 1? user[1][0]: ""}{user? user[0][0]: ""}</span> */}
-                            <span className="f-bold">{user.length !== 1? `${first_name[0]}${surname[0]}`: ""}</span>
+                            <span className="f-bold">{`${surname[0]}${name[0]}`}</span>
                         </ButtonNotification>
                     </div>
                     {toggleSettings ?
