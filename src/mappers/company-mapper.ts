@@ -15,8 +15,8 @@ function toCompaniesRows(companies: any[]): CompanyRowEntity[] {
         return {
             "id": company.id,
             "name": company.company_name,
-            "mdps": company.sites_count,
-            "sites": company.MDP_count,
+            "mdps": company.MDP_count,
+            "sites": company.sites_count,
             "users": company.users_count,
             "status": company.Status,
             "date": company.DateAdd

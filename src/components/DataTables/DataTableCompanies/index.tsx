@@ -11,6 +11,7 @@ function DataTableCompanies({}) {
 
     const companiesTable: CompanyRowEntity[] = JSON.parse(useSelector((state: ElectripureState) => state.companiesTable));
     const dispatch = useDispatch();
+    console.log(companiesTable)
 
     function deleteCompany(company: CompanyRowEntity) {
         console.log(company);
@@ -105,10 +106,10 @@ function DataTableCompanies({}) {
             key: "Date",
             label: "Date Add",
         },
-        {
-            key: "Delete",
-            label: "Delete"
-        }
+        //{
+        //    key: "Delete",
+        //    label: "Delete"
+        //}
     ];
 
     const config: TableConfig = {"headers": headers, "data": data};
