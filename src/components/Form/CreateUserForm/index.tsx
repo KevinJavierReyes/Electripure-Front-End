@@ -71,7 +71,7 @@ function CreateUserForm({onSubmit}: {onSubmit: (data: CreateUserDataForm) => voi
 
 
     return (<div className="w-full bg-color-white px-[30px] pb-[30px]">
-        <Title title="Lets get some basic information"/>
+        <Title title="Let's get some basic information"/>
         <div className="w-full">
             <InputText
                 state={nameControl.state}

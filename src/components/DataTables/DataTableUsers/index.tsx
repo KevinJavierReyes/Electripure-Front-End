@@ -118,10 +118,10 @@ function DataTableUsers({}) {
             key: "Date",
             label: "Date Add",
         },
-        {
-            key: "Delete",
-            label: "Delete"
-        }
+        //{
+        //    key: "Delete",
+        //    label: "Delete"
+        //}
     ];
 
     const config: TableConfig = {"headers": headers, "data": data};
