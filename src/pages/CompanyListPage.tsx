@@ -164,41 +164,36 @@ function CompanyListPage () {
 
     return (
         <Fragment>
-            <Navegation>
-                <div className="px-[30px] py-[10px] w-full">
-                    <div className={"justify-center items-center flex mb-[20px] sm:justify-start flex-col-reverse sm:flex-row"}>
-                        <div className={"w-[200px]"}>
-                            <ButtonSecondary onClick={()=> setShowModal(true)}>
-                                <span className="flex justify-center items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m6-6H6" />
-                                    </svg>
-                                    <span className="f-medium">Add new company</span>
-                                </span>
-                            </ButtonSecondary>
+            <div className="px-[30px] py-[10px] w-full">
+                <div className={"justify-center items-center flex mb-[20px] sm:justify-start flex-col-reverse sm:flex-row"}>
+                    <div className={"w-[200px]"}>
+                        <ButtonSecondary onClick={()=> setShowModal(true)}>
+                            <span className="flex justify-center items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m6-6H6" />
+                                </svg>
+                                <span className="f-medium">Add new company</span>
+                            </span>
+                        </ButtonSecondary>
 
-                            <ModalMiddle show={isShowModal} onClose={()=>{setShowModal(false); setStepCreateCompany(1);}}>
-                                {
-                                    stepCreateCompany == 1 ? <BasicCompanyInformationForm onSubmit={submitBasicCompanyInformationForm}/> :
-                                    stepCreateCompany == 2 ? <MainPointContactForm onSubmit={submitMainPointContactForm} onPrevious={previousStepCreateCompany}/> :
-                                    stepCreateCompany == 3 ? <SiteManagerForm onSubmit={submitSiteManagerForm} onPrevious={previousStepCreateCompany}/> :
-                                    stepCreateCompany == 4 ? <SiteDetailForm defaultData={JSON.parse(siteDefaultDataForm)} onSubmit={submitSiteDetailForm} onPrevious={previousStepCreateCompany}/> :
-                                    stepCreateCompany == 5 ? <CreateMDPForm onSubmit={submitCreateMDPForm} onPrevious={previousStepCreateCompany}/> :
-                                    stepCreateCompany == 6 ? <FinishCreateMDPForm onClose={()=>{setShowModal(false); setStepCreateCompany(1);}}/> : <div></div>
-                                }
-                            </ModalMiddle>  
+                        <ModalMiddle show={isShowModal} onClose={()=>{setShowModal(false); setStepCreateCompany(1);}}>
+                            {
+                                stepCreateCompany == 1 ? <BasicCompanyInformationForm onSubmit={submitBasicCompanyInformationForm}/> :
+                                stepCreateCompany == 2 ? <MainPointContactForm onSubmit={submitMainPointContactForm} onPrevious={previousStepCreateCompany}/> :
+                                stepCreateCompany == 3 ? <SiteManagerForm onSubmit={submitSiteManagerForm} onPrevious={previousStepCreateCompany}/> :
+                                stepCreateCompany == 4 ? <SiteDetailForm defaultData={JSON.parse(siteDefaultDataForm)} onSubmit={submitSiteDetailForm} onPrevious={previousStepCreateCompany}/> :
+                                stepCreateCompany == 5 ? <CreateMDPForm onSubmit={submitCreateMDPForm} onPrevious={previousStepCreateCompany}/> :
+                                stepCreateCompany == 6 ? <FinishCreateMDPForm onClose={()=>{setShowModal(false); setStepCreateCompany(1);}}/> : <div></div>
+                            }
+                        </ModalMiddle>  
 
-                        </div>
-                        <span className="ml-[20px]"><h3 className="f-bold text-lg">Company Management</h3></span>
                     </div>
-                    <div className="w-full rounded border-color-secondary border">
-                        <DataTableCompanies />
-                    </div>
+                    <span className="ml-[20px]"><h3 className="f-bold text-lg">Company Management</h3></span>
                 </div>
-            </Navegation>
-            {/* <ModalMiddle show={isShowModal} onClose={()=>{setShowModal(false)}}>
-                <CreateUserForm onSubmit={submitCreateUserForm}/>
-            </ModalMiddle>   */}
+                <div className="w-full rounded border-color-secondary border">
+                    <DataTableCompanies />
+                </div>
+            </div>
         </Fragment>
     );
 }
