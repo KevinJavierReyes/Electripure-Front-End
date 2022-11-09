@@ -19,7 +19,7 @@ const SelectedCompanies = ({companySelected}: any) => {
 
     return (
         <Fragment>
-            <div className="w-[80%] mt-[60px]">
+            <div className="w-[80%] mt-[60px] overflow-scroll">
             {
                 companyArray.length !== 0 ? 
                 companyArray[0]['list_sites'].map((site:any, site_index:any) => (

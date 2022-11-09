@@ -16,12 +16,63 @@ import Space from "../../Space";
 import StepperProgress from "../../StepperProgress";
 
 
-
 function BasicCompanyInformationForm({onSubmit}: { onSubmit: (data: BasicCompanyInformationDataForm) => void }) {
 
     const dispatch = useDispatch();
 
     const uploadLogoTask: TaskEntity = JSON.parse(useSelector((state: ElectripureState) => state.tasks))["UPLOAD_LOGO"] ?? {};
+    const stateList: any[] = [
+                                    "Alabama",
+                                    "Alaska",
+                                    "Arizona",
+                                    "Arkansas",
+                                    "California",
+                                    "Colorado",
+                                    "Connecticut",
+                                    "Delaware",
+                                    "Florida",
+                                    "Georgia",
+                                    "Hawaii",
+                                    "Idaho",
+                                    "Illinois",
+                                    "Indiana",
+                                    "Iowa",
+                                    "Kansas",
+                                    "Kentucky",
+                                    "Louisiana",
+                                    "Maine",
+                                    "Maryland",
+                                    "Massachusetts",
+                                    "Michigan",
+                                    "Minnesota",
+                                    "Mississippi",
+                                    "Missouri",
+                                    "Montana",
+                                    "Nebraska",
+                                    "Nevada",
+                                    "New Hampshire",
+                                    "New Jersey",
+                                    "New Mexico",
+                                    "New York",
+                                    "North Carolina",
+                                    "North Dakota",
+                                    "Ohio",
+                                    "Oklahoma",
+                                    "Oregon",
+                                    "Pennsylvania",
+                                    "Rhode Island",
+                                    "South Carolina",
+                                    "South Dakota",
+                                    "Tennessee",
+                                    "Texas",
+                                    "Utah",
+                                    "Vermont",
+                                    "Virginia",
+                                    "Washington",
+                                    "West Virginia",
+                                    "Wisconsin",
+                                    "Wyoming"
+                                    ];
 
     const [companyControl, setCompanyControl] = useState({
         "state": INPUT_CONTROL_STATE.DEFAULT,
@@ -108,7 +159,7 @@ function BasicCompanyInformationForm({onSubmit}: { onSubmit: (data: BasicCompany
         </div>
         <Space type={TYPE_SPACE.INPUT_DISTANCE} />
         <div className="mx-auto w-full max-w-[650px]" style={{ "textAlign": "center" }}>
-            <Title title="Lets get some basic company information"/>
+            <Title title="Let's get some basic company information"/>
         </div>
         <div className="w-full flex">
             <div className="w-[200px] p-[5px]  h-[200px]">
@@ -176,10 +227,10 @@ function BasicCompanyInformationForm({onSubmit}: { onSubmit: (data: BasicCompany
                     <InputSelect
                         name="state"
                         label="State"
-                        options={[{
-                            "id": "1",
-                            "value": "State 01"
-                        }]}
+                        //options={[{"id": "01", "value": "state 01"}, {"id": "02", "value": "state 02"}]}
+                        options={stateList.map((value, index) => (
+                            {"id": index, "value": value}
+                        ))}
                         placeholder="Select State"
                         state={stateControl.state}
                         message={stateControl.message}
