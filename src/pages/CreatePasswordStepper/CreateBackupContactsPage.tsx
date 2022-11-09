@@ -32,7 +32,7 @@ function CreateBackupContactsPage() {
   }
   
   function skip() {
-    navigate(`/user/list`);
+    navigate(`/dashboard`);
   }
 
   return (

@@ -49,6 +49,16 @@ export interface GlobalCompanyEntity {
 
 export interface TaskEntity {
     key: String;
-    state: TASK_STATE,
-    result: any
+    state: TASK_STATE;
+    result: any;
+}
+
+export interface AmpsDataEntity {
+    [key: string]: number[]; 
+    timestamp: number[];
+}
+
+export interface VoltsDataEntity {
+    [key: string]: number[]; 
+    timestamp: number[];
 }

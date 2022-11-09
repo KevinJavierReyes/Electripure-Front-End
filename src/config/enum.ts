@@ -31,3 +31,11 @@ export enum VERIFICATION_CHANNEL {
     SMS = 1,
     EMAIL = 2
 }
+
+export enum TYPE_DATE_RANGE {
+    ONE_MON = 1,
+    THREE_MON = 2,
+    SIX_MON = 3,
+    ONE_YEAR = 4,
+    CUSTOM = 5
+}

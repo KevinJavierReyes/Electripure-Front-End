@@ -65,4 +65,11 @@ export interface UploadImageRequest {
 }
 
 
+export interface GetAmpsDataRequest {
+    date_min: string;
+    device: number;
+}
+
+
+
 

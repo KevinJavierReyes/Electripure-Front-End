@@ -1,5 +1,5 @@
 import { TASK_STATE } from "../config/enum";
-import { CompanyEntity, CompanyRowEntity, GlobalCompanyEntity, UserEntity } from "./entities";
+import { AmpsDataEntity, CompanyEntity, CompanyRowEntity, GlobalCompanyEntity, UserEntity, VoltsDataEntity } from "./entities";
 
 
 export interface ActionNotification {
@@ -139,6 +139,31 @@ export interface SendAddContactPayload {
 
 export interface AddTaskPayload {
     key: String;
-    state: TASK_STATE,
-    result: any
+    state: TASK_STATE;
+    result: any;
+}
+
+
+// Amps and volts
+
+export interface SetAmpsDataPayload {
+    data: AmpsDataEntity;
+}
+
+export interface SetVoltsDataPayload {
+    data: VoltsDataEntity;
+}
+
+export interface FilterAmpsDataPayload {
+    [key: string]: Boolean;
+}
+
+export interface FilterVoltsDataPayload {
+    [key: string]: Boolean;
+}
+
+export interface SendGetAmpsDataPayload {
+    dateMin: string;
+    dateMax: string;
+    device: number;
 }

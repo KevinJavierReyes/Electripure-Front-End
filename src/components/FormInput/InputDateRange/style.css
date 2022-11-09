@@ -1,0 +1,16 @@
+
+
+.bg-primary-react-date{
+    background-color: var(--color-primary);
+}
+.rdrDateDisplayItemActive {
+    border-color: var(--color-primary);
+}
+
+.rdrInRange, .rdrEndEdge, .rdrStartEdge {
+    background-color: var(--color-primary);
+}
+
+.rdrDayInPreview, .rdrDayEndPreview, .rdrDayStartPreview {
+    border-color: var(--color-primary);
+}

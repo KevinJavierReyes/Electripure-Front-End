@@ -42,7 +42,7 @@ const MDP = (mdp: any) => {
                 ))}
                 { mdp['mdp'].sub_mdp?.map((sub_mdp:any, index_sub_mdp: any) => (
                     <div key={index_sub_mdp} className={togglesubData? "text-left m-1 text-black w-[80%] pl-[40px]" : "hidden" }>
-                        { sub_mdp == "Amps & Vots" ? <p><strong className="cursor-pointer" onClick={ () => {  navigate("/dashboard/apmsvots") } }>{sub_mdp}</strong></p> : <p><strong>{sub_mdp}</strong></p>}
+                        { sub_mdp == "Amps & Volts" ? <p><strong className="cursor-pointer" onClick={ () => {  navigate("/dashboard/apmsvolts") } }>{sub_mdp}</strong></p> : <p><strong>{sub_mdp}</strong></p>}
                     </div>
                 ))}
             </div>

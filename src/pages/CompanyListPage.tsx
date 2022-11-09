@@ -28,12 +28,6 @@ import FinishCreateMDPForm from "./../components/Form/FinishCreateMDPForm"
 import Navegation from "../components/Navigation";
 import { ButtonSecondary } from "../components/FormInput/Button";
 import DataTableCompanies from "../components/DataTables/DataTableCompanies";
-// Import actions
-// import { sendCreateUser } from "../actions/electripure";
-// import BasicCompanyInformationForm from "../components/Form/BasicCompanyInformationForm";
-// import MainPointContactForm from "../components/Form/MainPointContactForm";
-// import SiteManagerForm from "../components/Form/SiteManagerForm";
-// import SiteDetailForm from "../components/Form/SiteDetailForm";
 
 function CompanyListPage () {
     const [isShowModal, setShowModal] = useState(false);
@@ -167,14 +161,6 @@ function CompanyListPage () {
             setStepCreateCompany(1);
         }
     }, [toastMessage])
-
-    // const [isShowModal, setShowModal] = useState(false);
-    // const dispatch = useDispatch();
-
-    // function submitCreateUserForm(data: CreateUserDataForm) {
-    //     dispatch(sendCreateUser(data));
-    //     setShowModal(false);
-    // }
 
     return (
         <Fragment>
