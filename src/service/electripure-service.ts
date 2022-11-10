@@ -1,4 +1,4 @@
-import { AddContactRequest, AuthorizationCodeRequest, AuthorizationCodeValidateRequest, CreateUserRequest, ForgotPasswordRequest, GetAmpsDataRequest, GetCompaniesByUserRequest, LoginRequest, ResendEmailRequest, UpdatePasswordRequest, UpdateUserRequest, UploadImageRequest, ValidateTokenRequest } from "../interfaces/electripure-service";
+import { AddContactRequest, AuthorizationCodeRequest, AuthorizationCodeValidateRequest, CreateUserRequest, ForgotPasswordRequest, GetAmpsDataRequest, GetCompaniesByUserRequest, GetVoltsDataRequest, LoginRequest, ResendEmailRequest, ToogleUserStateRequest, UpdatePasswordRequest, UpdateUserRequest, UploadImageRequest, ValidateTokenRequest } from "../interfaces/electripure-service";
 import { BaseService } from "./base-service";
 import environment from "./../config/env";
 import { toast } from "react-toastify";
@@ -90,6 +90,17 @@ export default class ElectripureService extends BaseService {
     }
     return response;
   }
+  static async toogleUserState(payload: ToogleUserStateRequest): Promise<ResponseGeneric> {
+    const url = `${environment.ELECTRIPURE_ENDPOINT}/change_status_user`;
+    const header_auth = {"Authorization" : `Bearer ${localStorage.getItem('electripureJwt')}`}
+    const response = await this.requestPost(url, payload, header_auth);
+    if (!response.success) {
+      toast.error(response.error, {
+        "position": "bottom-right"
+      });
+    }
+    return response;
+  }
 
   static async forgotPassword(payload: ForgotPasswordRequest): Promise<ResponseGeneric> {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/forgot_password?${this.jsonToQueryParams(payload)}`;
@@ -165,6 +176,28 @@ export default class ElectripureService extends BaseService {
   
   static async getAmpsDataGraph(payload: GetAmpsDataRequest) : Promise<ResponseGeneric> {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/get_chart1_A`;
+    const response = await this.requestPost(url, payload);
+    if (!response.success) {
+      toast.error(response.error, {
+        "position": "bottom-right"
+      });
+    }
+    return response;
+  }
+
+  static async getVoltsDataGraph(payload: GetVoltsDataRequest) : Promise<ResponseGeneric> {
+    const url = `${environment.ELECTRIPURE_ENDPOINT}/get_chart1_V`;
+    const response = await this.requestPost(url, payload);
+    if (!response.success) {
+      toast.error(response.error, {
+        "position": "bottom-right"
+      });
+    }
+    return response;
+  }
+
+  static async getPowerActiveDataGraph(payload: GetVoltsDataRequest) : Promise<ResponseGeneric> {
+    const url = `${environment.ELECTRIPURE_ENDPOINT}/get_chart3_Active`;
     const response = await this.requestPost(url, payload);
     if (!response.success) {
       toast.error(response.error, {

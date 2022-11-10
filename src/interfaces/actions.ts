@@ -98,6 +98,15 @@ export interface SendResendEmailPayload {
     id: number;
 }
 
+export interface SendActivateDeactivateUserPayload {
+    id: number;
+    action: string;
+}
+
+export interface SendActivateUserPayload {
+    id: number;
+}
+
 
 export interface SendGetCompaniesTablePayload {
 
