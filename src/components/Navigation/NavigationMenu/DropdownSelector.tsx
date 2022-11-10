@@ -101,7 +101,7 @@ const DropdownSelector = ( { onCreateCompany } : {onCreateCompany: () => void}) 
                                     onChange={handleSearch}
                                     placeholder="Search Company"/>
                                 <div className="h-[170px]">
-                                    <ul className="overflow-scroll h-full">
+                                    <ul className="overflow-auto h-full">
                                     {
                                         searchCompanyName === "" || filteredData.length === 0 ? companies?.map((company, index) => (
                                         <li key={index} 

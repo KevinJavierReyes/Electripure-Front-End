@@ -17,6 +17,10 @@ import CreateBackupContactsPage from "../pages/CreatePasswordStepper/CreateBacku
 import CompanyListPage from "../pages/CompanyListPage";
 import AmpsVoltsPage from "../pages/AmpsVoltsPage";
 import DashboardPage from "../pages/DashboardPage";
+import AmpsGraph from "../components/Graphs/AmpsGraph";
+import VoltsGraph from "../components/Graphs/VoltsGraph";
+import PowerPage from "../pages/PowerPage";
+import PowerActiveGraph from "../components/Graphs/PowerActiveGraph";
 
 const AppRouter = () => {
 
@@ -47,7 +51,15 @@ const AppRouter = () => {
           <Route path="/dashboard" element={<IsAuthenticated><DashboardPage /></IsAuthenticated>}>
             <Route path="user/list" element={<UserListPage />} />
             <Route path="company/list" element={<CompanyListPage />} />
-            <Route path="apmsvolts" element={<AmpsVoltsPage />} />
+            <Route path="apmsvolts/:meterId" element={<AmpsVoltsPage />}>
+              <Route path="amps" element={<AmpsGraph />} />
+              <Route path="volts" element={<VoltsGraph />} />
+            </Route>
+            <Route path="power/:meterId" element={<PowerPage />}>
+              <Route path="active" element={<PowerActiveGraph />} />
+            </Route>
+            
+            
           </Route>
 
           {/* Else */}

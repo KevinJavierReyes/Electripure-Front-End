@@ -20,6 +20,10 @@ export interface ResendEmailRequest {
     id: number;
 }
 
+export interface ToogleUserStateRequest {
+    user_id: number;
+}
+
 export interface LoginRequest {
     email: string;
     password: string;
@@ -67,6 +71,20 @@ export interface UploadImageRequest {
 
 export interface GetAmpsDataRequest {
     date_min: string;
+    date_max: string;
+    device: number;
+}
+
+
+export interface GetVoltsDataRequest {
+    date_min: string;
+    date_max: string;
+    device: number;
+}
+
+export interface GetPowerDataRequest {
+    date_min: string;
+    date_max: string;
     device: number;
 }
 
