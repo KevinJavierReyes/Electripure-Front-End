@@ -23,6 +23,9 @@ export interface ResendEmailRequest {
 export interface ToogleCompanyStateRequest {
     company_id: number;
 }
+export interface ToogleUserStateRequest {
+    user_id: number;
+}
 
 export interface LoginRequest {
     email: string;
