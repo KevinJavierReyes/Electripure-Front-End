@@ -20,8 +20,8 @@ export interface ResendEmailRequest {
     id: number;
 }
 
-export interface ToogleUserStateRequest {
-    user_id: number;
+export interface ToogleCompanyStateRequest {
+    company_id: number;
 }
 
 export interface LoginRequest {

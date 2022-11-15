@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { sendGetCompaniesTable, sendGetUsers, sendResentEmail, setCompaniesTable, setUsers } from "../../../actions/electripure";
+import { sendActivateDeactivateCompany, sendGetCompaniesTable, sendGetUsers, sendResentEmail, setCompaniesTable, setUsers } from "../../../actions/electripure";
 import { CompanyRowEntity, UserEntity } from "../../../interfaces/entities";
 import { ElectripureState } from "../../../interfaces/reducers";
 import DataTable from "../../DataTable";
@@ -17,6 +17,16 @@ function DataTableCompanies({}) {
         console.log(company);
         console.log("Company deleted!");
     }
+
+     
+    async function deactivateCompany(company: CompanyRowEntity) {
+        dispatch(sendActivateDeactivateCompany({"id": company.id, "action": "deactivate"}))
+    }
+    
+    async function activateCompany(company: CompanyRowEntity) {
+        dispatch(sendActivateDeactivateCompany({"id": company.id, "action": "activate"}))
+    }
+     
     
     // async function resendInvite(user: UserEntity) {
     //     dispatch(sendResentEmail({"id": user.id}))
@@ -45,7 +55,9 @@ function DataTableCompanies({}) {
                 "value": companyRow.users
             },
             "Status": {
-                "label": companyRow.status == "Active" ? <span><span className="color-success f-bold">{companyRow.status}</span><span className="cursor-pointer color-secondary underline f-light text-sm ml-[10px]">deactivate</span></span> : <span><span className="color-error f-bold">{companyRow.status}</span></span>,
+                "label": companyRow.status == "Active" ?
+                        <span><span className="color-success f-bold">{companyRow.status}</span><span className="cursor-pointer color-secondary underline f-light text-sm ml-[10px]" onClick={()=>{deactivateCompany(companyRow)}}>deactivate</span></span> :
+                        <span><span className="color-error f-bold">{companyRow.status}</span><span className="cursor-pointer color-secondary underline f-light text-sm ml-[10px]" onClick={()=>{activateCompany(companyRow)}}>activate</span></span>,
                 "value": companyRow.status
             },
             "Date": {
