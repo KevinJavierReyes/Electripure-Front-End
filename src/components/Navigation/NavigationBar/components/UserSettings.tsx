@@ -32,29 +32,29 @@ const UserSettings = () => {
     }
     return (
         <Fragment>
-            <div className="flex hover:bg-slate-100 rounded-lg cursor-pointer" >
+            <div className="flex hover:bg-slate-100 rounded-lg cursor-pointer px-[10px]" >
                 <img src={companyImg} alt="" />
                 <p className="m-[15px]" onClick={()=>{ navigate("/dashboard/company/list") }}>Company management</p>
             </div>
-            <div className="flex hover:bg-slate-100 rounded-lg cursor-pointer">
+            <div className="flex hover:bg-slate-100 rounded-lg cursor-pointer px-[10px]">
                 <img src={userImg} alt="" />
                 <p className="m-[15px]" onClick={()=>{navigate("/dashboard/user/list")}}>Users management</p>
             </div>
-            <div className="flex hover:bg-slate-100 rounded-lg cursor-pointer">
+            <div className="flex hover:bg-slate-100 rounded-lg cursor-pointer px-[10px]">
                 <img src={deviceImg} alt="" />
                 <p className="m-[15px]" onClick={()=>{navigate("/dashboard/device/list")}}>Device management</p>
             </div>
-            <div className="flex hover:bg-slate-100 rounded-lg cursor-pointer">
+            <div className="flex hover:bg-slate-100 rounded-lg cursor-pointer px-[10px]">
                 <img src={chageLogImg} alt="" />
                 <p className="m-[15px]" onClick={()=>{}}>Change log</p>
             </div>
-            <div className="flex hover:bg-slate-100 rounded-lg cursor-pointer">
+            <div className="flex hover:bg-slate-100 rounded-lg cursor-pointer px-[10px]">
                 <img src={settingsImg} alt="" />
                 <p className="m-[15px]" onClick={()=>{}}>Settings</p>
             </div>
             <hr />
             
-            <div onClick={logout} className="flex hover:bg-slate-100 rounded-lg cursor-pointer">
+            <div onClick={logout} className="flex hover:bg-slate-100 rounded-lg cursor-pointer px-[10px]">
                 <img src={logoutImg} alt="" />
                 <p className="m-[15px]">Logout</p>
             </div>
