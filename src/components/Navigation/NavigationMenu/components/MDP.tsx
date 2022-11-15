@@ -20,7 +20,7 @@ const MDP = (mdp: any) => {
                         </div>
                     </div>
                     <div onClick={() =>setSubToggleData(prev => !togglesubData)} className="w-[50px] h-[50px] my-auto border-l-2 cursor-pointer">
-                            <i className={`
+                            <i className={`inline-block
                                             border-solid
                                             border-black 
                                             divide-x-[3px] 

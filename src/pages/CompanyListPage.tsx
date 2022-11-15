@@ -175,7 +175,6 @@ function CompanyListPage () {
                                 <span className="f-medium">Add new company</span>
                             </span>
                         </ButtonSecondary>
-
                         <ModalMiddle show={isShowModal} onClose={()=>{setShowModal(false); setStepCreateCompany(1);}}>
                             {
                                 stepCreateCompany == 1 ? <BasicCompanyInformationForm onSubmit={submitBasicCompanyInformationForm}/> :

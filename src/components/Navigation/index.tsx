@@ -1,5 +1,5 @@
 import { Fragment, useState } from "react";
-import { NAVEGATION_STATE, TYPE_SPACE } from "../../config/enum";
+import { NAVEGATION_STATE, TYPE_SPACE, USER_SETTINGS } from "../../config/enum";
 import Space from "../Space";
 import NavigationBar from "./NavigationBar";
 import NavigationMenu from "./NavigationMenu";
@@ -9,9 +9,13 @@ import "./style.css";
 function Navegation({children}: {children: any}) {
 
     const [stateNavegation, setStateNavegation] = useState(NAVEGATION_STATE.CLOSE);
+    const [ isOpen, setIsOpen ] = useState(USER_SETTINGS.CLOSE)
 
     function toggleNavegation() {
         (stateNavegation == NAVEGATION_STATE.OPEN ? setStateNavegation(NAVEGATION_STATE.CLOSE) : setStateNavegation(NAVEGATION_STATE.OPEN));
+    }
+    function handleOpen(){
+        (isOpen == USER_SETTINGS.OPEN ? setIsOpen(USER_SETTINGS.CLOSE) : setIsOpen(USER_SETTINGS.OPEN))
     }
 
     return (<Fragment>
@@ -24,7 +28,7 @@ function Navegation({children}: {children: any}) {
                     <NavigationMenu/>
                 </div>
             </div>
-            <div className="w-full">
+            <div onClick={handleOpen} className="w-full">
                 <Space type={TYPE_SPACE.TEXT_DISTANCE} classes="w-full lg:hidden"/>
                 <div className="w-full lg:hidden px-[20px] relative">
                     <div className="w-full h-full t-0 l-0 absolute flex justify-center items-center -z-10">
@@ -36,7 +40,7 @@ function Navegation({children}: {children: any}) {
                         </svg>
                     </div>
                 </div>
-                <NavigationBar/>
+                <NavigationBar props={isOpen} />
                 <div className="w-full">    
                     {children}
                 </div>

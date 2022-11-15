@@ -39,3 +39,8 @@ export enum TYPE_DATE_RANGE {
     ONE_YEAR = 4,
     CUSTOM = 5
 }
+
+export enum USER_SETTINGS {
+    OPEN = 1,
+    CLOSE = 0
+}

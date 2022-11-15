@@ -10,7 +10,7 @@ import Space from "../../Space";
 import UserSettings from "./components/UserSettings"
 
 
-function NavigationBar() {
+function NavigationBar(isOpen: boolean) {
     const [ toggleSettings, setToggleSettings ] = useState(false)
     const user = localStorage.getItem('current_user');
     let name;
@@ -22,9 +22,10 @@ function NavigationBar() {
         name = " ";
         surname = " ";
     }
+    console.log(isOpen)
 
     useEffect(() =>{
-    
+
     }, []);
 
     return (
@@ -69,14 +70,14 @@ function NavigationBar() {
                         </ButtonNotification>
                         <Space type={TYPE_SPACE.TEXT_DISTANCE_VERTICAL}/>
                         <ButtonNotification onClick={() => setToggleSettings(!toggleSettings)}>
-                            <span className="f-bold">{`${surname[0]}${name[0]}`}</span>
+                            <span id="button-settings" className="f-bold">{`${surname[0]}${name[0]}`}</span>
                         </ButtonNotification>
                     </div>
-                    {toggleSettings ?
-                    <div className="absolute shadow-md md:top-[110px] lg:top-[70px] bg-white w-[300px] p-[20px] right-[30px] rounded-lg">
+                    { toggleSettings ?
+                    <div id="user-settings" className="z-10 absolute shadow-md md:top-[110px] lg:top-[70px] bg-white w-[300px] p-[20px] right-[30px] rounded-lg">
                         <UserSettings />
                     </div>
-                    :""
+                    : <div id="user-settings" className=""></div>
                     }
 
                 </div>
