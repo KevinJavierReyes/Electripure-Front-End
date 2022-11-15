@@ -7,11 +7,12 @@ import { setJwt, setLoginToken, setTimestampTwoStepVerification } from "./../../
 import InputSearch from "../../FormInput/InputSearch";
 import Space from "../../Space";
 
-import UserSettings from "./components/UserSettings"
+import FloarUserSetting from "./components/FloarUserSetting";
+import FloatUserSetting from "./components/FloarUserSetting";
 
 
 function NavigationBar() {
-    const [ toggleSettings, setToggleSettings ] = useState(false)
+    
     const user = localStorage.getItem('current_user');
     let name;
     let surname;
@@ -68,16 +69,11 @@ function NavigationBar() {
                             </svg>
                         </ButtonNotification>
                         <Space type={TYPE_SPACE.TEXT_DISTANCE_VERTICAL}/>
-                        <ButtonNotification onClick={() => setToggleSettings(!toggleSettings)}>
+                        <FloatUserSetting>
                             <span className="f-bold">{`${surname[0]}${name[0]}`}</span>
-                        </ButtonNotification>
+                        </FloatUserSetting>
                     </div>
-                    {toggleSettings ?
-                    <div className="absolute shadow-md md:top-[110px] lg:top-[70px] bg-white w-[300px] p-[20px] right-[30px] rounded-lg">
-                        <UserSettings />
-                    </div>
-                    :""
-                    }
+                   
 
                 </div>
             </div>
