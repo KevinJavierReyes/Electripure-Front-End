@@ -15,14 +15,14 @@ function PowerActiveGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
   console.log("Render PowerActiveGraph......");
   const dispatch = useDispatch();
   const [data, setData] = useState(JSON.stringify({ "x": [], "y": {
-    "Power Active A": [],
-    "Power Active B": [],
-    "Power Active C": [],
+    "Power Active Min": [],
+    "Power Active Max": [],
+    // "Power Active C": [],
   }}));
   const colors: any = {
-    "Power Active A": "#00AEE8",
-    "Power Active B": "#55BA47",
-    "Power Active C": "#263B92",
+    "Power Active Min": "#00AEE8",
+    "Power Active Max": "#55BA47",
+    // "Power Active C": "#263B92",
     "default": "#ed4278"
   };
   async function getPowerActiveData(start: Date, end: Date) {
@@ -49,9 +49,8 @@ function PowerActiveGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
     setData(JSON.stringify({
       "x": data["TS_data"],
       "y": {
-        "Power Active A": data["A1_data"],
-        "Power Active B": data["A2_data"],
-        "Power Active C": data["A3_data"]
+        "Power Active Min": data["ACT_MIN"],
+        "Power Active Max": data["ACT_MAX"]
       }
     }));
   }

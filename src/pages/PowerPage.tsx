@@ -21,7 +21,7 @@ function PowerPage () {
                             Active
                         </Tab>
                         <Tab active={tapIndex == 2} onClick={()=> { if (tapIndex != 2) { setTapIndex(2); navigate("factor") } }}>
-                            Power factor
+                            factor
                         </Tab>
                         <Tab active={tapIndex == 3} onClick={()=> { if (tapIndex != 3) { setTapIndex(3); navigate("apparent") } }}>
                             Apparent

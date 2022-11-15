@@ -4,34 +4,33 @@ import DateRangeControl from "../DateRangeControl";
 import { setLoading, showToast } from "../../../actions/electripure";
 import { timestampToDateLocal } from "../../../libs/dateformat";
 import LineGraph from "../LineGraph";
-import ElectripureService from "./../../../service/electripure-service";
+import ElectripureService from "../../../service/electripure-service";
 import { ResponseGeneric } from "../../../interfaces/base-service";
 import { useParams } from "react-router";
 
 
-function AmpsGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
+function PowerReactive ({ defaultMeterId }: { defaultMeterId?: number }) {
   let { meterId } = useParams();
   let deviceId = defaultMeterId ?? parseInt(meterId!);
-  console.log("Render AmpsGraph......");
+  console.log("Render PowerReactive......");
   const dispatch = useDispatch();
   const [data, setData] = useState(JSON.stringify({ "x": [], "y": {
-    "Amps Line A": [],
-    "Amps Line B": [],
-    "Amps Line C": [],
+    "Power Reactive Min": [],
+    "Power Reactive Max": [],
+    // "Power Factor C": [],
   }}));
   const colors: any = {
-    "Amps Line A": "#00AEE8",
-    "Amps Line B": "#55BA47",
-    "Amps Line C": "#263B92",
+    "Power Reactive Min": "#00AEE8",
+    "Power Reactive Max": "#55BA47",
+    // "Power Factor C": "#263B92",
     "default": "#ed4278"
   };
-
-  async function getVoltsData(start: Date, end: Date) {
+  async function getPowerReactiveData(start: Date, end: Date) {
 
     dispatch(setLoading({
         loading: true
     }));
-    const response: ResponseGeneric = await ElectripureService.getAmpsDataGraph({
+    const response: ResponseGeneric = await ElectripureService.getPowerReactiveDataGraph({
         date_min: timestampToDateLocal(start.getTime()),
         date_max: timestampToDateLocal(end.getTime()),
         device: deviceId
@@ -50,17 +49,16 @@ function AmpsGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
     setData(JSON.stringify({
       "x": data["TS_data"],
       "y": {
-        "Amps Line A": data["A1_data"],
-        "Amps Line B": data["A2_data"],
-        "Amps Line C": data["A3_data"]
+        "Power Reactive Min": data["REACT_MIN"],
+        "Power Reactive Max": data["REACT_MAX"]
       }
     }));
   }
 
   return (<Fragment>
-      <DateRangeControl onChange={getVoltsData}/>
+      <DateRangeControl onChange={getPowerReactiveData}/>
       <LineGraph data={JSON.parse(data)} colors={colors} />
   </Fragment>);
 }
 
-export default AmpsGraph;
+export default PowerReactive;

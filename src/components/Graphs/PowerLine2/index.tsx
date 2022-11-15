@@ -4,34 +4,33 @@ import DateRangeControl from "../DateRangeControl";
 import { setLoading, showToast } from "../../../actions/electripure";
 import { timestampToDateLocal } from "../../../libs/dateformat";
 import LineGraph from "../LineGraph";
-import ElectripureService from "./../../../service/electripure-service";
+import ElectripureService from "../../../service/electripure-service";
 import { ResponseGeneric } from "../../../interfaces/base-service";
 import { useParams } from "react-router";
 
 
-function AmpsGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
+function PowerLine2 ({ defaultMeterId }: { defaultMeterId?: number }) {
   let { meterId } = useParams();
   let deviceId = defaultMeterId ?? parseInt(meterId!);
-  console.log("Render AmpsGraph......");
+  console.log("Render PowerLine2......");
   const dispatch = useDispatch();
   const [data, setData] = useState(JSON.stringify({ "x": [], "y": {
-    "Amps Line A": [],
-    "Amps Line B": [],
-    "Amps Line C": [],
+    "Power Line B Min": [],
+    "Power Line B Max": [],
+    // "Power Factor C": [],
   }}));
   const colors: any = {
-    "Amps Line A": "#00AEE8",
-    "Amps Line B": "#55BA47",
-    "Amps Line C": "#263B92",
+    "Power Line B Min": "#00AEE8",
+    "Power Line B Max": "#55BA47",
+    // "Power Factor C": "#263B92",
     "default": "#ed4278"
   };
-
-  async function getVoltsData(start: Date, end: Date) {
+  async function getPowerLine2Data(start: Date, end: Date) {
 
     dispatch(setLoading({
         loading: true
     }));
-    const response: ResponseGeneric = await ElectripureService.getAmpsDataGraph({
+    const response: ResponseGeneric = await ElectripureService.getPowerLine2DataGraph({
         date_min: timestampToDateLocal(start.getTime()),
         date_max: timestampToDateLocal(end.getTime()),
         device: deviceId
@@ -50,17 +49,16 @@ function AmpsGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
     setData(JSON.stringify({
       "x": data["TS_data"],
       "y": {
-        "Amps Line A": data["A1_data"],
-        "Amps Line B": data["A2_data"],
-        "Amps Line C": data["A3_data"]
+        "Power Line B Min": data["V2_MIN"],
+        "Power Line B Max": data["V2_MAX"]
       }
     }));
   }
 
   return (<Fragment>
-      <DateRangeControl onChange={getVoltsData}/>
+      <DateRangeControl onChange={getPowerLine2Data}/>
       <LineGraph data={JSON.parse(data)} colors={colors} />
   </Fragment>);
 }
 
-export default AmpsGraph;
+export default PowerLine2;
