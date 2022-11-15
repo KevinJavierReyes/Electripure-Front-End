@@ -1,4 +1,4 @@
-import { AddContactRequest, AuthorizationCodeRequest, AuthorizationCodeValidateRequest, CreateUserRequest, ForgotPasswordRequest, GetAmpsDataRequest, GetCompaniesByUserRequest, GetVoltsDataRequest, LoginRequest, ResendEmailRequest, ToogleUserStateRequest, UpdatePasswordRequest, UpdateUserRequest, UploadImageRequest, ValidateTokenRequest } from "../interfaces/electripure-service";
+import { AddContactRequest, AuthorizationCodeRequest, AuthorizationCodeValidateRequest, CreateUserRequest, ForgotPasswordRequest, GetAmpsDataRequest, GetCompaniesByUserRequest, GetPowerDataRequest, GetVoltsDataRequest, LoginRequest, ResendEmailRequest, ToogleUserStateRequest, UpdatePasswordRequest, UpdateUserRequest, UploadImageRequest, ValidateTokenRequest } from "../interfaces/electripure-service";
 import { BaseService } from "./base-service";
 import environment from "./../config/env";
 import { toast } from "react-toastify";
@@ -198,6 +198,73 @@ export default class ElectripureService extends BaseService {
 
   static async getPowerActiveDataGraph(payload: GetVoltsDataRequest) : Promise<ResponseGeneric> {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/get_chart3_Active`;
+    const response = await this.requestPost(url, payload);
+    if (!response.success) {
+      toast.error(response.error, {
+        "position": "bottom-right"
+      });
+    }
+    return response;
+  }
+
+  static async getPowerFactorDataGraph(payload: GetVoltsDataRequest) : Promise<ResponseGeneric> {
+    const url = `${environment.ELECTRIPURE_ENDPOINT}/get_chart3_Factor`;
+    const response = await this.requestPost(url, payload);
+    if (!response.success) {
+      toast.error(response.error, {
+        "position": "bottom-right"
+      });
+    }
+    return response;
+  }
+
+
+  static async getPowerApparentDataGraph(payload: GetPowerDataRequest) : Promise<ResponseGeneric> {
+    const url = `${environment.ELECTRIPURE_ENDPOINT}/get_chart3_Apparent`;
+    const response = await this.requestPost(url, payload);
+    if (!response.success) {
+      toast.error(response.error, {
+        "position": "bottom-right"
+      });
+    }
+    return response;
+  }
+
+  static async getPowerReactiveDataGraph(payload: GetPowerDataRequest) : Promise<ResponseGeneric> {
+    const url = `${environment.ELECTRIPURE_ENDPOINT}/get_chart3_Reactive`;
+    const response = await this.requestPost(url, payload);
+    if (!response.success) {
+      toast.error(response.error, {
+        "position": "bottom-right"
+      });
+    }
+    return response;
+  }
+
+  static async getPowerLine1DataGraph(payload: GetPowerDataRequest) : Promise<ResponseGeneric> {
+    const url = `${environment.ELECTRIPURE_ENDPOINT}/get_chart3_V1`;
+    const response = await this.requestPost(url, payload);
+    if (!response.success) {
+      toast.error(response.error, {
+        "position": "bottom-right"
+      });
+    }
+    return response;
+  }
+
+  static async getPowerLine2DataGraph(payload: GetPowerDataRequest) : Promise<ResponseGeneric> {
+    const url = `${environment.ELECTRIPURE_ENDPOINT}/get_chart3_V2`;
+    const response = await this.requestPost(url, payload);
+    if (!response.success) {
+      toast.error(response.error, {
+        "position": "bottom-right"
+      });
+    }
+    return response;
+  }
+
+  static async getPowerLine3DataGraph(payload: GetPowerDataRequest) : Promise<ResponseGeneric> {
+    const url = `${environment.ELECTRIPURE_ENDPOINT}/get_chart3_V3`;
     const response = await this.requestPost(url, payload);
     if (!response.success) {
       toast.error(response.error, {

@@ -21,6 +21,12 @@ import AmpsGraph from "../components/Graphs/AmpsGraph";
 import VoltsGraph from "../components/Graphs/VoltsGraph";
 import PowerPage from "../pages/PowerPage";
 import PowerActiveGraph from "../components/Graphs/PowerActiveGraph";
+import PowerApparent from "../components/Graphs/PowerApparent";
+import PowerLine1 from "../components/Graphs/PowerLine1";
+import PowerLine2 from "../components/Graphs/PowerLine2";
+import PowerLine3 from "../components/Graphs/PowerLine3";
+import PowerReactive from "../components/Graphs/PowerReactive";
+import PowerFactor from "../components/Graphs/PowerFactor";
 
 const AppRouter = () => {
 
@@ -57,6 +63,19 @@ const AppRouter = () => {
             </Route>
             <Route path="power/:meterId" element={<PowerPage />}>
               <Route path="active" element={<PowerActiveGraph />} />
+              <Route path="factor" element={<PowerFactor />} />
+              <Route path="apparent" element={<PowerApparent />} />
+              <Route path="reactive" element={<PowerReactive />} />
+              <Route path="linea" element={<PowerLine1 />} />
+              <Route path="lineb" element={<PowerLine2 />} />
+              <Route path="linec" element={<PowerLine3 />} />
+{/* 
+              "factor"
+              ""
+              "reactive"
+              "linea"
+              "lineb"
+              "linec" */}
             </Route>
             
             
