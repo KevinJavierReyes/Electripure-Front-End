@@ -73,16 +73,18 @@ export interface UploadImageRequest {
 
 
 export interface GetAmpsDataRequest {
-    date_min: string;
-    date_max: string;
+    date_min: string | null;
+    date_max: string | null;
     device: number;
+    points: number | null;
 }
 
 
 export interface GetVoltsDataRequest {
-    date_min: string;
-    date_max: string;
+    date_min: string | null;
+    date_max: string | null;
     device: number;
+    points: number | null;
 }
 
 export interface GetPowerDataRequest {
