@@ -1,16 +1,32 @@
 import { useState } from "react";
 import MDPDetails from "./MDPDetails"
+import { ModalMiddle } from "./../../components/Modal";
+import MDPUpdateForm from "../../components/Form/MDPUpdateForm"
+import { UpdateMDPDataForm } from "../../interfaces/form"
 
 const MDPsDetails = ({mdps}:any) => {
     const [ toggleDetails, setToggleDetails ] = useState(false);
-    const updateMDP = () => {
-        console.log('update mdp')
+    const [ toggleModal, setToggleModal ] = useState(false);
+    const [ updateValue, setUpdateValue ] = useState({})
+
+    const submitMDPUpdateInfo = (data:UpdateMDPDataForm) => {
+        setUpdateValue(JSON.stringify({
+            ...updateValue,
+            "MDP": {
+                "name": data.name,
+                "meterId": data.meterId,
+                "applianceId": data.applianceId,
+                "ampCap": data.ampCap,
+                "switchgearCap": data.switchgearCap,
+                "transformer": data.transformer
+            }
+        }));
     }
     return(
         <div className="flex flex-col z-0">
             <div className="flex justify-between items-center h-[50px] m-[10px]">
                 <p>{mdps.name} 
-                    {toggleDetails ? <span  onClick={updateMDP}
+                    {toggleDetails ? <span  onClick={()=>setToggleModal(!toggleModal)}
                                             className="cursor-pointer ml-[15px]">Edit MDP</span>: ""}
                 </p>
                 <div onClick={()=> setToggleDetails(!toggleDetails)} 
@@ -31,6 +47,11 @@ const MDPsDetails = ({mdps}:any) => {
                     </i>
                 </div>
             </div>
+            <ModalMiddle show={toggleModal} onClose={()=>{setToggleModal(false)}}>
+                {
+                    <MDPUpdateForm onSubmit={submitMDPUpdateInfo}/>
+                }
+            </ModalMiddle>
             { toggleDetails ?
                 <MDPDetails sub_mdp={mdps.sub_mdp} sub_id={mdps.sub_id} />:
             ""}

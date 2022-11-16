@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { sendActivateDeactivateUser, sendGetUsers, sendResentEmail, setUsers } from "../../../actions/electripure";
 import { UserEntity } from "../../../interfaces/entities";
@@ -12,6 +13,7 @@ function DataTableUsers({}) {
     const users: UserEntity[] = JSON.parse(useSelector((state: ElectripureState) => state.users));
     const dispatch = useDispatch();
 
+    const navigate = useNavigate();
     // function deleteUser(user: UserEntity) {
     //     console.log(user);
     //     console.log("User deleted!");
@@ -38,7 +40,7 @@ function DataTableUsers({}) {
     const data: RowConfig[] = users.map((user: UserEntity): RowConfig => {
         return {
             "Name": {
-                "label": <span className="f-medium color-primary">{user.Name}</span>,
+                "label": <span onClick={()=> {navigate(`/dashboard/user/details/${user.id}`)}} className="cursor-pointer f-medium color-primary">{user.Name}</span>,
                 "value": user.Name
             },
             "Company": {

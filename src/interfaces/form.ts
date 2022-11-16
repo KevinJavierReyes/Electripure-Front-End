@@ -13,6 +13,14 @@ export interface CreateUserDataForm {
     role: string;
 }
 
+export interface UpdateUserDataForm {
+    email: string;
+    cellphone: string;
+    fullname: string;
+    company: string;
+    role: string;
+}
+
 export interface CreatePasswordDataForm {
     password: string;
 }
@@ -86,6 +94,15 @@ export interface SiteDetailDataForm {
 }
 
 export interface CreateMDPDataForm {
+    name: string;
+    meterId: string;
+    applianceId: string;
+    ampCap: string;
+    switchgearCap: string;
+    transformer: string;
+}
+
+export interface UpdateMDPDataForm {
     name: string;
     meterId: string;
     applianceId: string;

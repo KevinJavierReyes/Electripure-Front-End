@@ -683,6 +683,135 @@ export const sendAddCompany = (payload: any) : any => (async (dispatch: any) => 
 });
 
 
+export const sendUpdateCompany = (payload: any) : any => (async (dispatch: any) => {
+    dispatch(setLoading({
+        loading: true
+    }));
+    const response: ResponseGeneric= await ElectripureService.updateCompany(payload);
+    dispatch(setLoading({
+        loading: false
+    }));
+    if(response.data.message == 'Token is invalid!'){
+        dispatch(setTimestampTwoStepVerification({
+            "timestamp": null
+        }));
+        dispatch(setLoginToken({
+            "token": null
+        }));
+        dispatch(setJwt({
+            "token": null
+        }));
+        localStorage.removeItem("electripureJwt");
+        localStorage.removeItem("user_id");
+        localStorage.removeItem("current_user");
+    }
+    if(!response.success) {
+        dispatch(showToast({
+            message: response.error!,
+            status: "error"
+        }));
+        return;
+    };
+    if(!response.data.Log) {
+        dispatch(showToast({
+            message: "Problem updating company!",
+            status: "error"
+        }));
+        return;
+    };
+    dispatch(showToast({
+        message: "Company updated!",
+        status: "success"
+    }));
+    return;
+});
+
+
+export const sendUpdateSite = (payload: any) : any => (async (dispatch: any) => {
+    dispatch(setLoading({
+        loading: true
+    }));
+    const response: ResponseGeneric= await ElectripureService.updateSite(payload);
+    dispatch(setLoading({
+        loading: false
+    }));
+    if(response.data.message == 'Token is invalid!'){
+        dispatch(setTimestampTwoStepVerification({
+            "timestamp": null
+        }));
+        dispatch(setLoginToken({
+            "token": null
+        }));
+        dispatch(setJwt({
+            "token": null
+        }));
+        localStorage.removeItem("electripureJwt");
+        localStorage.removeItem("user_id");
+        localStorage.removeItem("current_user");
+    }
+    if(!response.success) {
+        dispatch(showToast({
+            message: response.error!,
+            status: "error"
+        }));
+        return;
+    };
+    if(!response.data.Log) {
+        dispatch(showToast({
+            message: "Problem updating site!",
+            status: "error"
+        }));
+        return;
+    };
+    dispatch(showToast({
+        message: "Site updated!",
+        status: "success"
+    }));
+    return;
+});
+
+export const sendUpdateMDP = (payload: any) : any => (async (dispatch: any) => {
+    dispatch(setLoading({
+        loading: true
+    }));
+    const response: ResponseGeneric= await ElectripureService.updateMDP(payload);
+    dispatch(setLoading({
+        loading: false
+    }));
+    if(response.data.message == 'Token is invalid!'){
+        dispatch(setTimestampTwoStepVerification({
+            "timestamp": null
+        }));
+        dispatch(setLoginToken({
+            "token": null
+        }));
+        dispatch(setJwt({
+            "token": null
+        }));
+        localStorage.removeItem("electripureJwt");
+        localStorage.removeItem("user_id");
+        localStorage.removeItem("current_user");
+    }
+    if(!response.success) {
+        dispatch(showToast({
+            message: response.error!,
+            status: "error"
+        }));
+        return;
+    };
+    if(!response.data.Log) {
+        dispatch(showToast({
+            message: "Problem updating site!",
+            status: "error"
+        }));
+        return;
+    };
+    dispatch(showToast({
+        message: "Site updated!",
+        status: "success"
+    }));
+    return;
+});
 
 // Amps and Vots
 

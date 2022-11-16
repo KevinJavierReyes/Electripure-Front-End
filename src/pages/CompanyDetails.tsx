@@ -5,15 +5,37 @@ import { CompanyEntity } from "../interfaces/entities";
 import { sendGetCompaniesTable } from "./../actions/electripure";
 import { ElectripureState } from "../interfaces/reducers"
 import SiteDetails from "./Details/SiteDetails"
+import { ModalMiddle } from "../components/Modal";
+import CompanyUpdateForm from "../components/Form/CompanyUpdateForm"
+import { BasicCompanyInformationDataForm } from "../interfaces/form"
 
 const CompanyDetails = () =>{
     const [ toggleModal, setToggleModal ] = useState(false);
+    const [ newCompanyRaw,  setNewCompany ] = useState(`{"id_user": 42}`)
     const {ciaId} = useParams()
+    const newCompany = JSON.parse(newCompanyRaw)
     const companies = JSON.parse(useSelector((state: ElectripureState) => state.companies));
     const cia:any = companies.filter((element:any) => element.company_id == ciaId)[0];
     console.log("cia", cia)
     
+    const submitCompanyUpdateInfo = (data: BasicCompanyInformationDataForm) =>{
+        console.log(data)
+        setNewCompany(JSON.stringify({
+            ...newCompany,
+            "basicInformation": {
+                "companyName" : data.company,
+                "address" : data.address,
+                "address2" : data.address2,
+                "city" : data.city,
+                "state": data.state,
+                "zip": data.zip,
+                "imgId" : data.logo
+            }
+        }));
+    }
+        
     useEffect(() =>{
+    
     })
     return (
         <Fragment>
@@ -27,9 +49,14 @@ const CompanyDetails = () =>{
                         <div className="text-2xl font-medium">
                             <h1>{cia?.company_name}</h1>
                         </div>
-                        <p  className="cursor-pointer ml-[20px]"
-                            onClick={()=> setToggleModal(!toggleModal)}>Edit Company</p>
+                        <span  className="cursor-pointer ml-[20px] h-[40px]"
+                            onClick={()=> setToggleModal(!toggleModal)}>Edit Company</span>
                     </div>
+                    <ModalMiddle show={toggleModal} onClose={()=>{setToggleModal(false)}}>
+                        {
+                            <CompanyUpdateForm onSubmit={submitCompanyUpdateInfo}/>
+                        }
+                    </ModalMiddle>
                     <div className="cursor-pointer">
                         <svg width="101" height="32" viewBox="0 0 101 32">
                             <rect width="101" height="32" rx="16" fill="#55BA47"/>
@@ -37,7 +64,6 @@ const CompanyDetails = () =>{
                         </svg>
                     </div>
                 </div>
-
             </div>
             <h1 className="flex items-center">Sites <hr className="ml-[10px] w-[100%]" /> </h1>
             {cia?.list_sites? <SiteDetails sites={cia.list_sites}/> :""}

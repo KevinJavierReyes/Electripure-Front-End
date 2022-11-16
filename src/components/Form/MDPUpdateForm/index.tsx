@@ -11,7 +11,7 @@ import StepperProgress from "../../StepperProgress";
 
 
 
-function CreateMDPForm({onSubmit, onPrevious}: { onSubmit: (data: CreateMDPDataForm[]) => void, onPrevious: () => void }) {
+function MDPUpdateForm({onSubmit, onPrevious}: { onSubmit: (data: CreateMDPDataForm[]) => void, onPrevious: () => void }) {
 
     const [mdps, setMdps] = useState(JSON.stringify([{
         "name": {
@@ -174,12 +174,9 @@ function CreateMDPForm({onSubmit, onPrevious}: { onSubmit: (data: CreateMDPDataF
 
 
     return (<div className="w-full bg-color-white p-[10px]">
-        <div className="mx-auto w-full max-w-[400px]">
-            <StepperProgress completedSteps={3} totalSteps={5}/>
-        </div>
         <Space type={TYPE_SPACE.INPUT_DISTANCE} />
         <div className="mx-auto w-full max-w-[650px]" style={{ "textAlign": "center" }}>
-            <Title title="Lastly the MDP(s) details"/>
+            <Title title="Update MDP information"/>
         </div>
         {(JSON.parse(mdps) as MDPGroup[]).map((mdp: MDPGroup, index: number)=> {
             return <div key={index} style={{marginTop: index == 0 ? "0px" : "20px" }}>
@@ -294,26 +291,11 @@ function CreateMDPForm({onSubmit, onPrevious}: { onSubmit: (data: CreateMDPDataF
                 />
             </div>;
         })}
-        <Space type={TYPE_SPACE.INPUT_DISTANCE} />
-        <div className="w-full max-w-[250px] mx-auto flex">
-            <ButtonSecondary onClick={() => {}}>
-                Add location to schematic
-            </ButtonSecondary>
-        </div>
-        <Space type={TYPE_SPACE.INPUT_DISTANCE} />
-        <div className="w-full max-w-[200px] mx-auto flex justify-center">
-            <ButtonLink onClick={addMdp} classes="no-underline">
-                <span className="color-primary">+ Add another MDP</span>
-            </ButtonLink>
-        </div>
         <Space classes="w-full h-[50px]" />                
         <div className="w-full max-w-[400px] mx-auto flex">
-            <ButtonSecondary onClick={onPrevious}>
-                Previous
-            </ButtonSecondary>
             <Space type={TYPE_SPACE.INPUT_DISTANCE_VERTICAL} />
             <ButtonPrimary onClick={submit}>
-                Finish
+                Update
             </ButtonPrimary>
         </div>
 
@@ -321,4 +303,4 @@ function CreateMDPForm({onSubmit, onPrevious}: { onSubmit: (data: CreateMDPDataF
 }
 
 
-export default CreateMDPForm;
+export default MDPUpdateForm;

@@ -16,6 +16,7 @@ import ConfirmEmailPhonePage from "../pages/CreatePasswordStepper/ConfirmEmailPh
 import CreateBackupContactsPage from "../pages/CreatePasswordStepper/CreateBackupContactsPage";
 import CompanyListPage from "../pages/CompanyListPage";
 import CompanyDetails from "../pages/CompanyDetails"
+import UserDetails from "../pages/UserDetails"
 import AmpsVoltsPage from "../pages/AmpsVoltsPage";
 import DashboardPage from "../pages/DashboardPage";
 import AmpsGraph from "../components/Graphs/AmpsGraph";
@@ -51,6 +52,7 @@ const AppRouter = () => {
           {/* Dashboard */}
           <Route path="/dashboard" element={<IsAuthenticated><DashboardPage /></IsAuthenticated>}>
             <Route path="user/list" element={<UserListPage />} />
+            <Route path="user/details/:userId" element={<UserDetails />} />
             <Route path="company/list" element={<CompanyListPage />} />
             <Route path="company/details/:ciaId" element={<CompanyDetails />} />
             <Route path="apmsvolts/:meterId" element={<AmpsVoltsPage />}>
