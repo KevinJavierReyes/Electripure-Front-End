@@ -208,7 +208,7 @@ export default class ElectripureService extends BaseService {
     return response;
   }
 
-  static async getPowerActiveDataGraph(payload: GetVoltsDataRequest) : Promise<ResponseGeneric> {
+  static async getPowerActiveDataGraph(payload: GetPowerDataRequest) : Promise<ResponseGeneric> {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/get_chart3_Active`;
     const response = await this.requestPost(url, payload);
     if (!response.success) {
@@ -219,7 +219,7 @@ export default class ElectripureService extends BaseService {
     return response;
   }
 
-  static async getPowerFactorDataGraph(payload: GetVoltsDataRequest) : Promise<ResponseGeneric> {
+  static async getPowerFactorDataGraph(payload: GetPowerDataRequest) : Promise<ResponseGeneric> {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/get_chart3_Factor`;
     const response = await this.requestPost(url, payload);
     if (!response.success) {
