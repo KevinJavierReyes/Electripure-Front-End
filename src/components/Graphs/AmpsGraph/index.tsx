@@ -7,6 +7,7 @@ import LineGraph from "../LineGraph";
 import ElectripureService from "./../../../service/electripure-service";
 import { ResponseGeneric } from "../../../interfaces/base-service";
 import { useParams } from "react-router";
+import DateRangeControlAndPoint from "../DateRangeControlAndPoint";
 
 
 function AmpsGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
@@ -26,15 +27,15 @@ function AmpsGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
     "default": "#ed4278"
   };
 
-  async function getVoltsData(start: Date, end: Date) {
-
+  async function getVoltsData(start: Date | null, end: Date | null, points: number | null) {
     dispatch(setLoading({
         loading: true
     }));
     const response: ResponseGeneric = await ElectripureService.getAmpsDataGraph({
-        date_min: timestampToDateLocal(start.getTime()),
-        date_max: timestampToDateLocal(end.getTime()),
-        device: deviceId
+        date_min: start != null ? timestampToDateLocal(start.getTime()) : null,
+        date_max: end != null ? timestampToDateLocal(end.getTime()) : null,
+        device: deviceId,
+        points: points != null ? points : null
     });
     dispatch(setLoading({
         loading: false
@@ -58,7 +59,7 @@ function AmpsGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
   }
 
   return (<Fragment>
-      <DateRangeControl onChange={getVoltsData}/>
+      <DateRangeControlAndPoint onChange={getVoltsData}/>
       <LineGraph data={JSON.parse(data)} colors={colors} />
   </Fragment>);
 }
