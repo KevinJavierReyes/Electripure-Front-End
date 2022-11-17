@@ -47,7 +47,8 @@ const AppRouter = () => {
           <Route path="/confirm/:token/step/1" element={<CreatePasswordPage />} />
           <Route path="/confirm/:token/step/2" element={<ConfirmEmailPhonePage />} />
           <Route path="/confirm/:token/step/3" element={<ConfirmCaptchaPage />}  />
-          <Route path="/confirm/:token/step/4" element={<IsAuthenticated><CreateBackupContactsPage /></IsAuthenticated>}  />
+          <Route path="/confirm/:token/step/4" element={<CreateBackupContactsPage />}  />
+          {/* <Route path="/confirm/:token/step/4" element={<IsAuthenticated><CreateBackupContactsPage /></IsAuthenticated>}  /> */}
 
           {/* Reset password */}
           <Route path="/reset" element={<RequestResetPasswordPage />} />
