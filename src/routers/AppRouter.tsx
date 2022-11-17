@@ -82,7 +82,7 @@ const AppRouter = () => {
                 </Route>
                 <Route path="*" index element={<div>Site</div>} />
               </Route> */}
-              <Route path="*" index element={<div></div>} />
+              <Route path="*" index={true} element={<div></div>} />
             </Route>
             <Route path="*" element={<div></div>} />
           </Route>
