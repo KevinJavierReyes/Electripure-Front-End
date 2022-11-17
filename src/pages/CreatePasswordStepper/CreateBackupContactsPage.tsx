@@ -8,14 +8,14 @@ import Space from "../../components/Space";
 import StepperProgress from "../../components/StepperProgress";
 import { TYPE_SPACE } from "../../config/enum";
 import { CreateBackupContactDataForm } from "../../interfaces/form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { sendAddContacts } from "../../actions/electripure";
 import { ElectripureState } from "../../interfaces/reducers";
 
 function CreateBackupContactsPage() {
-  
   const navigate = useNavigate();
+  const { token } = useParams();
   const dispatch = useDispatch();
   const toastMessage = useSelector((state: ElectripureState) => state.toastMessage);
 
@@ -25,6 +25,13 @@ function CreateBackupContactsPage() {
     }
   }, [toastMessage])
 
+  useEffect(() => {
+    if (!localStorage.getItem("password") || !localStorage.getItem("email") || !localStorage.getItem("token")) {
+      navigate( `/confirm/${token}/step/3`);
+    }
+  });
+  
+
   function submitCreateBackupContactsForm(data: CreateBackupContactDataForm[]) {
     console.log("Contacts");
     console.log(data);
@@ -32,7 +39,7 @@ function CreateBackupContactsPage() {
   }
   
   function skip() {
-    navigate(`/dashboard`);
+    navigate(`/login`);
   }
 
   return (

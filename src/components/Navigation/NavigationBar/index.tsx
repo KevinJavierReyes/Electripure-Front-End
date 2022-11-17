@@ -50,7 +50,7 @@ function NavigationBar() {
                 <Space type={TYPE_SPACE.TEXT_DISTANCE} classes="w-full sm:hidden"/>
                 <div className="flex justify-center items-center flex-nowrap">
                     <span className="flex justify-center items-center flex-nowrap">
-                        <span className="f-semibold">{surname},&nbsp;</span>
+                        <span className="f-semibold">Howdy,&nbsp;</span>
                         <span className="f-semibold color-black-dark"> {name}</span>
                     </span>
                     <Space type={TYPE_SPACE.FORM_DISTANCE_VERTICAL} />
@@ -70,7 +70,7 @@ function NavigationBar() {
                         </ButtonNotification>
                         <Space type={TYPE_SPACE.TEXT_DISTANCE_VERTICAL}/>
                         <FloatUserSetting>
-                            <span className="f-bold">{`${surname[0]}${name[0]}`}</span>
+                            <span className="f-bold">{surname ? `${surname[0]}${name[0]}` : `${name[0]}${name[1]}`.toUpperCase()}</span>
                         </FloatUserSetting>
                     </div>
                    
