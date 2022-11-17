@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { Outlet, useNavigate, useParams } from "react-router";
 import Tab from "../components/FormInput/Tab";
@@ -24,7 +24,7 @@ function AmpsVoltsPage () {
                             Volts
                         </Tab>
                     </div>
-                    <div className="w-full">
+                    <div className="w-full min-h-[400px]">
                        <Outlet/>
                     </div>
                 </div>
