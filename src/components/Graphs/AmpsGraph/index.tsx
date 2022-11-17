@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import DateRangeControl from "../DateRangeControl";
 import { setLoading, showToast } from "../../../actions/electripure";
@@ -14,6 +14,9 @@ function AmpsGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
   let { meterId } = useParams();
   let deviceId = defaultMeterId ?? parseInt(meterId!);
   console.log("Render AmpsGraph......");
+
+
+
   const dispatch = useDispatch();
   const [data, setData] = useState(JSON.stringify({ "x": [], "y": {
     "Amps Line A": [],
@@ -59,8 +62,8 @@ function AmpsGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
   }
 
   return (<Fragment>
-      <DateRangeControlAndPoint onChange={getVoltsData}/>
-      <LineGraph data={JSON.parse(data)} colors={colors} />
+        <DateRangeControlAndPoint onChange={getVoltsData}/>
+        <LineGraph data={JSON.parse(data)} colors={colors} />
   </Fragment>);
 }
 

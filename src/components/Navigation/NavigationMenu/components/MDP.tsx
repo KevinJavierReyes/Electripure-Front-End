@@ -1,9 +1,14 @@
 import { Fragment, useState } from "react";
 import img from "./item_img.svg";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-const MDP = (mdp: any) => {
-    const meterId : string = mdp["mdp"]["sub_id"][0].replace("Meter ID: ", "");
+const MDP = ({site, mdp}: {site: any, mdp: any}) => {
+    console.log(site, mdp);
+    const meterId : string = mdp["sub_id"][0].replace("Meter ID: ", "");
+    const mdpId : string = mdp["id"];
+    const siteId : string = site["id"];
+    const {companyId} = useParams();
+    // console.log("Company ", companyId);
     const [ togglesubData, setSubToggleData ] = useState(false);
     const navigate = useNavigate();
     return (
@@ -16,7 +21,7 @@ const MDP = (mdp: any) => {
                             <img className="h-full w-full rounded-md" src={img} alt="image" />
                         </div>
                         <div className="ml-4 mt-6">
-                            <h3>{mdp['mdp'].name}</h3>
+                            <h3>{mdp.name}</h3>
                         </div>
                     </div>
                     <div onClick={() =>setSubToggleData(prev => !togglesubData)} className="w-[50px] h-[50px] my-auto border-l-2 cursor-pointer">
@@ -36,17 +41,22 @@ const MDP = (mdp: any) => {
                             </i>
                     </div>
                 </div>
-                { mdp['mdp'].sub_id?.map((sub_id:any, index_sub_id: any) => (
+                { mdp.sub_id?.map((sub_id:any, index_sub_id: any) => (
                     <div key={index_sub_id} className={togglesubData? "text-xs text-left m-1 w-[80%] pl-[40px]" : "hidden" }>
                         <p><strong>{sub_id}</strong></p>
                     </div>
                 ))}
-                { mdp['mdp'].sub_mdp?.map((sub_mdp:any, index_sub_mdp: any) => (
+                { mdp.sub_mdp?.map((sub_mdp:any, index_sub_mdp: any) => (
                     <div key={index_sub_mdp} className={togglesubData? "text-left m-1 text-black w-[80%] pl-[40px]" : "hidden" }>
                         {   sub_mdp == "Amps & Volts" ? 
-                                <p><strong className="cursor-pointer" onClick={ () => {  navigate(`/dashboard/apmsvolts/${meterId}/amps`) } }>{sub_mdp}</strong></p> :
+                                <p><strong className="cursor-pointer" onClick={ () => {
+                                    navigate(`company/${companyId}/meter/${meterId}/apmsvolts/amps`)
+                                } }>{sub_mdp}</strong></p> :
                             sub_mdp == "Power" ?
-                                <p><strong className="cursor-pointer" onClick={ () => {  navigate(`/dashboard/power/${meterId}/active`) } }>{sub_mdp}</strong></p> :
+                                <p><strong className="cursor-pointer" onClick={ () => { 
+                                    navigate(`company/${companyId}/meter/${meterId}/power/active`)
+                                    // navigate(`company/${companyId}/site/${siteId}/mdp/${mdpId}/power/${meterId}/active`)
+                                } }>{sub_mdp}</strong></p> :
                                 <p><strong>{sub_mdp}</strong></p>
                         }
                     </div>

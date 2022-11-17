@@ -26,7 +26,7 @@ const Site = (site:any) => {
             </div>
             <div className={`${toggleData? "block" : "hidden"}`}>
                 { site.length !== 0 ? site['site'].mdp_list.map((mdp: any, index_mdp:any) => 
-                    <MDP key={index_mdp} mdp={mdp}/> 
+                    <MDP key={index_mdp} mdp={mdp} site={site["site"]}/> 
                 ): ""}
             </div>
             <hr className="w-full" />

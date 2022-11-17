@@ -11,10 +11,13 @@ import BasicCompanyInformationForm from "../../Form/BasicCompanyInformationForm"
 import MainPointContactForm from "../../Form/MainPointContactForm";
 import SiteManagerForm from "../../Form/SiteManagerForm";
 import SiteDetailForm from "../../Form/SiteDetailForm";
+import { useNavigate } from "react-router-dom";
 
 const DropdownSelector = ( { onCreateCompany } : {onCreateCompany: () => void}) => {
     
     const dispatch = useDispatch();
+
+    const navigate = useNavigate();
 
     // Toogle
     const [ toggleSearch, setToggleSearch ] = useState(false);
@@ -32,9 +35,10 @@ const DropdownSelector = ( { onCreateCompany } : {onCreateCompany: () => void}) 
     // get user to make a request with specific user
     const user_id = localStorage.getItem('user_id');
     
-    const setValue = (e:any) => {
-        setCompanySelected(prev => e.target.innerHTML)
+    const selectCompany = (company: any) => {
+        setCompanySelected(company.company_name)
         setToggleSearch(!toggleSearch)
+        navigate(`company/${company.company_id}`);
     }
 
     const handleSearch = (event: any) => {
@@ -105,7 +109,7 @@ const DropdownSelector = ( { onCreateCompany } : {onCreateCompany: () => void}) 
                                     {
                                         searchCompanyName === "" || filteredData.length === 0 ? companies?.map((company, index) => (
                                         <li key={index} 
-                                            onClick={setValue} 
+                                            onClick={()=> {selectCompany(company)}} 
                                             value={company.company_name}
                                             className="my-4 cursor-pointer
                                                        hover:bg-[#D7D7D7]
@@ -115,7 +119,7 @@ const DropdownSelector = ( { onCreateCompany } : {onCreateCompany: () => void}) 
                                         ))
                                     : filteredData.map((company, index) => (
                                         <li key={index} 
-                                            onClick={setValue} 
+                                            onClick={()=> {selectCompany(company)}} 
                                             value={company.company_name}
                                             className="my-4 cursor-pointer
                                                        hover:bg-[#D7D7D7]

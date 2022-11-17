@@ -20,9 +20,9 @@ function PowerPage () {
                         <Tab active={tapIndex == 1} onClick={()=> { if (tapIndex != 1) { setTapIndex(1); navigate("active") } }}>
                             Active
                         </Tab>
-                        <Tab active={tapIndex == 2} onClick={()=> { if (tapIndex != 2) { setTapIndex(2); navigate("factor") } }}>
+                        {/* <Tab active={tapIndex == 2} onClick={()=> { if (tapIndex != 2) { setTapIndex(2); navigate("factor") } }}>
                             factor
-                        </Tab>
+                        </Tab> */}
                         <Tab active={tapIndex == 3} onClick={()=> { if (tapIndex != 3) { setTapIndex(3); navigate("apparent") } }}>
                             Apparent
                         </Tab>
