@@ -40,6 +40,8 @@ export interface UserEntity {
     Contacts: number;
     Status: string;
     date: string;
+    email: string;
+    cellphone: number;
 }
 
 export interface GlobalCompanyEntity {

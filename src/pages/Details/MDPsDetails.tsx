@@ -1,31 +1,24 @@
 import { useState } from "react";
-import MDPDetails from "./MDPDetails"
 import { ModalMiddle } from "./../../components/Modal";
 import MDPUpdateForm from "../../components/Form/MDPUpdateForm"
 import { UpdateMDPDataForm } from "../../interfaces/form"
+import { useSelector, useDispatch } from "react-redux";
+import { sendUpdateMDP } from "../../actions/electripure"
 
 const MDPsDetails = ({mdps}:any) => {
     const [ toggleDetails, setToggleDetails ] = useState(false);
     const [ toggleModal, setToggleModal ] = useState(false);
     const [ updateValue, setUpdateValue ] = useState({})
 
+    const dispatch = useDispatch()
     const submitMDPUpdateInfo = (data:UpdateMDPDataForm) => {
-        setUpdateValue(JSON.stringify({
-            ...updateValue,
-            "MDP": {
-                "name": data.name,
-                "meterId": data.meterId,
-                "applianceId": data.applianceId,
-                "ampCap": data.ampCap,
-                "switchgearCap": data.switchgearCap,
-                "transformer": data.transformer
-            }
-        }));
+        dispatch(sendUpdateMDP(data))
+        setToggleModal(false)
     }
     return(
         <div className="flex flex-col z-0">
             <div className="flex justify-between items-center h-[50px] m-[10px]">
-                <p>{mdps.name} 
+                <p>MDP  {mdps.id}
                     {toggleDetails ? <span  onClick={()=>setToggleModal(!toggleModal)}
                                             className="cursor-pointer ml-[15px]">Edit MDP</span>: ""}
                 </p>
@@ -53,7 +46,14 @@ const MDPsDetails = ({mdps}:any) => {
                 }
             </ModalMiddle>
             { toggleDetails ?
-                <MDPDetails sub_mdp={mdps.sub_mdp} sub_id={mdps.sub_id} />:
+                <div>
+                    <div>Meter ID: {mdps.meterID}</div>
+                    <div>Appliance ID: {mdps.applianceID}</div>
+                    <div>MDP rating: {mdps.MDP}</div>
+                    <div>Switchgear rating: {mdps.switchgear}</div>
+                    <div>Transformer rating: {mdps.transformer}</div>
+                </div>
+            :
             ""}
         <hr />
         </div>

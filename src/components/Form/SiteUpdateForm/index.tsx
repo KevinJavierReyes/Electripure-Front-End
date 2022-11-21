@@ -12,12 +12,15 @@ import InputText from "../../FormInput/InputText";
 import Title from "../../FormInput/Title";
 import Space from "../../Space";
 import StepperProgress from "../../StepperProgress";
+import { useParams } from "react-router";
 
 
+const SiteUpdateForm = ({onSubmit}: { onSubmit: (data: SiteDetailDataForm) => void}) => {
 
-const SiteUpdateForm = ({onSubmit, onPrevious, defaultData={}}: { onSubmit: (data: SiteDetailDataForm) => void, onPrevious: () => void, defaultData?: Partial<SiteDetailDataForm>}) => {
-
+    const {ciaId} = useParams()
     const dispatch = useDispatch();
+    const sites = JSON.parse(useSelector((state: ElectripureState) => state.companies));
+    const site = sites.filter((element:any) => element.company_id == ciaId)[0];
 
     const uploadLogoTask: TaskEntity = JSON.parse(useSelector((state: ElectripureState) => state.tasks))["UPLOAD_SITE_LOGO"] ?? {};
     const uploadSchematicTask: TaskEntity = JSON.parse(useSelector((state: ElectripureState) => state.tasks))["UPLOAD_SITE_SCHEMATIC"] ?? {};
@@ -151,6 +154,7 @@ const SiteUpdateForm = ({onSubmit, onPrevious, defaultData={}}: { onSubmit: (dat
                     placeholder="Site name"
                     state={nameControl.state}
                     message={nameControl.message}
+                    defaultValue={site.name}
                     onChange={(value: string) => {
                         setNameControl({
                             "state": value == "" ? INPUT_CONTROL_STATE.DEFAULT : INPUT_CONTROL_STATE.OK,
@@ -166,7 +170,7 @@ const SiteUpdateForm = ({onSubmit, onPrevious, defaultData={}}: { onSubmit: (dat
                         label="Address"
                         placeholder="12345 Street Address"
                         state={addressControl.state}
-                        defaultValue={defaultData.address ?? ""}
+                        defaultValue={site.address ?? ""}
                         message={addressControl.message}
                         onChange={(value: string) => {
                             setAddressControl({
@@ -181,7 +185,7 @@ const SiteUpdateForm = ({onSubmit, onPrevious, defaultData={}}: { onSubmit: (dat
                         name="address2"
                         label="Address 2 optional"
                         placeholder="Suite 890"
-                        defaultValue={defaultData.address2 ?? ""}
+                        defaultValue={site.address2}
                         state={address2Control.state}
                         message={address2Control.message}
                         onChange={(value: string) => {
@@ -198,7 +202,7 @@ const SiteUpdateForm = ({onSubmit, onPrevious, defaultData={}}: { onSubmit: (dat
                             name="city"
                             label="City"
                             placeholder="City"
-                            defaultValue={defaultData.city ?? ""}
+                            defaultValue={site.city}
                             state={cityControl.state}
                             message={cityControl.message}
                             onChange={(value: string) => {
@@ -217,7 +221,7 @@ const SiteUpdateForm = ({onSubmit, onPrevious, defaultData={}}: { onSubmit: (dat
                                 "id": 1,
                                 "value": "State 01"
                             }]}
-                            defaultSelect={defaultData.state ?? "-1"}
+                            defaultSelect={site.state}
                             placeholder="Select State"
                             state={stateControl.state}
                             message={stateControl.message}
@@ -234,7 +238,7 @@ const SiteUpdateForm = ({onSubmit, onPrevious, defaultData={}}: { onSubmit: (dat
                             name="zip"
                             label="Zipcode"
                             placeholder="Zip"
-                            defaultValue={defaultData.zip ?? ""}
+                            defaultValue={site.zip}
                             state={zipControl.state}
                             message={zipControl.message}
                             onChange={(value: string) => {
@@ -269,6 +273,7 @@ const SiteUpdateForm = ({onSubmit, onPrevious, defaultData={}}: { onSubmit: (dat
                         }]}
                         placeholder="Select payment schedule"
                         state={rateControl.state}
+                        defaultSelect={site.payment}
                         message={rateControl.message}
                         onChange={(select : { "value": any, "id": any }) => {
                             setRateControl({

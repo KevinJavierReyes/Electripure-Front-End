@@ -7,11 +7,18 @@ import { ButtonLink, ButtonPrimary, ButtonSecondary } from '../../FormInput/Butt
 import InputText from "../../FormInput/InputText";
 import Title from "../../FormInput/Title";
 import Space from "../../Space";
+import { ElectripureState } from '../../../interfaces/reducers';
 import StepperProgress from "../../StepperProgress";
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from "react-router";
 
 
 
-function MDPUpdateForm({onSubmit, onPrevious}: { onSubmit: (data: CreateMDPDataForm[]) => void, onPrevious: () => void }) {
+function MDPUpdateForm({onSubmit}: { onSubmit: (data: CreateMDPDataForm) => void }) {
+    const {siteId} = useParams()
+    const dispatch = useDispatch();
+    const MDPs = JSON.parse(useSelector((state: ElectripureState) => state.companies));
+    const MDP = MDPs.filter((element:any) => element.company_id == siteId)[0];
 
     const [mdps, setMdps] = useState(JSON.stringify([{
         "name": {

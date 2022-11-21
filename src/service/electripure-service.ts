@@ -218,6 +218,18 @@ export default class ElectripureService extends BaseService {
     }
     return response;
   }
+
+  static async companyDetail(payload: any) : Promise<ResponseGeneric> {
+    const url = `${environment.ELECTRIPURE_ENDPOINT}/company_detail`;
+    const header_auth = {"Authorization" : `Bearer ${localStorage.getItem('electripureJwt')}`}
+    const response = await this.requestPost(url, payload, header_auth);
+    if (!response.success) {
+      toast.error(response.error, {
+        "position": "bottom-right"
+      });
+    }
+    return response;
+  }
   static async updateSite(payload: any) : Promise<ResponseGeneric> {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/edit_site`;
     const header_auth = {"Authorization" : `Bearer ${localStorage.getItem('electripureJwt')}`}
@@ -231,6 +243,17 @@ export default class ElectripureService extends BaseService {
   }
   static async updateMDP(payload: any) : Promise<ResponseGeneric> {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/edit_mdp`;
+    const header_auth = {"Authorization" : `Bearer ${localStorage.getItem('electripureJwt')}`}
+    const response = await this.requestPost(url, payload, header_auth);
+    if (!response.success) {
+      toast.error(response.error, {
+        "position": "bottom-right"
+      });
+    }
+    return response;
+  }
+  static async updateUserDetails(payload: any) : Promise<ResponseGeneric> {
+    const url = `${environment.ELECTRIPURE_ENDPOINT}/edit_user`;
     const header_auth = {"Authorization" : `Bearer ${localStorage.getItem('electripureJwt')}`}
     const response = await this.requestPost(url, payload, header_auth);
     if (!response.success) {

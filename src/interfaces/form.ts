@@ -17,8 +17,6 @@ export interface UpdateUserDataForm {
     email: string;
     cellphone: string;
     fullname: string;
-    company: string;
-    role: string;
 }
 
 export interface CreatePasswordDataForm {
@@ -67,6 +65,18 @@ export interface BasicCompanyInformationDataForm {
     state: string;
     zip: string;
     logo: string;
+}
+
+export interface CompanyInformationUpdateDataForm {
+    company: string;
+    address: string;
+    address2: string;
+    city: string;
+    state: string;
+    zip: string;
+    company_id: string | undefined;
+    id_image: number;
+    image: string;
 }
 
 export interface MainPointContactDataForm {

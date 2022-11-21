@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { SendImage } from '../../../actions/electripure';
 import { INPUT_CONTROL_STATE, TASK_STATE, TYPE_SPACE } from "../../../config/enum";
 import { TaskEntity } from '../../../interfaces/entities';
-import { BasicCompanyInformationDataForm } from '../../../interfaces/form';
+import { CompanyInformationUpdateDataForm } from '../../../interfaces/form';
 import { InputControl } from '../../../interfaces/form-control';
 import { ElectripureState } from '../../../interfaces/reducers';
 import { validateCompanyControl } from '../../../libs/form-validation';
@@ -13,11 +13,14 @@ import InputSelect from '../../FormInput/InputSelect';
 import InputText from "../../FormInput/InputText";
 import Title from "../../FormInput/Title";
 import Space from "../../Space";
+import { useParams } from "react-router";
 
 
-function CompanyUpdateForm({onSubmit}: { onSubmit: (data: BasicCompanyInformationDataForm) => void }) {
+function CompanyUpdateForm({onSubmit}: { onSubmit: (data: CompanyInformationUpdateDataForm) => void }) {
 
+    const {ciaId} = useParams()
     const dispatch = useDispatch();
+    const company = JSON.parse(useSelector((state: ElectripureState) => state.companyDetails));
 
     const uploadLogoTask: TaskEntity = JSON.parse(useSelector((state: ElectripureState) => state.tasks))["UPLOAD_LOGO"] ?? {};
     const stateList: any[] = [
@@ -75,37 +78,37 @@ function CompanyUpdateForm({onSubmit}: { onSubmit: (data: BasicCompanyInformatio
 
     const [companyControl, setCompanyControl] = useState({
         "state": INPUT_CONTROL_STATE.DEFAULT,
-        "value": "My Company",
+        "value": company?.name,
         "message": ""
     });
 
     const [addressControl, setAddressControl] = useState({
         "state": INPUT_CONTROL_STATE.DEFAULT,
-        "value": "",
+        "value": company?.address,
         "message": ""
     });
 
     const [address2Control, setAddress2Control] = useState({
         "state": INPUT_CONTROL_STATE.DEFAULT,
-        "value": "",
+        "value": company?.address2,
         "message": ""
     });
 
     const [cityControl, setCityControl] = useState({
         "state": INPUT_CONTROL_STATE.DEFAULT,
-        "value": "",
+        "value": company?.city,
         "message": ""
     });
 
     const [stateControl, setStateControl] = useState({
         "state": INPUT_CONTROL_STATE.DEFAULT,
-        "value": "",
+        "value": company?.state,
         "message": ""
     });
 
     const [zipControl, setZipControl] = useState({
         "state": INPUT_CONTROL_STATE.DEFAULT,
-        "value": "",
+        "value": company?.zip,
         "message": ""
     });
 
@@ -116,28 +119,31 @@ function CompanyUpdateForm({onSubmit}: { onSubmit: (data: BasicCompanyInformatio
     });
 
     function uploadLogo(base64: string) {
-        dispatch(SendImage({
-            "base64": base64.split(",")[1],
-            "taskKey": "UPLOAD_LOGO"
-        }));
+        setLogoControl({
+            "state": INPUT_CONTROL_STATE.OK,
+            "value": base64.split(",")[1],
+            "message": ""
+        })
     }
 
     function submit() {
         if (companyControl.state == INPUT_CONTROL_STATE.OK &&
             addressControl.state == INPUT_CONTROL_STATE.OK &&
-            // address2Control.state == INPUT_CONTROL_STATE.OK &&
+            address2Control.state == INPUT_CONTROL_STATE.OK &&
             cityControl.state == INPUT_CONTROL_STATE.OK &&
             stateControl.state == INPUT_CONTROL_STATE.OK &&
-            zipControl.state == INPUT_CONTROL_STATE.OK &&
+            zipControl.state == INPUT_CONTROL_STATE.OK ||
             logoControl.state == INPUT_CONTROL_STATE.OK) {
                 onSubmit({
-                    "company": companyControl.value,
-                    "address": addressControl.value,
-                    "address2": address2Control.value,
-                    "city": cityControl.value,
-                    "state": stateControl.value,
-                    "zip": zipControl.value,
-                    "logo": logoControl.value
+                    company: companyControl.value,
+                    address: addressControl.value,
+                    address2: address2Control.value,
+                    city: cityControl.value,
+                    state: stateControl.value,
+                    zip: zipControl.value,
+                    company_id: ciaId,
+                    id_image: company.id_image,
+                    image: logoControl.value
                 })
         }
     }
@@ -168,7 +174,7 @@ function CompanyUpdateForm({onSubmit}: { onSubmit: (data: BasicCompanyInformatio
                     placeholder="Company name"
                     state={companyControl.state}
                     message={companyControl.message}
-                    defaultValue={""}
+                    defaultValue={company.name}
                     onChange={(value: string) => {
                         const newCompanyControl: InputControl = validateCompanyControl(value);
                         setCompanyControl(newCompanyControl);
@@ -181,6 +187,7 @@ function CompanyUpdateForm({onSubmit}: { onSubmit: (data: BasicCompanyInformatio
                     placeholder="12345 Street Address"
                     state={addressControl.state}
                     message={addressControl.message}
+                    defaultValue={company.address}
                     onChange={(value: string) => {
                         setAddressControl({
                             "state": value == "" ? INPUT_CONTROL_STATE.DEFAULT : INPUT_CONTROL_STATE.OK,
@@ -196,6 +203,7 @@ function CompanyUpdateForm({onSubmit}: { onSubmit: (data: BasicCompanyInformatio
                     placeholder="Suite 890"
                     state={address2Control.state}
                     message={address2Control.message}
+                    defaultValue={company.address2}
                     onChange={(value: string) => {
                         setAddress2Control({
                             "state": value == "" ? INPUT_CONTROL_STATE.DEFAULT : INPUT_CONTROL_STATE.OK,
@@ -212,6 +220,7 @@ function CompanyUpdateForm({onSubmit}: { onSubmit: (data: BasicCompanyInformatio
                         placeholder="City"
                         state={cityControl.state}
                         message={cityControl.message}
+                        defaultValue={company.city}
                         onChange={(value: string) => {
                             setCityControl({
                                 "state": value == "" ? INPUT_CONTROL_STATE.DEFAULT : INPUT_CONTROL_STATE.OK,
@@ -230,12 +239,13 @@ function CompanyUpdateForm({onSubmit}: { onSubmit: (data: BasicCompanyInformatio
                         ))}
                         placeholder="Select State"
                         state={stateControl.state}
+                        defaultSelect={company.state}
                         message={stateControl.message}
                         onChange={(select : { "value": any, "id": any }) => {
                             setStateControl({
                                 "state": INPUT_CONTROL_STATE.OK,
                                 "message": "",
-                                "value": select.id
+                                "value": select.value 
                             });
                         }}
                     />
@@ -246,6 +256,7 @@ function CompanyUpdateForm({onSubmit}: { onSubmit: (data: BasicCompanyInformatio
                         placeholder="Zip"
                         state={zipControl.state}
                         message={zipControl.message}
+                        defaultValue={company.zip}
                         onChange={(value: string) => {
                             setZipControl({
                                 "state": value == "" ? INPUT_CONTROL_STATE.DEFAULT : INPUT_CONTROL_STATE.OK,

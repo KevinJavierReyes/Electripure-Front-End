@@ -1,5 +1,9 @@
-import { SET_LOADING, SET_LOGIN_TOKEN, SET_TIMESTAMP_TWO_STEP_VERIFICATION, SHOW_TOAST, SET_JWT, SET_USERS, SET_PASSWORD_TOKEN, SET_PASSWORD_USER, SET_COMPANIES, ADD_TASK, SET_GLOBAL_COMPANIES, SET_CURRENT_USER, SET_COMPANIES_TABLE, SET_VOLTS_DATA, SET_AMPS_DATA, FILTER_VOLTS_DATA, FILTER_AMPS_DATA } from "../actions/types";
-import { ActionNotification, SetJwtPayload, SetLoadingPayload, SetLoginTokenPayload, SetPasswordTokenPayload, SetPasswordUserPayload, SetTimestampTwoStepVerificationPayload, SetUsersPayload, ShowToastPayload, SetCompaniesPayload, AddTaskPayload, SetGlobalCompaniesPayload, SetCurrentUserPayload, SetCompaniesTablePayload, SetAmpsDataPayload, SetVoltsDataPayload, FilterVoltsDataPayload, FilterAmpsDataPayload } from "../interfaces/actions";
+import { SET_LOADING, SET_LOGIN_TOKEN, SET_TIMESTAMP_TWO_STEP_VERIFICATION,
+SHOW_TOAST, SET_JWT, SET_USERS, SET_PASSWORD_TOKEN, SET_PASSWORD_USER,
+SET_COMPANIES, ADD_TASK, SET_GLOBAL_COMPANIES, SET_CURRENT_USER,
+SET_COMPANIES_TABLE, SET_VOLTS_DATA, SET_AMPS_DATA, FILTER_VOLTS_DATA,
+FILTER_AMPS_DATA, SET_COMPANY_DETAIL } from "../actions/types";
+import { ActionNotification, SetJwtPayload, SetLoadingPayload, SetLoginTokenPayload, SetPasswordTokenPayload, SetPasswordUserPayload, SetTimestampTwoStepVerificationPayload, SetUsersPayload, ShowToastPayload, SetCompaniesPayload, AddTaskPayload, SetGlobalCompaniesPayload, SetCurrentUserPayload, SetCompaniesTablePayload, SetAmpsDataPayload, SetVoltsDataPayload, FilterVoltsDataPayload, FilterAmpsDataPayload, SetCompanyDetailPayload} from "../interfaces/actions";
 import { ElectripureState } from "../interfaces/reducers";
 
 const initialState: ElectripureState = {
@@ -22,7 +26,8 @@ const initialState: ElectripureState = {
     "ampsDataToggle": `{}`,
     "voltsData": `{ "timestamp": [] }`,
     "voltsDataFiltered": `{ "timestamp": [] }`,
-    "voltsDataToogle": `{}`
+    "voltsDataToogle": `{}`,
+    "companyDetails": `{}`
 };
 
 export const electripureReducer = (state: ElectripureState = initialState, action: ActionNotification): ElectripureState => {
@@ -64,8 +69,7 @@ export const electripureReducer = (state: ElectripureState = initialState, actio
                 return {
                     ...state,
                     "electripureJwt": setJwtPayload.token
-                };
-                break;
+                }; break;
         case ADD_TASK:
                 const tasks : any = JSON.parse(state.tasks);
                 let addTaskPayload : AddTaskPayload = action.payload as AddTaskPayload;
@@ -167,6 +171,13 @@ export const electripureReducer = (state: ElectripureState = initialState, actio
                 ...state,
                 "ampsDataToggle": JSON.stringify(filterAmpsDataPayload),
                 "ampsDataFiltered": JSON.stringify(ampsDataFiltered)
+            };
+            break;
+        case SET_COMPANY_DETAIL:
+            let setCompanyDetailPayload: SetCompanyDetailPayload = action.payload as SetCompanyDetailPayload;
+            return {
+                ...state,
+                "companyDetails": JSON.stringify(setCompanyDetailPayload)
             };
             break;
         default:

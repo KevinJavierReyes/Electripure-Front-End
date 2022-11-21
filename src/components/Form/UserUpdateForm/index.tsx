@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"; 
+import { useParams } from "react-router";
 import { INPUT_CONTROL_STATE, TYPE_SPACE } from "../../../config/enum";
-import { CreateUserDataForm } from "../../../interfaces/form";
+import { UpdateUserDataForm } from "../../../interfaces/form";
 import { InputControl } from "../../../interfaces/form-control";
 import { validateCellphoneControl, validateCompanyControl, validateEmailControl, validateNameControl } from "../../../libs/form-validation";
 import { ButtonPrimary } from "../../FormInput/Button";
@@ -14,13 +15,13 @@ import { ElectripureState } from "../../../interfaces/reducers";
 import { CompanyEntity, GlobalCompanyEntity } from "../../../interfaces/entities";
 
 
-function UserUpdateForm({onSubmit}: {onSubmit: (data: CreateUserDataForm) => void}) {
+function UserUpdateForm({onSubmit}: {onSubmit: (data: UpdateUserDataForm) => void}) {
 
     const dispatch = useDispatch();
-    const companies: GlobalCompanyEntity[]= JSON.parse(useSelector((state: ElectripureState) => state.globalCompanies));
-
+    const {userId} = useParams()
+    const users:any = JSON.parse(useSelector((state: ElectripureState) => state.users));
+    const user:any = users.filter((element:any)=> element.id == userId)[0];
     useEffect(()=> {
-        dispatch(sendGetCompanies({}));
     }, []);
 
     const [emailControl, setEmailControl] = useState({
@@ -41,34 +42,18 @@ function UserUpdateForm({onSubmit}: {onSubmit: (data: CreateUserDataForm) => voi
         "state": INPUT_CONTROL_STATE.DEFAULT
     });
 
-    const [companyControl, setCompanyControl] = useState({
-        "value": "",
-        "message": "",
-        "state": INPUT_CONTROL_STATE.DEFAULT
-    });
-
-    const [roleControl, setRoleControl] = useState({
-        "value": "",
-        "message": "",
-        "state": INPUT_CONTROL_STATE.DEFAULT
-    });
 
     function submit() {
         if (emailControl.state === INPUT_CONTROL_STATE.OK &&
             cellphoneControl.state === INPUT_CONTROL_STATE.OK &&
-            nameControl.state === INPUT_CONTROL_STATE.OK &&
-            companyControl.state === INPUT_CONTROL_STATE.OK &&
-            roleControl.state === INPUT_CONTROL_STATE.OK) {
+            nameControl.state === INPUT_CONTROL_STATE.OK) {
                 onSubmit({
+                    fullname: nameControl.value,
                     email: emailControl.value,
                     cellphone: cellphoneControl.value,
-                    fullname: nameControl.value,
-                    company: companyControl.value,
-                    role: roleControl.value
                 });
         }
     }
-
 
     return (<div className="w-full bg-color-white px-[30px] pb-[30px]">
         <Title title="Update User Information"/>
@@ -79,6 +64,7 @@ function UserUpdateForm({onSubmit}: {onSubmit: (data: CreateUserDataForm) => voi
                 name={"name"}
                 placeholder={"Jhon Doe"}
                 label={"Full Name"}
+                defaultValue={user.Name}
                 onChange={(value: string) => {
                     const newNameControl: InputControl = validateNameControl(value);
                     setNameControl(newNameControl);
@@ -90,6 +76,7 @@ function UserUpdateForm({onSubmit}: {onSubmit: (data: CreateUserDataForm) => voi
                 name={"email"}
                 placeholder={"example@company.com"}
                 label={"Email"}
+                defaultValue={user.email}
                 onChange={(value: string) => {
                     const newEmailControl: InputControl = validateEmailControl(value);
                     setEmailControl(newEmailControl);
@@ -101,50 +88,12 @@ function UserUpdateForm({onSubmit}: {onSubmit: (data: CreateUserDataForm) => voi
                     name={"phone"}
                     placeholder={"( 801 ) 250 - 2872"}
                     label={"Cellphone"}
+                    defaultValue={user.cellphone}
                     onChange={(value: string) => {
                         const newCellphoneControl: InputControl = validateCellphoneControl(value);
                         setCellphoneControl(newCellphoneControl);
                 }}/>
-            
-            <Space type={TYPE_SPACE.INPUT_DISTANCE}/>
-            <InputSelect
-                name="company"
-                state={companyControl.state}
-                message={companyControl.message}
-                options={companies.map((company: GlobalCompanyEntity) => {
-                    return {"value": company.name, "id": company.id}
-                })}
-                placeholder="Select a company"
-                label="Company"
-                onChange={(selected: {"value": any, "id": any}) => {
-                    setCompanyControl({
-                        ...companyControl,
-                        value: selected.id,
-                        state: INPUT_CONTROL_STATE.OK
-                    });
-                }}
-            />
-            <Space type={TYPE_SPACE.INPUT_DISTANCE}/>
-            <InputSelect
-                name="role"
-                state={roleControl.state}
-                message={roleControl.message}
-                options={[
-                    {"value": "Electripure Admin", "id": 1},
-                    {"value": "Electripure Engineer", "id": 2},
-                    {"value": "Company Admin", "id": 3},
-                    {"value": "Site Manager", "id": 4}
-                ]}
-                placeholder="Select a role"
-                label="Role"
-                onChange={(selected: {"value": any, "id": any}) => {
-                    setRoleControl({
-                        ...roleControl,
-                        value: selected.value,
-                        state: INPUT_CONTROL_STATE.OK
-                    });
-                }}
-            />
+
             <Space type={TYPE_SPACE.INPUT_DISTANCE}/>
             <Space type={TYPE_SPACE.INPUT_DISTANCE}/>
             <div className="flex justify-center items-center">
