@@ -73,7 +73,8 @@ const CompanyDetails = () =>{
                 </div>
             </div>
             <h1 className="flex items-center">Sites <hr className="ml-[10px] w-[100%]" /> </h1>
-            {company?.sites? <SiteDetails sites={company?.sites}/> :""}
+            {company?.sites? company?.sites.map((site:any, index:number) =>  <SiteDetails key={index} site={site}/>) 
+            :""}
         </div>
         </Fragment>
     )

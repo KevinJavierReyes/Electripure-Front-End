@@ -301,5 +301,4 @@ function SiteDetailForm({onSubmit, onPrevious, defaultData={}}: { onSubmit: (dat
     </div>);
 }
 
-
 export default SiteDetailForm;

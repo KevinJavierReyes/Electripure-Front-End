@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { SendImage } from '../../../actions/electripure';
 import { INPUT_CONTROL_STATE, TASK_STATE, TYPE_SPACE } from "../../../config/enum";
 import { TaskEntity } from '../../../interfaces/entities';
-import { SiteDetailDataForm } from '../../../interfaces/form';
+import { SiteUpdateDataForm } from '../../../interfaces/form';
 import { ElectripureState } from '../../../interfaces/reducers';
 import { ButtonPrimary, ButtonSecondary } from '../../FormInput/Button';
 import InputPhoto from "../../FormInput/InputPhoto";
@@ -12,58 +12,110 @@ import InputText from "../../FormInput/InputText";
 import Title from "../../FormInput/Title";
 import Space from "../../Space";
 import StepperProgress from "../../StepperProgress";
-import { useParams } from "react-router";
 
 
-const SiteUpdateForm = ({onSubmit}: { onSubmit: (data: SiteDetailDataForm) => void}) => {
+const SiteUpdateForm = ({onSubmit, siteId}: { onSubmit: (data: SiteUpdateDataForm) => void, siteId: number}) => {
 
-    const {ciaId} = useParams()
     const dispatch = useDispatch();
-    const sites = JSON.parse(useSelector((state: ElectripureState) => state.companies));
-    const site = sites.filter((element:any) => element.company_id == ciaId)[0];
+    const company = JSON.parse(useSelector((state: ElectripureState) => state.companyDetails));
+     const stateList: string[] = [
+                                    "Alabama",
+                                    "Alaska",
+                                    "Arizona",
+                                    "Arkansas",
+                                    "California",
+                                    "Colorado",
+                                    "Connecticut",
+                                    "Delaware",
+                                    "Florida",
+                                    "Georgia",
+                                    "Hawaii",
+                                    "Idaho",
+                                    "Illinois",
+                                    "Indiana",
+                                    "Iowa",
+                                    "Kansas",
+                                    "Kentucky",
+                                    "Louisiana",
+                                    "Maine",
+                                    "Maryland",
+                                    "Massachusetts",
+                                    "Michigan",
+                                    "Minnesota",
+                                    "Mississippi",
+                                    "Missouri",
+                                    "Montana",
+                                    "Nebraska",
+                                    "Nevada",
+                                    "New Hampshire",
+                                    "New Jersey",
+                                    "New Mexico",
+                                    "New York",
+                                    "North Carolina",
+                                    "North Dakota",
+                                    "Ohio",
+                                    "Oklahoma",
+                                    "Oregon",
+                                    "Pennsylvania",
+                                    "Rhode Island",
+                                    "South Carolina",
+                                    "South Dakota",
+                                    "Tennessee",
+                                    "Texas",
+                                    "Utah",
+                                    "Vermont",
+                                    "Virginia",
+                                    "Washington",
+                                    "West Virginia",
+                                    "Wisconsin",
+                                    "Wyoming"
+                                    ];
 
+   const site = company.sites.filter((element:any)=> element.id === siteId)[0]
+    console.log("form id", siteId)
+    console.log("site", site)
     const uploadLogoTask: TaskEntity = JSON.parse(useSelector((state: ElectripureState) => state.tasks))["UPLOAD_SITE_LOGO"] ?? {};
     const uploadSchematicTask: TaskEntity = JSON.parse(useSelector((state: ElectripureState) => state.tasks))["UPLOAD_SITE_SCHEMATIC"] ?? {};
 
     const [nameControl, setNameControl] = useState({
         "state": INPUT_CONTROL_STATE.DEFAULT,
-        "value": "",
+        "value": site?.name,
         "message": ""
     });
 
     const [addressControl, setAddressControl] = useState({
         "state": INPUT_CONTROL_STATE.DEFAULT,
-        "value": "",
+        "value": site?.address,
         "message": ""
     });
 
     const [address2Control, setAddress2Control] = useState({
         "state": INPUT_CONTROL_STATE.DEFAULT,
-        "value": "",
+        "value": site?.address,
         "message": ""
     });
 
     const [cityControl, setCityControl] = useState({
         "state": INPUT_CONTROL_STATE.DEFAULT,
-        "value": "",
+        "value": site?.address2,
         "message": ""
     });
 
     const [stateControl, setStateControl] = useState({
         "state": INPUT_CONTROL_STATE.DEFAULT,
-        "value": "",
+        "value": site?.state,
         "message": ""
     });
 
     const [zipControl, setZipControl] = useState({
         "state": INPUT_CONTROL_STATE.DEFAULT,
-        "value": "",
+        "value": site?.zip,
         "message": ""
     });
 
     const [rateControl, setRateControl] = useState({
         "state": INPUT_CONTROL_STATE.DEFAULT,
-        "value": "",
+        "value": site?.payment,
         "message": ""
     });
 
@@ -80,63 +132,43 @@ const SiteUpdateForm = ({onSubmit}: { onSubmit: (data: SiteDetailDataForm) => vo
     });
 
     function uploadLogo(base64: string) {
-        dispatch(SendImage({
-            "base64": base64.split(",")[1],
-            "taskKey": "UPLOAD_SITE_LOGO"
-        }));
+        setLogoControl({
+            "state": INPUT_CONTROL_STATE.DEFAULT,
+            "value": base64.split(",")[1],
+            "message": ""
+        })
     }
 
     function uploadSchematic(base64: string) {
-        dispatch(SendImage({
-            "base64": base64.split(",")[1],
-            "taskKey": "UPLOAD_SITE_SCHEMATIC"
-        }));
+        setSchematicControl({
+            "state": INPUT_CONTROL_STATE.OK,
+            "value": base64.split(",")[1],
+            "message": ""
+
+        })
     }
 
     function submit() {
-
-        if (nameControl.state == INPUT_CONTROL_STATE.OK &&
-            addressControl.state == INPUT_CONTROL_STATE.OK &&
-            // address2Control.state == INPUT_CONTROL_STATE.OK &&
-            cityControl.state == INPUT_CONTROL_STATE.OK &&
-            stateControl.state == INPUT_CONTROL_STATE.OK &&
-            zipControl.state == INPUT_CONTROL_STATE.OK &&
-            rateControl.state == INPUT_CONTROL_STATE.OK &&
-            schematicControl.state == INPUT_CONTROL_STATE.OK &&
-            logoControl.state == INPUT_CONTROL_STATE.OK) {
-                onSubmit({
-                    "name": nameControl.value,
-                    "address": addressControl.value,
-                    "address2": address2Control.value,
-                    "city": cityControl.value,
-                    "state": stateControl.value,
-                    "zip": zipControl.value,
-                    "rate": rateControl.value,
-                    "logo": logoControl.value,
-                    "schematic": logoControl.value
-                });
-        }
+        onSubmit({
+            site_id: siteId,
+            id_image: site.id_image ,
+            name: nameControl.value,
+            address: addressControl.value,
+            address2: address2Control.value,
+            city: cityControl.value,
+            state: stateControl.value,
+            zip: zipControl.value,
+            image: logoControl.value,
+            payment: rateControl.value,
+            schematic: schematicControl.value
+        });
     }
 
     useEffect(() => {
-        if (uploadLogoTask.state == TASK_STATE.COMPLETED) {
-            setLogoControl({
-                ...logoControl,
-                "state": INPUT_CONTROL_STATE.OK,
-                "value": uploadLogoTask.result,
-            })
-        }
-    }, [uploadLogoTask.state]);
+    }, []);
 
     useEffect(() => {
-        if (uploadSchematicTask.state == TASK_STATE.COMPLETED) {
-            setSchematicControl({
-                ...logoControl,
-                "state": INPUT_CONTROL_STATE.OK,
-                "value": uploadSchematicTask.result,
-            })
-        }
-    }, [uploadSchematicTask.state]);
+    }, []);
 
     return (<div className="w-full bg-color-white p-[10px]">
         <Space type={TYPE_SPACE.INPUT_DISTANCE} />
@@ -170,7 +202,7 @@ const SiteUpdateForm = ({onSubmit}: { onSubmit: (data: SiteDetailDataForm) => vo
                         label="Address"
                         placeholder="12345 Street Address"
                         state={addressControl.state}
-                        defaultValue={site.address ?? ""}
+                        defaultValue={site.address}
                         message={addressControl.message}
                         onChange={(value: string) => {
                             setAddressControl({
@@ -217,11 +249,8 @@ const SiteUpdateForm = ({onSubmit}: { onSubmit: (data: SiteDetailDataForm) => vo
                         <InputSelect
                             name="state"
                             label="State"
-                            options={[{
-                                "id": 1,
-                                "value": "State 01"
-                            }]}
-                            defaultSelect={site.state}
+                            options={stateList.map((value,index) => ({"id": index, "value":value}))}
+                            defaultSelect={site?.state}
                             placeholder="Select State"
                             state={stateControl.state}
                             message={stateControl.message}
@@ -229,7 +258,7 @@ const SiteUpdateForm = ({onSubmit}: { onSubmit: (data: SiteDetailDataForm) => vo
                                 setStateControl({
                                     "state": INPUT_CONTROL_STATE.OK,
                                     "message": "",
-                                    "value": select.id
+                                    "value": select.value
                                 });
                             }}
                         />

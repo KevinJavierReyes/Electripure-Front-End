@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { INPUT_CONTROL_STATE, TYPE_SPACE } from "../../../config/enum";
-import { CreateMDPDataForm, SiteManagerDataForm } from '../../../interfaces/form';
+import { UpdateMDPDataForm } from '../../../interfaces/form';
 import { InputControl, MDPGroup } from '../../../interfaces/form-control';
 import { validateCellphone, validateCellphoneControl, validateEmailControl, validateName, validateNameControl } from '../../../libs/form-validation';
 import { ButtonLink, ButtonPrimary, ButtonSecondary } from '../../FormInput/Button';
@@ -10,173 +10,61 @@ import Space from "../../Space";
 import { ElectripureState } from '../../../interfaces/reducers';
 import StepperProgress from "../../StepperProgress";
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from "react-router";
 
 
-
-function MDPUpdateForm({onSubmit}: { onSubmit: (data: CreateMDPDataForm) => void }) {
-    const {siteId} = useParams()
+function MDPUpdateForm({onSubmit, siteId,  mdpId}: { onSubmit: (data: UpdateMDPDataForm) => void, siteId: number, mdpId:number }) {
     const dispatch = useDispatch();
-    const MDPs = JSON.parse(useSelector((state: ElectripureState) => state.companies));
-    const MDP = MDPs.filter((element:any) => element.company_id == siteId)[0];
+    const sites = JSON.parse(useSelector((state: ElectripureState) => state.companyDetails)).sites;
+    const MDPs = sites.filter((element:any) => element.id == siteId)[0].mdps;
+    const MDP = MDPs?.filter((element: any) => element.id == mdpId)[0]
 
-    const [mdps, setMdps] = useState(JSON.stringify([{
-        "name": {
-          "value": "",
-          "message": "",
-          "status": INPUT_CONTROL_STATE.DEFAULT
-        },
-        "meterId": {
-          "value": "",
-          "message": "",
-          "status": INPUT_CONTROL_STATE.DEFAULT
-        },
-        "applianceId": {
-          "value": "",
-          "message": "",
-          "status": INPUT_CONTROL_STATE.DEFAULT
-        },
-        "ampCap": {
-            "value": "",
-            "message": "",
-            "status": INPUT_CONTROL_STATE.DEFAULT
-        },
-        "switchgearCap": {
-            "value": "",
-            "message": "",
-            "status": INPUT_CONTROL_STATE.DEFAULT
-        },
-        "transformer": {
-            "value": "",
-            "message": "",
-            "status": INPUT_CONTROL_STATE.DEFAULT
-        }
-    }]));
+    console.log(MDP)
+    const [nameControl, setNameControl] = useState({
+        "state": INPUT_CONTROL_STATE.DEFAULT,
+        "value": MDP?.name,
+        "message": ""
+    });
+
+    const [meterControl, setMeterControl] = useState({
+        "state": INPUT_CONTROL_STATE.DEFAULT,
+        "value": MDP?.meterID,
+        "message": ""
+    });
+
+    const [applianceControl, setApplianceControl] = useState({
+        "state": INPUT_CONTROL_STATE.DEFAULT,
+        "value": MDP?.applianceID,
+        "message": ""
+    });
+
+    const [MDPControl, setMDPControl] = useState({
+        "state": INPUT_CONTROL_STATE.DEFAULT,
+        "value": MDP?.MDP,
+        "message": ""
+    });
+
+    const [switchgearControl, setSwitchgearControl] = useState({
+        "state": INPUT_CONTROL_STATE.DEFAULT,
+        "value": MDP?.switchgear,
+        "message": ""
+    });
+
+    const [transformerControl, setTransformerControl] = useState({
+        "state": INPUT_CONTROL_STATE.DEFAULT,
+        "value": MDP?.transformer,
+        "message": ""
+    });
 
     function submit() {
-        const mdpgs: MDPGroup[] = JSON.parse(mdps);
-        const mdpsErrorFiltered: MDPGroup[] = mdpgs.filter((mdpg: MDPGroup) => {
-            return mdpg.ampCap.state != INPUT_CONTROL_STATE.OK ||
-                    // mdpg.applianceId.state != INPUT_CONTROL_STATE.OK ||
-                    // mdpg.meterId.state != INPUT_CONTROL_STATE.OK ||
-                    mdpg.name.state != INPUT_CONTROL_STATE.OK ||
-                    mdpg.switchgearCap.state != INPUT_CONTROL_STATE.OK ||
-                    mdpg.transformer.state != INPUT_CONTROL_STATE.OK;
-        });
-
-        if (mdpsErrorFiltered.length == 0) {
-            onSubmit(mdpgs.map((mdp: MDPGroup) => {
-                return {
-                    "name": mdp.name.value,
-                    "meterId": mdp.meterId.value,
-                    "applianceId": mdp.applianceId.value,
-                    "ampCap": mdp.ampCap.value,
-                    "switchgearCap": mdp.switchgearCap.value,
-                    "transformer": mdp.transformer.value
-                };
-            }))
-        }
-    }
-
-    function addMdp() {
-        const mdpgs: MDPGroup[] =  JSON.parse(mdps);
-        setMdps(JSON.stringify([...mdpgs, {
-            "name": {
-              "value": "",
-              "message": "",
-              "status": INPUT_CONTROL_STATE.DEFAULT
-            },
-            "meterId": {
-              "value": "",
-              "message": "",
-              "status": INPUT_CONTROL_STATE.DEFAULT
-            },
-            "applianceId": {
-              "value": "",
-              "message": "",
-              "status": INPUT_CONTROL_STATE.DEFAULT
-            },
-            "ampCap": {
-                "value": "",
-                "message": "",
-                "status": INPUT_CONTROL_STATE.DEFAULT
-            },
-            "switchgearCap": {
-                "value": "",
-                "message": "",
-                "status": INPUT_CONTROL_STATE.DEFAULT
-            },
-            "transformer": {
-                "value": "",
-                "message": "",
-                "status": INPUT_CONTROL_STATE.DEFAULT
-            }
-        }]));
-    }
-
-    function setMdp(mdp: MDPGroup, index: number) {
-        const mdpgs: MDPGroup[] =  JSON.parse(mdps);
-        mdpgs[index] = mdp;
-        setMdps(JSON.stringify(mdpgs));
-    }
-
-    function validateMdp(mdp: MDPGroup) {
-        if (mdp.ampCap.value == "") {
-            mdp.ampCap.state = INPUT_CONTROL_STATE.DEFAULT;
-            mdp.ampCap.message = "";
-        } else {
-            mdp.ampCap.state = INPUT_CONTROL_STATE.OK;
-            mdp.ampCap.message = "";
-        }
-
-        
-        if (mdp.name.value == "") {
-            mdp.name.state = INPUT_CONTROL_STATE.DEFAULT;
-            mdp.name.message = "";
-        } else {
-            const nameResult = validateName(mdp.name.value);
-            if (nameResult.valid) {
-                mdp.name.state = INPUT_CONTROL_STATE.OK;
-                mdp.name.message = "";
-            } else {
-                mdp.name.message = nameResult.error!;
-                mdp.name.state = INPUT_CONTROL_STATE.ERROR;
-            }
-        }
-
-        if (mdp.applianceId.value == "") {
-            mdp.applianceId.state = INPUT_CONTROL_STATE.DEFAULT;
-            mdp.applianceId.message = "";
-        } else {
-            mdp.applianceId.state = INPUT_CONTROL_STATE.OK;
-            mdp.applianceId.message = "";
-        }
-        
-
-        if (mdp.meterId.value == "") {
-            mdp.meterId.state = INPUT_CONTROL_STATE.DEFAULT;
-            mdp.meterId.message = "";
-        } else {
-            mdp.meterId.state = INPUT_CONTROL_STATE.OK;
-            mdp.meterId.message = "";
-        }
-        
-        if (mdp.switchgearCap.value == "") {
-            mdp.switchgearCap.state = INPUT_CONTROL_STATE.DEFAULT;
-            mdp.switchgearCap.message = "";
-        } else {
-            mdp.switchgearCap.state = INPUT_CONTROL_STATE.OK;
-            mdp.switchgearCap.message = "";
-        }
-        
-        if (mdp.transformer.value == "") {
-            mdp.transformer.state = INPUT_CONTROL_STATE.DEFAULT;
-            mdp.transformer.message = "";
-        } else {
-            mdp.transformer.state = INPUT_CONTROL_STATE.OK;
-            mdp.transformer.message = "";
-        }
-        return mdp;
+        onSubmit({
+            mdp_id: mdpId,
+            name: nameControl.value,
+            meterID: meterControl.value,
+            applianceID: applianceControl.value,
+            MDP: MDPControl.value,
+            switchgear: switchgearControl.value,
+            transformer: transformerControl.value
+            })
     }
 
 
@@ -185,119 +73,105 @@ function MDPUpdateForm({onSubmit}: { onSubmit: (data: CreateMDPDataForm) => void
         <div className="mx-auto w-full max-w-[650px]" style={{ "textAlign": "center" }}>
             <Title title="Update MDP information"/>
         </div>
-        {(JSON.parse(mdps) as MDPGroup[]).map((mdp: MDPGroup, index: number)=> {
-            return <div key={index} style={{marginTop: index == 0 ? "0px" : "20px" }}>
-                <h3 className="color-primary-dark f-bold subtitle">{"MDP #" + (index + 1)}</h3>
-                <Space type={TYPE_SPACE.INPUT_DISTANCE} />
-                <InputText
-                    name={"name" + index}
-                    placeholder="MDP name"
-                    label="MDP Name"
-                    onChange={(value: string)=> {
-                        const mdpValidated: any = validateMdp({
-                            ...mdp,
-                            "name": {
-                                ...mdp.name,
-                                "value": value 
-                            }
-                        });
-                        setMdp(mdpValidated, index);
-                    }}
-                    state={mdp.name.state}
-                    message={mdp.name.message}
-                />
-                <Space type={TYPE_SPACE.INPUT_DISTANCE} />
-                <InputText
-                    name={"meter" + index}
-                    placeholder="123456"
-                    label="Meter ID"
-                    onChange={(value: string)=> {
-                        const mdpValidated: any = validateMdp({
-                            ...mdp,
-                            "meterId": {
-                                ...mdp.meterId,
-                                "value": value 
-                            }
-                        });
-                        setMdp(mdpValidated, index);
-                    }}
-                    state={mdp.meterId.state}
-                    message={mdp.meterId.message}
-                />
-                <Space type={TYPE_SPACE.INPUT_DISTANCE} />
-                <InputText
-                    name={"appliance" + index}
-                    placeholder="123456"
-                    label="Appliance ID"
-                    onChange={(value: string)=> {
-                        const mdpValidated: any = validateMdp({
-                            ...mdp,
-                            "applianceId": {
-                                ...mdp.applianceId,
-                                "value": value 
-                            }
-                        });
-                        setMdp(mdpValidated, index);
-                    }}
-                    state={mdp.applianceId.state}
-                    message={mdp.applianceId.message}
-                />
-                <Space type={TYPE_SPACE.INPUT_DISTANCE} />
-                <InputText
-                    name={"ampCap" + index}
-                    placeholder="400"
-                    label="MDP Amp cap"
-                    onChange={(value: string)=> {
-                        const mdpValidated: any = validateMdp({
-                            ...mdp,
-                            "ampCap": {
-                                ...mdp.ampCap,
-                                "value": value 
-                            }
-                        });
-                        setMdp(mdpValidated, index);
-                    }}
-                    state={mdp.ampCap.state}
-                    message={mdp.ampCap.message}
-                />
-                <Space type={TYPE_SPACE.INPUT_DISTANCE} />
-                <InputText
-                    name={"switchgearCap" + index}
-                    placeholder="2000"
-                    label="Switchgear cap"
-                    onChange={(value: string)=> {
-                        const mdpValidated: any = validateMdp({
-                            ...mdp,
-                            "switchgearCap": {
-                                ...mdp.switchgearCap,
-                                "value": value 
-                            }
-                        });
-                        setMdp(mdpValidated, index);
-                    }}
-                    state={mdp.switchgearCap.state}
-                    message={mdp.switchgearCap.message}
-                />
-                <Space type={TYPE_SPACE.INPUT_DISTANCE} />
-                <InputText
-                    name={"transformer" + index}
-                    placeholder="2000"
-                    label="Transformer"
-                    onChange={(value: string)=> {
-                        const mdpValidated: any = validateMdp({
-                            ...mdp,
-                            "transformer": {
-                                ...mdp.transformer,
-                                "value": value 
-                            }
-                        });
-                        setMdp(mdpValidated, index);
-                    }}
-                    state={mdp.transformer.state}
-                    message={mdp.transformer.message}
-                />
-            </div>;
-        })}
+        <div>
+           <h3 className="color-primary-dark f-bold subtitle">{"MDP #" + mdpId }</h3>
+           <Space type={TYPE_SPACE.INPUT_DISTANCE} />
+           <InputText
+               name={"name" + mdpId}
+               placeholder="MDP name"
+               label="MDP Name"
+               defaultValue="MDP name"
+               onChange={(value: string)=> {
+                   setNameControl({
+                       "state": value == ""? INPUT_CONTROL_STATE.DEFAULT: INPUT_CONTROL_STATE.OK,
+                       "message": "",
+                       "value": value
+                    });
+               }}
+               state={nameControl.state}
+               message={nameControl.message}
+           />
+           <Space type={TYPE_SPACE.INPUT_DISTANCE} />
+           <InputText
+               name={"meter" + mdpId}
+               placeholder="123456"
+               label="Meter ID"
+               defaultValue={MDP?.meterID}
+               onChange={(value: string)=> {
+                   setMeterControl({
+                       "state": value == ""? INPUT_CONTROL_STATE.DEFAULT: INPUT_CONTROL_STATE.OK,
+                       "message": "",
+                       "value": value
+                    });
+               }}
+               state={meterControl.state}
+               message={meterControl.message}
+           />
+           <Space type={TYPE_SPACE.INPUT_DISTANCE} />
+           <InputText
+               name={"appliance" + mdpId}
+               placeholder="123456"
+               label="Appliance ID"
+               defaultValue={MDP?.applianceID}
+               onChange={(value: string)=> {
+                   setApplianceControl({
+                       "state": value == ""? INPUT_CONTROL_STATE.DEFAULT: INPUT_CONTROL_STATE.OK,
+                       "message": "",
+                       "value": value
+                    });
+               }}
+               state={applianceControl.state}
+               message={applianceControl.message}
+           />
+           <Space type={TYPE_SPACE.INPUT_DISTANCE} />
+           <InputText
+               name={"ampCap" + mdpId}
+               placeholder="400"
+               label="MDP Amp cap"
+               defaultValue={MDP?.MDP}
+               onChange={(value: string)=> {
+                   setMDPControl({
+                       "state": value == ""? INPUT_CONTROL_STATE.DEFAULT: INPUT_CONTROL_STATE.OK,
+                       "message": "",
+                       "value": value
+                    });
+               }}
+               state={MDPControl.state}
+               message={MDPControl.message}
+           />
+           <Space type={TYPE_SPACE.INPUT_DISTANCE} />
+           <InputText
+               name={"switchgearCap" + mdpId}
+               placeholder="2000"
+               label="Switchgear cap"
+               defaultValue={MDP?.switchgear}
+               onChange={(value: string)=> {
+                   setSwitchgearControl({
+                       "state": value == ""? INPUT_CONTROL_STATE.DEFAULT: INPUT_CONTROL_STATE.OK,
+                       "message": "",
+                       "value": value
+                    });
+               }}
+               state={switchgearControl.state}
+               message={switchgearControl.message}
+           />
+           <Space type={TYPE_SPACE.INPUT_DISTANCE} />
+           <InputText
+               name={"transformer" + mdpId}
+               placeholder="2000"
+               label="Transformer"
+               defaultValue={MDP?.transformer}
+               onChange={(value: string)=> {
+                   setTransformerControl({
+                       "state": value == ""? INPUT_CONTROL_STATE.DEFAULT: INPUT_CONTROL_STATE.OK,
+                       "message": "",
+                       "value": value
+                    });
+               }}
+               state={transformerControl.state}
+               message={transformerControl.message}
+           />
+        </div>
         <Space classes="w-full h-[50px]" />                
         <div className="w-full max-w-[400px] mx-auto flex">
             <Space type={TYPE_SPACE.INPUT_DISTANCE_VERTICAL} />
@@ -305,7 +179,6 @@ function MDPUpdateForm({onSubmit}: { onSubmit: (data: CreateMDPDataForm) => void
                 Update
             </ButtonPrimary>
         </div>
-
     </div>);
 }
 

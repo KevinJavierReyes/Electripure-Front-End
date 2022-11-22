@@ -765,13 +765,6 @@ export const sendUpdateSite = (payload: any) : any => (async (dispatch: any) => 
         }));
         return;
     };
-    if(!response.data.Log) {
-        dispatch(showToast({
-            message: "Problem updating site!",
-            status: "error"
-        }));
-        return;
-    };
     dispatch(showToast({
         message: "Site updated!",
         status: "success"
@@ -808,15 +801,8 @@ export const sendUpdateMDP = (payload: any) : any => (async (dispatch: any) => {
         }));
         return;
     };
-    if(!response.data.Log) {
-        dispatch(showToast({
-            message: "Problem updating site!",
-            status: "error"
-        }));
-        return;
-    };
     dispatch(showToast({
-        message: "Site updated!",
+        message: "MDP updated!",
         status: "success"
     }));
     return;

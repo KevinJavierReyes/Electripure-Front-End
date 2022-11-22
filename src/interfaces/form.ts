@@ -103,6 +103,20 @@ export interface SiteDetailDataForm {
     schematic: string;
 }
 
+export interface SiteUpdateDataForm {
+    site_id: number;
+    id_image: string;
+    name: string;
+    address: string;
+    address2: string;
+    city: string;
+    state: string;
+    zip: string;
+    image: string;
+    payment: string;
+    schematic: string;
+}
+
 export interface CreateMDPDataForm {
     name: string;
     meterId: string;
@@ -113,10 +127,11 @@ export interface CreateMDPDataForm {
 }
 
 export interface UpdateMDPDataForm {
+    mdp_id: number;
     name: string;
-    meterId: string;
-    applianceId: string;
-    ampCap: string;
-    switchgearCap: string;
+    meterID: string;
+    applianceID: string;
+    MDP: string;
+    switchgear: string;
     transformer: string;
 }
