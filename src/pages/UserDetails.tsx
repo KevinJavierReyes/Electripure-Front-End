@@ -20,6 +20,7 @@ const UserDetails = () => {
     let lastName = user?.Name.split(" ")[1];
     console.log(user)
     const submitUserUpdateInfo = (data: UpdateUserDataForm) =>{
+        console.log("data", data)
         dispatch(sendUpdateUserDetails(data));
         setToggleModal(false)
     }
