@@ -26,12 +26,14 @@ function DateRangeControl({ defaultTypeRange = 1, onChange, defaultStart, defaul
             setStartDate(start.getTime());
             setEndDate(end.getTime());
         } else if (tapIndex == 2) {
-            start.setDate(start.getDate() - 7);
+            start.setDate(start.getDate() - 6);
+            // start.setDate(start.getDate() - 7);
             // start.setMonth(start.getMonth() - 3);
             setStartDate(start.getTime());
             setEndDate(end.getTime());
         } else if (tapIndex == 3) {
-            start.setMonth(start.getMonth() - 1);
+            start.setDate(start.getDate() - 29);
+            // start.setMonth(start.getMonth() - 1);
             // start.setMonth(start.getMonth() - 6);
             setStartDate(start.getTime());
             setEndDate(end.getTime());

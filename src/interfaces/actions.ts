@@ -181,3 +181,35 @@ export interface SendGetAmpsDataPayload {
     dateMax: string;
     device: number;
 }
+
+// User, Company, and MDP details
+
+export interface SetCompanyDetailPayload{
+    name: string;
+    address: string;
+    address2: string;
+    city: string;
+    state: string;
+    zip: number;
+    id_image: number;
+}
+
+export interface SetSiteDetailPayload{
+    name: string;
+    address: string;
+    address2: string;
+    city: string;
+    state: string;
+    zip: number;
+    id_image: number;
+    payment: string;
+}
+
+export interface SetMDPDetailPayload{
+    id: number;
+    sitename: string;
+    meterID: string;
+    applianceID: number;
+    witchgear: number;
+    transformer: number;
+}
