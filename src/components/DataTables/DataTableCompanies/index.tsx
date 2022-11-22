@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { sendActivateDeactivateCompany, sendGetCompaniesTable, sendGetUsers, sendResentEmail, setCompaniesTable, setUsers } from "../../../actions/electripure";
 import { CompanyRowEntity, UserEntity } from "../../../interfaces/entities";
@@ -11,7 +12,7 @@ function DataTableCompanies({}) {
 
     const companiesTable: CompanyRowEntity[] = JSON.parse(useSelector((state: ElectripureState) => state.companiesTable));
     const dispatch = useDispatch();
-    console.log(companiesTable)
+    const navigate = useNavigate();
 
     function deleteCompany(company: CompanyRowEntity) {
         console.log(company);
@@ -39,7 +40,7 @@ function DataTableCompanies({}) {
     const data: RowConfig[] = companiesTable.map((companyRow: CompanyRowEntity): RowConfig => {
         return {
             "Company": {
-                "label": <span className="f-medium color-primary">{companyRow.name}</span>,
+                "label": <span onClick={() => {navigate(`/dashboard/company/details/${companyRow.id}`)}} className="cursor-pointer f-medium color-primary">{companyRow.name}</span>,
                 "value": companyRow.name
             },
             "Sites": {

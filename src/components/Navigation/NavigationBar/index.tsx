@@ -25,7 +25,7 @@ function NavigationBar() {
     }
 
     useEffect(() =>{
-    
+
     }, []);
 
     return (

@@ -230,6 +230,19 @@ export default class ElectripureService extends BaseService {
     return response;
   }
 
+  
+  static async updateCompany(payload: any) : Promise<ResponseGeneric> {
+    const url = `${environment.ELECTRIPURE_ENDPOINT}/edit_company`;
+    const header_auth = {"Authorization" : `Bearer ${localStorage.getItem('electripureJwt')}`}
+    const response = await this.requestPost(url, payload, header_auth);
+    if (!response.success) {
+      toast.error(response.error, {
+        "position": "bottom-right"
+      });
+    }
+    return response;
+  }
+
 
   static async getPowerApparentDataGraph(payload: GetPowerDataRequest) : Promise<ResponseGeneric> {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/get_chart3_Apparent`;
@@ -252,10 +265,35 @@ export default class ElectripureService extends BaseService {
     }
     return response;
   }
+  
+  static async companyDetail(payload: any) : Promise<ResponseGeneric> {
+    const url = `${environment.ELECTRIPURE_ENDPOINT}/company_detail`;
+    const header_auth = {"Authorization" : `Bearer ${localStorage.getItem('electripureJwt')}`}
+    const response = await this.requestPost(url, payload, header_auth);
+    if (!response.success) {
+      toast.error(response.error, {
+        "position": "bottom-right"
+      });
+    }
+    return response;
+  }
 
   static async getPowerLine1DataGraph(payload: GetPowerDataRequest) : Promise<ResponseGeneric> {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/get_chart3_V1`;
     const response = await this.requestPost(url, payload);
+    if (!response.success) {
+      toast.error(response.error, {
+        "position": "bottom-right"
+      });
+    }
+    return response;
+  }
+
+  
+  static async updateSite(payload: any) : Promise<ResponseGeneric> {
+    const url = `${environment.ELECTRIPURE_ENDPOINT}/edit_site`;
+    const header_auth = {"Authorization" : `Bearer ${localStorage.getItem('electripureJwt')}`}
+    const response = await this.requestPost(url, payload, header_auth);
     if (!response.success) {
       toast.error(response.error, {
         "position": "bottom-right"
@@ -275,9 +313,35 @@ export default class ElectripureService extends BaseService {
     return response;
   }
 
+  
+  static async updateMDP(payload: any) : Promise<ResponseGeneric> {
+    const url = `${environment.ELECTRIPURE_ENDPOINT}/edit_mdp`;
+    const header_auth = {"Authorization" : `Bearer ${localStorage.getItem('electripureJwt')}`}
+    const response = await this.requestPost(url, payload, header_auth);
+    if (!response.success) {
+      toast.error(response.error, {
+        "position": "bottom-right"
+      });
+    }
+    return response;
+  }
+
   static async getPowerLine3DataGraph(payload: GetPowerDataRequest) : Promise<ResponseGeneric> {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/get_chart3_V3`;
     const response = await this.requestPost(url, payload);
+    if (!response.success) {
+      toast.error(response.error, {
+        "position": "bottom-right"
+      });
+    }
+    return response;
+  }
+
+  
+  static async updateUserDetails(payload: any) : Promise<ResponseGeneric> {
+    const url = `${environment.ELECTRIPURE_ENDPOINT}/edit_user`;
+    const header_auth = {"Authorization" : `Bearer ${localStorage.getItem('electripureJwt')}`}
+    const response = await this.requestPost(url, payload, header_auth);
     if (!response.success) {
       toast.error(response.error, {
         "position": "bottom-right"

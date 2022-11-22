@@ -25,4 +25,5 @@ export interface ElectripureState {
     voltsData: string; //{ "Volts Line A": number[], "Volts Line B": number[], "Volts Line C": number[], "timestamp": [] }
     voltsDataFiltered: string; //{ "Volts Line A": number[], "Volts Line B": number[], "Volts Line C": number[], "timestamp": [] }
     voltsDataToogle: string; //{ "Volts Line A": boolean, "Volts Line B": boolean, "Volts Line C": boolean }
+    companyDetails : string;
 }
