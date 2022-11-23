@@ -48,6 +48,7 @@ function UserUpdateForm({onSubmit}: {onSubmit: (data: UpdateUserDataForm) => voi
             cellphoneControl.state === INPUT_CONTROL_STATE.OK &&
             nameControl.state === INPUT_CONTROL_STATE.OK) {
                 onSubmit({
+                    user_id: user?.id,
                     fullname: nameControl.value,
                     email: emailControl.value,
                     cellphone: cellphoneControl.value,
@@ -64,7 +65,7 @@ function UserUpdateForm({onSubmit}: {onSubmit: (data: UpdateUserDataForm) => voi
                 name={"name"}
                 placeholder={"Jhon Doe"}
                 label={"Full Name"}
-                defaultValue={user.Name}
+                defaultValue={user?.Name}
                 onChange={(value: string) => {
                     const newNameControl: InputControl = validateNameControl(value);
                     setNameControl(newNameControl);
@@ -76,7 +77,7 @@ function UserUpdateForm({onSubmit}: {onSubmit: (data: UpdateUserDataForm) => voi
                 name={"email"}
                 placeholder={"example@company.com"}
                 label={"Email"}
-                defaultValue={user.email}
+                defaultValue={user?.email}
                 onChange={(value: string) => {
                     const newEmailControl: InputControl = validateEmailControl(value);
                     setEmailControl(newEmailControl);
@@ -88,7 +89,7 @@ function UserUpdateForm({onSubmit}: {onSubmit: (data: UpdateUserDataForm) => voi
                     name={"phone"}
                     placeholder={"( 801 ) 250 - 2872"}
                     label={"Cellphone"}
-                    defaultValue={user.cellphone}
+                    defaultValue={user?.cellphone}
                     onChange={(value: string) => {
                         const newCellphoneControl: InputControl = validateCellphoneControl(value);
                         setCellphoneControl(newCellphoneControl);

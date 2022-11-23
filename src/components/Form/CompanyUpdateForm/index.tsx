@@ -131,7 +131,7 @@ function CompanyUpdateForm({onSubmit}: { onSubmit: (data: CompanyInformationUpda
             addressControl.state == INPUT_CONTROL_STATE.OK &&
             address2Control.state == INPUT_CONTROL_STATE.OK &&
             cityControl.state == INPUT_CONTROL_STATE.OK &&
-            stateControl.state == INPUT_CONTROL_STATE.OK &&
+            //stateControl.state == INPUT_CONTROL_STATE.OK &&
             zipControl.state == INPUT_CONTROL_STATE.OK ||
             logoControl.state == INPUT_CONTROL_STATE.OK) {
                 onSubmit({
