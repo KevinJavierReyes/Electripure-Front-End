@@ -103,6 +103,11 @@ export interface SendActivateDeactivateUserPayload {
     action: string;
 }
 
+export interface SendActivateDeactivateCompanyPayload {
+    id: number;
+    action: string;
+}
+
 export interface SendActivateUserPayload {
     id: number;
 }

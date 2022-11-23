@@ -7,11 +7,12 @@ import { setJwt, setLoginToken, setTimestampTwoStepVerification } from "./../../
 import InputSearch from "../../FormInput/InputSearch";
 import Space from "../../Space";
 
-import UserSettings from "./components/UserSettings"
+import FloarUserSetting from "./components/FloarUserSetting";
+import FloatUserSetting from "./components/FloarUserSetting";
 
 
-function NavigationBar(isOpen: boolean) {
-    const [ toggleSettings, setToggleSettings ] = useState(false)
+function NavigationBar() {
+    
     const user = localStorage.getItem('current_user');
     let name;
     let surname;
@@ -22,7 +23,6 @@ function NavigationBar(isOpen: boolean) {
         name = " ";
         surname = " ";
     }
-    console.log(isOpen)
 
     useEffect(() =>{
 
@@ -50,7 +50,7 @@ function NavigationBar(isOpen: boolean) {
                 <Space type={TYPE_SPACE.TEXT_DISTANCE} classes="w-full sm:hidden"/>
                 <div className="flex justify-center items-center flex-nowrap">
                     <span className="flex justify-center items-center flex-nowrap">
-                        <span className="f-semibold">{surname},&nbsp;</span>
+                        <span className="f-semibold">Howdy,&nbsp;</span>
                         <span className="f-semibold color-black-dark"> {name}</span>
                     </span>
                     <Space type={TYPE_SPACE.FORM_DISTANCE_VERTICAL} />
@@ -69,16 +69,11 @@ function NavigationBar(isOpen: boolean) {
                             </svg>
                         </ButtonNotification>
                         <Space type={TYPE_SPACE.TEXT_DISTANCE_VERTICAL}/>
-                        <ButtonNotification onClick={() => setToggleSettings(!toggleSettings)}>
-                            <span id="button-settings" className="f-bold">{`${surname[0]}${name[0]}`}</span>
-                        </ButtonNotification>
+                        <FloatUserSetting>
+                            <span className="f-bold">{surname ? `${surname[0]}${name[0]}` : `${name[0]}${name[1]}`.toUpperCase()}</span>
+                        </FloatUserSetting>
                     </div>
-                    { toggleSettings ?
-                    <div id="user-settings" className="z-10 absolute shadow-md md:top-[110px] lg:top-[70px] bg-white w-[300px] p-[20px] right-[30px] rounded-lg">
-                        <UserSettings />
-                    </div>
-                    : <div id="user-settings" className=""></div>
-                    }
+                   
 
                 </div>
             </div>

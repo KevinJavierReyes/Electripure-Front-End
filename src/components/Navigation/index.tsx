@@ -40,7 +40,7 @@ function Navegation({children}: {children: any}) {
                         </svg>
                     </div>
                 </div>
-                <NavigationBar props={isOpen} />
+                <NavigationBar/>
                 <div className="w-full">    
                     {children}
                 </div>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { Outlet, useNavigate, useParams } from "react-router";
 import Tab from "../components/FormInput/Tab";
@@ -17,14 +17,14 @@ function AmpsVoltsPage () {
             <div className="w-full rounded border-color-secondary border bg-white p-[30px]">
                 <div className="flex">
                     <div className="flex flex-col items-start justify-start w-[170px] border-color-secondary border-r border-t">
-                        <Tab active={tapIndex == 1} onClick={()=> { if (tapIndex != 1) { setTapIndex(1); navigate("apms") } }}>
+                        <Tab active={tapIndex == 1} onClick={()=> { if (tapIndex != 1) { setTapIndex(1); navigate(`amps`) } }}>
                             Amps
                         </Tab>
-                        <Tab active={tapIndex == 2} onClick={()=> { if (tapIndex != 2) { setTapIndex(2); navigate("volts") } }}>
+                        <Tab active={tapIndex == 2} onClick={()=> { if (tapIndex != 2) { setTapIndex(2); navigate(`volts`) } }}>
                             Volts
                         </Tab>
                     </div>
-                    <div className="w-full">
+                    <div className="w-full min-h-[400px]">
                        <Outlet/>
                     </div>
                 </div>

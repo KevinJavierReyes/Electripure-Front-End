@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import DateRangeControl from "../DateRangeControl";
 import { setLoading, showToast } from "../../../actions/electripure";
@@ -7,12 +7,16 @@ import LineGraph from "../LineGraph";
 import ElectripureService from "./../../../service/electripure-service";
 import { ResponseGeneric } from "../../../interfaces/base-service";
 import { useParams } from "react-router";
+import DateRangeControlAndPoint from "../DateRangeControlAndPoint";
 
 
 function AmpsGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
   let { meterId } = useParams();
   let deviceId = defaultMeterId ?? parseInt(meterId!);
   console.log("Render AmpsGraph......");
+
+
+
   const dispatch = useDispatch();
   const [data, setData] = useState(JSON.stringify({ "x": [], "y": {
     "Amps Line A": [],
@@ -26,25 +30,15 @@ function AmpsGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
     "default": "#ed4278"
   };
 
-  async function getVoltsData(start: Date, end: Date) {
-
-    // setData(JSON.stringify({
-    //   "x": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],
-    //   "y": {
-    //     "Amps Line A": [1,1,2,3,45,6,7,6,6,5,4,5,6,1,4],
-    //     "Amps Line B": [2,4,1,5,3,4,5,2,5,7,1,2,9,5,4],
-    //     "Amps Line C": [2,5,8,9,2,5,3,5,3,7,2,4,7,2,6]
-    //   }
-    // }));
-    // return;
-
+  async function getVoltsData(start: Date | null, end: Date | null, points: number | null) {
     dispatch(setLoading({
         loading: true
     }));
     const response: ResponseGeneric = await ElectripureService.getAmpsDataGraph({
-        date_min: timestampToDateLocal(start.getTime()),
-        date_max: timestampToDateLocal(end.getTime()),
-        device: deviceId
+        date_min: start != null ? timestampToDateLocal(start.getTime()) : null,
+        date_max: end != null ? timestampToDateLocal(end.getTime()) : null,
+        device: deviceId,
+        points: points != null ? points : null
     });
     dispatch(setLoading({
         loading: false
@@ -57,7 +51,6 @@ function AmpsGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
         return;
     };
     let data: any = response.data;
-    console.log(data);
     setData(JSON.stringify({
       "x": data["TS_data"],
       "y": {
@@ -69,8 +62,8 @@ function AmpsGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
   }
 
   return (<Fragment>
-      <DateRangeControl onChange={getVoltsData}/>
-      <LineGraph data={JSON.parse(data)} colors={colors} />
+        <DateRangeControlAndPoint onChange={getVoltsData}/>
+        <LineGraph data={JSON.parse(data)} colors={colors} />
   </Fragment>);
 }
 

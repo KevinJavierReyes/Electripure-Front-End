@@ -14,13 +14,20 @@ function ConfirmCaptchaPage() {
 
   const navigate = useNavigate();
   const { token } = useParams();
-  const electripureJwt = useSelector((state: ElectripureState) => state.electripureJwt);
+  // const electripureJwt = useSelector((state: ElectripureState) => state.electripureJwt);
+
+  // useEffect(() => {
+  //   if (electripureJwt == null) {
+  //     navigate( `/confirm/${token}/step/2`);
+  //   }
+  // }, [electripureJwt]);
 
   useEffect(() => {
-    if (electripureJwt == null) {
+    if (!localStorage.getItem("password") || !localStorage.getItem("email") || !localStorage.getItem("token")) {
       navigate( `/confirm/${token}/step/2`);
     }
-  }, [electripureJwt]);
+  });
+  
 
   function submitChooseViewForm() {
     skip();

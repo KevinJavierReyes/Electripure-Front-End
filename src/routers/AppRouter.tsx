@@ -1,4 +1,4 @@
-import { HashRouter, Route, Routes, Navigate } from "react-router-dom";
+import { HashRouter, Route, Routes, Navigate, Outlet } from "react-router-dom";
 import ConfirmCaptchaPage from "../pages/CreatePasswordStepper/ConfirmCaptchaPage";
 import LoginPage from "../pages/LoginPage";
 import ConfirmCodePage from "../pages/ConfirmCodePage";
@@ -23,6 +23,13 @@ import AmpsGraph from "../components/Graphs/AmpsGraph";
 import VoltsGraph from "../components/Graphs/VoltsGraph";
 import PowerPage from "../pages/PowerPage";
 import PowerActiveGraph from "../components/Graphs/PowerActiveGraph";
+import PowerApparent from "../components/Graphs/PowerApparent";
+import PowerLine1 from "../components/Graphs/PowerLine1";
+import PowerLine2 from "../components/Graphs/PowerLine2";
+import PowerLine3 from "../components/Graphs/PowerLine3";
+import PowerReactive from "../components/Graphs/PowerReactive";
+import PowerFactor from "../components/Graphs/PowerFactor";
+import MeterPage from "../pages/MeterPage";
 
 const AppRouter = () => {
 
@@ -42,7 +49,8 @@ const AppRouter = () => {
           <Route path="/confirm/:token/step/1" element={<CreatePasswordPage />} />
           <Route path="/confirm/:token/step/2" element={<ConfirmEmailPhonePage />} />
           <Route path="/confirm/:token/step/3" element={<ConfirmCaptchaPage />}  />
-          <Route path="/confirm/:token/step/4" element={<IsAuthenticated><CreateBackupContactsPage /></IsAuthenticated>}  />
+          <Route path="/confirm/:token/step/4" element={<CreateBackupContactsPage />}  />
+          {/* <Route path="/confirm/:token/step/4" element={<IsAuthenticated><CreateBackupContactsPage /></IsAuthenticated>}  /> */}
 
           {/* Reset password */}
           <Route path="/reset" element={<RequestResetPasswordPage />} />
@@ -55,15 +63,33 @@ const AppRouter = () => {
             <Route path="user/details/:userId" element={<UserDetails />} />
             <Route path="company/list" element={<CompanyListPage />} />
             <Route path="company/details/:ciaId" element={<CompanyDetails />} />
-            <Route path="apmsvolts/:meterId" element={<AmpsVoltsPage />}>
-              <Route path="amps" element={<AmpsGraph />} />
-              <Route path="volts" element={<VoltsGraph />} />
+            <Route path="company/:companyId" element={<Outlet />}>
+              {/* <Route path="site/:siteId">
+                <Route path="mdp/:siteId"> */}
+                  <Route path="meter/:meterId" element={<MeterPage />}>
+                    <Route path="apmsvolts" element={<AmpsVoltsPage />}>
+                      <Route path="amps" element={<AmpsGraph />} />
+                      <Route path="volts" element={<VoltsGraph />} />
+                      <Route path="*" element={<div></div>} />
+                    </Route>
+                    <Route path="power" element={<PowerPage />}>
+                      <Route path="active" element={<PowerActiveGraph />} />
+                      {/* <Route path="factor" element={<PowerFactor />} /> */}
+                      <Route path="apparent" element={<PowerApparent />} />
+                      <Route path="reactive" element={<PowerReactive />} />
+                      <Route path="linea" element={<PowerLine1 />} />
+                      <Route path="lineb" element={<PowerLine2 />} />
+                      <Route path="linec" element={<PowerLine3 />} />
+                      <Route path="*" element={<div></div>} />
+                    </Route>
+                  </Route>
+                  {/* <Route path="*" index element={<div>Site</div>} />
+                </Route>
+                <Route path="*" index element={<div>Site</div>} />
+              </Route> */}
+              <Route index element={<div></div>} />
             </Route>
-            <Route path="power/:meterId" element={<PowerPage />}>
-              <Route path="active" element={<PowerActiveGraph />} />
-            </Route>
-            
-            
+            <Route path="*" element={<div></div>} />
           </Route>
 
           {/* Else */}

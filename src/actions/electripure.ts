@@ -1,23 +1,5 @@
-import { ActionNotification, AddTaskPayload, FilterAmpsDataPayload,
-FilterVoltsDataPayload, LoginPayload, SendAddContactPayload,
-SendCreateUserPayload, SendActivateDeactivateUserPayload,
-SendForgotPasswordPayload, SendGetAmpsDataPayload,
-SendGetCompaniesByUserPayload, SendGetCompaniesPayload,
-SendGetCompaniesTablePayload, SendGetUsersPayload, SendImagePayload,
-SendResendEmailPayload, SendUpdatePasswordPayload, SendUpdateUserPayload,
-SendValidateTokenPayload, SendVerificationCodePayload,
-SendVerificationEmailPayload, SetAmpsDataPayload, SetCompaniesPayload,
-SetCompaniesTablePayload, SetCurrentUserPayload, SetGlobalCompaniesPayload,
-SetJwtPayload, SetLoadingPayload, SetLoginTokenPayload,
-SetPasswordTokenPayload, SetPasswordUserPayload,
-SetTimestampTwoStepVerificationPayload, SetUsersPayload, SetVoltsDataPayload,
-ShowToastPayload, SetCompanyDetailPayload, SetSiteDetailPayload,
-SetMDPDetailPayload } from "../interfaces/actions";
-import { ADD_TASK, FILTER_AMPS_DATA, FILTER_VOLTS_DATA, LOGIN, SET_AMPS_DATA,
-SET_COMPANIES, SET_COMPANIES_TABLE, SET_CURRENT_USER, SET_GLOBAL_COMPANIES,
-SET_JWT, SET_LOADING, SET_LOGIN_TOKEN, SET_PASSWORD_TOKEN, SET_PASSWORD_USER,
-SET_TIMESTAMP_TWO_STEP_VERIFICATION, SET_USERS, SET_VOLTS_DATA, SHOW_TOAST,
-SET_COMPANY_DETAIL} from "./types";
+import { ActionNotification, AddTaskPayload, FilterAmpsDataPayload, FilterVoltsDataPayload, LoginPayload, SendAddContactPayload, SendCreateUserPayload, SendActivateDeactivateUserPayload, SendForgotPasswordPayload, SendGetAmpsDataPayload, SendGetCompaniesByUserPayload, SendGetCompaniesPayload, SendGetCompaniesTablePayload, SendGetUsersPayload, SendImagePayload, SendResendEmailPayload, SendUpdatePasswordPayload, SendUpdateUserPayload, SendValidateTokenPayload, SendVerificationCodePayload, SendVerificationEmailPayload, SetAmpsDataPayload, SetCompaniesPayload, SetCompaniesTablePayload, SetCurrentUserPayload, SetGlobalCompaniesPayload, SetJwtPayload, SetLoadingPayload, SetLoginTokenPayload, SetPasswordTokenPayload, SetPasswordUserPayload, SetTimestampTwoStepVerificationPayload, SetUsersPayload, SetVoltsDataPayload, ShowToastPayload, SendActivateDeactivateCompanyPayload, SetCompanyDetailPayload } from "../interfaces/actions";
+import { ADD_TASK, FILTER_AMPS_DATA, FILTER_VOLTS_DATA, LOGIN, SET_AMPS_DATA, SET_COMPANIES, SET_COMPANIES_TABLE, SET_COMPANY_DETAIL, SET_CURRENT_USER, SET_GLOBAL_COMPANIES, SET_JWT, SET_LOADING, SET_LOGIN_TOKEN, SET_PASSWORD_TOKEN, SET_PASSWORD_USER, SET_TIMESTAMP_TWO_STEP_VERIFICATION, SET_USERS, SET_VOLTS_DATA, SHOW_TOAST } from "./types";
 import ElectripureService from "../service/electripure-service";
 import { ResponseGeneric } from "../interfaces/base-service";
 
@@ -413,6 +395,29 @@ export const sendActivateDeactivateUser = (payload: SendActivateDeactivateUserPa
         "status": "success"
     }));
     dispatch(sendGetUsers({}));
+});
+
+export const sendActivateDeactivateCompany = (payload: SendActivateDeactivateCompanyPayload) : any => (async (dispatch: any) => {
+    dispatch(setLoading({
+        loading: true
+    }));
+    const response: ResponseGeneric = await ElectripureService.toogleCompanyState({
+        "company_id": payload.id
+    });
+    dispatch(setLoading({
+        loading: false
+    }));
+    if(!response.success) {
+        return dispatch(showToast({
+            message: response.error!,
+            status: "error"
+        }))
+    }
+    dispatch(showToast({
+        "message": `Company ${payload.action + "d"}!`,
+        "status": "success"
+    }));
+    dispatch(sendGetCompaniesTable({}));
 });
 
 export const sendCreateUser = (payload: SendCreateUserPayload) : any => (async (dispatch: any) => {

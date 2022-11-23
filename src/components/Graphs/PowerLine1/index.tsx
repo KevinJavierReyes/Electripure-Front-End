@@ -7,35 +7,33 @@ import LineGraph from "../LineGraph";
 import ElectripureService from "../../../service/electripure-service";
 import { ResponseGeneric } from "../../../interfaces/base-service";
 import { useParams } from "react-router";
-import DateRangeControlAndPoint from "../DateRangeControlAndPoint";
 
 
-function VoltsGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
+function PowerLine1 ({ defaultMeterId }: { defaultMeterId?: number }) {
   let { meterId } = useParams();
   let deviceId = defaultMeterId ?? parseInt(meterId!);
-  console.log("Render VoltsGraph......");
+  console.log("Render PowerLine1......");
   const dispatch = useDispatch();
   const [data, setData] = useState(JSON.stringify({ "x": [], "y": {
-    "Volt Line A": [],
-    "Volt Line B": [],
-    "Volt Line C": [],
+    "Power Line A Min": [],
+    "Power Line A Max": [],
+    // "Power Factor C": [],
   }}));
   const colors: any = {
-    "Volt Line A": "#00AEE8",
-    "Volt Line B": "#55BA47",
-    "Volt Line C": "#263B92",
+    "Power Line A Min": "#00AEE8",
+    "Power Line A Max": "#55BA47",
+    // "Power Factor C": "#263B92",
     "default": "#ed4278"
   };
-  async function getAmpsData(start: Date | null, end: Date | null, points: number | null) {
+  async function getPowerLine1Data(start: Date, end: Date) {
 
     dispatch(setLoading({
         loading: true
     }));
-    const response: ResponseGeneric = await ElectripureService.getVoltsDataGraph({
-        date_min: start != null ? timestampToDateLocal(start.getTime()) : null,
-        date_max: end != null ? timestampToDateLocal(end.getTime()) : null,
-        device: deviceId,
-        points: points != null ? points : null
+    const response: ResponseGeneric = await ElectripureService.getPowerLine1DataGraph({
+        date_min: timestampToDateLocal(start.getTime()),
+        date_max: timestampToDateLocal(end.getTime()),
+        device: deviceId
     });
     dispatch(setLoading({
         loading: false
@@ -51,17 +49,16 @@ function VoltsGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
     setData(JSON.stringify({
       "x": data["TS_data"],
       "y": {
-        "Volt Line A": data["V1_data"],
-        "Volt Line B": data["V2_data"],
-        "Volt Line C": data["V3_data"]
+        "Power Line A Min": data["V1_MIN"],
+        "Power Line A Max": data["V1_MAX"]
       }
     }));
   }
 
   return (<Fragment>
-      <DateRangeControlAndPoint onChange={getAmpsData}/>
+      <DateRangeControl onChange={getPowerLine1Data}/>
       <LineGraph data={JSON.parse(data)} colors={colors} />
   </Fragment>);
 }
 
-export default VoltsGraph;
+export default PowerLine1;

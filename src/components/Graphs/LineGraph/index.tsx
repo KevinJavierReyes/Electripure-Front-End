@@ -8,11 +8,11 @@ import Space from "../../Space";
 
 import "./style.css";
 
-function LineGraph({ data, colors }: {data: { y: { [key:string]: any}, x: number[] }, colors: { [key: string]: string, default: string}}) {
+function LineGraph({ data, colors }: {data: { y: { [key:string]: any}, x: any[] }, colors: { [key: string]: string, default: string}}) {
   console.log("Render LineGraph......");
   const yLabels: string[] = Object.keys(data.y);
   const yData: { [key:string]: any} = data.y;
-  const xData: number[] = data.x;
+  const xData: any[] = data.x;
   const [yFilterRaw, setYFilter]: any = useState(JSON.stringify({}));
   const yFilter: { [key:string]: boolean} = JSON.parse(yFilterRaw);
   // Config chart js
@@ -58,9 +58,10 @@ function LineGraph({ data, colors }: {data: { y: { [key:string]: any}, x: number
   };
   // Data
   const source = {
-    "labels": xData.map((timestamp: number) => {
-      return unixTimestampToLocal(timestamp);
-    }),
+    "labels": xData,
+    // "labels": xData.map((timestamp: number) => {
+    //   return unixTimestampToLocal(timestamp);
+    // }),
     "datasets": yLabels.filter((key: string) => yFilter[key] == undefined ? true : yFilter[key]).map((yLabel: string) => {
       return {
         "label": yLabel,
