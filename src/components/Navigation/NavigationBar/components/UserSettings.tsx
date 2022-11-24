@@ -11,6 +11,7 @@ import settingsImg from "./../assets/settings.svg"
 import logoutImg from "./../assets/logout.svg"
 import { useNavigate } from "react-router-dom";
 import { ElectripureState } from "../../../../interfaces/reducers"
+import { sendGetUsers } from "../../../../actions/electripure"
 
 const UserSettings = () => {
     const dispatch = useDispatch();
@@ -35,11 +36,11 @@ const UserSettings = () => {
         navigate("/login");
     }
     useEffect(() =>{
-        
+        dispatch(sendGetUsers({}))
     }, [])
     return (
         <Fragment>
-            { allowed.Role === "Admin"? 
+            { allowed?.Role === "Admin"? 
             <div>
                 <div className="flex hover:bg-slate-100 rounded-lg cursor-pointer" >
                     <img src={companyImg} alt="" />
