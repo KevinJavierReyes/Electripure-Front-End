@@ -15,7 +15,7 @@ function HarmonicPage () {
             </div>
             <div className="w-full rounded border-color-secondary border bg-white p-[30px]">
                 <div className="flex">
-                    <div className="flex flex-col items-start justify-start w-[170px] border-color-secondary border-r border-t">
+                    <div className="flex flex-col items-start justify-start w-[200px] border-color-secondary border-r border-t">
                         <Tab active={tapIndex == 1} onClick={()=> { if (tapIndex != 1) { setTapIndex(1); navigate("amp/line1") } }}>
                             Amps Line 1
                         </Tab>
