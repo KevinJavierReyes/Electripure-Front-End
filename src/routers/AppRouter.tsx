@@ -30,6 +30,13 @@ import PowerLine3 from "../components/Graphs/PowerLine3";
 import PowerReactive from "../components/Graphs/PowerReactive";
 import PowerFactor from "../components/Graphs/PowerFactor";
 import MeterPage from "../pages/MeterPage";
+import HarmonicPage from "../pages/HarmonicPage";
+import HarmonicAmpLine1 from "../components/Graphs/HarmonicAmpLine1";
+import HarmonicAmpLine2 from "../components/Graphs/HarmonicAmpLine2";
+import HarmonicAmpLine3 from "../components/Graphs/HarmonicAmpLine3";
+import HarmonicVoltLine1 from "../components/Graphs/HarmonicVoltLine1";
+import HarmonicVoltLine2 from "../components/Graphs/HarmonicVoltLine2";
+import HarmonicVoltLine3 from "../components/Graphs/HarmonicVoltLine3";
 
 const AppRouter = () => {
 
@@ -80,6 +87,15 @@ const AppRouter = () => {
                       <Route path="linea" element={<PowerLine1 />} />
                       <Route path="lineb" element={<PowerLine2 />} />
                       <Route path="linec" element={<PowerLine3 />} />
+                      <Route path="*" element={<div></div>} />
+                    </Route>
+                    <Route path="harmonic" element={<HarmonicPage />}>
+                      <Route path="amp/line1" element={<HarmonicAmpLine1 />} />
+                      <Route path="amp/line2" element={<HarmonicAmpLine2 />} />
+                      <Route path="amp/line3" element={<HarmonicAmpLine3 />} />
+                      <Route path="volt/line1" element={<HarmonicVoltLine1 />} />
+                      <Route path="volt/line2" element={<HarmonicVoltLine2 />} />
+                      <Route path="volt/line3" element={<HarmonicVoltLine3 />} />
                       <Route path="*" element={<div></div>} />
                     </Route>
                   </Route>
