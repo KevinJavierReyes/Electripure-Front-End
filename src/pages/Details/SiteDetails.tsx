@@ -1,21 +1,24 @@
 import { Fragment, useState, useEffect } from "react";
+import { useParams } from "react-router";
 import MDPsDetails from "./MDPsDetails"
 import { ModalMiddle } from "./../../components/Modal";
 import { useSelector, useDispatch } from "react-redux";
 import { SiteUpdateDataForm } from "../../interfaces/form";
 import  SiteUpdateForm  from "../../components/Form/SiteUpdateForm"
-import { sendUpdateSite } from "../../actions/electripure"
+import { sendUpdateSite, sendGetCompanyDetail } from "../../actions/electripure"
 import { ElectripureState } from "../../interfaces/reducers"
 
 const SiteDetails = ({site}:any) => {
     const [ toggleModal, setToggleModal ] = useState(false)
     const [ updateValue, setUpdateValue ] = useState({})
     const dispatch = useDispatch()
+    const {ciaId} = useParams()
 
     const submitSiteUpdateInfo = (data: SiteUpdateDataForm) =>{
         console.log(data)
         dispatch(sendUpdateSite(data))
         setToggleModal(false)
+        dispatch(sendGetCompanyDetail({"cia_id": ciaId}))
     }
     console.log(site)
     useEffect(() =>{

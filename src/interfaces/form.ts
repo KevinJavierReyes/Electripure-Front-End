@@ -129,7 +129,7 @@ export interface CreateMDPDataForm {
 
 export interface UpdateMDPDataForm {
     mdp_id: number;
-    name: string;
+    MDPname: string;
     meterID: string;
     applianceID: string;
     MDP: string;

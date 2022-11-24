@@ -58,7 +58,7 @@ function MDPUpdateForm({onSubmit, siteId,  mdpId}: { onSubmit: (data: UpdateMDPD
     function submit() {
         onSubmit({
             mdp_id: mdpId,
-            name: nameControl.value,
+            MDPname: nameControl.value,
             meterID: meterControl.value,
             applianceID: applianceControl.value,
             MDP: MDPControl.value,
@@ -80,7 +80,7 @@ function MDPUpdateForm({onSubmit, siteId,  mdpId}: { onSubmit: (data: UpdateMDPD
                name={"name" + mdpId}
                placeholder="MDP name"
                label="MDP Name"
-               defaultValue="MDP name"
+               defaultValue={MDP.sitename}
                onChange={(value: string)=> {
                    setNameControl({
                        "state": value == ""? INPUT_CONTROL_STATE.DEFAULT: INPUT_CONTROL_STATE.OK,

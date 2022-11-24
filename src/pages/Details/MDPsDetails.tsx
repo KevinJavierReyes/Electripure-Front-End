@@ -1,9 +1,10 @@
 import { useState } from "react";
+import { useParams } from "react-router";
 import { ModalMiddle } from "./../../components/Modal";
 import MDPUpdateForm from "../../components/Form/MDPUpdateForm"
 import { UpdateMDPDataForm } from "../../interfaces/form"
 import { useSelector, useDispatch } from "react-redux";
-import { sendUpdateMDP } from "../../actions/electripure"
+import { sendUpdateMDP, sendGetCompanyDetail } from "../../actions/electripure"
 import MDPLogo from "../../assets/svg/mdp1.svg"
 
 const MDPsDetails = ({mdps, siteId}:{mdps: any, siteId:number}) => {
@@ -11,11 +12,12 @@ const MDPsDetails = ({mdps, siteId}:{mdps: any, siteId:number}) => {
     const [ toggleModal, setToggleModal ] = useState(false);
     const [ updateValue, setUpdateValue ] = useState({})
 
+    const {ciaId} = useParams()
     const dispatch = useDispatch()
     const submitMDPUpdateInfo = (data:UpdateMDPDataForm) => {
-        console.log("Mdp updated", data)
         dispatch(sendUpdateMDP(data))
         setToggleModal(false)
+        dispatch(sendGetCompanyDetail({"cia_id": ciaId}))
     }
     return(
         <div className="flex flex-col z-0">

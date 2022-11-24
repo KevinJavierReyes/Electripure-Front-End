@@ -11,20 +11,20 @@ import { CompanyInformationUpdateDataForm } from "../interfaces/form"
 
 const CompanyDetails = () =>{
     const [ toggleModal, setToggleModal ] = useState(false);
-    const [ newCompanyRaw,  setNewCompany ] = useState(`{"id_user": 42}`)
     const {ciaId} = useParams()
     const dispatch = useDispatch()
-    const newCompany = JSON.parse(newCompanyRaw)
     const company = JSON.parse(useSelector((state: ElectripureState) => state.companyDetails));
 
     const submitCompanyUpdateInfo = (data: CompanyInformationUpdateDataForm) =>{
         dispatch(sendUpdateCompany(data))
         setToggleModal(false)
+        dispatch(sendGetCompanyDetail({"cia_id": ciaId}))
     }
         
     useEffect(() =>{
         dispatch(sendGetCompanyDetail({"cia_id": ciaId}))
     }, [company])
+
     return (
         <Fragment>
         <div className="flex flex-col bg-white border w-full h-screen p-[40px] overflow-scroll">
