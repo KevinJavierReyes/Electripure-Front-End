@@ -32,7 +32,7 @@ const UserSettings = () => {
         localStorage.removeItem("electripureJwt");
         localStorage.removeItem("user_id");
         localStorage.removeItem("current_user");
-        // navigate("/login");
+        navigate("/login");
     }
     useEffect(() =>{
         
