@@ -14,6 +14,7 @@ export interface CreateUserDataForm {
 }
 
 export interface UpdateUserDataForm {
+    user_id: number;
     email: string;
     cellphone: string;
     fullname: string;
