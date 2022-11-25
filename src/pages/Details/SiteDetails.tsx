@@ -15,15 +15,13 @@ const SiteDetails = ({site}:any) => {
     const {ciaId} = useParams()
 
     const submitSiteUpdateInfo = (data: SiteUpdateDataForm) =>{
-        console.log(data)
         dispatch(sendUpdateSite(data))
         setToggleModal(false)
         dispatch(sendGetCompanyDetail({"cia_id": ciaId}))
     }
-    console.log(site)
     useEffect(() =>{
-    
-    },[])
+        dispatch(sendGetCompanyDetail({"cia_id": ciaId}))
+    },[site])
 
     return (
         <Fragment>
