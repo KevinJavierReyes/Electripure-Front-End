@@ -80,7 +80,7 @@ function MDPUpdateForm({onSubmit, siteId,  mdpId}: { onSubmit: (data: UpdateMDPD
                name={"name" + mdpId}
                placeholder="MDP name"
                label="MDP Name"
-               defaultValue={MDP.sitename}
+               defaultValue={MDP?.MDPname}
                onChange={(value: string)=> {
                    setNameControl({
                        "state": value == ""? INPUT_CONTROL_STATE.DEFAULT: INPUT_CONTROL_STATE.OK,
