@@ -21,6 +21,7 @@ const SiteDetails = ({site}:any) => {
     }
     useEffect(() =>{
         dispatch(sendGetCompanyDetail({"cia_id": ciaId}))
+
     },[site])
 
     return (
