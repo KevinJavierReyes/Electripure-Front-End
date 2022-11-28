@@ -19,12 +19,13 @@ const MDPsDetails = ({mdps, siteId}:{mdps: any, siteId:number}) => {
         setToggleModal(false)
         dispatch(sendGetCompanyDetail({"cia_id": ciaId}))
     }
+    console.log(mdps)
     return(
         <div className="flex flex-col z-0">
             <div className="flex justify-between items-center h-[50px] m-[10px]">
                 <div className="flex items-center">
                     <img src={MDPLogo} alt="" />
-                    <p className="ml-[10px]">MDP  {mdps.id}
+                    <p className="ml-[10px]">{mdps?.MDPname}
                         {toggleDetails ? <span  onClick={()=>setToggleModal(!toggleModal)}
                                                 className="cursor-pointer ml-[15px] text-[#00AEE8]">Edit MDP</span>: ""}
                     </p>
