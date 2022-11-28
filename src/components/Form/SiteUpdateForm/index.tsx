@@ -167,9 +167,6 @@ const SiteUpdateForm = ({onSubmit, siteId}: { onSubmit: (data: SiteUpdateDataFor
     useEffect(() => {
     }, []);
 
-    useEffect(() => {
-    }, []);
-
     return (<div className="w-full bg-color-white p-[10px]">
         <Space type={TYPE_SPACE.INPUT_DISTANCE} />
         <div className="mx-auto w-full max-w-[650px]" style={{ "textAlign": "center" }}>
