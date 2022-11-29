@@ -26,12 +26,13 @@ const UserDetails = () => {
     useEffect(() =>{
         dispatch(sendGetUsers({}))
     }, [user])
-    return ( 
+
+    return (
         <Fragment>
             <div className="flex bg-white p-[20px] h-[800px] flex-col">
                 <div className="flex">
                     <div className="rounded-[50%] border w-[100px] h-[100px] flex justify-around items-center font-bold text-4xl">
-                        <h1>{firstName? firstName[0]: ""}{lastName? lastName[0]: ""}</h1>
+                        <h1>{firstName? firstName[0].toUpperCase(): ""}{lastName? lastName[0].toUpperCase(): ""}</h1>
                     </div>
                     <div className="ml-[100px]">
                         <div className="flex">
