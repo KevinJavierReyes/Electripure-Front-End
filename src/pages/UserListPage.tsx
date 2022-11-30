@@ -23,19 +23,19 @@ function UserListPage () {
     const navigate = useNavigate()
 
     const users = JSON.parse(useSelector((state: ElectripureState) => state.users));
-    const userId = localStorage.getItem('user_id')?? " ";
-    const user = users?.filter((elem:any) => elem.id === parseInt(userId))[0];
+    const userId = parseInt(localStorage.getItem('user_id')?? "");
+    console.log("user id:", userId)
+    const user = users?.filter((elem:any) => elem.id === userId)[0];
 
     function submitCreateUserForm(data: CreateUserDataForm) {
         dispatch(sendCreateUser(data));
         setShowModal(false);
     }
-    
     useEffect(() =>{
-        if(user?.Role !== "Admin"){
+        if(user){
             navigate(`/dashboard/user/details/${user?.id}`)
         }
-    }, [])
+    })
 
     return (
         <React.Fragment>
