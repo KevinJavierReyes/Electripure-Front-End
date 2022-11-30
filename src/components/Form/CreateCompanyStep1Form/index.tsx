@@ -11,7 +11,7 @@ function CreateCompanyStep1Form() {
         <Title title="Let's get some basic company information"></Title>
         <div className="w-full flex justify-start items-start">
             <div className="w-[220px] h-[220px]">
-                <InputPhoto name="companyLogo" placeholder="Add company logo" onChange={(base64: string) => {console.log(base64)}} />
+                <InputPhoto message="" state={0} name="companyLogo" placeholder="Add company logo" onChange={({base64, size}:{base64: string, size: number}) => {console.log(base64)}} />
             </div>
             <Space type={TYPE_SPACE.FORM_DISTANCE_VERTICAL}/>
             <div className="w-full">

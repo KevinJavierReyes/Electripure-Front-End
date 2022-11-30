@@ -129,14 +129,30 @@ function SiteDetailForm({onSubmit, onPrevious, defaultData={}}: { onSubmit: (dat
         "message": ""
     });
 
-    function uploadLogo(base64: string) {
+    function uploadLogo({base64, size}:{base64: string, size: number}) {
+        if (size > 500000) {
+            setLogoControl({
+                "message": "Image max size is 500kb.",
+                "state": INPUT_CONTROL_STATE.ERROR,
+                "value": "",
+            });
+            return;
+        }
         dispatch(SendImage({
             "base64": base64.split(",")[1],
             "taskKey": "UPLOAD_SITE_LOGO"
         }));
     }
 
-    function uploadSchematic(base64: string) {
+    function uploadSchematic({base64, size}:{base64: string, size: number}) {
+        if (size > 500000) {
+            setSchematicControl({
+                "message": "Image max size is 500kb.",
+                "state": INPUT_CONTROL_STATE.ERROR,
+                "value": "",
+            });
+            return;
+        }
         dispatch(SendImage({
             "base64": base64.split(",")[1],
             "taskKey": "UPLOAD_SITE_SCHEMATIC"
@@ -172,6 +188,7 @@ function SiteDetailForm({onSubmit, onPrevious, defaultData={}}: { onSubmit: (dat
         if (uploadLogoTask.state == TASK_STATE.COMPLETED) {
             setLogoControl({
                 ...logoControl,
+                "message": "",
                 "state": INPUT_CONTROL_STATE.OK,
                 "value": uploadLogoTask.result,
             })
@@ -182,6 +199,7 @@ function SiteDetailForm({onSubmit, onPrevious, defaultData={}}: { onSubmit: (dat
         if (uploadSchematicTask.state == TASK_STATE.COMPLETED) {
             setSchematicControl({
                 ...logoControl,
+                "message": "",
                 "state": INPUT_CONTROL_STATE.OK,
                 "value": uploadSchematicTask.result,
             })
@@ -198,7 +216,7 @@ function SiteDetailForm({onSubmit, onPrevious, defaultData={}}: { onSubmit: (dat
         </div>
         <div className="w-full flex">
             <div className="w-[100px] p-[5px] h-[100px]">
-                <InputPhoto name="siteLogo" placeholder="" onChange={uploadLogo}/>
+                <InputPhoto name="siteLogo" placeholder="" onChange={uploadLogo} state={logoControl.state} message={logoControl.message}/>
             </div>
             <div className="w-full pl-[20px]">
                 <InputText
@@ -337,14 +355,14 @@ function SiteDetailForm({onSubmit, onPrevious, defaultData={}}: { onSubmit: (dat
         </div>
         <Space type={TYPE_SPACE.INPUT_DISTANCE} />
         <div className="w-full h-[150px]">
-            <InputPhoto name="schematic" placeholder="Add site schematic" onChange={uploadSchematic}/>
+            <InputPhoto name="schematic" placeholder="Add site schematic" onChange={uploadSchematic} state={schematicControl.state} message={schematicControl.message}/>
         </div>
         <Space classes="w-full h-[50px]" />                
         <div className="w-full max-w-[400px] mx-auto flex">
-            <ButtonSecondary onClick={onPrevious}>
+            {/* <ButtonSecondary onClick={onPrevious}>
                 Previous
             </ButtonSecondary>
-            <Space type={TYPE_SPACE.INPUT_DISTANCE_VERTICAL} />
+            <Space type={TYPE_SPACE.INPUT_DISTANCE_VERTICAL} /> */}
             <ButtonPrimary onClick={submit}>
                 Next
             </ButtonPrimary>

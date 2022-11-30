@@ -308,10 +308,10 @@ function CreateMDPForm({onSubmit, onPrevious}: { onSubmit: (data: CreateMDPDataF
         </div>
         <Space classes="w-full h-[50px]" />                
         <div className="w-full max-w-[400px] mx-auto flex">
-            <ButtonSecondary onClick={onPrevious}>
+            {/* <ButtonSecondary onClick={onPrevious}>
                 Previous
             </ButtonSecondary>
-            <Space type={TYPE_SPACE.INPUT_DISTANCE_VERTICAL} />
+            <Space type={TYPE_SPACE.INPUT_DISTANCE_VERTICAL} /> */}
             <ButtonPrimary onClick={submit}>
                 Finish
             </ButtonPrimary>

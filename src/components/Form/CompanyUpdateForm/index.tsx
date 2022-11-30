@@ -118,7 +118,15 @@ function CompanyUpdateForm({onSubmit}: { onSubmit: (data: CompanyInformationUpda
         "message": ""
     });
 
-    function uploadLogo(base64: string) {
+    function uploadLogo({base64, size}:{base64: string, size: number}) {
+        if (size > 500000) {
+            setLogoControl({
+                "message": "Image max size is 500kb.",
+                "state": INPUT_CONTROL_STATE.ERROR,
+                "value": "",
+            });
+            return;
+        }
         setLogoControl({
             "state": INPUT_CONTROL_STATE.OK,
             "value": base64.split(",")[1],
@@ -152,6 +160,7 @@ function CompanyUpdateForm({onSubmit}: { onSubmit: (data: CompanyInformationUpda
         if (uploadLogoTask.state == TASK_STATE.COMPLETED) {
             setLogoControl({
                 ...logoControl,
+                "message": "",
                 "state": INPUT_CONTROL_STATE.OK,
                 "value": uploadLogoTask.result,
             })
@@ -165,7 +174,7 @@ function CompanyUpdateForm({onSubmit}: { onSubmit: (data: CompanyInformationUpda
         </div>
         <div className="w-full flex">
             <div className="w-[200px] p-[5px]  h-[200px]">
-                <InputPhoto name="companyLogo" placeholder="Add company logo" onChange={uploadLogo}/>
+                <InputPhoto name="companyLogo" placeholder="Add company logo" onChange={uploadLogo} state={logoControl.state} message={logoControl.message}/>
             </div>
             <div className="w-full pl-[20px]">
                 <InputText

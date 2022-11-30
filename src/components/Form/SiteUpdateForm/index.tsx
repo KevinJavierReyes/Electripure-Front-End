@@ -131,7 +131,15 @@ const SiteUpdateForm = ({onSubmit, siteId}: { onSubmit: (data: SiteUpdateDataFor
         "message": ""
     });
 
-    function uploadLogo(base64: string) {
+    function uploadLogo({base64, size}:{base64: string, size: number}) {
+        if (size > 500000) {
+            setLogoControl({
+                "message": "Image max size is 500kb.",
+                "state": INPUT_CONTROL_STATE.ERROR,
+                "value": "",
+            });
+            return;
+        }
         setLogoControl({
             "state": INPUT_CONTROL_STATE.DEFAULT,
             "value": base64.split(",")[1],
@@ -139,7 +147,15 @@ const SiteUpdateForm = ({onSubmit, siteId}: { onSubmit: (data: SiteUpdateDataFor
         })
     }
 
-    function uploadSchematic(base64: string) {
+    function uploadSchematic({base64, size}:{base64: string, size: number}) {
+        if (size > 500000) {
+            setSchematicControl({
+                "message": "Image max size is 500kb.",
+                "state": INPUT_CONTROL_STATE.ERROR,
+                "value": "",
+            });
+            return;
+        }
         setSchematicControl({
             "state": INPUT_CONTROL_STATE.OK,
             "value": base64.split(",")[1],
@@ -174,7 +190,7 @@ const SiteUpdateForm = ({onSubmit, siteId}: { onSubmit: (data: SiteUpdateDataFor
         </div>
         <div className="w-full flex">
             <div className="w-[100px] p-[5px] h-[100px]">
-                <InputPhoto name="siteLogo" placeholder="" onChange={uploadLogo}/>
+                <InputPhoto name="siteLogo" placeholder="" onChange={uploadLogo} state={logoControl.state} message={logoControl.message}/>
             </div>
             <div className="w-full pl-[20px]">
                 <InputText
@@ -313,7 +329,7 @@ const SiteUpdateForm = ({onSubmit, siteId}: { onSubmit: (data: SiteUpdateDataFor
         </div>
         <Space type={TYPE_SPACE.INPUT_DISTANCE} />
         <div className="w-full h-[150px]">
-            <InputPhoto name="schematic" placeholder="Add site schematic" onChange={uploadSchematic}/>
+            <InputPhoto name="schematic" placeholder="Add site schematic" onChange={uploadSchematic} onChange={uploadSchematic} state={schematicControl.state} message={schematicControl.message}/>
         </div>
         <Space classes="w-full h-[50px]" />                
         <div className="w-full max-w-[400px] mx-auto flex">
