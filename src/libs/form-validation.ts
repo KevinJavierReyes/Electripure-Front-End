@@ -9,11 +9,19 @@ export function validateName (value: string): ValidationResult {
             "error": "Name format invalid."
         }
     }
+    if (value.length > 50) {
+        return {
+            "valid": false,
+            "error": "Name max size is 50."
+        }
+    }
     return {
         "valid": true,
         "error": null
     };
 }
+
+
 
 export function validateCode (value: string): ValidationResult {
     if (!value.match(/[0-9]{6}/)) {
@@ -57,6 +65,25 @@ export function validateEmail (value: string): ValidationResult {
 }
 
 export function validateCellphone (value: string): ValidationResult {
+
+    // if (!value.match(/([0-9]{3})[0-9]{3}-[0-9]{4}/)) {
+    //     return {
+    //         "valid": false,
+    //         "error": "Cellphone invalid."
+    //     }
+    // }
+    if (!value.match(/^[0-9]+$/)) {
+        return {
+            "valid": false,
+            "error": "Cellphone invalid."
+        }
+    }
+    if (value.length > 20) {
+        return {
+            "valid": false,
+            "error": "Cellphone max size is 20."
+        }
+    }
     return {
         "valid": true,
         "error": null
@@ -203,3 +230,17 @@ export function validateCompanyControl(company: string): InputControl {
     return input;
 }
 
+export function validateRequiredControl(value: string): InputControl {
+    let input: InputControl = {
+        "value": value,
+        "message": "",
+        "state": -1
+    };
+    if (value == "") {
+        input.state = 0;
+        input.message = "Required field.";
+        return input;
+    }
+    input.state = 1;
+    return input;
+}

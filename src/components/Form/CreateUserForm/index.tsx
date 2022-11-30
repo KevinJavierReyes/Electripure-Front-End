@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { INPUT_CONTROL_STATE, TYPE_SPACE } from "../../../config/enum";
 import { CreateUserDataForm } from "../../../interfaces/form";
 import { InputControl } from "../../../interfaces/form-control";
-import { validateCellphoneControl, validateCompanyControl, validateEmailControl, validateNameControl } from "../../../libs/form-validation";
+import { validateCellphoneControl, validateCompanyControl, validateEmailControl, validateNameControl, validateRequiredControl } from "../../../libs/form-validation";
 import { ButtonPrimary } from "../../FormInput/Button";
 import InputSelect from "../../FormInput/InputSelect";
 import InputText from "../../FormInput/InputText";
@@ -22,6 +22,8 @@ function CreateUserForm({onSubmit}: {onSubmit: (data: CreateUserDataForm) => voi
     useEffect(()=> {
         dispatch(sendGetCompanies({}));
     }, []);
+
+    const [cellphone, setCellphone] = useState("");
 
     const [emailControl, setEmailControl] = useState({
         "value": "",
@@ -66,6 +68,13 @@ function CreateUserForm({onSubmit}: {onSubmit: (data: CreateUserDataForm) => voi
                     company: companyControl.value,
                     role: roleControl.value
                 });
+        } else {
+            // Validate required fields
+            setEmailControl(validateRequiredControl(emailControl.value));
+            setCellphoneControl(validateRequiredControl(cellphoneControl.value));
+            setNameControl(validateRequiredControl(nameControl.value));
+            setCompanyControl(validateRequiredControl(companyControl.value));
+            setRoleControl(validateRequiredControl(roleControl.value));
         }
     }
 
@@ -100,9 +109,25 @@ function CreateUserForm({onSubmit}: {onSubmit: (data: CreateUserDataForm) => voi
                     message={cellphoneControl.message}
                     name={"phone"}
                     placeholder={"( 801 ) 250 - 2872"}
+                    value={cellphone}
                     label={"Cellphone"}
                     onChange={(value: string) => {
-                        const newCellphoneControl: InputControl = validateCellphoneControl(value);
+                        const cellphone = value.replace("-", "").replace("(", "").replace(")", "").replace(" ", "");
+                        const newCellphoneControl: InputControl = validateCellphoneControl(cellphone);
+                        
+                        let cellphoneFormated = "";
+                        if (newCellphoneControl.state == INPUT_CONTROL_STATE.OK) {
+                            if (cellphone.length > 6) {
+                                cellphoneFormated =  `(${cellphone.substring(0,3)})${cellphone.substring(3,6)}-${cellphone.substring(6,100)}`
+                            } else  if (cellphone.length > 3) {
+                                cellphoneFormated =  `(${cellphone.substring(0,3)})${cellphone.substring(3,100)}`
+                            } else {
+                                cellphoneFormated = value;
+                            }
+                        } else {
+                            cellphoneFormated = value;
+                        }
+                        setCellphone(cellphoneFormated);
                         setCellphoneControl(newCellphoneControl);
                 }}/>
             
@@ -120,6 +145,7 @@ function CreateUserForm({onSubmit}: {onSubmit: (data: CreateUserDataForm) => voi
                     setCompanyControl({
                         ...companyControl,
                         value: selected.id,
+                        message: "",
                         state: INPUT_CONTROL_STATE.OK
                     });
                 }}
@@ -141,6 +167,7 @@ function CreateUserForm({onSubmit}: {onSubmit: (data: CreateUserDataForm) => voi
                     setRoleControl({
                         ...roleControl,
                         value: selected.value,
+                        message: "",
                         state: INPUT_CONTROL_STATE.OK
                     });
                 }}
