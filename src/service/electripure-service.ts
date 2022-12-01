@@ -417,4 +417,14 @@ export default class ElectripureService extends BaseService {
     return response;
   }
 
+  static async getPermissions(payload: any) : Promise<ResponseGeneric> {
+    const url = `${environment.ELECTRIPURE_ENDPOINT}/get_permision`;
+    const response = await this.requestPost(url, payload);
+    if (!response.success) {
+      toast.error(response.error, {
+        "position": "bottom-right"
+      });
+    }
+    return response;
+  }
 }
