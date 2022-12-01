@@ -1,19 +1,28 @@
 import { useState, useEffect } from "react";
 import { INPUT_CONTROL_STATE } from "../../../config/enum";
 
-function InputText({ state, message, name, placeholder, label, onChange, defaultValue="", value="" }: { value?: string, state: INPUT_CONTROL_STATE, message: string, name: string, placeholder: string, label: string, onChange: (value: string) => void, defaultValue?: string }) {
-    const [_, setValue] = useState(defaultValue);
+function InputText({ state, message, name, placeholder, label, onChange, defaultValue=null, value=null }: { value?: string | null, state: INPUT_CONTROL_STATE, message: string, name: string, placeholder: string, label: string, onChange: (value: string) => void, defaultValue?: string | null}) {
+    const [_, setValue] = useState(value || defaultValue || "");
     function handleChange(event: any) {
         setValue(event.target.value);
         onChange(event.target.value);
     }
     useEffect(() => {
-        if (value != "") {
-            onChange(value);
+        if (_ != "") {
+            onChange(_);
         }
     }, []);
+    
+    // const [enableBroadcast, setEnableBroadcast] = useState(false);
     useEffect(() => {
-        setValue(value);
+        if (value != null) {
+            setValue(value);
+            // if (enableBroadcast) {
+            //     setValue(value);
+            // } else {
+            //     setEnableBroadcast(true);
+            // }
+        }
     }, [value]);
     return (
         <div className="w-full">
