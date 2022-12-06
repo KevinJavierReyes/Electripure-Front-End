@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { sendGetCompanies } from "../../../actions/electripure";
 import { ElectripureState } from "../../../interfaces/reducers";
 import { CompanyEntity, GlobalCompanyEntity } from "../../../interfaces/entities";
+import formatter from "../../../libs/formatter";
 
 
 function CreateUserForm({onSubmit}: {onSubmit: (data: CreateUserDataForm) => void}) {
@@ -70,11 +71,11 @@ function CreateUserForm({onSubmit}: {onSubmit: (data: CreateUserDataForm) => voi
                 });
         } else {
             // Validate required fields
-            setEmailControl(validateRequiredControl(emailControl.value));
-            setCellphoneControl(validateRequiredControl(cellphoneControl.value));
-            setNameControl(validateRequiredControl(nameControl.value));
-            setCompanyControl(validateRequiredControl(companyControl.value));
-            setRoleControl(validateRequiredControl(roleControl.value));
+            setEmailControl(validateRequiredControl(emailControl));
+            setCellphoneControl(validateRequiredControl(cellphoneControl));
+            setNameControl(validateRequiredControl(nameControl));
+            setCompanyControl(validateRequiredControl(companyControl));
+            setRoleControl(validateRequiredControl(roleControl));
         }
     }
 
@@ -115,20 +116,13 @@ function CreateUserForm({onSubmit}: {onSubmit: (data: CreateUserDataForm) => voi
                         const cellphone = value.replace("-", "").replace("(", "").replace(")", "").replace(" ", "");
                         const newCellphoneControl: InputControl = validateCellphoneControl(cellphone);
                         
-                        let cellphoneFormated = "";
-                        if (newCellphoneControl.state == INPUT_CONTROL_STATE.OK) {
-                            if (cellphone.length > 6) {
-                                cellphoneFormated =  `(${cellphone.substring(0,3)})${cellphone.substring(3,6)}-${cellphone.substring(6,100)}`
-                            } else  if (cellphone.length > 3) {
-                                cellphoneFormated =  `(${cellphone.substring(0,3)})${cellphone.substring(3,100)}`
-                            } else {
-                                cellphoneFormated = value;
-                            }
-                        } else {
-                            cellphoneFormated = value;
-                        }
-                        setCellphone(cellphoneFormated);
                         setCellphoneControl(newCellphoneControl);
+                        
+                        if (newCellphoneControl.state == INPUT_CONTROL_STATE.OK) {
+                            setCellphone(formatter.toCellphoneFormat(cellphone));
+                        } else {
+                            setCellphone(value);
+                        }
                 }}/>
             
             <Space type={TYPE_SPACE.INPUT_DISTANCE}/>
@@ -166,7 +160,7 @@ function CreateUserForm({onSubmit}: {onSubmit: (data: CreateUserDataForm) => voi
                 onChange={(selected: {"value": any, "id": any}) => {
                     setRoleControl({
                         ...roleControl,
-                        value: selected.value,
+                        value: selected.id,
                         message: "",
                         state: INPUT_CONTROL_STATE.OK
                     });

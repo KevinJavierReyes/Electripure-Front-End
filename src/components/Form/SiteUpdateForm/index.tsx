@@ -329,7 +329,7 @@ const SiteUpdateForm = ({onSubmit, siteId}: { onSubmit: (data: SiteUpdateDataFor
         </div>
         <Space type={TYPE_SPACE.INPUT_DISTANCE} />
         <div className="w-full h-[150px]">
-            <InputPhoto name="schematic" placeholder="Add site schematic" onChange={uploadSchematic} onChange={uploadSchematic} state={schematicControl.state} message={schematicControl.message}/>
+            <InputPhoto name="schematic" placeholder="Add site schematic" onChange={uploadSchematic} state={schematicControl.state} message={schematicControl.message}/>
         </div>
         <Space classes="w-full h-[50px]" />                
         <div className="w-full max-w-[400px] mx-auto flex">

@@ -1,4 +1,4 @@
-import { AddContactRequest, AuthorizationCodeRequest, AuthorizationCodeValidateRequest, CreateUserRequest, ForgotPasswordRequest, GetAmpsDataRequest, GetCompaniesByUserRequest, GetPowerDataRequest, GetVoltsDataRequest, LoginRequest, ResendEmailRequest, ToogleCompanyStateRequest, ToogleUserStateRequest, UpdatePasswordRequest, UpdateUserRequest, UploadImageRequest, ValidateTokenRequest } from "../interfaces/electripure-service";
+import { AddContactRequest, AuthorizationCodeRequest, AuthorizationCodeValidateRequest, CreateUserRequest, ForgotPasswordRequest, GetAmpsDataRequest, GetCompaniesByUserRequest, GetPowerDataRequest, GetVoltsDataRequest, LoginRequest, ResendEmailRequest, ToogleCompanyStateRequest, ToogleUserStateRequest, UpdatePasswordRequest, UpdateUserRequest, UploadImageRequest, ValidateTokenRequest, ValidateUpdateUserRequest } from "../interfaces/electripure-service";
 import { BaseService } from "./base-service";
 import environment from "./../config/env";
 import { toast } from "react-toastify";
@@ -33,6 +33,18 @@ export default class ElectripureService extends BaseService {
 
   static async updateUser(payload: UpdateUserRequest): Promise<ResponseGeneric> {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/update_user?${this.jsonToQueryParams(payload)}`;
+    const header_auth = {"Authorization" : `Bearer ${localStorage.getItem('electripureJwt')}`}
+    const response = await this.requestPost(url, payload, header_auth);
+    if (!response.success) {
+      toast.error(response.error, {
+        "position": "bottom-right"
+      });
+    }
+    return response;
+  }
+  
+  static async validateUpdateUser(payload: ValidateUpdateUserRequest): Promise<ResponseGeneric> {
+    const url = `${environment.ELECTRIPURE_ENDPOINT}/validate_update_user?${this.jsonToQueryParams(payload)}`;
     const header_auth = {"Authorization" : `Bearer ${localStorage.getItem('electripureJwt')}`}
     const response = await this.requestPost(url, payload, header_auth);
     if (!response.success) {

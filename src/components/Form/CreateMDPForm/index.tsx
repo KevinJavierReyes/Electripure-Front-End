@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { INPUT_CONTROL_STATE, TYPE_SPACE } from "../../../config/enum";
 import { CreateMDPDataForm, SiteManagerDataForm } from '../../../interfaces/form';
 import { InputControl, MDPGroup } from '../../../interfaces/form-control';
-import { validateCellphone, validateCellphoneControl, validateEmailControl, validateName, validateNameControl } from '../../../libs/form-validation';
+import { validateAmpsControl, validateApplianceControl, validateCellphone, validateCellphoneControl, validateEmailControl, validateMDPNameControl, validateMeterControl, validateName, validateNameControl, validateRequiredControl, validateSwitchgearControl, validateTransformerControl } from '../../../libs/form-validation';
 import { ButtonLink, ButtonPrimary, ButtonSecondary } from '../../FormInput/Button';
 import InputText from "../../FormInput/InputText";
 import Title from "../../FormInput/Title";
@@ -68,6 +68,17 @@ function CreateMDPForm({onSubmit, onPrevious}: { onSubmit: (data: CreateMDPDataF
                     "transformer": mdp.transformer.value
                 };
             }))
+        } else {
+            [...mdpgs].forEach((mdpg: MDPGroup, index: number)=> {
+                const mdpValidated: any = validateMdp({
+                    ...mdpg,
+                    "ampCap": validateRequiredControl(mdpg.ampCap),
+                    "name": validateRequiredControl(mdpg.name),
+                    "switchgearCap": validateRequiredControl(mdpg.switchgearCap),
+                    "transformer": validateRequiredControl(mdpg.transformer)
+                });
+                setMdp(mdpValidated, index);
+            });
         }
     }
 
@@ -114,68 +125,68 @@ function CreateMDPForm({onSubmit, onPrevious}: { onSubmit: (data: CreateMDPDataF
     }
 
     function validateMdp(mdp: MDPGroup) {
-        if (mdp.ampCap.value == "") {
-            mdp.ampCap.state = INPUT_CONTROL_STATE.DEFAULT;
-            mdp.ampCap.message = "";
-        } else {
-            mdp.ampCap.state = INPUT_CONTROL_STATE.OK;
-            mdp.ampCap.message = "";
-        }
+        // if (mdp.ampCap.value == "") {
+        //     mdp.ampCap.state = INPUT_CONTROL_STATE.DEFAULT;
+        //     mdp.ampCap.message = "";
+        // } else {
+        //     mdp.ampCap.state = INPUT_CONTROL_STATE.OK;
+        //     mdp.ampCap.message = "";
+        // }
 
         
-        if (mdp.name.value == "") {
-            mdp.name.state = INPUT_CONTROL_STATE.DEFAULT;
-            mdp.name.message = "";
-        } else {
-            const nameResult = validateName(mdp.name.value);
-            if (nameResult.valid) {
-                mdp.name.state = INPUT_CONTROL_STATE.OK;
-                mdp.name.message = "";
-            } else {
-                mdp.name.message = nameResult.error!;
-                mdp.name.state = INPUT_CONTROL_STATE.ERROR;
-            }
-        }
+        // if (mdp.name.value == "") {
+        //     mdp.name.state = INPUT_CONTROL_STATE.DEFAULT;
+        //     mdp.name.message = "";
+        // } else {
+        //     const nameResult = validateName(mdp.name.value);
+        //     if (nameResult.valid) {
+        //         mdp.name.state = INPUT_CONTROL_STATE.OK;
+        //         mdp.name.message = "";
+        //     } else {
+        //         mdp.name.message = nameResult.error!;
+        //         mdp.name.state = INPUT_CONTROL_STATE.ERROR;
+        //     }
+        // }
 
-        if (mdp.applianceId.value == "") {
-            mdp.applianceId.state = INPUT_CONTROL_STATE.DEFAULT;
-            mdp.applianceId.message = "";
-        } else {
-            mdp.applianceId.state = INPUT_CONTROL_STATE.OK;
-            mdp.applianceId.message = "";
-        }
+        // if (mdp.applianceId.value == "") {
+        //     mdp.applianceId.state = INPUT_CONTROL_STATE.DEFAULT;
+        //     mdp.applianceId.message = "";
+        // } else {
+        //     mdp.applianceId.state = INPUT_CONTROL_STATE.OK;
+        //     mdp.applianceId.message = "";
+        // }
         
 
-        if (mdp.meterId.value == "") {
-            mdp.meterId.state = INPUT_CONTROL_STATE.DEFAULT;
-            mdp.meterId.message = "";
-        } else {
-            mdp.meterId.state = INPUT_CONTROL_STATE.OK;
-            mdp.meterId.message = "";
-        }
+        // if (mdp.meterId.value == "") {
+        //     mdp.meterId.state = INPUT_CONTROL_STATE.DEFAULT;
+        //     mdp.meterId.message = "";
+        // } else {
+        //     mdp.meterId.state = INPUT_CONTROL_STATE.OK;
+        //     mdp.meterId.message = "";
+        // }
         
-        if (mdp.switchgearCap.value == "") {
-            mdp.switchgearCap.state = INPUT_CONTROL_STATE.DEFAULT;
-            mdp.switchgearCap.message = "";
-        } else {
-            mdp.switchgearCap.state = INPUT_CONTROL_STATE.OK;
-            mdp.switchgearCap.message = "";
-        }
+        // if (mdp.switchgearCap.value == "") {
+        //     mdp.switchgearCap.state = INPUT_CONTROL_STATE.DEFAULT;
+        //     mdp.switchgearCap.message = "";
+        // } else {
+        //     mdp.switchgearCap.state = INPUT_CONTROL_STATE.OK;
+        //     mdp.switchgearCap.message = "";
+        // }
         
-        if (mdp.transformer.value == "") {
-            mdp.transformer.state = INPUT_CONTROL_STATE.DEFAULT;
-            mdp.transformer.message = "";
-        } else {
-            mdp.transformer.state = INPUT_CONTROL_STATE.OK;
-            mdp.transformer.message = "";
-        }
+        // if (mdp.transformer.value == "") {
+        //     mdp.transformer.state = INPUT_CONTROL_STATE.DEFAULT;
+        //     mdp.transformer.message = "";
+        // } else {
+        //     mdp.transformer.state = INPUT_CONTROL_STATE.OK;
+        //     mdp.transformer.message = "";
+        // }
         return mdp;
     }
 
 
     return (<div className="w-full bg-color-white p-[10px]">
         <div className="mx-auto w-full max-w-[400px]">
-            <StepperProgress completedSteps={3} totalSteps={5}/>
+            <StepperProgress completedSteps={5} totalSteps={5}/>
         </div>
         <Space type={TYPE_SPACE.INPUT_DISTANCE} />
         <div className="mx-auto w-full max-w-[650px]" style={{ "textAlign": "center" }}>
@@ -192,10 +203,7 @@ function CreateMDPForm({onSubmit, onPrevious}: { onSubmit: (data: CreateMDPDataF
                     onChange={(value: string)=> {
                         const mdpValidated: any = validateMdp({
                             ...mdp,
-                            "name": {
-                                ...mdp.name,
-                                "value": value 
-                            }
+                            "name": validateMDPNameControl(value)
                         });
                         setMdp(mdpValidated, index);
                     }}
@@ -210,10 +218,7 @@ function CreateMDPForm({onSubmit, onPrevious}: { onSubmit: (data: CreateMDPDataF
                     onChange={(value: string)=> {
                         const mdpValidated: any = validateMdp({
                             ...mdp,
-                            "meterId": {
-                                ...mdp.meterId,
-                                "value": value 
-                            }
+                            "meterId": validateMeterControl(value)
                         });
                         setMdp(mdpValidated, index);
                     }}
@@ -228,10 +233,7 @@ function CreateMDPForm({onSubmit, onPrevious}: { onSubmit: (data: CreateMDPDataF
                     onChange={(value: string)=> {
                         const mdpValidated: any = validateMdp({
                             ...mdp,
-                            "applianceId": {
-                                ...mdp.applianceId,
-                                "value": value 
-                            }
+                            "applianceId": validateApplianceControl(value)
                         });
                         setMdp(mdpValidated, index);
                     }}
@@ -246,10 +248,7 @@ function CreateMDPForm({onSubmit, onPrevious}: { onSubmit: (data: CreateMDPDataF
                     onChange={(value: string)=> {
                         const mdpValidated: any = validateMdp({
                             ...mdp,
-                            "ampCap": {
-                                ...mdp.ampCap,
-                                "value": value 
-                            }
+                            "ampCap": validateAmpsControl(value)
                         });
                         setMdp(mdpValidated, index);
                     }}
@@ -264,10 +263,7 @@ function CreateMDPForm({onSubmit, onPrevious}: { onSubmit: (data: CreateMDPDataF
                     onChange={(value: string)=> {
                         const mdpValidated: any = validateMdp({
                             ...mdp,
-                            "switchgearCap": {
-                                ...mdp.switchgearCap,
-                                "value": value 
-                            }
+                            "switchgearCap": validateSwitchgearControl(value)
                         });
                         setMdp(mdpValidated, index);
                     }}
@@ -282,10 +278,7 @@ function CreateMDPForm({onSubmit, onPrevious}: { onSubmit: (data: CreateMDPDataF
                     onChange={(value: string)=> {
                         const mdpValidated: any = validateMdp({
                             ...mdp,
-                            "transformer": {
-                                ...mdp.transformer,
-                                "value": value 
-                            }
+                            "transformer": validateTransformerControl(value)
                         });
                         setMdp(mdpValidated, index);
                     }}

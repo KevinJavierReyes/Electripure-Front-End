@@ -9,6 +9,12 @@ export interface UpdateUserRequest {
     token: string;
 }
 
+export interface ValidateUpdateUserRequest {
+    email: string;
+    cellphone: string;
+    token: string;
+}
+
 export interface AddContactRequest {
     user_email: string;
     contact_name: string;

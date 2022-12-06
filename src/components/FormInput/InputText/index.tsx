@@ -13,22 +13,16 @@ function InputText({ state, message, name, placeholder, label, onChange, default
         }
     }, []);
     
-    // const [enableBroadcast, setEnableBroadcast] = useState(false);
     useEffect(() => {
         if (value != null) {
             setValue(value);
-            // if (enableBroadcast) {
-            //     setValue(value);
-            // } else {
-            //     setEnableBroadcast(true);
-            // }
         }
     }, [value]);
     return (
         <div className="w-full">
             <label htmlFor={name} className={"f-medium " + (state === INPUT_CONTROL_STATE.OK? "color-success" : state === INPUT_CONTROL_STATE.ERROR ? "color-error" : "color-black-dark")}>{label}</label>
             <input
-                onChange={handleChange}
+                onInput={handleChange}
                 placeholder={placeholder}
                 value={_}
                 className={"mt-[5px] w-full border h-[50px] px-[10px] " + (state === INPUT_CONTROL_STATE.OK ? "border-color-success color-success" : state === INPUT_CONTROL_STATE.ERROR ? "border-color-error color-error" : "border-color-black-light color-black")}

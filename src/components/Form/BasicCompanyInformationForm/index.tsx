@@ -6,7 +6,7 @@ import { TaskEntity } from '../../../interfaces/entities';
 import { BasicCompanyInformationDataForm } from '../../../interfaces/form';
 import { InputControl } from '../../../interfaces/form-control';
 import { ElectripureState } from '../../../interfaces/reducers';
-import { validateCompanyControl } from '../../../libs/form-validation';
+import { validateAddressControl, validateCityControl, validateCompanyControl, validateRequiredControl, validateZipControl } from '../../../libs/form-validation';
 import { ButtonPrimary } from '../../FormInput/Button';
 import InputPhoto from "../../FormInput/InputPhoto";
 import InputSelect from '../../FormInput/InputSelect';
@@ -116,8 +116,11 @@ function BasicCompanyInformationForm({onSubmit}: { onSubmit: (data: BasicCompany
         "message": ""
     });
 
+    const [logoValid, setLogoValid] = useState(false);
+
     function uploadLogo({base64, size}:{base64: string, size: number}) {
         if (size > 500000) {
+            setLogoValid(false);
             setLogoControl({
                 "message": "Image max size is 500kb.",
                 "state": INPUT_CONTROL_STATE.ERROR,
@@ -125,6 +128,7 @@ function BasicCompanyInformationForm({onSubmit}: { onSubmit: (data: BasicCompany
             });
             return;
         }
+        setLogoValid(true);
         dispatch(SendImage({
             "base64": base64.split(",")[1],
             "taskKey": "UPLOAD_LOGO"
@@ -134,7 +138,6 @@ function BasicCompanyInformationForm({onSubmit}: { onSubmit: (data: BasicCompany
     function submit() {
         if (companyControl.state == INPUT_CONTROL_STATE.OK &&
             addressControl.state == INPUT_CONTROL_STATE.OK &&
-            // address2Control.state == INPUT_CONTROL_STATE.OK &&
             cityControl.state == INPUT_CONTROL_STATE.OK &&
             stateControl.state == INPUT_CONTROL_STATE.OK &&
             zipControl.state == INPUT_CONTROL_STATE.OK &&
@@ -148,17 +151,25 @@ function BasicCompanyInformationForm({onSubmit}: { onSubmit: (data: BasicCompany
                     "zip": zipControl.value,
                     "logo": logoControl.value
                 })
+        } else {
+            // Validate required fields
+            setCompanyControl(validateRequiredControl(companyControl));
+            setAddressControl(validateRequiredControl(addressControl));
+            setCityControl(validateRequiredControl(cityControl));
+            setStateControl(validateRequiredControl(stateControl));
+            setZipControl(validateRequiredControl(zipControl));
+            setLogoControl(validateRequiredControl(logoControl));
         }
     }
 
     useEffect(() => {
-        if (uploadLogoTask.state == TASK_STATE.COMPLETED) {
+        if (uploadLogoTask.state == TASK_STATE.COMPLETED && logoValid) {
             setLogoControl({
                 ...logoControl,
                 "message": "",
                 "state": INPUT_CONTROL_STATE.OK,
                 "value": uploadLogoTask.result,
-            })
+            });
         }
     }, [uploadLogoTask.state]);
 
@@ -194,11 +205,8 @@ function BasicCompanyInformationForm({onSubmit}: { onSubmit: (data: BasicCompany
                     state={addressControl.state}
                     message={addressControl.message}
                     onChange={(value: string) => {
-                        setAddressControl({
-                            "state": value == "" ? INPUT_CONTROL_STATE.DEFAULT : INPUT_CONTROL_STATE.OK,
-                            "message": "",
-                            "value": value
-                        });
+                        const newAddressControl: InputControl = validateAddressControl(value);
+                        setAddressControl(newAddressControl);
                     }}
                 />
                 <Space type={TYPE_SPACE.INPUT_DISTANCE}/>
@@ -209,11 +217,8 @@ function BasicCompanyInformationForm({onSubmit}: { onSubmit: (data: BasicCompany
                     state={address2Control.state}
                     message={address2Control.message}
                     onChange={(value: string) => {
-                        setAddress2Control({
-                            "state": value == "" ? INPUT_CONTROL_STATE.DEFAULT : INPUT_CONTROL_STATE.OK,
-                            "message": "",
-                            "value": value
-                        });
+                        const newAddressControl: InputControl = validateAddressControl(value);
+                        setAddress2Control(newAddressControl);
                     }}
                 />
                 <Space type={TYPE_SPACE.INPUT_DISTANCE}/>
@@ -225,18 +230,14 @@ function BasicCompanyInformationForm({onSubmit}: { onSubmit: (data: BasicCompany
                         state={cityControl.state}
                         message={cityControl.message}
                         onChange={(value: string) => {
-                            setCityControl({
-                                "state": value == "" ? INPUT_CONTROL_STATE.DEFAULT : INPUT_CONTROL_STATE.OK,
-                                "message": "",
-                                "value": value
-                            });
+                            const newCityControl: InputControl = validateCityControl(value);
+                            setCityControl(newCityControl);
                         }}
                     />
                     <Space classes="w-[60px]"/>
                     <InputSelect
                         name="state"
                         label="State"
-                        //options={[{"id": "01", "value": "state 01"}, {"id": "02", "value": "state 02"}]}
                         options={stateList.map((value, index) => (
                             {"id": index, "value": value}
                         ))}
@@ -259,11 +260,8 @@ function BasicCompanyInformationForm({onSubmit}: { onSubmit: (data: BasicCompany
                         state={zipControl.state}
                         message={zipControl.message}
                         onChange={(value: string) => {
-                            setZipControl({
-                                "state": value == "" ? INPUT_CONTROL_STATE.DEFAULT : INPUT_CONTROL_STATE.OK,
-                                "message": "",
-                                "value": value
-                            });
+                            const newZipControl: InputControl = validateZipControl(value);
+                            setZipControl(newZipControl);
                         }}
                     />
                 </div>
