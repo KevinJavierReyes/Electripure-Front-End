@@ -12,30 +12,17 @@ import DataTableUsers from "../components/DataTables/DataTableUsers";
 import { ButtonSecondary } from "../components/FormInput/Button";
 // Import actions
 import { sendCreateUser } from "../actions/electripure";
-import { ElectripureState } from "../interfaces/reducers"
-import { useNavigate } from "react-router-dom";
 
 function UserListPage () {
 
     const [isShowModal, setShowModal] = useState(false);
 
     const dispatch = useDispatch();
-    const navigate = useNavigate()
-
-    const users = JSON.parse(useSelector((state: ElectripureState) => state.users));
-    const userId = localStorage.getItem('user_id')?? " ";
-    const user = users?.filter((elem:any) => elem.id === parseInt(userId))[0];
 
     function submitCreateUserForm(data: CreateUserDataForm) {
         dispatch(sendCreateUser(data));
         setShowModal(false);
     }
-    
-    useEffect(() =>{
-        if(user?.Role !== "Admin"){
-            navigate(`/dashboard/user/details/${user?.id}`)
-        }
-    }, [])
 
     return (
         <React.Fragment>
