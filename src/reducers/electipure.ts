@@ -188,10 +188,9 @@ export const electripureReducer = (state: ElectripureState = initialState, actio
             break;
         case SET_PERMISSIONS:
             let setPermissionsPayload: SetPermissionsPayload = action.payload
-as SetPermissionsPayload;
             return {
                 ...state,
-                "permission": JSON.stringify(setPermissionsPayload)
+                "permissions": JSON.stringify(setPermissionsPayload)
             };
             break;
         default:

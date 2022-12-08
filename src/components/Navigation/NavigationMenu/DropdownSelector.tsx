@@ -12,6 +12,7 @@ import MainPointContactForm from "../../Form/MainPointContactForm";
 import SiteManagerForm from "../../Form/SiteManagerForm";
 import SiteDetailForm from "../../Form/SiteDetailForm";
 import { useNavigate } from "react-router-dom";
+import { CiaPermission } from "../../../routers/Permissions"
 
 const DropdownSelector = ( { onCreateCompany } : {onCreateCompany: () => void}) => {
     
@@ -156,11 +157,13 @@ const DropdownSelector = ( { onCreateCompany } : {onCreateCompany: () => void}) 
                         </i>
                     </div>
                 </div>
-                <div className="w-[48px] cursor-pointer absolute right-[30px] h-[48px] text-[32px] rounded-full text-center bg-[#D9D9D9]" onClick={onCreateCompany}>
-                    <span className="text-black" >
-                        &#43;
-                    </span>
-                </div>
+                <CiaPermission role="create_company">
+                    <div className="w-[48px] cursor-pointer absolute right-[30px] h-[48px] text-[32px] rounded-full text-center bg-[#D9D9D9]" onClick={onCreateCompany}>
+                        <span className="text-black" >
+                            &#43;
+                        </span>
+                    </div>
+                </CiaPermission>
             </div>
             <SelectedCompanies companySelected={companySelected} />
         </Fragment>

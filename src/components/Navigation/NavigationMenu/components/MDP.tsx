@@ -3,7 +3,6 @@ import img from "./item_img.svg";
 import { useNavigate, useParams } from "react-router-dom";
 
 const MDP = ({site, mdp}: {site: any, mdp: any}) => {
-    console.log(site, mdp);
     const meterId : string = mdp["sub_id"][0].replace("Meter ID: ", "");
     const mdpId : string = mdp["id"];
     const siteId : string = site["id"];
