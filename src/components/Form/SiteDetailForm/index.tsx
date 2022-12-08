@@ -4,7 +4,9 @@ import { SendImage } from '../../../actions/electripure';
 import { INPUT_CONTROL_STATE, TASK_STATE, TYPE_SPACE } from "../../../config/enum";
 import { TaskEntity } from '../../../interfaces/entities';
 import { SiteDetailDataForm } from '../../../interfaces/form';
+import { InputControl } from '../../../interfaces/form-control';
 import { ElectripureState } from '../../../interfaces/reducers';
+import { validateAddressControl, validateCityControl, validateCompany, validateRequiredControl, validateSiteNameControl, validateZipControl } from '../../../libs/form-validation';
 import { ButtonPrimary, ButtonSecondary } from '../../FormInput/Button';
 import InputPhoto from "../../FormInput/InputPhoto";
 import InputSelect from '../../FormInput/InputSelect';
@@ -129,8 +131,14 @@ function SiteDetailForm({onSubmit, onPrevious, defaultData={}}: { onSubmit: (dat
         "message": ""
     });
 
+    const [logoValid, setLogoValid] = useState(false);
+
+    const [schematicValid, setSchematicValid] = useState(false);
+
+
     function uploadLogo({base64, size}:{base64: string, size: number}) {
         if (size > 500000) {
+            setLogoValid(false);
             setLogoControl({
                 "message": "Image max size is 500kb.",
                 "state": INPUT_CONTROL_STATE.ERROR,
@@ -138,6 +146,7 @@ function SiteDetailForm({onSubmit, onPrevious, defaultData={}}: { onSubmit: (dat
             });
             return;
         }
+        setLogoValid(true);
         dispatch(SendImage({
             "base64": base64.split(",")[1],
             "taskKey": "UPLOAD_SITE_LOGO"
@@ -146,6 +155,7 @@ function SiteDetailForm({onSubmit, onPrevious, defaultData={}}: { onSubmit: (dat
 
     function uploadSchematic({base64, size}:{base64: string, size: number}) {
         if (size > 500000) {
+            setSchematicValid(false);
             setSchematicControl({
                 "message": "Image max size is 500kb.",
                 "state": INPUT_CONTROL_STATE.ERROR,
@@ -153,6 +163,7 @@ function SiteDetailForm({onSubmit, onPrevious, defaultData={}}: { onSubmit: (dat
             });
             return;
         }
+        setSchematicValid(true);
         dispatch(SendImage({
             "base64": base64.split(",")[1],
             "taskKey": "UPLOAD_SITE_SCHEMATIC"
@@ -163,7 +174,6 @@ function SiteDetailForm({onSubmit, onPrevious, defaultData={}}: { onSubmit: (dat
 
         if (nameControl.state == INPUT_CONTROL_STATE.OK &&
             addressControl.state == INPUT_CONTROL_STATE.OK &&
-            // address2Control.state == INPUT_CONTROL_STATE.OK &&
             cityControl.state == INPUT_CONTROL_STATE.OK &&
             stateControl.state == INPUT_CONTROL_STATE.OK &&
             zipControl.state == INPUT_CONTROL_STATE.OK &&
@@ -181,11 +191,21 @@ function SiteDetailForm({onSubmit, onPrevious, defaultData={}}: { onSubmit: (dat
                     "logo": logoControl.value,
                     "schematic": logoControl.value
                 });
+        } else {
+            // Validate required fields
+            setNameControl(validateRequiredControl(nameControl));
+            setAddressControl(validateRequiredControl(addressControl));
+            setCityControl(validateRequiredControl(cityControl));
+            setStateControl(validateRequiredControl(stateControl));
+            setZipControl(validateRequiredControl(zipControl));
+            setRateControl(validateRequiredControl(rateControl));
+            setSchematicControl(validateRequiredControl(schematicControl));
+            setLogoControl(validateRequiredControl(logoControl));
         }
     }
 
     useEffect(() => {
-        if (uploadLogoTask.state == TASK_STATE.COMPLETED) {
+        if (uploadLogoTask.state == TASK_STATE.COMPLETED && logoValid) {
             setLogoControl({
                 ...logoControl,
                 "message": "",
@@ -196,7 +216,7 @@ function SiteDetailForm({onSubmit, onPrevious, defaultData={}}: { onSubmit: (dat
     }, [uploadLogoTask.state]);
 
     useEffect(() => {
-        if (uploadSchematicTask.state == TASK_STATE.COMPLETED) {
+        if (uploadSchematicTask.state == TASK_STATE.COMPLETED && schematicValid) {
             setSchematicControl({
                 ...logoControl,
                 "message": "",
@@ -226,11 +246,8 @@ function SiteDetailForm({onSubmit, onPrevious, defaultData={}}: { onSubmit: (dat
                     state={nameControl.state}
                     message={nameControl.message}
                     onChange={(value: string) => {
-                        setNameControl({
-                            "state": value == "" ? INPUT_CONTROL_STATE.DEFAULT : INPUT_CONTROL_STATE.OK,
-                            "message": "",
-                            "value": value
-                        });
+                        const newNameControl: InputControl = validateSiteNameControl(value);
+                        setNameControl(newNameControl);
                     }}
                 />
                 <Space type={TYPE_SPACE.INPUT_DISTANCE}/>
@@ -243,11 +260,8 @@ function SiteDetailForm({onSubmit, onPrevious, defaultData={}}: { onSubmit: (dat
                         defaultValue={defaultData.address ?? ""}
                         message={addressControl.message}
                         onChange={(value: string) => {
-                            setAddressControl({
-                                "state": value == "" ? INPUT_CONTROL_STATE.DEFAULT : INPUT_CONTROL_STATE.OK,
-                                "message": "",
-                                "value": value
-                            });
+                            const newAddressControl: InputControl = validateAddressControl(value);
+                            setAddressControl(newAddressControl);
                         }}
                     />
                     <Space type={TYPE_SPACE.INPUT_DISTANCE}/>
@@ -259,11 +273,8 @@ function SiteDetailForm({onSubmit, onPrevious, defaultData={}}: { onSubmit: (dat
                         state={address2Control.state}
                         message={address2Control.message}
                         onChange={(value: string) => {
-                            setAddress2Control({
-                                "state": value == "" ? INPUT_CONTROL_STATE.DEFAULT : INPUT_CONTROL_STATE.OK,
-                                "message": "",
-                                "value": value
-                            });
+                            const newAddressControl: InputControl = validateAddressControl(value);
+                            setAddress2Control(newAddressControl);
                         }}
                     />
                     <Space type={TYPE_SPACE.INPUT_DISTANCE}/>
@@ -276,11 +287,8 @@ function SiteDetailForm({onSubmit, onPrevious, defaultData={}}: { onSubmit: (dat
                             state={cityControl.state}
                             message={cityControl.message}
                             onChange={(value: string) => {
-                                setCityControl({
-                                    "state": value == "" ? INPUT_CONTROL_STATE.DEFAULT : INPUT_CONTROL_STATE.OK,
-                                    "message": "",
-                                    "value": value
-                                });
+                                const newCityControl: InputControl = validateCityControl(value);
+                                setCityControl(newCityControl);
                             }}
                         />
                         <Space classes="w-[60px]"/>
@@ -311,11 +319,8 @@ function SiteDetailForm({onSubmit, onPrevious, defaultData={}}: { onSubmit: (dat
                             state={zipControl.state}
                             message={zipControl.message}
                             onChange={(value: string) => {
-                                setZipControl({
-                                    "state": value == "" ? INPUT_CONTROL_STATE.DEFAULT : INPUT_CONTROL_STATE.OK,
-                                    "message": "",
-                                    "value": value
-                                });
+                                const newZipControl: InputControl = validateZipControl(value);
+                                setZipControl(newZipControl);
                             }}
                         />
                     </div>

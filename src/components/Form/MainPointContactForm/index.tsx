@@ -2,16 +2,19 @@ import { useState } from 'react';
 import { INPUT_CONTROL_STATE, TYPE_SPACE } from "../../../config/enum";
 import { MainPointContactDataForm } from '../../../interfaces/form';
 import { InputControl } from '../../../interfaces/form-control';
-import { validateCellphone, validateCellphoneControl, validateEmailControl, validateNameControl } from '../../../libs/form-validation';
+import { validateCellphone, validateCellphoneControl, validateEmailControl, validateNameControl, validateRequiredControl } from '../../../libs/form-validation';
 import { ButtonPrimary, ButtonSecondary } from '../../FormInput/Button';
 import InputText from "../../FormInput/InputText";
 import Title from "../../FormInput/Title";
 import Space from "../../Space";
 import StepperProgress from "../../StepperProgress";
+import formatter from '../../../libs/formatter';
 
 
 
 function MainPointContactForm({onSubmit, onPrevious}: { onSubmit: (data: MainPointContactDataForm) => void, onPrevious: () => void }) {
+
+    const [cellPhone, setCellphone] = useState("");
 
     const [fullnameControl, setFullnameControl] = useState({
         "state": INPUT_CONTROL_STATE.DEFAULT,
@@ -41,6 +44,11 @@ function MainPointContactForm({onSubmit, onPrevious}: { onSubmit: (data: MainPoi
                 "email": emailControl.value,
                 "cellphone": cellphoneControl.value
             });
+        } else {
+            // Validate required fields
+            setFullnameControl(validateRequiredControl(fullnameControl));
+            setEmailControl(validateRequiredControl(emailControl));
+            setCellphoneControl(validateRequiredControl(cellphoneControl));
         }
     }
 
@@ -80,12 +88,21 @@ function MainPointContactForm({onSubmit, onPrevious}: { onSubmit: (data: MainPoi
             <InputText
                 name="cellphone"
                 label="Cellphone"
+                value={cellPhone}
                 placeholder="(***) *** - ****"
                 state={cellphoneControl.state}
                 message={cellphoneControl.message}
                 onChange={(value: string) => {
-                    const newCellphoneControl: InputControl = validateCellphoneControl(value);
+                    const cellphone = value.replace("-", "").replace("(", "").replace(")", "").replace(" ", "");
+
+                    const newCellphoneControl: InputControl = validateCellphoneControl(cellphone);
                     setCellphoneControl(newCellphoneControl);
+
+                    if (newCellphoneControl.state == INPUT_CONTROL_STATE.OK) {
+                        setCellphone(formatter.toCellphoneFormat(cellphone));
+                    } else {
+                        setCellphone(value);
+                    }
                 }}
             />
         </div>

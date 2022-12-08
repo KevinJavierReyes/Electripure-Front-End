@@ -132,6 +132,14 @@ export interface SendUpdateUserPayload {
     token: string;
 }
 
+export interface ValidateUpdateUserPayload {
+    email: string;
+    cellphone: string;
+    password: string;
+    token: string;
+}
+
+
 export interface SendImagePayload {
     taskKey: string;
     base64: string;
@@ -212,4 +220,7 @@ export interface SetMDPDetailPayload{
     applianceID: number;
     witchgear: number;
     transformer: number;
+}
+
+export interface SetPermissionsPayload{
 }

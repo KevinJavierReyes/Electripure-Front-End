@@ -2,8 +2,8 @@ import { InputControl } from "../interfaces/form-control";
 import { ValidationResult } from "../interfaces/form-validation";
 
 
-export function validateName (value: string): ValidationResult {
-    if (!value.match(/([a-zA-Z',.-]+( [a-zA-Z',.-]+)*){2,30}/)) {
+export function validateName(value: string): ValidationResult {
+    if (!value.match(/([a-zA-Z',.-]+( [a-zA-Z',.-]+)*){2,100}/)) {
         return {
             "valid": false,
             "error": "Name format invalid."
@@ -12,7 +12,7 @@ export function validateName (value: string): ValidationResult {
     if (value.length > 50) {
         return {
             "valid": false,
-            "error": "Name max size is 50."
+            "error": "Maximum size is 50 characters."
         }
     }
     return {
@@ -21,9 +21,7 @@ export function validateName (value: string): ValidationResult {
     };
 }
 
-
-
-export function validateCode (value: string): ValidationResult {
+export function validateCode(value: string): ValidationResult {
     if (!value.match(/[0-9]{6}/)) {
         return {
             "valid": false,
@@ -36,12 +34,17 @@ export function validateCode (value: string): ValidationResult {
     };
 }
 
-
-export function validateCompany (value: string): ValidationResult {
+export function validateCompany(value: string): ValidationResult {
     if (!value.match(/.+/)) {
         return {
             "valid": false,
             "error": "Company invalid."
+        }
+    }
+    if (value.length > 50) {
+        return {
+            "valid": false,
+            "error": "Maximum size is 50 characters."
         }
     }
     return {
@@ -51,7 +54,198 @@ export function validateCompany (value: string): ValidationResult {
 }
 
 
-export function validateEmail (value: string): ValidationResult {
+export function validateMDPName(value: string): ValidationResult {
+    if (!value.match(/.+/)) {
+        return {
+            "valid": false,
+            "error": "Mdp invalid."
+        }
+    }
+    if (value.length > 50) {
+        return {
+            "valid": false,
+            "error": "Maximum size is 50 characters."
+        }
+    }
+    return {
+        "valid": true,
+        "error": null
+    };
+}
+
+export function validateMeter(value: string): ValidationResult {
+    if (!value.match(/^[0-9]+$/)) {
+        return {
+            "valid": false,
+            "error": "Meter invalid."
+        }
+    }
+    if (value.length > 20) {
+        return {
+            "valid": false,
+            "error": "Maximum size is 20 characters."
+        }
+    }
+    return {
+        "valid": true,
+        "error": null
+    };
+}
+
+export function validateAppliance(value: string): ValidationResult {
+    if (!value.match(/^[0-9]+$/)) {
+        return {
+            "valid": false,
+            "error": "Appliance invalid."
+        }
+    }
+    if (value.length > 20) {
+        return {
+            "valid": false,
+            "error": "Maximum size is 20 characters."
+        }
+    }
+    return {
+        "valid": true,
+        "error": null
+    };
+}
+
+export function validateAmps(value: string): ValidationResult {
+    if (!value.match(/^[0-9]+$/)) {
+        return {
+            "valid": false,
+            "error": "Amp cap invalid."
+        }
+    }
+    if (value.length > 20) {
+        return {
+            "valid": false,
+            "error": "Maximum size is 20 characters."
+        }
+    }
+    return {
+        "valid": true,
+        "error": null
+    };
+}
+
+export function validateSwitchgear(value: string): ValidationResult {
+    if (!value.match(/^[0-9]+$/)) {
+        return {
+            "valid": false,
+            "error": "Switchgear invalid."
+        }
+    }
+    if (value.length > 20) {
+        return {
+            "valid": false,
+            "error": "Maximum size is 20 characters."
+        }
+    }
+    return {
+        "valid": true,
+        "error": null
+    };
+}
+
+export function validateTransformer(value: string): ValidationResult {
+    if (!value.match(/^[0-9]+$/)) {
+        return {
+            "valid": false,
+            "error": "Transformer invalid."
+        }
+    }
+    if (value.length > 20) {
+        return {
+            "valid": false,
+            "error": "Maximum size is 20 characters."
+        }
+    }
+    return {
+        "valid": true,
+        "error": null
+    };
+}
+
+export function validateSiteName(value: string): ValidationResult {
+    if (!value.match(/.+/)) {
+        return {
+            "valid": false,
+            "error": "Site invalid."
+        }
+    }
+    if (value.length > 50) {
+        return {
+            "valid": false,
+            "error": "Maximum size is 50 characters."
+        }
+    }
+    return {
+        "valid": true,
+        "error": null
+    };
+}
+
+export function validateAddress(value: string): ValidationResult {
+    if (!value.match(/.+/)) {
+        return {
+            "valid": false,
+            "error": "Address invalid."
+        }
+    }
+    if (value.length > 100) {
+        return {
+            "valid": false,
+            "error": "Maximum size is 100 characters."
+        }
+    }
+    return {
+        "valid": true,
+        "error": null
+    };
+}
+
+
+export function validateCity(value: string): ValidationResult {
+    if (!value.match(/^[a-zA-Z ]*$/)) {
+        return {
+            "valid": false,
+            "error": "City invalid."
+        }
+    }
+    if (value.length > 50) {
+        return {
+            "valid": false,
+            "error": "Maximum size is 50 characters."
+        }
+    }
+    return {
+        "valid": true,
+        "error": null
+    };
+}
+
+export function validateZip(value: string): ValidationResult {
+    if (!value.match(/^[0-9]*$/)) {
+        return {
+            "valid": false,
+            "error": "Zipcode invalid."
+        }
+    }
+    if (value.length > 5) {
+        return {
+            "valid": false,
+            "error": "Maximum size is 5 characters."
+        }
+    }
+    return {
+        "valid": true,
+        "error": null
+    };
+}
+
+export function validateEmail(value: string): ValidationResult {
     if (!value.match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
         return {
             "valid": false,
@@ -64,7 +258,7 @@ export function validateEmail (value: string): ValidationResult {
     };
 }
 
-export function validateCellphone (value: string): ValidationResult {
+export function validateCellphone(value: string): ValidationResult {
 
     // if (!value.match(/([0-9]{3})[0-9]{3}-[0-9]{4}/)) {
     //     return {
@@ -127,12 +321,16 @@ export function validateNameControl(name: string): InputControl {
     }
     const validation: ValidationResult = validateName(input.value);
     if (!validation.valid) {
-        input.state = 0;
-        input.message = validation.error!;
-    } else {
-        input.state = 1;
+        return {
+            ...input,
+            "state": 0,
+            "message": validation.error!
+        };
     }
-    return input;
+    return {
+        ...input,
+        "state": 1
+    };
 }
 
 export function validateEmailControl(email: string): InputControl {
@@ -146,12 +344,16 @@ export function validateEmailControl(email: string): InputControl {
     }
     const validation: ValidationResult = validateEmail(input.value);
     if (!validation.valid) {
-        input.state = 0;
-        input.message = validation.error!;
-    } else {
-        input.state = 1;
+        return {
+            ...input,
+            "state": 0,
+            "message": validation.error!
+        };
     }
-    return input;
+    return {
+        ...input,
+        "state": 1
+    };
 }
 
 export function validatePasswordControl(password: string): InputControl {
@@ -165,12 +367,16 @@ export function validatePasswordControl(password: string): InputControl {
     }
     const validation: ValidationResult = validatePassword(input.value);
     if (!validation.valid) {
-        input.state = 0;
-        input.message = validation.error!;
-    } else {
-        input.state = 1;
+        return {
+            ...input,
+            "state": 0,
+            "message": validation.error!
+        };
     }
-    return input;
+    return {
+        ...input,
+        "state": 1
+    };
 }
 
 export function validateCellphoneControl(cellphone: string): InputControl {
@@ -184,12 +390,16 @@ export function validateCellphoneControl(cellphone: string): InputControl {
     }
     const validation: ValidationResult = validateCellphone(input.value);
     if (!validation.valid) {
-        input.state = 0;
-        input.message = validation.error!;
-    } else {
-        input.state = 1;
+        return {
+            ...input,
+            "state": 0,
+            "message": validation.error!
+        };
     }
-    return input;
+    return {
+        ...input,
+        "state": 1
+    };
 }
 
 export function validateCodeControl(code: string): InputControl {
@@ -203,12 +413,16 @@ export function validateCodeControl(code: string): InputControl {
     }
     const validation: ValidationResult = validateCode(input.value);
     if (!validation.valid) {
-        input.state = 0;
-        input.message = validation.error!;
-    } else {
-        input.state = 1;
+        return {
+            ...input,
+            "state": 0,
+            "message": validation.error!
+        };
     }
-    return input;
+    return {
+        ...input,
+        "state": 1
+    };
 }
 
 export function validateCompanyControl(company: string): InputControl {
@@ -222,25 +436,258 @@ export function validateCompanyControl(company: string): InputControl {
     }
     const validation: ValidationResult = validateCompany(input.value);
     if (!validation.valid) {
-        input.state = 0;
-        input.message = validation.error!;
-    } else {
-        input.state = 1;
+        return {
+            ...input,
+            "state": 0,
+            "message": validation.error!
+        };
     }
-    return input;
+    return {
+        ...input,
+        "state": 1
+    };
 }
 
-export function validateRequiredControl(value: string): InputControl {
+export function validateSiteNameControl(site: string): InputControl {
     let input: InputControl = {
-        "value": value,
+        "value": site,
         "message": "",
         "state": -1
     };
-    if (value == "") {
-        input.state = 0;
-        input.message = "Required field.";
+    if (site == "") {
         return input;
     }
-    input.state = 1;
+    const validation: ValidationResult = validateSiteName(input.value);
+    if (!validation.valid) {
+        return {
+            ...input,
+            "state": 0,
+            "message": validation.error!
+        };
+    }
+    return {
+        ...input,
+        "state": 1
+    };
+}
+
+export function validateAddressControl(address: string): InputControl {
+    let input: InputControl = {
+        "value": address,
+        "message": "",
+        "state": -1
+    };
+    if (address == "") {
+        return input;
+    }
+    const validation: ValidationResult = validateAddress(input.value);
+    if (!validation.valid) {
+        return {
+            ...input,
+            "state": 0,
+            "message": validation.error!
+        };
+    }
+    return {
+        ...input,
+        "state": 1
+    };
+}
+
+export function validateCityControl(city: string): InputControl {
+    let input: InputControl = {
+        "value": city,
+        "message": "",
+        "state": -1
+    };
+    if (city == "") {
+        return input;
+    }
+    const validation: ValidationResult = validateCity(input.value);
+    if (!validation.valid) {
+        return {
+            ...input,
+            "state": 0,
+            "message": validation.error!
+        };
+    }
+    return {
+        ...input,
+        "state": 1
+    };
+}
+
+export function validateMDPNameControl(mdp: string): InputControl {
+    let input: InputControl = {
+        "value": mdp,
+        "message": "",
+        "state": -1
+    };
+    if (mdp == "") {
+        return input;
+    }
+    const validation: ValidationResult = validateMDPName(input.value);
+    if (!validation.valid) {
+        return {
+            ...input,
+            "state": 0,
+            "message": validation.error!
+        };
+    }
+    return {
+        ...input,
+        "state": 1
+    };
+}
+
+export function validateMeterControl(meter: string): InputControl {
+    let input: InputControl = {
+        "value": meter,
+        "message": "",
+        "state": -1
+    };
+    if (meter == "") {
+        return input;
+    }
+    const validation: ValidationResult = validateMeter(input.value);
+    if (!validation.valid) {
+        return {
+            ...input,
+            "state": 0,
+            "message": validation.error!
+        };
+    }
+    return {
+        ...input,
+        "state": 1
+    };
+}
+
+
+export function validateApplianceControl(applience: string): InputControl {
+    let input: InputControl = {
+        "value": applience,
+        "message": "",
+        "state": -1
+    };
+    if (applience == "") {
+        return input;
+    }
+    const validation: ValidationResult = validateAppliance(input.value);
+    if (!validation.valid) {
+        return {
+            ...input,
+            "state": 0,
+            "message": validation.error!
+        };
+    }
+    return {
+        ...input,
+        "state": 1
+    };
+}
+
+
+export function validateAmpsControl(amps: string): InputControl {
+    let input: InputControl = {
+        "value": amps,
+        "message": "",
+        "state": -1
+    };
+    if (amps == "") {
+        return input;
+    }
+    const validation: ValidationResult = validateAmps(input.value);
+    if (!validation.valid) {
+        return {
+            ...input,
+            "state": 0,
+            "message": validation.error!
+        };
+    }
+    return {
+        ...input,
+        "state": 1
+    };
+}
+
+export function validateSwitchgearControl(switchgear: string): InputControl {
+    let input: InputControl = {
+        "value": switchgear,
+        "message": "",
+        "state": -1
+    };
+    if (switchgear == "") {
+        return input;
+    }
+    const validation: ValidationResult = validateSwitchgear(input.value);
+    if (!validation.valid) {
+        return {
+            ...input,
+            "state": 0,
+            "message": validation.error!
+        };
+    }
+    return {
+        ...input,
+        "state": 1
+    };
+}
+
+export function validateTransformerControl(switchgear: string): InputControl {
+    let input: InputControl = {
+        "value": switchgear,
+        "message": "",
+        "state": -1
+    };
+    if (switchgear == "") {
+        return input;
+    }
+    const validation: ValidationResult = validateTransformer(input.value);
+    if (!validation.valid) {
+        return {
+            ...input,
+            "state": 0,
+            "message": validation.error!
+        };
+    }
+    return {
+        ...input,
+        "state": 1
+    };
+}
+
+
+export function validateZipControl(zip: string): InputControl {
+    let input: InputControl = {
+        "value": zip,
+        "message": "",
+        "state": -1
+    };
+    if (zip == "") {
+        return input;
+    }
+    const validation: ValidationResult = validateZip(input.value);
+    if (!validation.valid) {
+        return {
+            ...input,
+            "state": 0,
+            "message": validation.error!
+        };
+    }
+    return {
+        ...input,
+        "state": 1
+    };
+}
+
+export function validateRequiredControl(input: InputControl): InputControl {
+    if (input.value == "" || input.value == null) {
+        return {
+            ...input,
+            "state": 0,
+            "message": "Required field."
+        };
+    }
     return input;
 }

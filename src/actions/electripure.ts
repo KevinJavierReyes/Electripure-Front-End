@@ -1,4 +1,4 @@
-import { ActionNotification, AddTaskPayload, FilterAmpsDataPayload, FilterVoltsDataPayload, LoginPayload, SendAddContactPayload, SendCreateUserPayload, SendActivateDeactivateUserPayload, SendForgotPasswordPayload, SendGetAmpsDataPayload, SendGetCompaniesByUserPayload, SendGetCompaniesPayload, SendGetCompaniesTablePayload, SendGetUsersPayload, SendImagePayload, SendResendEmailPayload, SendUpdatePasswordPayload, SendUpdateUserPayload, SendValidateTokenPayload, SendVerificationCodePayload, SendVerificationEmailPayload, SetAmpsDataPayload, SetCompaniesPayload, SetCompaniesTablePayload, SetCurrentUserPayload, SetGlobalCompaniesPayload, SetJwtPayload, SetLoadingPayload, SetLoginTokenPayload, SetPasswordTokenPayload, SetPasswordUserPayload, SetTimestampTwoStepVerificationPayload, SetUsersPayload, SetVoltsDataPayload, ShowToastPayload, SendActivateDeactivateCompanyPayload, SetCompanyDetailPayload } from "../interfaces/actions";
+import { ActionNotification, AddTaskPayload, FilterAmpsDataPayload, FilterVoltsDataPayload, LoginPayload, SendAddContactPayload, SendCreateUserPayload, SendActivateDeactivateUserPayload, SendForgotPasswordPayload, SendGetAmpsDataPayload, SendGetCompaniesByUserPayload, SendGetCompaniesPayload, SendGetCompaniesTablePayload, SendGetUsersPayload, SendImagePayload, SendResendEmailPayload, SendUpdatePasswordPayload, SendUpdateUserPayload, SendValidateTokenPayload, SendVerificationCodePayload, SendVerificationEmailPayload, SetAmpsDataPayload, SetCompaniesPayload, SetCompaniesTablePayload, SetCurrentUserPayload, SetGlobalCompaniesPayload, SetJwtPayload, SetLoadingPayload, SetLoginTokenPayload, SetPasswordTokenPayload, SetPasswordUserPayload, SetTimestampTwoStepVerificationPayload, SetUsersPayload, SetVoltsDataPayload, ShowToastPayload, SendActivateDeactivateCompanyPayload, SetCompanyDetailPayload, ValidateUpdateUserPayload } from "../interfaces/actions";
 import { ADD_TASK, FILTER_AMPS_DATA, FILTER_VOLTS_DATA, LOGIN, SET_AMPS_DATA, SET_COMPANIES, SET_COMPANIES_TABLE, SET_COMPANY_DETAIL, SET_CURRENT_USER, SET_GLOBAL_COMPANIES, SET_JWT, SET_LOADING, SET_LOGIN_TOKEN, SET_PASSWORD_TOKEN, SET_PASSWORD_USER, SET_TIMESTAMP_TWO_STEP_VERIFICATION, SET_USERS, SET_VOLTS_DATA, SHOW_TOAST } from "./types";
 import ElectripureService from "../service/electripure-service";
 import { ResponseGeneric } from "../interfaces/base-service";
@@ -83,8 +83,6 @@ export const setVoltsData = (payload: SetVoltsDataPayload) => ({
     "type": SET_VOLTS_DATA,
     "payload": payload
 });
-
-
 
 export const filterAmpsData = (payload: FilterAmpsDataPayload) => ({
     "type": FILTER_AMPS_DATA,
@@ -589,6 +587,31 @@ export const sendValidateToken = (payload: SendValidateTokenPayload): any => (as
     }));
 });
 
+export const validateUpdateUser = (payload: ValidateUpdateUserPayload): any => (async (dispatch: any) => {
+    dispatch(setLoading({
+        loading: true
+    }));
+    const response: ResponseGeneric= await ElectripureService.validateUpdateUser(payload);
+    dispatch(setLoading({
+        loading: false
+    }));
+    if(!response.success) {
+        dispatch(showToast({
+            message: response.error!,
+            status: "error"
+        }));
+        return;
+    }
+    if(!response.data.validate) {
+        dispatch(showToast({
+            message: "Email or cell phone do not match those used at the time of creating your account.",
+            status: "error"
+        }));
+        return;
+    }
+    dispatch(sendUpdateUser(payload));
+});
+
 // Create backup contact
 
 export const sendAddContacts = (payload: SendAddContactPayload[]) : any => (async (dispatch: any) => {
@@ -880,34 +903,3 @@ export const sendGetCompanyDetail = (payload: any): any => (async (dispatch: any
     const ciaDetail: SetCompanyDetailPayload = response.data;
     dispatch(setCompanyDetail(ciaDetail));
 });
-
-// Amps and Vots
-
-// export const sendGetAmpsDataGraph = (payload: SendGetAmpsDataPayload): any => (async (dispatch: any) => {
-//     dispatch(setLoading({
-//         loading: true
-//     }));
-//     const response: ResponseGeneric= await ElectripureService.getAmpsDataGraph({
-//         date_min: payload.dateMin,
-//         device: payload.device
-//     });
-//     dispatch(setLoading({
-//         loading: false
-//     }));
-//     if(!response.success) {
-//         dispatch(showToast({
-//             message: response.error!,
-//             status: "error"
-//         }));
-//         return;
-//     };
-//     let data: any = response.data;
-//     dispatch(setAmpsData({
-//         "data": {
-//             "Amps Line A": data["A1_data"],
-//             "Amps Line B": data["A2_data"],
-//             "Amps Line C": data["A3_data"],
-//             "timestamp": data["TS_data"]
-//         }
-//     }));
-// });

@@ -34,7 +34,7 @@ function ConfirmCodePage() {
             localStorage.setItem("electripureJwt", electripureJwt)
             localStorage.setItem("current_user", current_user.fullname);
             localStorage.setItem("user_id", current_user.id);
-            navigate(`/dashboard/user/list`);
+            navigate(`/dashboard/user/details/${current_user.id}`);
         }
     }, [electripureJwt]);
 

@@ -10,7 +10,7 @@ import { ConfirmEmailPhoneDataForm, CreatePasswordDataForm } from "../../interfa
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { ElectripureState } from "../../interfaces/reducers";
-import { sendUpdateUser } from "../../actions/electripure";
+import { sendUpdateUser, validateUpdateUser } from "../../actions/electripure";
 
 function ConfirmEmailPhonePage() {
 
@@ -37,14 +37,13 @@ function ConfirmEmailPhonePage() {
     localStorage.setItem("phone", data.phone);
     const password = localStorage.getItem("password");
     const token = localStorage.getItem("token");
-    dispatch(sendUpdateUser({
+    dispatch(validateUpdateUser({
       "email": data.email,
       "cellphone": data.phone,
       "password": password!,
       "token": token!
     }))
   }
-
 
   return (<Fragment>
     <Navbar>
