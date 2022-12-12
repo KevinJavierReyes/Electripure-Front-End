@@ -2,7 +2,7 @@ import { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { ElectripureState } from "../interfaces/reducers";
-import { sendGetPermissions, sendGetCompaniesTable } from "../actions/electripure"
+import { sendGetCompaniesTable } from "../actions/electripure"
 import jwt_decode from "jwt-decode";
 import { useParams } from "react-router";
 

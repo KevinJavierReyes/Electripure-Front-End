@@ -2,7 +2,7 @@ import { SET_LOADING, SET_LOGIN_TOKEN, SET_TIMESTAMP_TWO_STEP_VERIFICATION,
 SHOW_TOAST, SET_JWT, SET_USERS, SET_PASSWORD_TOKEN, SET_PASSWORD_USER,
 SET_COMPANIES, ADD_TASK, SET_GLOBAL_COMPANIES, SET_CURRENT_USER,
 SET_COMPANIES_TABLE, SET_VOLTS_DATA, SET_AMPS_DATA, FILTER_VOLTS_DATA,
-FILTER_AMPS_DATA, SET_COMPANY_DETAIL, SET_PERMISSIONS } from "../actions/types";
+FILTER_AMPS_DATA, SET_COMPANY_DETAIL } from "../actions/types";
 import { ActionNotification, SetJwtPayload, SetLoadingPayload,
 SetLoginTokenPayload, SetPasswordTokenPayload, SetPasswordUserPayload,
 SetTimestampTwoStepVerificationPayload, SetUsersPayload, ShowToastPayload,
@@ -184,13 +184,6 @@ export const electripureReducer = (state: ElectripureState = initialState, actio
             return {
                 ...state,
                 "companyDetails": JSON.stringify(setCompanyDetailPayload)
-            };
-            break;
-        case SET_PERMISSIONS:
-            let setPermissionsPayload: SetPermissionsPayload = action.payload as SetPermissionsPayload;
-            return {
-                ...state,
-                "permissions": JSON.stringify(setPermissionsPayload)
             };
             break;
         default:

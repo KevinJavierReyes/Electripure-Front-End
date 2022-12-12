@@ -1,7 +1,7 @@
 import { useState, useEffect, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { sendVerificationCode, setLoginToken, sendVerificationEmail, sendGetPermissions } from "../actions/electripure";
+import { sendVerificationCode, setLoginToken, sendVerificationEmail } from "../actions/electripure";
 import Card from "../components/Card";
 import ConfirmCodeForm from "../components/Form/ConfirmCodeForm";
 import Navbar from "../components/Navbar";
