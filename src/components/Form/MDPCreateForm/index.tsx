@@ -49,22 +49,22 @@ function MDPCreateForm({onSubmit}: { onSubmit: (data: CreateMDPDataForm[]) => vo
     function submit() {
         const mdpgs: MDPGroup[] = JSON.parse(mdps);
         const mdpsErrorFiltered: MDPGroup[] = mdpgs.filter((mdpg: MDPGroup) => {
-            return mdpg.MDP.state != INPUT_CONTROL_STATE.OK ||
+            return mdpg.ampCap.state != INPUT_CONTROL_STATE.OK ||
                     // mdpg.applianceId.state != INPUT_CONTROL_STATE.OK ||
                     // mdpg.meterId.state != INPUT_CONTROL_STATE.OK ||
-                    mdpg.MDPname.state != INPUT_CONTROL_STATE.OK ||
-                    mdpg.switchgear.state != INPUT_CONTROL_STATE.OK ||
+                    mdpg.name.state != INPUT_CONTROL_STATE.OK ||
+                    mdpg.switchgearCap.state != INPUT_CONTROL_STATE.OK ||
                     mdpg.transformer.state != INPUT_CONTROL_STATE.OK;
         });
 
         if (mdpsErrorFiltered.length == 0) {
-            onSubmit(mdpgs.map((mdp: MDPGroup) => {
+            onSubmit(mdpgs.map((mdp: MDPGroup): CreateMDPDataForm => {
                 return {
-                    "MDPname": mdp.MDPname.value,
-                    "meterID": mdp.meterId.value,
-                    "applianceID": mdp.applianceId.value,
-                    "MDP": mdp.ampCap.value,
-                    "switchgear": mdp.switchgearCap.value,
+                    "name": mdp.name.value,
+                    "meterId": mdp.meterId.value,
+                    "applianceId": mdp.applianceId.value,
+                    "ampCap": mdp.ampCap.value,
+                    "switchgearCap": mdp.switchgearCap.value,
                     "transformer": mdp.transformer.value
                 };
             }))
@@ -72,9 +72,9 @@ function MDPCreateForm({onSubmit}: { onSubmit: (data: CreateMDPDataForm[]) => vo
             [...mdpgs].forEach((mdpg: MDPGroup, index: number)=> {
                 const mdpValidated: any = validateMdp({
                     ...mdpg,
-                    "MDP": validateRequiredControl(mdpg.ampCap),
-                    "MDPname": validateRequiredControl(mdpg.name),
-                    "switchgear": validateRequiredControl(mdpg.switchgearCap),
+                    "ampCap": validateRequiredControl(mdpg.ampCap),
+                    "name": validateRequiredControl(mdpg.name),
+                    "switchgearCap": validateRequiredControl(mdpg.switchgearCap),
                     "transformer": validateRequiredControl(mdpg.transformer)
                 });
                 setMdp(mdpValidated, index);
