@@ -15,38 +15,33 @@ const enum STATE_PERMISSION {
 type jwtDecoded = {
     data: string;
     fullname: string;
-    role: string;
+    role: any;
     exp: number;
 }
 
-function settingPermissions(roles:any[], jwt:string | null, role:string){
-    const decoded:jwtDecoded = jwt_decode(jwt?? "")
-    const userId = decoded?.data
-    const roleUser = parseInt(decoded.role);
-    const userPermissions = roles[roleUser]?? {};
-    return [ userPermissions[role], userId ]
+function settingPermissions(role:string){
+    const jwt:jwtDecoded = jwt_decode(localStorage.getItem("electripureJwt")?? "")
+    const userId = jwt?.data
+    const roleUser = jwt?.role;
+    return [ roleUser[role], userId ]
 }
 
 export function UserPermission(props: {children: any, redirect?: string, role:string}) {
 
-    const dispatch = useDispatch();
     const {userId} = useParams()
     const [validation, setValidation] = useState(STATE_PERMISSION.NOT_PERMISSION);
-    const rolesPermissions:any[] = JSON.parse(useSelector((state: ElectripureState) => state.permissions));
-    const electripureJwt = useSelector((state: ElectripureState) => state.electripureJwt);
-    const [hasPermission, Id] = settingPermissions(rolesPermissions, electripureJwt, props.role)
+    const [hasPermission, Id] = settingPermissions(props.role)
 
     useEffect(()=>{
-        dispatch(sendGetPermissions({}))
         setValidation(hasPermission)
-    }, [rolesPermissions])
+    }, [])
 
     return (
         <Fragment>
             { validation == STATE_PERMISSION.NOT_PERMISSION ? <div></div>
             : validation == STATE_PERMISSION.PERMISSION_OK ?  props.children
             : validation == STATE_PERMISSION.OWN_INFORMATION ?
-            props.redirect ? "" 
+            props.redirect ? <div></div> 
             : Id === parseInt(userId?? "0") ? props.children : <div></div>
             : <div></div>
             }
@@ -56,18 +51,13 @@ export function UserPermission(props: {children: any, redirect?: string, role:st
 export function CiaPermission(props: {children: any, redirect?: string, role:string, id?:string}) {
 
     const [validation, setValidation] = useState(STATE_PERMISSION.NOT_PERMISSION);
-    const dispatch = useDispatch();
-    const rolesPermissions:any[] = JSON.parse(useSelector((state: ElectripureState) => state.permissions));
     const cias = JSON.parse(useSelector((state: ElectripureState) => state.companiesTable));
-    const electripureJwt = useSelector((state: ElectripureState) => state.electripureJwt);
 
-    const [hasPermission, Id] = settingPermissions(rolesPermissions, electripureJwt, props.role)
+    const [hasPermission, Id] = settingPermissions(props.role)
 
     useEffect(()=>{
         setValidation(hasPermission)
-        dispatch(sendGetPermissions({}))
-        dispatch(sendGetCompaniesTable({}))
-    }, [rolesPermissions])
+    }, [])
 
     return (
         <Fragment>
@@ -85,18 +75,12 @@ export function CiaPermission(props: {children: any, redirect?: string, role:str
 export function ChartPermission(props: {children: any, redirect?: string, role:string, id?:string}) {
 
     const [validation, setValidation] = useState(STATE_PERMISSION.NOT_PERMISSION);
-
-    const dispatch = useDispatch();
-    const rolesPermissions:any[] = JSON.parse(useSelector((state: ElectripureState) => state.permissions));
-    const electripureJwt = useSelector((state: ElectripureState) => state.electripureJwt);
     const isSameUser = (currentId:number, id:string) => currentId === parseInt(id) ? true: false
+    const [hasPermission, userId] = settingPermissions(props.role)
 
     useEffect(()=>{
-
-        const [hasPermission, userId] = settingPermissions(rolesPermissions, electripureJwt, props.role)
         setValidation(hasPermission)
-        dispatch(sendGetPermissions({}))
-    }, [rolesPermissions])
+    }, [])
 
     return (
         <Fragment>

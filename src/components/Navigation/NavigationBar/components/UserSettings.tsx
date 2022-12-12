@@ -48,7 +48,7 @@ const UserSettings = () => {
                         <p className="m-[15px]" onClick={()=>{ navigate("/dashboard/company/list") }}>Company management</p>
                     </div>
                 </CiaPermission>
-                <UserPermission role="list_user" id={currentUser}>
+                <UserPermission role="list_user">
                     <div className="flex hover:bg-slate-100 rounded-lg cursor-pointer">
                         <img src={userImg} alt="" />
                         <p className="m-[15px]" onClick={()=>{navigate("/dashboard/user/list")}}>Users management</p>

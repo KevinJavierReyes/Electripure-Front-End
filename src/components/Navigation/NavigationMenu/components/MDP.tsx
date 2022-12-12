@@ -15,11 +15,11 @@ const MDP = ({site, mdp}: {site: any, mdp: any}) => {
             <div className="">
             <hr className="w-full" />
                 <div className="w-full flex justify-between">
-                    <div className="flex h-[75px] ml-8">
-                        <div className="h-[40px] v-[40px] mt-2">
+                    <div className="flex h-[75px] ml-4">
+                        <div className="h-[40px] w-[40px] m-auto">
                             <img className="h-full w-full rounded-md" src={img} alt="image" />
                         </div>
-                        <div className="ml-4 mt-6">
+                        <div className="ml-4 mt-6 break-all w-[200px]">
                             <h3>{mdp.name}</h3>
                         </div>
                     </div>

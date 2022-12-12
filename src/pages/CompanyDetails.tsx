@@ -7,11 +7,13 @@ import { ElectripureState } from "../interfaces/reducers"
 import SiteDetails from "./Details/SiteDetails"
 import { ModalMiddle } from "../components/Modal";
 import CompanyUpdateForm from "../components/Form/CompanyUpdateForm"
+import SiteCreateForm from "../components/Form/SiteCreateForm"
 import { CompanyInformationUpdateDataForm } from "../interfaces/form"
 import { CiaPermission } from "../routers/Permissions"
 
 const CompanyDetails = () =>{
     const [ toggleModal, setToggleModal ] = useState(false);
+    const [ toggleModalCreateSite, setToggleModalCreateSite ] = useState(false);
     const {ciaId} = useParams()
     const dispatch = useDispatch()
     const company = JSON.parse(useSelector((state: ElectripureState) => state.companyDetails));
@@ -54,7 +56,6 @@ const CompanyDetails = () =>{
                             <p>State: {company?.state}</p>
                             <p>Zip code:{company?.zip}</p>
                         </div>
-
                     </div>
                     <CiaPermission role="edit_company">
                         <span  className="cursor-pointer h-[40px] text-[#00AEE8]" onClick={()=> setToggleModal(!toggleModal)}>
@@ -75,7 +76,17 @@ const CompanyDetails = () =>{
                     </div>
                 </div>
             </div>
-            <h1 className="flex items-center">Sites <hr className="ml-[10px] w-[100%]" /> </h1>
+            <h1 className="flex items-center">Sites 
+                <hr className="ml-[10px] w-[100%]" /> 
+                <button className="w-[200px] border h-[50px] ml-[10px]" onClick={()=> setToggleModalCreateSite(!toggleModalCreateSite)}>
+                    + Add New Site
+                </button>
+                <ModalMiddle show={toggleModalCreateSite} onClose={()=>{setToggleModalCreateSite(false)}}>
+                    {
+                        <SiteCreateForm onSubmit={()=>{}} />
+                    }
+                </ModalMiddle>
+            </h1>
             {company?.sites? company?.sites.map((site:any, index:number) =>  <SiteDetails key={index} site={site}/>) 
             :""}
         </div>

@@ -8,9 +8,11 @@ import  SiteUpdateForm  from "../../components/Form/SiteUpdateForm"
 import { sendUpdateSite, sendGetCompanyDetail } from "../../actions/electripure"
 import { ElectripureState } from "../../interfaces/reducers"
 import { CiaPermission } from "../../routers/Permissions"
+import MDPCreateForm from "../../components/Form/MDPCreateForm" 
 
 const SiteDetails = ({site}:any) => {
     const [ toggleModal, setToggleModal ] = useState(false)
+    const [ toggleModalCreateMDP, setToggleModalCreateMDP ] = useState(false)
     const [ updateValue, setUpdateValue ] = useState({})
     const dispatch = useDispatch()
     const {ciaId} = useParams()
@@ -20,9 +22,14 @@ const SiteDetails = ({site}:any) => {
         setToggleModal(false)
         dispatch(sendGetCompanyDetail({"cia_id": ciaId}))
     }
+    
+    const submitCreateMDP = (data: any) =>{
+        setToggleModalCreateMDP(false)
+        dispatch(sendGetCompanyDetail({"cia_id": ciaId}))
+    }
+
     useEffect(() =>{
         dispatch(sendGetCompanyDetail({"cia_id": ciaId}))
-
     },[site])
 
     return (
@@ -66,7 +73,17 @@ const SiteDetails = ({site}:any) => {
                    }
                </ModalMiddle>
                <div className="flex flex-col w-[30%]">
-                  <h1 className="flex items-center">MDPs <hr className="ml-[10px] w-[100%]" /></h1>
+                  <h1 className="flex items-center">MDPs 
+                      <hr className="ml-[10px] w-[50%]" />
+                      <button className="w-[150px] border h-[50px] ml-[10px]" onClick={() => setToggleModalCreateMDP(!toggleModalCreateMDP)}>
+                        + Add New MDP
+                      </button>
+                      <ModalMiddle show={toggleModalCreateMDP} onClose={()=>{setToggleModalCreateMDP(false)}}>
+                        {
+                            <MDPCreateForm onSubmit={submitCreateMDP}/>
+                        }
+                      </ModalMiddle>
+                  </h1>
                   {site?.mdps? site.mdps.map((mdp:any, mdp_index:number) => <MDPsDetails key={mdp_index} mdps={mdp} siteId={site.id} />) :
                     ""}
                </div>

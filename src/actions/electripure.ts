@@ -487,6 +487,7 @@ export const sendGetCompaniesTable = (payload: SendGetCompaniesTablePayload) : a
         }))
     }
     const companies: CompanyRowEntity[] = CompanyMapper.toCompaniesRows(response.data);
+    console.log(companies)
     dispatch(setCompaniesTable({
         "companies": companies
     }));
@@ -940,4 +941,3 @@ export const sendGetPermissions = (payload: any): any => (async (dispatch: any) 
     const permissions: SetPermissionsPayload = response.data;
     dispatch(setPermissions(permissions));
 });
-
