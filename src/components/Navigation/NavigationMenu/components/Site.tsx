@@ -7,7 +7,7 @@ const Site = (site:any) => {
         <Fragment>
             <hr className="mt-[15px] w-full" />
             <div className="w-full flex justify-between" >
-                <div className="flex h-[75px]">
+                <div className="flex h-[80px]">
                     <div className="h-[60px] w-[60px] mt-2">
                         <img className="h-full w-full rounded-md" src={site['site'].link} alt="image" />
                     </div>

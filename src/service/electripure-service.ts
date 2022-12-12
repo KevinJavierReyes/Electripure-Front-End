@@ -159,6 +159,7 @@ export default class ElectripureService extends BaseService {
         "position": "bottom-right"
       });
     }
+    console.log(response)
     return response;
   }
 

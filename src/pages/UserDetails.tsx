@@ -7,6 +7,7 @@ import { ModalMiddle } from "../components/Modal";
 import { UpdateUserDataForm } from "../interfaces/form"
 import UserUpdateForm from "../components/Form/UserUpdateForm"
 import { sendUpdateUserDetails } from "../actions/electripure"
+import { UserPermission } from "../routers/Permissions"
 
 const UserDetails = () => {
     const [ toggleModal, setToggleModal ] = useState(false)
@@ -37,7 +38,10 @@ const UserDetails = () => {
                     <div className="ml-[100px]">
                         <div className="flex">
                             <h1 className="text-3xl">{user?.Name}</h1>
-                            <span className="cursor-pointer mt-[20px] ml-[20px] text-[#00AEE8]" onClick={()=> setToggleModal(!toggleModal)}>Edit User Information</span>
+                            <UserPermission role="edit_user">
+                                <span className="cursor-pointer mt-[20px] ml-[20px] text-[#00AEE8]" onClick={()=> setToggleModal(!toggleModal)}>Edit User Information</span>
+                            </UserPermission>
+
                         </div>
                         <ModalMiddle show={toggleModal} onClose={()=>{setToggleModal(false)}}>
                             {
@@ -64,7 +68,6 @@ const UserDetails = () => {
                 </div>
                 <div className="flex w-[100%] mt-[25px] text-3xl items-center justify-evenly"><h1>Back up contact</h1><hr className="w-[75%]"/></div>
                 <div className="mt-[25px] flex flex-wrap justify-around overflow-scroll">
-
                     {user?.contact_backup.map((contact:any, index:number)=>(
                         <div key={index} className="flex w-[600px] h-[220px] border m-[20px] justify-around">
                             <div className="flex w-[90%] p-[20px] flex-col">

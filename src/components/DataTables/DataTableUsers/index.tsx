@@ -48,7 +48,7 @@ function DataTableUsers({}) {
                 "value": user.Company
             },
             "Role": {
-                "label": <span className="f-medium">{user.Role}</span>,
+                "label": <span className="f-medium">{user.Role === "3" ? "Admin": user.Role === "2" ? "Company Admin": user.Role === "1"? "Site Manager": "Electripure engineer"}</span>,
                 "value": user.Role
             },
             "Contacts": {
