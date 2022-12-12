@@ -15,6 +15,7 @@ import SiteManagerForm from "./../components/Form/SiteManagerForm";
 import SiteDetailForm from "./../components/Form/SiteDetailForm";
 import CreateMDPForm from "./../components/Form/CreateMDPForm"
 import FinishCreateMDPForm from "./../components/Form/FinishCreateMDPForm"
+import { CiaPermission } from "../routers/Permissions"
 
 // import { useState } from "react";
 // import { useDispatch } from "react-redux";
@@ -45,10 +46,9 @@ function CompanyListPage () {
     const toastMessage = useSelector((state: ElectripureState) => state.toastMessage);
     const dispatch = useDispatch();
     
-    const [newCompanyRaw, setNewCompany] = useState(`{  "id_user": 42 } `);
+    const [newCompanyRaw, setNewCompany] = useState(`{"id_user": ${localStorage.getItem("user_id")}}`);
     const [stepCreateCompany, setStepCreateCompany] = useState(1);
     const newCompany = JSON.parse(newCompanyRaw);
-
 
     function submitBasicCompanyInformationForm(data: BasicCompanyInformationDataForm) {
         setNewCompany(JSON.stringify({
@@ -167,14 +167,16 @@ function CompanyListPage () {
             <div className="px-[30px] py-[10px] w-full">
                 <div className={"justify-center items-center flex mb-[20px] sm:justify-start flex-col-reverse sm:flex-row"}>
                     <div className={"w-[200px]"}>
-                        <ButtonSecondary onClick={()=> setShowModal(true)}>
-                            <span className="flex justify-center items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m6-6H6" />
-                                </svg>
-                                <span className="f-medium">Add new company</span>
-                            </span>
-                        </ButtonSecondary>
+                        <CiaPermission role="create_company">
+                            <ButtonSecondary onClick={()=> setShowModal(true)}>
+                                <span className="flex justify-center items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m6-6H6" />
+                                    </svg>
+                                    <span className="f-medium">Add new company</span>
+                                </span>
+                            </ButtonSecondary>
+                        </CiaPermission>
                         <ModalMiddle show={isShowModal} onClose={()=>{setShowModal(false); setStepCreateCompany(1);}}>
                             {
                                 stepCreateCompany == 1 ? <BasicCompanyInformationForm onSubmit={submitBasicCompanyInformationForm}/> :
@@ -189,9 +191,11 @@ function CompanyListPage () {
                     </div>
                     <span className="ml-[20px]"><h3 className="f-bold text-lg">Company Management</h3></span>
                 </div>
-                <div className="w-full rounded border-color-secondary border">
-                    <DataTableCompanies />
-                </div>
+                <CiaPermission role="list_companies">
+                    <div className="w-full rounded border-color-secondary border">
+                            <DataTableCompanies />
+                    </div>
+                </CiaPermission>
             </div>
         </Fragment>
     );

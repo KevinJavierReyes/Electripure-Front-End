@@ -8,6 +8,7 @@ import SiteDetails from "./Details/SiteDetails"
 import { ModalMiddle } from "../components/Modal";
 import CompanyUpdateForm from "../components/Form/CompanyUpdateForm"
 import { CompanyInformationUpdateDataForm } from "../interfaces/form"
+import { CiaPermission } from "../routers/Permissions"
 
 const CompanyDetails = () =>{
     const [ toggleModal, setToggleModal ] = useState(false);
@@ -55,9 +56,11 @@ const CompanyDetails = () =>{
                         </div>
 
                     </div>
-                    <span  className="cursor-pointer h-[40px] text-[#00AEE8]" onClick={()=> setToggleModal(!toggleModal)}>
-                        Edit Company
-                    </span>
+                    <CiaPermission role="edit_company">
+                        <span  className="cursor-pointer h-[40px] text-[#00AEE8]" onClick={()=> setToggleModal(!toggleModal)}>
+                            Edit Company
+                        </span>
+                    </CiaPermission>
                     <ModalMiddle show={toggleModal} onClose={()=>{setToggleModal(false)}}>
                         {
                             <CompanyUpdateForm onSubmit={submitCompanyUpdateInfo}/>

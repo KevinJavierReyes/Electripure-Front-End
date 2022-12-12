@@ -12,6 +12,7 @@ import logoutImg from "./../assets/logout.svg"
 import { useNavigate } from "react-router-dom";
 import { ElectripureState } from "../../../../interfaces/reducers"
 import { sendGetUsers } from "../../../../actions/electripure"
+import { UserPermission, CiaPermission } from "../../../../routers/Permissions"
 
 const UserSettings = () => {
     const dispatch = useDispatch();
@@ -40,31 +41,38 @@ const UserSettings = () => {
     }, [])
     return (
         <Fragment>
-            { allowed?.Role === "Admin"? 
             <div>
-                <div className="flex hover:bg-slate-100 rounded-lg cursor-pointer" >
-                    <img src={companyImg} alt="" />
-                    <p className="m-[15px]" onClick={()=>{ navigate("/dashboard/company/list") }}>Company management</p>
-                </div>
-                <div className="flex hover:bg-slate-100 rounded-lg cursor-pointer">
-                    <img src={userImg} alt="" />
-                    <p className="m-[15px]" onClick={()=>{navigate("/dashboard/user/list")}}>Users management</p>
-                </div>
+                <CiaPermission role="list_companies">
+                    <div className="flex hover:bg-slate-100 rounded-lg cursor-pointer" >
+                        <img src={companyImg} alt="" />
+                        <p className="m-[15px]" onClick={()=>{ navigate("/dashboard/company/list") }}>Company management</p>
+                    </div>
+                </CiaPermission>
+                <UserPermission role="list_user" id={currentUser}>
+                    <div className="flex hover:bg-slate-100 rounded-lg cursor-pointer">
+                        <img src={userImg} alt="" />
+                        <p className="m-[15px]" onClick={()=>{navigate("/dashboard/user/list")}}>Users management</p>
+                    </div>
+                </UserPermission>
+                <CiaPermission role="list_companies">
                 <div className="flex hover:bg-slate-100 rounded-lg cursor-pointer">
                     <img src={deviceImg} alt="" />
                     <p className="m-[15px]" onClick={()=>{navigate("/dashboard/device/list")}}>Device management</p>
                 </div>
+                </CiaPermission>
+                <CiaPermission role="list_companies">
                 <div className="flex hover:bg-slate-100 rounded-lg cursor-pointer">
                     <img src={chageLogImg} alt="" />
                     <p className="m-[15px]" onClick={()=>{}}>Change log</p>
                 </div>
-                <div className="flex hover:bg-slate-100 rounded-lg cursor-pointer">
-                    <img src={settingsImg} alt="" />
-                    <p className="m-[15px]" onClick={()=>{}}>Settings</p>
-                </div>
-                <hr />
+                </CiaPermission>
+                <UserPermission role="list_user">
+                    <div className="flex hover:bg-slate-100 rounded-lg cursor-pointer">
+                        <img src={settingsImg} alt="" />
+                        <p className="m-[15px]" onClick={()=>{}}>Settings</p>
+                    </div>
+                </UserPermission>
             </div>
-            :""}
             <div onClick={logout} className="flex hover:bg-slate-100 rounded-lg cursor-pointer">
                 <img src={logoutImg} alt="" />
                 <p className="m-[15px]">Logout</p>

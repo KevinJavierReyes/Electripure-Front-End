@@ -7,6 +7,7 @@ import { SiteUpdateDataForm } from "../../interfaces/form";
 import  SiteUpdateForm  from "../../components/Form/SiteUpdateForm"
 import { sendUpdateSite, sendGetCompanyDetail } from "../../actions/electripure"
 import { ElectripureState } from "../../interfaces/reducers"
+import { CiaPermission } from "../../routers/Permissions"
 
 const SiteDetails = ({site}:any) => {
     const [ toggleModal, setToggleModal ] = useState(false)
@@ -53,9 +54,11 @@ const SiteDetails = ({site}:any) => {
                             Schedule {site?.payment}
                        </p>
                    </div>
-                   <span className="h-[40px] cursor-pointer text-[#00AEE8]"
-                         onClick={()=> setToggleModal(!toggleModal)}>Edit Site
-                   </span>
+                   <CiaPermission role="edit_company">
+                    <span className="h-[40px] cursor-pointer text-[#00AEE8]"
+                          onClick={()=> setToggleModal(!toggleModal)}>Edit Site
+                    </span>
+                   </CiaPermission>
                </div>
                <ModalMiddle show={toggleModal} onClose={()=>{setToggleModal(false)}}>
                    {

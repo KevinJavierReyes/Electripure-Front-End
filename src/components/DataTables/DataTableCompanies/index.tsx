@@ -6,11 +6,13 @@ import { CompanyRowEntity, UserEntity } from "../../../interfaces/entities";
 import { ElectripureState } from "../../../interfaces/reducers";
 import DataTable from "../../DataTable";
 import { HeaderConfig, RowConfig, TableConfig } from "../../DataTable/interfaces/datatable";
+import { CiaPermission } from "../../../routers/Permissions"
 
 
 function DataTableCompanies({}) {
 
     const companiesTable: CompanyRowEntity[] = JSON.parse(useSelector((state: ElectripureState) => state.companiesTable));
+    //const companiesTable = companies.filter((cia:any)=> cia.)
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -56,9 +58,13 @@ function DataTableCompanies({}) {
                 "value": companyRow.users
             },
             "Status": {
-                "label": companyRow.status == "Active" ?
+
+                "label": 
+                        <CiaPermission role="activate_company">
+                        {companyRow.status == "Active" ?
                         <span><span className="color-success f-bold">{companyRow.status}</span><span className="cursor-pointer color-secondary underline f-light text-sm ml-[10px]" onClick={()=>{deactivateCompany(companyRow)}}>deactivate</span></span> :
-                        <span><span className="color-error f-bold">{companyRow.status}</span><span className="cursor-pointer color-secondary underline f-light text-sm ml-[10px]" onClick={()=>{activateCompany(companyRow)}}>activate</span></span>,
+                        <span><span className="color-error f-bold">{companyRow.status}</span><span className="cursor-pointer color-secondary underline f-light text-sm ml-[10px]" onClick={()=>{activateCompany(companyRow)}}>activate</span></span>}
+                        </CiaPermission>,
                 "value": companyRow.status
             },
             "Date": {
