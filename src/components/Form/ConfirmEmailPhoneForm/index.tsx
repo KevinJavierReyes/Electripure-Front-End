@@ -2,7 +2,7 @@ import { useState } from "react";
 import { INPUT_CONTROL_STATE, TYPE_SPACE } from "../../../config/enum";
 import { ConfirmEmailPhoneDataForm } from "../../../interfaces/form";
 import { InputControl } from "../../../interfaces/form-control";
-import { validateCellphoneControl, validateEmailControl } from "../../../libs/form-validation";
+import { validateCellphoneControl, validateEmailControl, validateRequiredControl } from "../../../libs/form-validation";
 import { ButtonPrimary } from "../../FormInput/Button";
 import InputText from "../../FormInput/InputText";
 import Title from "../../FormInput/Title";
@@ -29,6 +29,9 @@ function ConfirmEmailPhoneForm({ onSubmit }: { onSubmit: (data: ConfirmEmailPhon
                 "phone": cellphoneControl.value,
                 "email": emailControl.value
             })
+        } else {
+            setEmailControl(validateRequiredControl(emailControl));
+            setCellphoneControl(validateRequiredControl(cellphoneControl));
         }
     }
     
