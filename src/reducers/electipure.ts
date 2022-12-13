@@ -9,7 +9,7 @@ SetTimestampTwoStepVerificationPayload, SetUsersPayload, ShowToastPayload,
 SetCompaniesPayload, AddTaskPayload, SetGlobalCompaniesPayload,
 SetCurrentUserPayload, SetCompaniesTablePayload, SetAmpsDataPayload,
 SetVoltsDataPayload, FilterVoltsDataPayload, FilterAmpsDataPayload,
-SetCompanyDetailPayload, SetPermissionsPayload} from "../interfaces/actions";
+SetCompanyDetailPayload} from "../interfaces/actions";
 import { ElectripureState } from "../interfaces/reducers";
 const initialState: ElectripureState = {
     "loading": false,
@@ -33,7 +33,6 @@ const initialState: ElectripureState = {
     "voltsDataFiltered": `{ "timestamp": [] }`,
     "voltsDataToogle": `{}`,
     "companyDetails": `{}`,
-    "permissions": `{}`
 };
 
 export const electripureReducer = (state: ElectripureState = initialState, action: ActionNotification): ElectripureState => {

@@ -21,7 +21,6 @@ function UserListPage () {
     const [isShowModal, setShowModal] = useState(false);
 
     const dispatch = useDispatch();
-    const permissions = JSON.parse(useSelector((state: ElectripureState) => state.permissions));
     const users = JSON.parse(useSelector((state: ElectripureState) => state.users));
     const currentUser = users?.filter((user:any) => user.id == localStorage.getItem("user_id"))[0];
 
