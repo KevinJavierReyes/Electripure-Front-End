@@ -118,7 +118,7 @@ export interface SiteUpdateDataForm {
     schematic: string;
 }
 
-export interface CreateMDPDataForm {
+export interface MDPDataForm {
     MDPname: string;
     meterID: string;
     applianceID: string;
@@ -126,6 +126,16 @@ export interface CreateMDPDataForm {
     switchgear: string;
     transformer: string;
 }
+
+export interface CreateMDPDataForm {
+    name: string;
+    meterId: string;
+    applianceId: string;
+    ampCap: string;
+    switchgearCap: string;
+    transformer: string;
+}
+
 
 export interface UpdateMDPDataForm {
     mdp_id: number;

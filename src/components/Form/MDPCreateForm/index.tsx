@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { INPUT_CONTROL_STATE, TYPE_SPACE } from "../../../config/enum";
-import { CreateMDPDataForm, SiteManagerDataForm } from '../../../interfaces/form';
+import { MDPDataForm, SiteManagerDataForm } from '../../../interfaces/form';
 import { InputControl, MDPCreateGroup } from '../../../interfaces/form-control';
 import { validateAmpsControl, validateApplianceControl, validateCellphone, validateCellphoneControl, validateEmailControl, validateMDPNameControl, validateMeterControl, validateName, validateNameControl, validateRequiredControl, validateSwitchgearControl, validateTransformerControl } from '../../../libs/form-validation';
 import { ButtonLink, ButtonPrimary, ButtonSecondary } from '../../FormInput/Button';
@@ -10,8 +10,7 @@ import Space from "../../Space";
 import StepperProgress from "../../StepperProgress";
 
 
-
-function MDPCreateForm({onSubmit}: { onSubmit: (data: CreateMDPDataForm) => void}) {
+function MDPCreateForm({onSubmit}: { onSubmit: (data: MDPDataForm) => void}) {
 
     const [ MDPname, setMDPname ]  = useState({
           "value": "",
