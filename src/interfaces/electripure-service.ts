@@ -100,5 +100,3 @@ export interface GetPowerDataRequest {
 }
 
 
-
-

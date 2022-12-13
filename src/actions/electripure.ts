@@ -924,6 +924,76 @@ export const sendGetCompanyDetail = (payload: any): any => (async (dispatch: any
     dispatch(setCompanyDetail(ciaDetail));
 });
 
+export const sendCreateMDP = (payload: any): any => (async (dispatch: any) => {
+    dispatch(setLoading({
+        loading: true
+    }));
+    const response: ResponseGeneric = await ElectripureService.createMDP(payload);
+    console.log("response from sendCreateMDP", payload)
+    dispatch(setLoading({
+        loading: false
+    }));
+    if(response.data.message == 'Token is invalid!'){
+        dispatch(setTimestampTwoStepVerification({
+            "timestamp": null
+        }));
+        dispatch(setLoginToken({
+            "token": null
+        }));
+        dispatch(setJwt({
+            "token": null
+        }));
+        localStorage.removeItem("electripureJwt");
+        localStorage.removeItem("user_id");
+        localStorage.removeItem("current_user");
+    }
+    if(!response.success) {
+        return dispatch(showToast({
+            message: response.error!,
+            status: "error"
+        }))
+    }
+    dispatch(showToast({
+        message: "MDP Created!",
+        status: "success"
+    }));
+    return;
+});
+
+export const sendCreateSite = (payload: any): any => (async (dispatch: any) => {
+    dispatch(setLoading({
+        loading: true
+    }));
+    const response: ResponseGeneric = await ElectripureService.createSite(payload);
+    dispatch(setLoading({
+        loading: false
+    }));
+    if(response.data.message == 'Token is invalid!'){
+        dispatch(setTimestampTwoStepVerification({
+            "timestamp": null
+        }));
+        dispatch(setLoginToken({
+            "token": null
+        }));
+        dispatch(setJwt({
+            "token": null
+        }));
+        localStorage.removeItem("electripureJwt");
+        localStorage.removeItem("user_id");
+        localStorage.removeItem("current_user");
+    }
+    if(!response.success) {
+        return dispatch(showToast({
+            message: response.error!,
+            status: "error"
+        }))
+    }
+    dispatch(showToast({
+        message: "Site Created!",
+        status: "success"
+    }));
+    return;
+});
 // Amps and Vots
 
 // export const sendGetAmpsDataGraph = (payload: SendGetAmpsDataPayload): any => (async (dispatch: any) => {

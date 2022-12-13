@@ -2,7 +2,7 @@ import { Fragment, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 import { CompanyEntity } from "../interfaces/entities";
-import { sendGetCompaniesTable, sendUpdateCompany, sendGetCompanyDetail} from "./../actions/electripure";
+import { sendGetCompaniesTable, sendUpdateCompany, sendGetCompanyDetail, sendCreateMDP, sendCreateSite} from "./../actions/electripure";
 import { ElectripureState } from "../interfaces/reducers"
 import SiteDetails from "./Details/SiteDetails"
 import { ModalMiddle } from "../components/Modal";
@@ -24,6 +24,13 @@ const CompanyDetails = () =>{
         dispatch(sendGetCompanyDetail({"cia_id": ciaId}))
     }
         
+    const submitCreateSite = (data:any) => {
+        data.idcompany = parseInt(ciaId?? "");
+        dispatch(sendCreateSite(data));
+        setToggleModalCreateSite(false);
+        dispatch(sendGetCompanyDetail({"cia_id": ciaId}));
+    }
+
     useEffect(() =>{
         dispatch(sendGetCompanyDetail({"cia_id": ciaId}))
     }, [company])
@@ -78,12 +85,14 @@ const CompanyDetails = () =>{
             </div>
             <h1 className="flex items-center">Sites 
                 <hr className="ml-[10px] w-[100%]" /> 
+                <CiaPermission role="edit_company">
                 <button className="w-[200px] border h-[50px] ml-[10px]" onClick={()=> setToggleModalCreateSite(!toggleModalCreateSite)}>
                     + Add New Site
                 </button>
+                </CiaPermission>
                 <ModalMiddle show={toggleModalCreateSite} onClose={()=>{setToggleModalCreateSite(false)}}>
                     {
-                        <SiteCreateForm onSubmit={()=>{}} />
+                        <SiteCreateForm onSubmit={submitCreateSite} />
                     }
                 </ModalMiddle>
             </h1>

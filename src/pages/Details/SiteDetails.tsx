@@ -5,7 +5,7 @@ import { ModalMiddle } from "./../../components/Modal";
 import { useSelector, useDispatch } from "react-redux";
 import { SiteUpdateDataForm } from "../../interfaces/form";
 import  SiteUpdateForm  from "../../components/Form/SiteUpdateForm"
-import { sendUpdateSite, sendGetCompanyDetail } from "../../actions/electripure"
+import { sendUpdateSite, sendGetCompanyDetail, sendCreateMDP } from "../../actions/electripure"
 import { ElectripureState } from "../../interfaces/reducers"
 import { CiaPermission } from "../../routers/Permissions"
 import MDPCreateForm from "../../components/Form/MDPCreateForm" 
@@ -22,8 +22,10 @@ const SiteDetails = ({site}:any) => {
         setToggleModal(false)
         dispatch(sendGetCompanyDetail({"cia_id": ciaId}))
     }
-    
+
     const submitCreateMDP = (data: any) =>{
+        data.idsite = site.id
+        dispatch(sendCreateMDP(data))
         setToggleModalCreateMDP(false)
         dispatch(sendGetCompanyDetail({"cia_id": ciaId}))
     }
@@ -75,9 +77,11 @@ const SiteDetails = ({site}:any) => {
                <div className="flex flex-col w-[30%]">
                   <h1 className="flex items-center">MDPs 
                       <hr className="ml-[10px] w-[50%]" />
+                      <CiaPermission role="edit_company">
                       <button className="w-[150px] border h-[50px] ml-[10px]" onClick={() => setToggleModalCreateMDP(!toggleModalCreateMDP)}>
                         + Add New MDP
                       </button>
+                      </CiaPermission>
                       <ModalMiddle show={toggleModalCreateMDP} onClose={()=>{setToggleModalCreateMDP(false)}}>
                         {
                             <MDPCreateForm onSubmit={submitCreateMDP}/>

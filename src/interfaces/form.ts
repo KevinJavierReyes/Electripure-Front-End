@@ -119,11 +119,11 @@ export interface SiteUpdateDataForm {
 }
 
 export interface CreateMDPDataForm {
-    name: string;
-    meterId: string;
-    applianceId: string;
-    ampCap: string;
-    switchgearCap: string;
+    MDPname: string;
+    meterID: string;
+    applianceID: string;
+    MDP: string;
+    switchgear: string;
     transformer: string;
 }
 
@@ -135,4 +135,19 @@ export interface UpdateMDPDataForm {
     MDP: string;
     switchgear: string;
     transformer: string;
+}
+
+export interface SiteCreateDataForm {
+    name: string;
+    address: string;
+    address2: string;
+    city: string;
+    state: string;
+    zip: string;
+    payment: string;
+    manager_fullname: string;
+    manager_email: string;
+    manager_cellphone: string;
+    logo: string;
+    schematic: string;
 }

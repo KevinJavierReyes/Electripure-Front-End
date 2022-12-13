@@ -30,7 +30,6 @@ function ConfirmCodePage() {
     }
 
     useEffect(()=> {
-        dispatch(sendGetPermissions({}))
         if (electripureJwt) {
             localStorage.setItem("electripureJwt", electripureJwt)
             localStorage.setItem("current_user", current_user.fullname);

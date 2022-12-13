@@ -429,4 +429,33 @@ export default class ElectripureService extends BaseService {
     }
     return response;
   }
+
+  static async createMDP(payload: any) : Promise<ResponseGeneric> {
+    console.log("Payload mdp", payload)
+    const url = `${environment.ELECTRIPURE_ENDPOINT}/add_mdp`;
+    const header_auth = {"Authorization" : `Bearer ${localStorage.getItem('electripureJwt')}`}
+    console.log("Url:", url)
+    const response = await this.requestPost(url, payload, header_auth);
+    console.log("response from service", response)
+    if (!response.success) {
+      toast.error(response.error, {
+        "position": "bottom-right"
+      });
+    }
+    return response;
+  }
+
+  static async createSite(payload: any) : Promise<ResponseGeneric> {
+    console.log("Payload site", payload)
+    const url = `${environment.ELECTRIPURE_ENDPOINT}/add_site`;
+    const header_auth = {"Authorization" : `Bearer ${localStorage.getItem('electripureJwt')}`}
+    const response = await this.requestPost(url, payload, header_auth);
+    if (!response.success) {
+      toast.error(response.error, {
+        "position": "bottom-right"
+      });
+    }
+    return response;
+  }
+
 }
