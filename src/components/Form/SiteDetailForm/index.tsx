@@ -177,9 +177,9 @@ function SiteDetailForm({onSubmit, onPrevious, defaultData={}}: { onSubmit: (dat
             cityControl.state == INPUT_CONTROL_STATE.OK &&
             stateControl.state == INPUT_CONTROL_STATE.OK &&
             zipControl.state == INPUT_CONTROL_STATE.OK &&
-            rateControl.state == INPUT_CONTROL_STATE.OK &&
-            schematicControl.state == INPUT_CONTROL_STATE.OK &&
-            logoControl.state == INPUT_CONTROL_STATE.OK) {
+            // schematicControl.state == INPUT_CONTROL_STATE.OK &&
+            // logoControl.state == INPUT_CONTROL_STATE.OK &&
+            rateControl.state == INPUT_CONTROL_STATE.OK) {
                 onSubmit({
                     "name": nameControl.value,
                     "address": addressControl.value,
@@ -199,8 +199,8 @@ function SiteDetailForm({onSubmit, onPrevious, defaultData={}}: { onSubmit: (dat
             setStateControl(validateRequiredControl(stateControl));
             setZipControl(validateRequiredControl(zipControl));
             setRateControl(validateRequiredControl(rateControl));
-            setSchematicControl(validateRequiredControl(schematicControl));
-            setLogoControl(validateRequiredControl(logoControl));
+            // setSchematicControl(validateRequiredControl(schematicControl));
+            // setLogoControl(validateRequiredControl(logoControl));
         }
     }
 
