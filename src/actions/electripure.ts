@@ -12,7 +12,7 @@ SetJwtPayload, SetLoadingPayload, SetLoginTokenPayload,
 SetPasswordTokenPayload, SetPasswordUserPayload,
 SetTimestampTwoStepVerificationPayload, SetUsersPayload, SetVoltsDataPayload,
 ShowToastPayload, SendActivateDeactivateCompanyPayload,
-SetCompanyDetailPayload } from "../interfaces/actions";
+SetCompanyDetailPayload, ValidateUpdateUserPayload } from "../interfaces/actions";
 import { ADD_TASK, FILTER_AMPS_DATA, FILTER_VOLTS_DATA, LOGIN, SET_AMPS_DATA,
 SET_COMPANIES, SET_COMPANIES_TABLE, SET_COMPANY_DETAIL, SET_CURRENT_USER,
 SET_GLOBAL_COMPANIES, SET_JWT, SET_LOADING, SET_LOGIN_TOKEN,
@@ -20,7 +20,6 @@ SET_PASSWORD_TOKEN, SET_PASSWORD_USER, SET_TIMESTAMP_TWO_STEP_VERIFICATION,
 SET_USERS, SET_VOLTS_DATA, SHOW_TOAST } from "./types";
 import ElectripureService from "../service/electripure-service";
 import { ResponseGeneric } from "../interfaces/base-service";
-import { ValidateUpdateUserPayload } from "../interfaces/actions"
 
 // Mappers
 import UserMapper from "./../mappers/user-mapper";
@@ -929,7 +928,6 @@ export const sendCreateMDP = (payload: any): any => (async (dispatch: any) => {
         loading: true
     }));
     const response: ResponseGeneric = await ElectripureService.createMDP(payload);
-    console.log("response from sendCreateMDP", payload)
     dispatch(setLoading({
         loading: false
     }));
@@ -1024,4 +1022,3 @@ export const sendCreateSite = (payload: any): any => (async (dispatch: any) => {
 //         }
 //     }));
 // });
-
