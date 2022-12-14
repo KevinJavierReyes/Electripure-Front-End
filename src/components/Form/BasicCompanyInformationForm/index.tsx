@@ -239,7 +239,7 @@ function BasicCompanyInformationForm({onSubmit}: { onSubmit: (data: BasicCompany
                         name="state"
                         label="State"
                         options={stateList.map((value, index) => (
-                            {"id": index, "value": value}
+                            {"id": index + 1, "value": value}
                         ))}
                         placeholder="Select State"
                         state={stateControl.state}
