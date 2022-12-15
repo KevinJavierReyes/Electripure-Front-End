@@ -57,12 +57,13 @@ const UserSettings = () => {
                     </div>
                     : <div></div>
                 }
-                <CiaPermission role="list_companies">
+                { settingPermissions("list_device")[0] === 1 ?
                 <div className="flex hover:bg-slate-100 rounded-lg cursor-pointer">
                     <img src={deviceImg} alt="" />
                     <p className="m-[15px]" onClick={()=>{navigate("/dashboard/device/list")}}>Device management</p>
                 </div>
-                </CiaPermission>
+                : <div></div>
+                }
                 <CiaPermission role="list_companies">
                 <div className="flex hover:bg-slate-100 rounded-lg cursor-pointer">
                     <img src={chageLogImg} alt="" />
