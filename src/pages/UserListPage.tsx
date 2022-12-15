@@ -25,6 +25,7 @@ function UserListPage () {
     const users = JSON.parse(useSelector((state: ElectripureState) => state.users));
     const currentUser = users?.filter((user:any) => user.id == localStorage.getItem("user_id"))[0];
 
+    console.log("Usuarios", users)
     function submitCreateUserForm(data: CreateUserDataForm) {
         dispatch(sendCreateUser(data));
         setShowModal(false);
@@ -35,7 +36,7 @@ function UserListPage () {
             <div className={"justify-center items-center flex mb-[20px] sm:justify-start flex-col-reverse sm:flex-row"}>
                 <div className={"w-[172px]"}>
                         { settingPermissions("create_user")[0] === 2 ?
-                        <ButtonSecondary onClick={()=> { setShowModal(true); }}>
+                        (<ButtonSecondary onClick={()=> { setShowModal(true); }}>
                             <span className="flex justify-center items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m6-6H6" />
@@ -44,7 +45,18 @@ function UserListPage () {
                                 <span className="f-medium">Add new user</span>
 
                             </span>
-                        </ButtonSecondary>
+                        </ButtonSecondary>)
+                        :settingPermissions("create_user")[0] === 1 ?
+                        (<ButtonSecondary onClick={()=> { setShowModal(true); }}>
+                            <span className="flex justify-center items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m6-6H6" />
+                                </svg>
+
+                                <span className="f-medium">Add new user</span>
+
+                            </span>
+                        </ButtonSecondary>)
                         : <div></div>
                         }
                 </div>
