@@ -9,7 +9,7 @@ SetTimestampTwoStepVerificationPayload, SetUsersPayload, ShowToastPayload,
 SetCompaniesPayload, AddTaskPayload, SetGlobalCompaniesPayload,
 SetCurrentUserPayload, SetCompaniesTablePayload, SetAmpsDataPayload,
 SetVoltsDataPayload, FilterVoltsDataPayload, FilterAmpsDataPayload,
-SetCompanyDetailPayload, setDevicesTablePayload } from "../interfaces/actions";
+SetCompanyDetailPayload, SetDevicesTablePayload } from "../interfaces/actions";
 import { ElectripureState } from "../interfaces/reducers";
 const initialState: ElectripureState = {
     "loading": false,
