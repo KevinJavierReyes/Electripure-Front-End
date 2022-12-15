@@ -12,12 +12,12 @@ SetJwtPayload, SetLoadingPayload, SetLoginTokenPayload,
 SetPasswordTokenPayload, SetPasswordUserPayload,
 SetTimestampTwoStepVerificationPayload, SetUsersPayload, SetVoltsDataPayload,
 ShowToastPayload, SendActivateDeactivateCompanyPayload,
-SetCompanyDetailPayload, ValidateUpdateUserPayload } from "../interfaces/actions";
+SetCompanyDetailPayload, ValidateUpdateUserPayload, SetDevicesTablePayload } from "../interfaces/actions";
 import { ADD_TASK, FILTER_AMPS_DATA, FILTER_VOLTS_DATA, LOGIN, SET_AMPS_DATA,
 SET_COMPANIES, SET_COMPANIES_TABLE, SET_COMPANY_DETAIL, SET_CURRENT_USER,
 SET_GLOBAL_COMPANIES, SET_JWT, SET_LOADING, SET_LOGIN_TOKEN,
 SET_PASSWORD_TOKEN, SET_PASSWORD_USER, SET_TIMESTAMP_TWO_STEP_VERIFICATION,
-SET_USERS, SET_VOLTS_DATA, SHOW_TOAST } from "./types";
+SET_USERS, SET_VOLTS_DATA, SHOW_TOAST, SET_DEVICES_TABLE } from "./types";
 import ElectripureService from "../service/electripure-service";
 import { ResponseGeneric } from "../interfaces/base-service";
 
@@ -117,6 +117,10 @@ export const setCompanyDetail = (payload: SetCompanyDetailPayload) => ({
     "payload": payload
 });
 
+export const setDevicesTable = (payload: SetDevicesTablePayload) => ({
+    "type": SET_DEVICES_TABLE,
+    "payload": payload
+});
 // Login
 
 export const login = (payload: LoginPayload): any => (async (dispatch: any) => {
@@ -928,7 +932,6 @@ export const sendCreateMDP = (payload: any): any => (async (dispatch: any) => {
         loading: true
     }));
     const response: ResponseGeneric = await ElectripureService.createMDP(payload);
-    console.log("response from sendCreateMDP", payload)
     dispatch(setLoading({
         loading: false
     }));
@@ -992,6 +995,39 @@ export const sendCreateSite = (payload: any): any => (async (dispatch: any) => {
         status: "success"
     }));
     return;
+});
+
+export const sendGetDevicesTable = (payload: any): any => (async (dispatch: any) => {
+    dispatch(setLoading({
+        loading: true
+    }));
+    const response: ResponseGeneric = await ElectripureService.getDevicesTable(payload);
+    dispatch(setLoading({
+        loading: false
+    }));
+    if(response.data.message == 'Token is invalid!'){
+        dispatch(setTimestampTwoStepVerification({
+            "timestamp": null
+        }));
+        dispatch(setLoginToken({
+            "token": null
+        }));
+        dispatch(setJwt({
+            "token": null
+        }));
+        localStorage.removeItem("electripureJwt");
+        localStorage.removeItem("user_id");
+        localStorage.removeItem("current_user");
+    }
+    if(!response.success) {
+        return dispatch(showToast({
+            message: response.error!,
+            status: "error"
+        }))
+    }
+    const devices = response.data;
+    console.log(devices)
+    dispatch(setDevicesTable(devices));
 });
 // Amps and Vots
 

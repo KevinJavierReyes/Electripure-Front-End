@@ -37,6 +37,7 @@ import HarmonicAmpLine3 from "../components/Graphs/HarmonicAmpLine3";
 import HarmonicVoltLine1 from "../components/Graphs/HarmonicVoltLine1";
 import HarmonicVoltLine2 from "../components/Graphs/HarmonicVoltLine2";
 import HarmonicVoltLine3 from "../components/Graphs/HarmonicVoltLine3";
+import DeviceListPage from "../pages/DeviceListPage"
 
 const AppRouter = () => {
 
@@ -105,6 +106,7 @@ const AppRouter = () => {
               </Route> */}
               <Route index element={<div></div>} />
             </Route>
+            <Route path="device/list" element={<DeviceListPage />} />
             <Route path="*" element={<div></div>} />
           </Route>
 
