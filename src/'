@@ -167,7 +167,7 @@ function CompanyListPage () {
             <div className="px-[30px] py-[10px] w-full">
                 <div className={"justify-center items-center flex mb-[20px] sm:justify-start flex-col-reverse sm:flex-row"}>
                     <div className={"w-[200px]"}>
-                        { settingPermissions("create_company")[0] === 2? 
+                        <CiaPermission role="create_company">
                             <ButtonSecondary onClick={()=> setShowModal(true)}>
                                 <span className="flex justify-center items-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
@@ -176,17 +176,7 @@ function CompanyListPage () {
                                     <span className="f-medium">Add new company</span>
                                 </span>
                             </ButtonSecondary>
-                            :settingPermissions("create_company")[0] === 1? 
-                            <ButtonSecondary onClick={()=> setShowModal(true)}>
-                                <span className="flex justify-center items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m6-6H6" />
-                                    </svg>
-                                    <span className="f-medium">Add new company</span>
-                                </span>
-                            </ButtonSecondary>
-                            : <div></div>
-                        }
+                        </CiaPermission>
                         <ModalMiddle show={isShowModal} onClose={()=>{setShowModal(false); setStepCreateCompany(1);}}>
                             {
                                 stepCreateCompany == 1 ? <BasicCompanyInformationForm onSubmit={submitBasicCompanyInformationForm}/> :
@@ -201,15 +191,12 @@ function CompanyListPage () {
                     </div>
                     <span className="ml-[20px]"><h3 className="f-bold text-lg">Company Management</h3></span>
                 </div>
-                { settingPermissions("list_companies")[0] === 2 ? 
+                <CiaPermission role="list_companies">
+                { settingPermissions("list_companies") 
                     <div className="w-full rounded border-color-secondary border">
                             <DataTableCompanies />
                     </div>
-                    :settingPermissions("list_companies")[0] === 1 ?
-                    <div className="w-full rounded border-color-secondary border">
-                            <DataTableCompanies />
-                    </div>
-                    :<div></div>
+                </CiaPermission>
                 }
             </div>
         </Fragment>

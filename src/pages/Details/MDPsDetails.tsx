@@ -1,14 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import { ModalMiddle } from "./../../components/Modal";
 import MDPUpdateForm from "../../components/Form/MDPUpdateForm"
 import { UpdateMDPDataForm } from "../../interfaces/form"
 import { useSelector, useDispatch } from "react-redux";
-import { sendUpdateMDP, sendGetCompanyDetail } from "../../actions/electripure"
+import { sendUpdateMDP, sendGetCompanyDetail, sendGetCompaniesByUser } from "../../actions/electripure"
 import MDPLogo from "../../assets/svg/mdp1.svg"
 import { CiaPermission } from "../../routers/Permissions"
 
-const MDPsDetails = ({mdps, siteId}:{mdps: any, siteId:number}) => {
+const MDPsDetails = ({mdps, siteId, editMDP}:{mdps: any, siteId:number, editMDP:boolean}) => {
     const [ toggleDetails, setToggleDetails ] = useState(false);
     const [ toggleModal, setToggleModal ] = useState(false);
     const [ updateValue, setUpdateValue ] = useState({})
@@ -27,11 +27,10 @@ const MDPsDetails = ({mdps, siteId}:{mdps: any, siteId:number}) => {
                 <div className="flex items-center">
                     <img src={MDPLogo} alt="" />
                     <p className="ml-[10px]">{mdps?.MDPname}
-                        {toggleDetails ? 
-                            <CiaPermission role="edit_company">
-                                <span  onClick={()=>setToggleModal(!toggleModal)}
-                                       className="cursor-pointer ml-[15px] text-[#00AEE8]">Edit MDP</span>
-                            </CiaPermission>
+                        {toggleDetails ? editMDP ? <span  onClick={()=>setToggleModal(!toggleModal)}
+                                                               className="cursor-pointer ml-[15px] text-[#00AEE8]">
+                                                               Edit MDP
+                                                        </span>: <div></div>
                             : ""}
                     </p>
                 </div>

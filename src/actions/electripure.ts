@@ -1026,7 +1026,6 @@ export const sendGetDevicesTable = (payload: any): any => (async (dispatch: any)
         }))
     }
     const devices = response.data;
-    console.log(devices)
     dispatch(setDevicesTable(devices));
 });
 // Amps and Vots

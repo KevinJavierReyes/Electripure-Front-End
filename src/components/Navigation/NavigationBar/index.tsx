@@ -24,10 +24,6 @@ function NavigationBar() {
         surname = " ";
     }
 
-    useEffect(() =>{
-
-    }, []);
-
     return (
         <div className="w-full md:h-[65px]	flex justify-between items-start md:items-center px-[30px] md:flex-nowrap flex-wrap flex-col-reverse md:flex-row">
             <Space type={TYPE_SPACE.TEXT_DISTANCE} classes="w-full sm:hidden"/>
@@ -73,8 +69,6 @@ function NavigationBar() {
                             <span className="f-bold">{surname ? `${surname[0]}${name[0]}` : `${name[0]}${name[1]}`.toUpperCase()}</span>
                         </FloatUserSetting>
                     </div>
-                   
-
                 </div>
             </div>
             <Space classes="h-[10px] w-full md:hidden"/>

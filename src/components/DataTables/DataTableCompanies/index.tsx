@@ -1,17 +1,35 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { sendActivateDeactivateCompany, sendGetCompaniesTable, sendGetUsers, sendResentEmail, setCompaniesTable, setUsers } from "../../../actions/electripure";
+import { sendActivateDeactivateCompany, sendGetCompaniesTable,  sendResentEmail, setCompaniesTable, setUsers, sendGetCompaniesByUser } from "../../../actions/electripure";
 import { CompanyRowEntity, UserEntity } from "../../../interfaces/entities";
 import { ElectripureState } from "../../../interfaces/reducers";
 import DataTable from "../../DataTable";
 import { HeaderConfig, RowConfig, TableConfig } from "../../DataTable/interfaces/datatable";
 import { CiaPermission } from "../../../routers/Permissions"
+import { settingPermissions } from "../../../libs/permissions"
 
 
 function DataTableCompanies({}) {
 
-    const companiesTable: CompanyRowEntity[] = JSON.parse(useSelector((state: ElectripureState) => state.companiesTable));
+    let companiesTable: CompanyRowEntity[] = JSON.parse(useSelector((state: ElectripureState) => state.companiesTable));
+    if(settingPermissions("list_companies")[0] === 2){
+        const cia = JSON.parse(useSelector((state: ElectripureState) => state.companies))[0];
+        companiesTable = companiesTable.filter(company => cia?.company_name == company.name)
+        console.log(companiesTable)
+    }
+
+    const canActivate = () => {
+        if(settingPermissions("activate_user")[0] === 2){
+            return false
+        } else if(settingPermissions("activate_user")[0] === 1){
+            return true
+        } else {
+            return false
+        }
+    }
+
+
     //const companiesTable = companies.filter((cia:any)=> cia.)
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -36,6 +54,7 @@ function DataTableCompanies({}) {
     // }
      
     useEffect(() => {
+        dispatch(sendGetCompaniesByUser({"userId": settingPermissions("list_companies")[1]}));
         dispatch(sendGetCompaniesTable({}));
     }, []);
 
@@ -59,12 +78,10 @@ function DataTableCompanies({}) {
             },
             "Status": {
 
-                "label": 
-                        <CiaPermission role="activate_company">
-                        {companyRow.status == "Active" ?
+                "label": canActivate() ? companyRow.status == "Active" ?
                         <span><span className="color-success f-bold">{companyRow.status}</span><span className="cursor-pointer color-secondary underline f-light text-sm ml-[10px]" onClick={()=>{deactivateCompany(companyRow)}}>deactivate</span></span> :
-                        <span><span className="color-error f-bold">{companyRow.status}</span><span className="cursor-pointer color-secondary underline f-light text-sm ml-[10px]" onClick={()=>{activateCompany(companyRow)}}>activate</span></span>}
-                        </CiaPermission>,
+                        <span><span className="color-error f-bold">{companyRow.status}</span><span className="cursor-pointer color-secondary underline f-light text-sm ml-[10px]" onClick={()=>{activateCompany(companyRow)}}>activate</span></span>
+                        : <div></div>,
                 "value": companyRow.status
             },
             "Date": {

@@ -224,3 +224,10 @@ export interface SetMDPDetailPayload{
 
 export interface SetDevicesTablePayload{
 }
+
+export interface jwtDecoded{
+    data: string;
+    fullname: string;
+    role: any;
+    exp: number;
+}

@@ -5,10 +5,11 @@ import { ModalMiddle } from "./../../components/Modal";
 import { useSelector, useDispatch } from "react-redux";
 import { SiteUpdateDataForm } from "../../interfaces/form";
 import  SiteUpdateForm  from "../../components/Form/SiteUpdateForm"
-import { sendUpdateSite, sendGetCompanyDetail, sendCreateMDP } from "../../actions/electripure"
+import { sendUpdateSite, sendGetCompanyDetail, sendCreateMDP, sendGetCompaniesByUser } from "../../actions/electripure"
 import { ElectripureState } from "../../interfaces/reducers"
 import { CiaPermission } from "../../routers/Permissions"
 import MDPCreateForm from "../../components/Form/MDPCreateForm" 
+import { settingPermissions } from "../../libs/permissions"
 
 const SiteDetails = ({site}:any) => {
     const [ toggleModal, setToggleModal ] = useState(false)
@@ -16,6 +17,17 @@ const SiteDetails = ({site}:any) => {
     const [ updateValue, setUpdateValue ] = useState({})
     const dispatch = useDispatch()
     const {ciaId} = useParams()
+
+    const editSite = () => {
+        if(settingPermissions("edit_company")[0] === 2){
+            const company = JSON.parse(useSelector((state: ElectripureState) => state.companies))[0];
+            return (company?.company_id === parseInt(ciaId?? "") ? true: false)
+        } else if(settingPermissions("edit_company")[0] === 1){
+            return true
+        } else {
+            return false
+        }
+    }
 
     const submitSiteUpdateInfo = (data: SiteUpdateDataForm) =>{
         dispatch(sendUpdateSite(data))
@@ -31,6 +43,7 @@ const SiteDetails = ({site}:any) => {
     }
 
     useEffect(() =>{
+        dispatch(sendGetCompaniesByUser({"userId": settingPermissions("edit_company")[1]}))
         dispatch(sendGetCompanyDetail({"cia_id": ciaId}))
     },[site])
 
@@ -63,11 +76,12 @@ const SiteDetails = ({site}:any) => {
                             Schedule {site?.payment}
                        </p>
                    </div>
-                   <CiaPermission role="edit_company">
+                    { editSite()?
                     <span className="h-[40px] cursor-pointer text-[#00AEE8]"
                           onClick={()=> setToggleModal(!toggleModal)}>Edit Site
                     </span>
-                   </CiaPermission>
+                    : <div></div>
+                    }
                </div>
                <ModalMiddle show={toggleModal} onClose={()=>{setToggleModal(false)}}>
                    {
@@ -88,7 +102,7 @@ const SiteDetails = ({site}:any) => {
                         }
                       </ModalMiddle>
                   </h1>
-                  {site?.mdps? site.mdps.map((mdp:any, mdp_index:number) => <MDPsDetails key={mdp_index} mdps={mdp} siteId={site.id} />) :
+                  {site?.mdps? site.mdps.map((mdp:any, mdp_index:number) => <MDPsDetails key={mdp_index} mdps={mdp} siteId={site.id} editMDP={editSite()} />) :
                     ""}
                </div>
            </div>
