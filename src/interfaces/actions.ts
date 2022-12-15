@@ -221,3 +221,6 @@ export interface SetMDPDetailPayload{
     witchgear: number;
     transformer: number;
 }
+
+export interface SetDevicesTablePayload{
+}
