@@ -1028,6 +1028,38 @@ export const sendGetDevicesTable = (payload: any): any => (async (dispatch: any)
     const devices = response.data;
     dispatch(setDevicesTable(devices));
 });
+
+export const sendUpdateDeviceDetails = (payload: any): any => (async (dispatch: any) => {
+    dispatch(setLoading({
+        loading: true
+    }));
+    const response: ResponseGeneric = await ElectripureService.getDevicesTable(payload);
+    dispatch(setLoading({
+        loading: false
+    }));
+    if(response.data.message == 'Token is invalid!'){
+        dispatch(setTimestampTwoStepVerification({
+            "timestamp": null
+        }));
+        dispatch(setLoginToken({
+            "token": null
+        }));
+        dispatch(setJwt({
+            "token": null
+        }));
+        localStorage.removeItem("electripureJwt");
+        localStorage.removeItem("user_id");
+        localStorage.removeItem("current_user");
+    }
+    if(!response.success) {
+        return dispatch(showToast({
+            message: response.error!,
+            status: "error"
+        }))
+    }
+    const devices = response.data;
+    dispatch(setDevicesTable(devices));
+});
 // Amps and Vots
 
 // export const sendGetAmpsDataGraph = (payload: SendGetAmpsDataPayload): any => (async (dispatch: any) => {

@@ -161,3 +161,9 @@ export interface SiteCreateDataForm {
     logo: string;
     schematic: string;
 }
+
+export interface UpdateDeviceDataForm{
+    serial_number: number;
+    type_device: string;
+    company_name: string;
+}

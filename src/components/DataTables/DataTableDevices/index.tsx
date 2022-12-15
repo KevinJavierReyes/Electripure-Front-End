@@ -39,7 +39,7 @@ function DataTableDevices({}) {
     const data: RowConfig[] = devicesTable.map((deviceRow: DeviceRowEntity): RowConfig => {
         return {
             "Serial": {
-                "label": <span onClick={() => {navigate(`/dashboard/device/details/${deviceRow.id_device}`)}} className="cursor-pointer f-medium color-primary">{deviceRow.serial_number}</span>,
+                "label": <span onClick={() => {navigate(`/dashboard/device/details/${deviceRow.serial_number}`)}} className="cursor-pointer f-medium color-primary">{deviceRow.serial_number}</span>,
                 "value": deviceRow.serial_number
             },
             "Type": {
@@ -70,7 +70,6 @@ function DataTableDevices({}) {
             key: "Type",
             label: "Type",
             sort: () => {
-                console.log("1", devicesTable)
                 let devicesSorted = [...devicesTable].sort((a: DeviceRowEntity, b:DeviceRowEntity) => {
                     return a.type_device.toUpperCase().localeCompare(b.type_device.toUpperCase());
                 });

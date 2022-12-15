@@ -47,6 +47,7 @@ function DeviceListPage () {
                         </CiaPermission>
                         <ModalMiddle show={isShowModal} onClose={()=>{setShowModal(false);}}>
                             {
+                                <div>Create device</div>
                             }
                         </ModalMiddle>  
 
