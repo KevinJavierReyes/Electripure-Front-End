@@ -16,7 +16,6 @@ function DataTableCompanies({}) {
     if(settingPermissions("list_companies")[0] === 2){
         const cia = JSON.parse(useSelector((state: ElectripureState) => state.companies))[0];
         companiesTable = companiesTable.filter(company => cia?.company_name == company.name)
-        console.log(companiesTable)
     }
 
     const canActivate = () => {
