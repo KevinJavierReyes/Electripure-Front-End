@@ -8,7 +8,7 @@ import Title from "../../FormInput/Title";
 
 function CreateCompanyStep1Form() {
     return (<div className="w-full bg-color-white px-[30px] pb-[30px]">
-        <Title title="Let's get some basic company information"></Title>
+        {/* <Title title="Let's get some basic company information"></Title>
         <div className="w-full flex justify-start items-start">
             <div className="w-[220px] h-[220px]">
                 <InputPhoto message="" state={0} name="companyLogo" placeholder="Add company logo" onChange={({base64, size}:{base64: string, size: number}) => {console.log(base64)}} />
@@ -79,7 +79,7 @@ function CreateCompanyStep1Form() {
 
                     }}/>
             </div>
-        </div>
+        </div> */}
     </div>)
 }
 
