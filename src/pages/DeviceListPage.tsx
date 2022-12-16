@@ -20,6 +20,7 @@ import { CiaPermission } from "../routers/Permissions"
 import Navegation from "../components/Navigation";
 import { ButtonSecondary } from "../components/FormInput/Button";
 import DataTableDevices from "../components/DataTables/DataTableDevices"
+import { settingPermissions } from "../libs/permissions"
 
 function DeviceListPage () {
     const [isShowModal, setShowModal] = useState(false);
@@ -52,11 +53,12 @@ function DeviceListPage () {
                     </div>
                     <span className="ml-[20px]"><h3 className="f-bold text-lg">Device Management</h3></span>
                 </div>
-                <CiaPermission role="list_companies">
+                { settingPermissions("list_device")[0] === 2?
                     <div className="w-full rounded border-color-secondary border">
                             <DataTableDevices />
                     </div>
-                </CiaPermission>
+                :<div></div>
+                }
             </div>
         </Fragment>
     );
