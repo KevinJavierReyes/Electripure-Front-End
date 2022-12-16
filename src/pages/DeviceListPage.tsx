@@ -53,7 +53,7 @@ function DeviceListPage () {
                     </div>
                     <span className="ml-[20px]"><h3 className="f-bold text-lg">Device Management</h3></span>
                 </div>
-                { settingPermissions("list_device")[0] === 2?
+                { settingPermissions("list_device")[0] === 1 ?
                     <div className="w-full rounded border-color-secondary border">
                             <DataTableDevices />
                     </div>
