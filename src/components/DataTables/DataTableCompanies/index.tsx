@@ -16,7 +16,6 @@ function DataTableCompanies({}) {
     if(settingPermissions("list_companies")[0] === 2){
         const cia = JSON.parse(useSelector((state: ElectripureState) => state.companies))[0];
         companiesTable = companiesTable.filter(company => cia?.company_name == company.name)
-        console.log(companiesTable)
     }
 
     const canActivate = () => {
@@ -81,7 +80,7 @@ function DataTableCompanies({}) {
                 "label": canActivate() ? companyRow.status == "Active" ?
                         <span><span className="color-success f-bold">{companyRow.status}</span><span className="cursor-pointer color-secondary underline f-light text-sm ml-[10px]" onClick={()=>{deactivateCompany(companyRow)}}>deactivate</span></span> :
                         <span><span className="color-error f-bold">{companyRow.status}</span><span className="cursor-pointer color-secondary underline f-light text-sm ml-[10px]" onClick={()=>{activateCompany(companyRow)}}>activate</span></span>
-                        : <div></div>,
+                        : <span><span className={companyRow.status == "Active" ? "color-success f-bold": "color-error f-bold"}>{companyRow.status}</span><span className="cursor-pointer color-secondary underline f-light text-sm ml-[10px]"></span></span>,
                 "value": companyRow.status
             },
             "Date": {

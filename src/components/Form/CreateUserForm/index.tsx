@@ -9,18 +9,24 @@ import InputText from "../../FormInput/InputText";
 import Space from "../../Space";
 import Title from "../../FormInput/Title";
 import { useDispatch, useSelector } from "react-redux";
-import { sendGetCompanies } from "../../../actions/electripure";
+import { sendGetCompanies, sendGetCompaniesByUser } from "../../../actions/electripure";
 import { ElectripureState } from "../../../interfaces/reducers";
 import { CompanyEntity, GlobalCompanyEntity } from "../../../interfaces/entities";
 import formatter from "../../../libs/formatter";
+import { settingPermissions } from "../../../libs/permissions"
 
 
 function CreateUserForm({onSubmit}: {onSubmit: (data: CreateUserDataForm) => void}) {
 
     const dispatch = useDispatch();
-    const companies: GlobalCompanyEntity[]= JSON.parse(useSelector((state: ElectripureState) => state.globalCompanies));
+    let companies: GlobalCompanyEntity[]= JSON.parse(useSelector((state: ElectripureState) => state.globalCompanies));
+    if(settingPermissions("create_user")[0]  === 2){
+        const cia = JSON.parse(useSelector((state: ElectripureState) => state.companies))[0];
+        companies = companies?.filter(company => cia?.company_name == company.name)
+    }
 
     useEffect(()=> {
+        dispatch(sendGetCompaniesByUser({"userId": settingPermissions("list_companies")[1]}));
         dispatch(sendGetCompanies({}));
     }, []);
 
@@ -149,12 +155,18 @@ function CreateUserForm({onSubmit}: {onSubmit: (data: CreateUserDataForm) => voi
                 name="role"
                 state={roleControl.state}
                 message={roleControl.message}
-                options={[
-                    {"value": "Electripure Admin", "id": 1},
+                options={settingPermissions("create_user")[0] === 2? [ 
+                    {"value": "Site Manager", "id": 0},
+                ]
+                :
+                [ 
+                    {"value": "Site Manager", "id": 0},
+                    {"value": "Company Admin", "id": 1},
                     {"value": "Electripure Engineer", "id": 2},
-                    {"value": "Company Admin", "id": 3},
-                    {"value": "Site Manager", "id": 4}
-                ]}
+                    {"value": "Electripure Admin", "id": 3}
+                ]
+
+                }
                 placeholder="Select a role"
                 label="Role"
                 onChange={(selected: {"value": any, "id": any}) => {
