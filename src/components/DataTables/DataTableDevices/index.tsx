@@ -23,7 +23,6 @@ function DataTableDevices({}) {
         "date": ""
     }]`)
     
-    console.log("table devices", devicesTable)
     const dispatch = useDispatch();
     const navigate = useNavigate();
     
@@ -39,7 +38,7 @@ function DataTableDevices({}) {
     const data: RowConfig[] = devicesTable.map((deviceRow: DeviceRowEntity): RowConfig => {
         return {
             "Serial": {
-                "label": <span onClick={() => {navigate(`/dashboard/device/details/${deviceRow.serial_number}`)}} className="cursor-pointer f-medium color-primary">{deviceRow.serial_number}</span>,
+                "label": <span onClick={() => {navigate(`/dashboard/device/details/${deviceRow.id_device}`)}} className="cursor-pointer f-medium color-primary">{deviceRow.serial_number}</span>,
                 "value": deviceRow.serial_number
             },
             "Type": {

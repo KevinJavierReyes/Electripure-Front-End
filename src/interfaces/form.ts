@@ -163,7 +163,8 @@ export interface SiteCreateDataForm {
 }
 
 export interface UpdateDeviceDataForm{
-    serial_number: number;
-    type_device: string;
-    company_name: string;
+    device_id: number;
+    meterID: string;
+    applianceID: string;
 }
+

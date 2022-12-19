@@ -1033,7 +1033,7 @@ export const sendUpdateDeviceDetails = (payload: any): any => (async (dispatch: 
     dispatch(setLoading({
         loading: true
     }));
-    const response: ResponseGeneric = await ElectripureService.getDevicesTable(payload);
+    const response: ResponseGeneric = await ElectripureService.updateDeviceDetails(payload);
     dispatch(setLoading({
         loading: false
     }));
@@ -1057,8 +1057,11 @@ export const sendUpdateDeviceDetails = (payload: any): any => (async (dispatch: 
             status: "error"
         }))
     }
-    const devices = response.data;
-    dispatch(setDevicesTable(devices));
+    dispatch(showToast({
+        message: "Device Serial Updated!",
+        status: "success"
+    }));
+    return;
 });
 // Amps and Vots
 

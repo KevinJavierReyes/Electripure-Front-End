@@ -18,7 +18,6 @@ function MDPUpdateForm({onSubmit, siteId,  mdpId}: { onSubmit: (data: UpdateMDPD
     const MDPs = sites.filter((element:any) => element.id == siteId)[0].mdps;
     const MDP = MDPs?.filter((element: any) => element.id == mdpId)[0]
 
-    console.log(MDP)
     const [nameControl, setNameControl] = useState({
         "state": INPUT_CONTROL_STATE.DEFAULT,
         "value": MDP?.name,

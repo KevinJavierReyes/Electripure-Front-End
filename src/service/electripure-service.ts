@@ -457,7 +457,6 @@ export default class ElectripureService extends BaseService {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/get_device_list`;
     const header_auth = {"Authorization" : `Bearer ${localStorage.getItem('electripureJwt')}`}
     const response = await this.requestPost(url, payload, header_auth);
-    console.log(response)
     if (!response.success) {
       toast.error(response.error, {
         "position": "bottom-right"
@@ -466,4 +465,15 @@ export default class ElectripureService extends BaseService {
     return response;
   }
 
+  static async updateDeviceDetails(payload: any) : Promise<ResponseGeneric> {
+    const url = `${environment.ELECTRIPURE_ENDPOINT}/update_device_serial`;
+    const header_auth = {"Authorization" : `Bearer ${localStorage.getItem('electripureJwt')}`}
+    const response = await this.requestPost(url, payload, header_auth);
+    if (!response.success) {
+      toast.error(response.error, {
+        "position": "bottom-right"
+      });
+    }
+    return response;
+  }
 }
