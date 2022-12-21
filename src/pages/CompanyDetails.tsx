@@ -11,6 +11,7 @@ import SiteCreateForm from "../components/Form/SiteCreateForm"
 import { CompanyInformationUpdateDataForm } from "../interfaces/form"
 import { CiaPermission } from "../routers/Permissions"
 import { settingPermissions } from "../libs/permissions"
+import  DataTableUploadFiles from "../components/DataTables/DataTableUploadFiles"
 
 const CompanyDetails = () =>{
     const [ toggleModal, setToggleModal ] = useState(false);
@@ -112,6 +113,7 @@ const CompanyDetails = () =>{
             </h1>
             {company?.sites? company?.sites.map((site:any, index:number) =>  <SiteDetails key={index} site={site} />) 
             :""}
+            <DataTableUploadFiles />
         </div>
         </Fragment>
     )

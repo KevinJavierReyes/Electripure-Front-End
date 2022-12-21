@@ -7,6 +7,8 @@ import InputText from "../../FormInput/InputText";
 import InputSelect from "../../FormInput/InputSelect";
 import { ButtonPrimary } from '../../FormInput/Button';
 import { DeviceData } from "../../../interfaces/entities"
+import { validateSerialControl, validateRequiredControl} from "../../../libs/form-validation"
+import { InputControl } from '../../../interfaces/form-control';
 
 
 const DeviceUpdateForm = ({device, onSubmit}:{device: DeviceData, onSubmit: (data: UpdateDeviceDataForm) => void}) =>{
@@ -19,19 +21,21 @@ const DeviceUpdateForm = ({device, onSubmit}:{device: DeviceData, onSubmit: (dat
 
     const [ serialControl, setSerialControl ] = useState({
         "state": INPUT_CONTROL_STATE.DEFAULT,
-        "value": device.serial_number, 
+        "value": device.serial_number.toString(), 
         "message": ""
     })
-    
     function submit(){
-        onSubmit({
-            device_id: device.id_device,
-            meterID: deviceSetControl.value === "meter"? serialControl.value.toString() : "",
-            applianceID: deviceSetControl.value === "appliance"? serialControl.value.toString() : "" 
-        })
-    }
-
-
+        if(serialControl.state == INPUT_CONTROL_STATE.OK &&
+            deviceSetControl.state == INPUT_CONTROL_STATE.OK){
+            onSubmit({
+                device_id: device.id_device,
+                meterID: deviceSetControl.value === "meter"? serialControl.value.toString() : "",
+                applianceID: deviceSetControl.value === "appliance"? serialControl.value.toString() : ""
+            });
+       } else {
+            setSerialControl(validateRequiredControl(serialControl));
+       }
+    };
 
     return (
         <div className="w-full bg-color-white p-[10px]">
@@ -45,18 +49,18 @@ const DeviceUpdateForm = ({device, onSubmit}:{device: DeviceData, onSubmit: (dat
            <InputSelect 
                name={"Select device type"}
                placeholder="Select"
-               state={INPUT_CONTROL_STATE.DEFAULT}
+               defaultSelect={device.type_device === "Meter"? "meter": "appliance"}
+               state={deviceSetControl.state}
                options={[{'id': 'meter', 'value': "Meter ID"}, {'id': 'appliance', 'value': "Appliance ID"}]}
                label="Select device type"
                onChange={(selected: {"value": any, "id":any})=>{
                    setDeviceControl({
-                       ...deviceSetControl,
                        value: selected.id,
                        message: "",
                        state: INPUT_CONTROL_STATE.OK
                    })
                }}
-               message=""
+               message={deviceSetControl.message}
            />
            <Space type={TYPE_SPACE.INPUT_DISTANCE} />
            <InputText
@@ -65,11 +69,8 @@ const DeviceUpdateForm = ({device, onSubmit}:{device: DeviceData, onSubmit: (dat
                label="Device Serial"
                defaultValue={serialControl.value.toString()}
                onChange={(value: string)=> {
-                   setSerialControl({
-                       state: value == ""? INPUT_CONTROL_STATE.DEFAULT: INPUT_CONTROL_STATE.OK,
-                       message: "",
-                       value: parseInt(value)
-                    });
+                   const newSerialControl: InputControl = validateSerialControl(value)
+                   setSerialControl(newSerialControl);
                }}
                state={serialControl.state}
                message={serialControl.message}

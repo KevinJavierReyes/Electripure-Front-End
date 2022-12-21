@@ -168,3 +168,7 @@ export interface UpdateDeviceDataForm{
     applianceID: string;
 }
 
+export interface UploadFileDataForm{
+    // TODO 
+}
+
