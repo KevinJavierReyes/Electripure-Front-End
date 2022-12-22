@@ -1,30 +1,47 @@
 import { Chart as ChartJS, CategoryScale, ChartOptions, Legend, LinearScale, LineElement, PointElement, Title, Tooltip } from "chart.js";
-import { Fragment, useState } from "react";
-import { Line } from "react-chartjs-2";
+import { Fragment, useEffect, useState, useRef } from "react";
+import { Chart, Line } from "react-chartjs-2";
+import zoomPlugin  from  'chartjs-plugin-zoom';
 import { INPUT_CONTROL_STATE, TYPE_SPACE } from "../../../config/enum";
-import { unixTimestampToLocal } from "../../../libs/dateformat";
 import InputCheckbox from "../../FormInput/InputCheckbox";
 import Space from "../../Space";
 
 import "./style.css";
 
-function LineGraph({ data, colors }: {data: { y: { [key:string]: any}, x: any[] }, colors: { [key: string]: string, default: string}}) {
+// Config chart js
+ChartJS.register(
+  zoomPlugin,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
+
+function LineGraph({ data, colors, onZoom}: {data: { y: { [key:string]: any}, x: any[] }, colors: { [key: string]: string, default: string}, onZoom: (x1: any, x2: any) => void}) {
   console.log("Render LineGraph......");
+  const chartRef = useRef<ChartJS>(null);
   const yLabels: string[] = Object.keys(data.y);
   const yData: { [key:string]: any} = data.y;
   const xData: any[] = data.x;
   const [yFilterRaw, setYFilter]: any = useState(JSON.stringify({}));
   const yFilter: { [key:string]: boolean} = JSON.parse(yFilterRaw);
-  // Config chart js
-  ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    Legend
-  );
+  
+  function startFetch({ chart }: { chart: ChartJS }) {
+    const {min, max} = chart.scales.x;
+    // clearTimeout(timer);
+    // console.log('Fetched data between ' + min + ' and ' + max);
+    // chart.data.datasets[0].data = fetchData(min, max);
+    // chart.stop(); // make sure animations are not running
+    // chart.update('none');
+    if (!(min == 0 && max == xData.length - 1)) {
+      onZoom(xData[min], xData[max]);
+      chart.resetZoom('none');
+    }
+  }
+
   // Options
   const options:ChartOptions = {
     "responsive": true,
@@ -38,6 +55,30 @@ function LineGraph({ data, colors }: {data: { y: { [key:string]: any}, x: any[] 
       }
     },
     "plugins": {
+      zoom: {
+        // limits: {
+        //   x: {min: 'original', max: 'original', minRange: 60 * 1000},
+        // },
+        // pan: {
+        //   enabled: true,
+        //   mode: 'x',
+        //   modifierKey: 'ctrl',
+        //   // onPanComplete: startFetch
+        // },
+        zoom: {
+          // wheel: {
+          //   enabled: true,
+          // },
+          drag: {
+            enabled: true,
+          },
+          pinch: {
+            enabled: true
+          },
+          mode: 'x',
+          onZoomComplete: startFetch
+        }
+      },
       "legend": {
         "display": false,
         "position": "bottom" as const,
@@ -74,9 +115,11 @@ function LineGraph({ data, colors }: {data: { y: { [key:string]: any}, x: any[] 
       };
     })
   };
+
   return (<Fragment>
       <div className="w-full p-[30px]">
-          <Line className="max-w-full" options={options} data={source} />
+          {/* <Line  className="max-w-full" options={options} data={source} /> */}
+          <Chart ref={chartRef} type="line" className="max-w-full" options={options} data={source} />
       </div>
       
       <div className="flex justify-center flex-wrap p-[30px]">

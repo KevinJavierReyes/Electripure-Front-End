@@ -19,6 +19,7 @@
     "@types/react-date-range": "^1.4.4",
     "@types/react-onclickoutside": "^6.7.4",
     "chart.js": "^3.9.1",
+    "chartjs-plugin-zoom": "^2.0.0",
     "cross-env": "^7.0.3",
     "dayjs": "^1.11.6",
     "dotenv": "^16.0.2",

@@ -7,6 +7,7 @@ import LineGraph from "../LineGraph";
 import ElectripureService from "../../../service/electripure-service";
 import { ResponseGeneric } from "../../../interfaces/base-service";
 import { useParams } from "react-router";
+import { toDictTimestamps, toUnix } from "../../../utils/parser";
 
 
 function PowerLine1 ({ defaultMeterId }: { defaultMeterId?: number }) {
@@ -14,6 +15,7 @@ function PowerLine1 ({ defaultMeterId }: { defaultMeterId?: number }) {
   let deviceId = defaultMeterId ?? parseInt(meterId!);
   console.log("Render PowerLine1......");
   const dispatch = useDispatch();
+  const [rawDictTimestamps, setRawDictTimestamps] = useState(JSON.stringify({}));
   const [data, setData] = useState(JSON.stringify({ "x": [], "y": {
     "Power Line A Min": [],
     "Power Line A Max": [],
@@ -31,8 +33,8 @@ function PowerLine1 ({ defaultMeterId }: { defaultMeterId?: number }) {
         loading: true
     }));
     const response: ResponseGeneric = await ElectripureService.getPowerLine1DataGraph({
-        date_min: timestampToDateLocal(start.getTime()),
-        date_max: timestampToDateLocal(end.getTime()),
+        date_min: toUnix(start.getTime()),
+        date_max: toUnix(end.getTime()),
         device: deviceId
     });
     dispatch(setLoading({
@@ -46,6 +48,7 @@ function PowerLine1 ({ defaultMeterId }: { defaultMeterId?: number }) {
         return;
     };
     let data: any = response.data;
+    setRawDictTimestamps(JSON.stringify(toDictTimestamps(data)));
     setData(JSON.stringify({
       "x": data["TS_data"],
       "y": {
@@ -55,9 +58,43 @@ function PowerLine1 ({ defaultMeterId }: { defaultMeterId?: number }) {
     }));
   }
 
+    // Obtener datos por evento zoom
+    async function onZoom(x1:any, x2: any) {
+      dispatch(setLoading({
+        loading: true
+      }));
+      const dictTimestamps: { [key: string]: number} = JSON.parse(rawDictTimestamps);
+      const dateMin: number = dictTimestamps[x1];
+      const dateMax: number = dictTimestamps[x2];
+      const response: ResponseGeneric = await ElectripureService.getPowerLine1DataGraph({
+          date_min: dateMin,
+          date_max: dateMax,
+          device: deviceId
+      });
+      dispatch(setLoading({
+          loading: false
+      }));
+      if(!response.success) {
+          dispatch(showToast({
+              message: response.error!,
+              status: "error"
+          }));
+          return;
+      };
+      let data: any = response.data;
+      setRawDictTimestamps(JSON.stringify(toDictTimestamps(data)));
+      setData(JSON.stringify({
+        "x": data["TS_data"],
+        "y": {
+          "Power Line A Min": data["V1_MIN"],
+          "Power Line A Max": data["V1_MAX"]
+        }
+      }));
+    }
+
   return (<Fragment>
       <DateRangeControl onChange={getPowerLine1Data}/>
-      <LineGraph data={JSON.parse(data)} colors={colors} />
+      <LineGraph data={JSON.parse(data)} colors={colors} onZoom={onZoom}/>
   </Fragment>);
 }
 
