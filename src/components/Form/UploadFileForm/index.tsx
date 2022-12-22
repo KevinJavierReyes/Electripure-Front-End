@@ -129,12 +129,13 @@ function UserUpdateForm({onSubmit}: {onSubmit: (data: UploadFileDataForm) => voi
                 }}
                 />
                 <Space type={TYPE_SPACE.INPUT_DISTANCE} />
-                <div className="w-[250px]">
+                {/*<div className="w-[250px]">
                     <InputDateRange 
                         defaultStart={new Date()} 
                         defaultEnd={new Date()} 
                         onChange={(start:Date, end:Date)=>{}} />
                 </div>
+                */}
             </div>
         </div>
         <Space type={TYPE_SPACE.INPUT_DISTANCE} />
