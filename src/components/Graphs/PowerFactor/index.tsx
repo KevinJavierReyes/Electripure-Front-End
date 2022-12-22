@@ -57,7 +57,7 @@ function PowerFactor ({ defaultMeterId }: { defaultMeterId?: number }) {
 
   return (<Fragment>
       <DateRangeControl onChange={getPowerActiveData}/>
-      <LineGraph data={JSON.parse(data)} colors={colors} />
+      {/*<LineGraph data={JSON.parse(data)} colors={colors} /> */}
   </Fragment>);
 }
 
