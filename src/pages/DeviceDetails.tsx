@@ -29,8 +29,8 @@ function DeviceDetails () {
     let device:DeviceData = devices.device_list?.filter((element:DeviceData)=> element.id_device === parseInt(devId?? ""))[0];
 
     const submitDeviceUpdateInfo = (data: UpdateDeviceDataForm) =>{
+        console.log("data sent to server", data)
         dispatch(sendUpdateDeviceDetails(data));
-        dispatch(sendGetDevicesTable({}));
         setToggleModal(false)
         setUpdateValue(prev => !prev)
     }

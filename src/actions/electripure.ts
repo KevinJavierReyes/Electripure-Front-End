@@ -1061,6 +1061,7 @@ export const sendUpdateDeviceDetails = (payload: any): any => (async (dispatch: 
         message: "Device Serial Updated!",
         status: "success"
     }));
+    dispatch(sendGetDevicesTable({}))
     return;
 });
 // Amps and Vots
