@@ -2,13 +2,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { ElectripureState } from "../../../interfaces/reducers";
 import { useEffect, useState } from "react"
-import{ INPUT_CONTROL_STATE } from "../../../config/enum"
 import InputSelect from "../../FormInput/InputSelect";
 import InputText from "../../FormInput/InputText";
 import Space from "../../Space";
 import Title from "../../FormInput/Title";
 import { InputControl } from "../../../interfaces/form-control";
-import { TYPE_SPACE } from "../../../config/enum"
+import { TYPE_SPACE, INPUT_CONTROL_STATE } from "../../../config/enum"
 import { ButtonPrimary } from "../../FormInput/Button"
 import InputFile from "../../FormInput/InputFile"
 import { validateNameControl } from "../../../libs/form-validation"
@@ -23,8 +22,7 @@ function UserUpdateForm({onSubmit}: {onSubmit: (data: UploadFileDataForm) => voi
     const {userId} = useParams()
     const users:any = JSON.parse(useSelector((state: ElectripureState) => state.users));
     const user:any = users.filter((element:any)=> element.id == userId)[0];
-    useEffect(()=> {
-    }, []);
+
 
     const [ fileControl, setFileControl ] = useState({
         "state": INPUT_CONTROL_STATE.DEFAULT,
@@ -70,7 +68,7 @@ function UserUpdateForm({onSubmit}: {onSubmit: (data: UploadFileDataForm) => voi
     function submit() {
         if (fileControl.state === INPUT_CONTROL_STATE.OK) {
                 onSubmit({
-                    "hello": 12
+                    file: fileControl.value
                 });
         }
         onSubmit({
@@ -78,13 +76,24 @@ function UserUpdateForm({onSubmit}: {onSubmit: (data: UploadFileDataForm) => voi
         });
     }
 
-    return (<div className="w-full bg-color-white px-[30px] pb-[30px]">
-        <Title title="Upload File"/>
+    useEffect(()=> {
+
+    }, []);
+
+    return (<div className="w-full text-center bg-color-white px-[30px] pb-[30px]">
+        <Title title="Upload a File"/>
+        <Space type={TYPE_SPACE.INPUT_DISTANCE} />
         <div className="w-full flex justify-around">
             <div className="w-[45%]">
-                <InputFile state={1} message="hello" name="input" placeholder="add file" onChange={uploadFile}/>
+                <InputFile state={fileControl.state} 
+                           message={fileControl.message} 
+                           name="file" 
+                           placeholder="Add a file" 
+                           onChange={uploadFile}
+                />
+
             </div>
-            <div className="w-[45%]">
+            <div className="w-[45%] text-left">
                 <InputSelect
                 state={selectCompanyControl.state}
                 message={selectCompanyControl.message}
@@ -94,7 +103,7 @@ function UserUpdateForm({onSubmit}: {onSubmit: (data: UploadFileDataForm) => voi
                 placeholder="Select a Company"
                 onChange={() => {}}
                 />
-
+                <Space type={TYPE_SPACE.INPUT_DISTANCE} />
                 <InputSelect
                 state={selectSiteControl.state}
                 message={selectSiteControl.message}
@@ -104,6 +113,7 @@ function UserUpdateForm({onSubmit}: {onSubmit: (data: UploadFileDataForm) => voi
                 placeholder="Select a Site"
                 onChange={() => {}}
                 />
+                <Space type={TYPE_SPACE.INPUT_DISTANCE} />
                 <InputRadioGroupSelect
                 state={selectSiteControl.state}
                 message={selectSiteControl.message}
@@ -118,6 +128,7 @@ function UserUpdateForm({onSubmit}: {onSubmit: (data: UploadFileDataForm) => voi
                     })
                 }}
                 />
+                <Space type={TYPE_SPACE.INPUT_DISTANCE} />
                 <div className="w-[250px]">
                     <InputDateRange 
                         defaultStart={new Date()} 
@@ -126,6 +137,8 @@ function UserUpdateForm({onSubmit}: {onSubmit: (data: UploadFileDataForm) => voi
                 </div>
             </div>
         </div>
+        <Space type={TYPE_SPACE.INPUT_DISTANCE} />
+        <Space type={TYPE_SPACE.INPUT_DISTANCE} />
         <div className="flex justify-center items-center">
             <ButtonPrimary onClick={submit} classes={"max-w-[166px]"}>
                 Update
