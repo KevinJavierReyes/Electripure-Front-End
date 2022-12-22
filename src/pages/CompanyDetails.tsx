@@ -2,7 +2,7 @@ import { Fragment, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 import { CompanyEntity } from "../interfaces/entities";
-import { sendGetCompaniesTable, sendUpdateCompany, sendGetCompanyDetail} from "./../actions/electripure";
+import { sendGetCompaniesTable, sendUpdateCompany, sendGetCompanyDetail, sendCreateMDP, sendCreateSite, sendGetCompaniesByUser} from "./../actions/electripure";
 import { ElectripureState } from "../interfaces/reducers"
 import SiteDetails from "./Details/SiteDetails"
 import { ModalMiddle } from "../components/Modal";
@@ -10,6 +10,8 @@ import CompanyUpdateForm from "../components/Form/CompanyUpdateForm"
 import SiteCreateForm from "../components/Form/SiteCreateForm"
 import { CompanyInformationUpdateDataForm } from "../interfaces/form"
 import { CiaPermission } from "../routers/Permissions"
+import { settingPermissions } from "../libs/permissions"
+import  DataTableUploadFiles from "../components/DataTables/DataTableUploadFiles"
 
 const CompanyDetails = () =>{
     const [ toggleModal, setToggleModal ] = useState(false);
@@ -17,15 +19,34 @@ const CompanyDetails = () =>{
     const {ciaId} = useParams()
     const dispatch = useDispatch()
     const company = JSON.parse(useSelector((state: ElectripureState) => state.companyDetails));
+    
+    const editCompany = () => {
+        if(settingPermissions("edit_company")[0] === 2){
+            const company = JSON.parse(useSelector((state: ElectripureState) => state.companies))[0];
+            return company?.company_id === parseInt(ciaId?? "") ? true: false;
+        } else if(settingPermissions("edit_company")[0] === 1){
+            return true
+        } else {
+            return false
+        }
+    }
 
     const submitCompanyUpdateInfo = (data: CompanyInformationUpdateDataForm) =>{
         dispatch(sendUpdateCompany(data))
         setToggleModal(false)
         dispatch(sendGetCompanyDetail({"cia_id": ciaId}))
     }
-        
+    
+    const submitCreateSite = (data:any) => {
+        data.idcompany = parseInt(ciaId?? "");
+        dispatch(sendCreateSite(data));
+        setToggleModalCreateSite(false);
+        dispatch(sendGetCompanyDetail({"cia_id": ciaId}));
+    }
+
     useEffect(() =>{
         dispatch(sendGetCompanyDetail({"cia_id": ciaId}))
+        dispatch(sendGetCompaniesByUser({"userId": settingPermissions("edit_company")[1]}))
     }, [company])
 
     return (
@@ -57,11 +78,12 @@ const CompanyDetails = () =>{
                             <p>Zip code:{company?.zip}</p>
                         </div>
                     </div>
-                    <CiaPermission role="edit_company">
+                    { editCompany() ?  
                         <span  className="cursor-pointer h-[40px] text-[#00AEE8]" onClick={()=> setToggleModal(!toggleModal)}>
                             Edit Company
                         </span>
-                    </CiaPermission>
+                        : <div></div>
+                    }
                     <ModalMiddle show={toggleModal} onClose={()=>{setToggleModal(false)}}>
                         {
                             <CompanyUpdateForm onSubmit={submitCompanyUpdateInfo}/>
@@ -78,17 +100,20 @@ const CompanyDetails = () =>{
             </div>
             <h1 className="flex items-center">Sites 
                 <hr className="ml-[10px] w-[100%]" /> 
+                <CiaPermission role="edit_company">
                 <button className="w-[200px] border h-[50px] ml-[10px]" onClick={()=> setToggleModalCreateSite(!toggleModalCreateSite)}>
                     + Add New Site
                 </button>
+                </CiaPermission>
                 <ModalMiddle show={toggleModalCreateSite} onClose={()=>{setToggleModalCreateSite(false)}}>
                     {
-                        <SiteCreateForm onSubmit={()=>{}} />
+                        <SiteCreateForm onSubmit={submitCreateSite} />
                     }
                 </ModalMiddle>
             </h1>
-            {company?.sites? company?.sites.map((site:any, index:number) =>  <SiteDetails key={index} site={site}/>) 
+            {company?.sites? company?.sites.map((site:any, index:number) =>  <SiteDetails key={index} site={site} />) 
             :""}
+            <DataTableUploadFiles />
         </div>
         </Fragment>
     )

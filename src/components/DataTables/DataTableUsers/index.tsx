@@ -1,23 +1,23 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { sendActivateDeactivateUser, sendGetUsers, sendResentEmail, setUsers } from "../../../actions/electripure";
+import { sendActivateDeactivateUser, sendGetUsers, sendResentEmail, setUsers, sendGetCompaniesTable, sendGetCompaniesByUser } from "../../../actions/electripure";
 import { UserEntity } from "../../../interfaces/entities";
 import { ElectripureState } from "../../../interfaces/reducers";
 import DataTable from "../../DataTable";
 import { HeaderConfig, RowConfig, TableConfig } from "../../DataTable/interfaces/datatable";
-
+import { settingPermissions } from "../../../libs/permissions"
 
 function DataTableUsers({}) {
+    let users: UserEntity[] = JSON.parse(useSelector((state: ElectripureState) => state.users));
+    if(settingPermissions("list_user")[0] ===2){
+        const cia = JSON.parse(useSelector((state: ElectripureState) => state.companies))[0];
+        users = users.filter(user => user.Company === cia.company_name)
+    }
 
-    const users: UserEntity[] = JSON.parse(useSelector((state: ElectripureState) => state.users));
     const dispatch = useDispatch();
 
     const navigate = useNavigate();
-    // function deleteUser(user: UserEntity) {
-    //     console.log(user);
-    //     console.log("User deleted!");
-    // }
     
     async function resendInvite(user: UserEntity) {
         dispatch(sendResentEmail({"id": user.id}))
@@ -35,6 +35,7 @@ function DataTableUsers({}) {
     // that specific user
     useEffect(() => {
         dispatch(sendGetUsers({}));
+        dispatch(sendGetCompaniesByUser({"userId": settingPermissions("list_user")[1]}));
     }, []);
 
     const data: RowConfig[] = users.map((user: UserEntity): RowConfig => {
@@ -48,7 +49,8 @@ function DataTableUsers({}) {
                 "value": user.Company
             },
             "Role": {
-                "label": <span className="f-medium">{user.Role === "3" ? "Admin": user.Role === "2" ? "Company Admin": user.Role === "1"? "Site Manager": "Electripure engineer"}</span>,
+                "label": <span className="f-medium">{user.Role}</span>,
+                //"label": <span className="f-medium">{user.Role === "3" ? "Admin": user.Role === "2" ? "Company Admin": user.Role === "1"? "Site Manager": "Electripure engineer"}</span>,
                 "value": user.Role
             },
             "Contacts": {

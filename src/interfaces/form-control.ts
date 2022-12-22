@@ -25,3 +25,13 @@ export interface MDPGroup {
     transformer: InputControl;
     
 }
+
+export interface MDPCreateGroup {
+    MDPname: InputControl;
+    meterID: InputControl;
+    applianceID: InputControl;
+    MDP: InputControl;
+    switchgear: InputControl;
+    transformer: InputControl;
+    
+}

@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { SendImage } from '../../../actions/electripure';
 import { INPUT_CONTROL_STATE, TASK_STATE, TYPE_SPACE } from "../../../config/enum";
 import { TaskEntity } from '../../../interfaces/entities';
-import { SiteDetailDataForm } from '../../../interfaces/form';
+import { SiteCreateDataForm } from '../../../interfaces/form';
 import { InputControl } from '../../../interfaces/form-control';
 import { ElectripureState } from '../../../interfaces/reducers';
-import { validateAddressControl, validateCityControl, validateCompany, validateRequiredControl, validateSiteNameControl, validateZipControl } from '../../../libs/form-validation';
+import { validateAddressControl, validateCityControl, validateCompany, validateRequiredControl, validateSiteNameControl, validateZipControl, validateEmail, validateCellphone } from '../../../libs/form-validation';
 import { ButtonPrimary, ButtonSecondary } from '../../FormInput/Button';
 import InputPhoto from "../../FormInput/InputPhoto";
 import InputSelect from '../../FormInput/InputSelect';
@@ -17,14 +17,11 @@ import StepperProgress from "../../StepperProgress";
 
 
 
-function SiteCreateForm({onSubmit, defaultData={}}: { onSubmit: (data: SiteDetailDataForm) => void, defaultData?: Partial<SiteDetailDataForm>}) {
+function SiteCreateForm({onSubmit, defaultData={}}: { onSubmit: (data: SiteCreateDataForm) => void, defaultData?: Partial<SiteCreateDataForm>}) {
 
     const dispatch = useDispatch();
 
-    const uploadLogoTask: TaskEntity = JSON.parse(useSelector((state: ElectripureState) => state.tasks))["UPLOAD_SITE_LOGO"] ?? {};
-    const uploadSchematicTask: TaskEntity = JSON.parse(useSelector((state: ElectripureState) => state.tasks))["UPLOAD_SITE_SCHEMATIC"] ?? {};
-
-    const stateList: any[] = [
+    const stateList: string[] = [
             "Alabama",
             "Alaska",
             "Arizona",
@@ -119,6 +116,24 @@ function SiteCreateForm({onSubmit, defaultData={}}: { onSubmit: (data: SiteDetai
         "message": ""
     });
 
+    const [managerFullName, setManagerFullName] = useState({
+        "state": INPUT_CONTROL_STATE.DEFAULT,
+        "value": "",
+        "message": ""
+    });
+
+    const [managerEmail, setManagerEmail] = useState({
+        "state": INPUT_CONTROL_STATE.DEFAULT,
+        "value": "",
+        "message": ""
+    });
+
+    const [managerCellphone, setManagerCellphone] = useState({
+        "state": INPUT_CONTROL_STATE.DEFAULT,
+        "value": "",
+        "message": ""
+    });
+
     const [schematicControl, setSchematicControl] = useState({
         "state": INPUT_CONTROL_STATE.DEFAULT,
         "value": "",
@@ -131,14 +146,8 @@ function SiteCreateForm({onSubmit, defaultData={}}: { onSubmit: (data: SiteDetai
         "message": ""
     });
 
-    const [logoValid, setLogoValid] = useState(false);
-
-    const [schematicValid, setSchematicValid] = useState(false);
-
-
     function uploadLogo({base64, size}:{base64: string, size: number}) {
         if (size > 500000) {
-            setLogoValid(false);
             setLogoControl({
                 "message": "Image max size is 500kb.",
                 "state": INPUT_CONTROL_STATE.ERROR,
@@ -146,16 +155,15 @@ function SiteCreateForm({onSubmit, defaultData={}}: { onSubmit: (data: SiteDetai
             });
             return;
         }
-        setLogoValid(true);
-        dispatch(SendImage({
-            "base64": base64.split(",")[1],
-            "taskKey": "UPLOAD_SITE_LOGO"
-        }));
+        setLogoControl({
+            "value": base64.split(",")[1],
+            "message": "",
+            "state": INPUT_CONTROL_STATE.OK
+        });
     }
 
     function uploadSchematic({base64, size}:{base64: string, size: number}) {
         if (size > 500000) {
-            setSchematicValid(false);
             setSchematicControl({
                 "message": "Image max size is 500kb.",
                 "state": INPUT_CONTROL_STATE.ERROR,
@@ -163,15 +171,14 @@ function SiteCreateForm({onSubmit, defaultData={}}: { onSubmit: (data: SiteDetai
             });
             return;
         }
-        setSchematicValid(true);
-        dispatch(SendImage({
-            "base64": base64.split(",")[1],
-            "taskKey": "UPLOAD_SITE_SCHEMATIC"
-        }));
+            setSchematicControl({
+            "value": base64.split(",")[1],
+            "message": "",
+            "state": INPUT_CONTROL_STATE.OK
+        });
     }
 
     function submit() {
-
         if (nameControl.state == INPUT_CONTROL_STATE.OK &&
             addressControl.state == INPUT_CONTROL_STATE.OK &&
             cityControl.state == INPUT_CONTROL_STATE.OK &&
@@ -187,7 +194,10 @@ function SiteCreateForm({onSubmit, defaultData={}}: { onSubmit: (data: SiteDetai
                     "city": cityControl.value,
                     "state": stateControl.value,
                     "zip": zipControl.value,
-                    "rate": rateControl.value,
+                    "payment": rateControl.value,
+                    "manager_fullname": managerFullName.value,
+                    "manager_email": managerEmail.value,
+                    "manager_cellphone": managerCellphone.value,
                     "logo": logoControl.value,
                     "schematic": logoControl.value
                 });
@@ -200,30 +210,12 @@ function SiteCreateForm({onSubmit, defaultData={}}: { onSubmit: (data: SiteDetai
             setRateControl(validateRequiredControl(rateControl));
             setSchematicControl(validateRequiredControl(schematicControl));
             setLogoControl(validateRequiredControl(logoControl));
+
+            setManagerFullName(validateRequiredControl(managerFullName));
+            setManagerEmail(validateRequiredControl(managerEmail));
+            setManagerCellphone(validateRequiredControl(managerCellphone));
         }
     }
-
-    useEffect(() => {
-        if (uploadLogoTask.state == TASK_STATE.COMPLETED && logoValid) {
-            setLogoControl({
-                ...logoControl,
-                "message": "",
-                "state": INPUT_CONTROL_STATE.OK,
-                "value": uploadLogoTask.result,
-            })
-        }
-    }, [uploadLogoTask.state]);
-
-    useEffect(() => {
-        if (uploadSchematicTask.state == TASK_STATE.COMPLETED && schematicValid) {
-            setSchematicControl({
-                ...logoControl,
-                "message": "",
-                "state": INPUT_CONTROL_STATE.OK,
-                "value": uploadSchematicTask.result,
-            })
-        }
-    }, [uploadSchematicTask.state]);
 
     return (<div className="w-full bg-color-white p-[10px]">
         <Space type={TYPE_SPACE.INPUT_DISTANCE} />
@@ -274,6 +266,52 @@ function SiteCreateForm({onSubmit, defaultData={}}: { onSubmit: (data: SiteDetai
                         }}
                     />
                     <Space type={TYPE_SPACE.INPUT_DISTANCE}/>
+                    <InputText
+                        name="Manager Fullname"
+                        label="Manager Fullname"
+                        placeholder="Manager Name"
+                        defaultValue=""
+                        state={managerFullName.state}
+                        message={managerFullName.message}
+                        onChange={(value: string) => {
+                            const managerNameValidated: InputControl = validateSiteNameControl(value);
+                            setManagerFullName(managerNameValidated);
+                        }}
+                    />
+                    <Space type={TYPE_SPACE.INPUT_DISTANCE}/>
+                    <InputText
+                        name="Manager email"
+                        label="Manager Email"
+                        placeholder="Manager Email"
+                        defaultValue=""
+                        state={managerEmail.state}
+                        message={managerEmail.message}
+                        onChange={(value: string) => {
+                            const emailValidated = validateEmail(value);
+                            setManagerEmail({
+                                "state": emailValidated.valid ? INPUT_CONTROL_STATE.OK: INPUT_CONTROL_STATE.ERROR,
+                                "value": value,
+                                "message": emailValidated.valid ? "": "Email not valid" 
+                            });
+                        }}
+                    />
+                    <Space type={TYPE_SPACE.INPUT_DISTANCE}/>
+                    <InputText
+                        name="Manager cellphone"
+                        label="Manager cellphone"
+                        placeholder=" 123 456 789"
+                        defaultValue=""
+                        state={managerCellphone.state}
+                        message={managerCellphone.message}
+                        onChange={(value: string) => {
+                            const cellphoneValidated = validateCellphone(value);
+                            setManagerCellphone({
+                                "state" : cellphoneValidated.valid ? INPUT_CONTROL_STATE.OK: INPUT_CONTROL_STATE.ERROR,
+                                "value" : value,
+                                "message" : cellphoneValidated.valid ? "": "Cellphone not valid"
+                            })
+                        }}
+                    />
                     <div className="flex">
                         <InputText
                             name="city"
@@ -358,7 +396,7 @@ function SiteCreateForm({onSubmit, defaultData={}}: { onSubmit: (data: SiteDetai
         <div className="w-full h-[150px]">
             <InputPhoto name="schematic" placeholder="Add site schematic" onChange={uploadSchematic} state={schematicControl.state} message={schematicControl.message}/>
         </div>
-        <Space classes="w-full h-[50px]" />                
+        <Space classes="w-full h-[50px]" />
         <div className="w-full max-w-[400px] mx-auto flex">
             <ButtonPrimary onClick={submit}>
                 Create

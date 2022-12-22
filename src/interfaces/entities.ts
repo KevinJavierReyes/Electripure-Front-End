@@ -64,3 +64,22 @@ export interface VoltsDataEntity {
     [key: string]: number[]; 
     timestamp: number[];
 }
+
+
+export interface DeviceRowEntity {
+    id_device: number;
+    serial_number: number;
+    type_device: string;
+    company_name: string;
+    MDP_name: string;
+    date: string;
+}
+
+export interface DeviceData {
+    id_device: number;
+    serial_number: number;
+    type_device: string;
+    company_name: string;
+    MDP_name: string;
+    date: string;
+}

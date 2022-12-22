@@ -13,13 +13,12 @@ import { useNavigate } from "react-router-dom";
 import { ElectripureState } from "../../../../interfaces/reducers"
 import { sendGetUsers } from "../../../../actions/electripure"
 import { UserPermission, CiaPermission } from "../../../../routers/Permissions"
+import { settingPermissions } from "../../../../libs/permissions"
 
 const UserSettings = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const currentUser = localStorage.getItem("user_id");
-    const users = JSON.parse(useSelector((state: ElectripureState) => state.users));
-    const allowed = users?.filter((user:any) => user.id == currentUser)[0];
 
     function logout() {
         dispatch(setTimestampTwoStepVerification({
@@ -36,9 +35,7 @@ const UserSettings = () => {
         localStorage.removeItem("current_user");
         navigate("/login");
     }
-    useEffect(() =>{
-        dispatch(sendGetUsers({}))
-    }, [])
+
     return (
         <Fragment>
             <div>
@@ -48,18 +45,25 @@ const UserSettings = () => {
                         <p className="m-[15px]" onClick={()=>{ navigate("/dashboard/company/list") }}>Company management</p>
                     </div>
                 </CiaPermission>
-                <UserPermission role="list_user">
+                { settingPermissions("list_user")[0] === 2?
                     <div className="flex hover:bg-slate-100 rounded-lg cursor-pointer">
                         <img src={userImg} alt="" />
                         <p className="m-[15px]" onClick={()=>{navigate("/dashboard/user/list")}}>Users management</p>
                     </div>
-                </UserPermission>
-                <CiaPermission role="list_companies">
+                    :settingPermissions("list_user")[0] === 1?
+                    <div className="flex hover:bg-slate-100 rounded-lg cursor-pointer">
+                        <img src={userImg} alt="" />
+                        <p className="m-[15px]" onClick={()=>{navigate("/dashboard/user/list")}}>Users management</p>
+                    </div>
+                    : <div></div>
+                }
+                { settingPermissions("list_device")[0] === 1?
                 <div className="flex hover:bg-slate-100 rounded-lg cursor-pointer">
                     <img src={deviceImg} alt="" />
                     <p className="m-[15px]" onClick={()=>{navigate("/dashboard/device/list")}}>Device management</p>
                 </div>
-                </CiaPermission>
+                : <div></div>
+                }
                 <CiaPermission role="list_companies">
                 <div className="flex hover:bg-slate-100 rounded-lg cursor-pointer">
                     <img src={chageLogImg} alt="" />

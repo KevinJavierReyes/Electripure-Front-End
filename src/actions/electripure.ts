@@ -1,5 +1,23 @@
-import { ActionNotification, AddTaskPayload, FilterAmpsDataPayload, FilterVoltsDataPayload, LoginPayload, SendAddContactPayload, SendCreateUserPayload, SendActivateDeactivateUserPayload, SendForgotPasswordPayload, SendGetAmpsDataPayload, SendGetCompaniesByUserPayload, SendGetCompaniesPayload, SendGetCompaniesTablePayload, SendGetUsersPayload, SendImagePayload, SendResendEmailPayload, SendUpdatePasswordPayload, SendUpdateUserPayload, SendValidateTokenPayload, SendVerificationCodePayload, SendVerificationEmailPayload, SetAmpsDataPayload, SetCompaniesPayload, SetCompaniesTablePayload, SetCurrentUserPayload, SetGlobalCompaniesPayload, SetJwtPayload, SetLoadingPayload, SetLoginTokenPayload, SetPasswordTokenPayload, SetPasswordUserPayload, SetTimestampTwoStepVerificationPayload, SetUsersPayload, SetVoltsDataPayload, ShowToastPayload, SendActivateDeactivateCompanyPayload, SetCompanyDetailPayload, ValidateUpdateUserPayload, SetPermissionsPayload } from "../interfaces/actions";
-import { ADD_TASK, FILTER_AMPS_DATA, FILTER_VOLTS_DATA, LOGIN, SET_AMPS_DATA, SET_COMPANIES, SET_COMPANIES_TABLE, SET_COMPANY_DETAIL, SET_CURRENT_USER, SET_GLOBAL_COMPANIES, SET_JWT, SET_LOADING, SET_LOGIN_TOKEN, SET_PASSWORD_TOKEN, SET_PASSWORD_USER, SET_PERMISSIONS, SET_TIMESTAMP_TWO_STEP_VERIFICATION, SET_USERS, SET_VOLTS_DATA, SHOW_TOAST } from "./types";
+import { ActionNotification, AddTaskPayload, FilterAmpsDataPayload,
+FilterVoltsDataPayload, LoginPayload, SendAddContactPayload,
+SendCreateUserPayload, SendActivateDeactivateUserPayload,
+SendForgotPasswordPayload, SendGetAmpsDataPayload,
+SendGetCompaniesByUserPayload, SendGetCompaniesPayload,
+SendGetCompaniesTablePayload, SendGetUsersPayload, SendImagePayload,
+SendResendEmailPayload, SendUpdatePasswordPayload, SendUpdateUserPayload,
+SendValidateTokenPayload, SendVerificationCodePayload,
+SendVerificationEmailPayload, SetAmpsDataPayload, SetCompaniesPayload,
+SetCompaniesTablePayload, SetCurrentUserPayload, SetGlobalCompaniesPayload,
+SetJwtPayload, SetLoadingPayload, SetLoginTokenPayload,
+SetPasswordTokenPayload, SetPasswordUserPayload,
+SetTimestampTwoStepVerificationPayload, SetUsersPayload, SetVoltsDataPayload,
+ShowToastPayload, SendActivateDeactivateCompanyPayload,
+SetCompanyDetailPayload, ValidateUpdateUserPayload, SetDevicesTablePayload } from "../interfaces/actions";
+import { ADD_TASK, FILTER_AMPS_DATA, FILTER_VOLTS_DATA, LOGIN, SET_AMPS_DATA,
+SET_COMPANIES, SET_COMPANIES_TABLE, SET_COMPANY_DETAIL, SET_CURRENT_USER,
+SET_GLOBAL_COMPANIES, SET_JWT, SET_LOADING, SET_LOGIN_TOKEN,
+SET_PASSWORD_TOKEN, SET_PASSWORD_USER, SET_TIMESTAMP_TWO_STEP_VERIFICATION,
+SET_USERS, SET_VOLTS_DATA, SHOW_TOAST, SET_DEVICES_TABLE } from "./types";
 import ElectripureService from "../service/electripure-service";
 import { ResponseGeneric } from "../interfaces/base-service";
 
@@ -99,11 +117,10 @@ export const setCompanyDetail = (payload: SetCompanyDetailPayload) => ({
     "payload": payload
 });
 
-export const setPermissions = (payload: SetPermissionsPayload) => ({
-    "type": SET_PERMISSIONS,
+export const setDevicesTable = (payload: SetDevicesTablePayload) => ({
+    "type": SET_DEVICES_TABLE,
     "payload": payload
 });
-
 // Login
 
 export const login = (payload: LoginPayload): any => (async (dispatch: any) => {
@@ -910,11 +927,11 @@ export const sendGetCompanyDetail = (payload: any): any => (async (dispatch: any
     dispatch(setCompanyDetail(ciaDetail));
 });
 
-export const sendGetPermissions = (payload: any): any => (async (dispatch: any) => {
+export const sendCreateMDP = (payload: any): any => (async (dispatch: any) => {
     dispatch(setLoading({
         loading: true
     }));
-    const response: ResponseGeneric = await ElectripureService.getPermissions(payload);
+    const response: ResponseGeneric = await ElectripureService.createMDP(payload);
     dispatch(setLoading({
         loading: false
     }));
@@ -938,6 +955,141 @@ export const sendGetPermissions = (payload: any): any => (async (dispatch: any) 
             status: "error"
         }))
     }
-    const permissions: SetPermissionsPayload = response.data;
-    dispatch(setPermissions(permissions));
+    dispatch(showToast({
+        message: "MDP Created!",
+        status: "success"
+    }));
+    return;
 });
+
+export const sendCreateSite = (payload: any): any => (async (dispatch: any) => {
+    dispatch(setLoading({
+        loading: true
+    }));
+    const response: ResponseGeneric = await ElectripureService.createSite(payload);
+    dispatch(setLoading({
+        loading: false
+    }));
+    if(response.data.message == 'Token is invalid!'){
+        dispatch(setTimestampTwoStepVerification({
+            "timestamp": null
+        }));
+        dispatch(setLoginToken({
+            "token": null
+        }));
+        dispatch(setJwt({
+            "token": null
+        }));
+        localStorage.removeItem("electripureJwt");
+        localStorage.removeItem("user_id");
+        localStorage.removeItem("current_user");
+    }
+    if(!response.success) {
+        return dispatch(showToast({
+            message: response.error!,
+            status: "error"
+        }))
+    }
+    dispatch(showToast({
+        message: "Site Created!",
+        status: "success"
+    }));
+    return;
+});
+
+export const sendGetDevicesTable = (payload: any): any => (async (dispatch: any) => {
+    dispatch(setLoading({
+        loading: true
+    }));
+    const response: ResponseGeneric = await ElectripureService.getDevicesTable(payload);
+    dispatch(setLoading({
+        loading: false
+    }));
+    if(response.data.message == 'Token is invalid!'){
+        dispatch(setTimestampTwoStepVerification({
+            "timestamp": null
+        }));
+        dispatch(setLoginToken({
+            "token": null
+        }));
+        dispatch(setJwt({
+            "token": null
+        }));
+        localStorage.removeItem("electripureJwt");
+        localStorage.removeItem("user_id");
+        localStorage.removeItem("current_user");
+    }
+    if(!response.success) {
+        return dispatch(showToast({
+            message: response.error!,
+            status: "error"
+        }))
+    }
+    const devices = response.data;
+    dispatch(setDevicesTable(devices));
+});
+
+export const sendUpdateDeviceDetails = (payload: any): any => (async (dispatch: any) => {
+    dispatch(setLoading({
+        loading: true
+    }));
+    const response: ResponseGeneric = await ElectripureService.updateDeviceDetails(payload);
+    dispatch(setLoading({
+        loading: false
+    }));
+    if(response.data.message == 'Token is invalid!'){
+        dispatch(setTimestampTwoStepVerification({
+            "timestamp": null
+        }));
+        dispatch(setLoginToken({
+            "token": null
+        }));
+        dispatch(setJwt({
+            "token": null
+        }));
+        localStorage.removeItem("electripureJwt");
+        localStorage.removeItem("user_id");
+        localStorage.removeItem("current_user");
+    }
+    if(!response.success) {
+        return dispatch(showToast({
+            message: response.error!,
+            status: "error"
+        }))
+    }
+    dispatch(showToast({
+        message: "Device Serial Updated!",
+        status: "success"
+    }));
+    return;
+});
+// Amps and Vots
+
+// export const sendGetAmpsDataGraph = (payload: SendGetAmpsDataPayload): any => (async (dispatch: any) => {
+//     dispatch(setLoading({
+//         loading: true
+//     }));
+//     const response: ResponseGeneric= await ElectripureService.getAmpsDataGraph({
+//         date_min: payload.dateMin,
+//         device: payload.device
+//     });
+//     dispatch(setLoading({
+//         loading: false
+//     }));
+//     if(!response.success) {
+//         dispatch(showToast({
+//             message: response.error!,
+//             status: "error"
+//         }));
+//         return;
+//     };
+//     let data: any = response.data;
+//     dispatch(setAmpsData({
+//         "data": {
+//             "Amps Line A": data["A1_data"],
+//             "Amps Line B": data["A2_data"],
+//             "Amps Line C": data["A3_data"],
+//             "timestamp": data["TS_data"]
+//         }
+//     }));
+// });

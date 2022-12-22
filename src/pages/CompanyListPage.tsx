@@ -15,7 +15,7 @@ import SiteManagerForm from "./../components/Form/SiteManagerForm";
 import SiteDetailForm from "./../components/Form/SiteDetailForm";
 import CreateMDPForm from "./../components/Form/CreateMDPForm"
 import FinishCreateMDPForm from "./../components/Form/FinishCreateMDPForm"
-import { CiaPermission } from "../routers/Permissions"
+import { settingPermissions } from "../libs/permissions"
 
 // import { useState } from "react";
 // import { useDispatch } from "react-redux";
@@ -167,7 +167,7 @@ function CompanyListPage () {
             <div className="px-[30px] py-[10px] w-full">
                 <div className={"justify-center items-center flex mb-[20px] sm:justify-start flex-col-reverse sm:flex-row"}>
                     <div className={"w-[200px]"}>
-                        <CiaPermission role="create_company">
+                        { settingPermissions("create_company")[0] === 2? 
                             <ButtonSecondary onClick={()=> setShowModal(true)}>
                                 <span className="flex justify-center items-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
@@ -176,7 +176,17 @@ function CompanyListPage () {
                                     <span className="f-medium">Add new company</span>
                                 </span>
                             </ButtonSecondary>
-                        </CiaPermission>
+                            :settingPermissions("create_company")[0] === 1? 
+                            <ButtonSecondary onClick={()=> setShowModal(true)}>
+                                <span className="flex justify-center items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m6-6H6" />
+                                    </svg>
+                                    <span className="f-medium">Add new company</span>
+                                </span>
+                            </ButtonSecondary>
+                            : <div></div>
+                        }
                         <ModalMiddle show={isShowModal} onClose={()=>{setShowModal(false); setStepCreateCompany(1);}}>
                             {
                                 stepCreateCompany == 1 ? <BasicCompanyInformationForm onSubmit={submitBasicCompanyInformationForm}/> :
@@ -191,11 +201,16 @@ function CompanyListPage () {
                     </div>
                     <span className="ml-[20px]"><h3 className="f-bold text-lg">Company Management</h3></span>
                 </div>
-                <CiaPermission role="list_companies">
+                { settingPermissions("list_companies")[0] === 2 ? 
                     <div className="w-full rounded border-color-secondary border">
                             <DataTableCompanies />
                     </div>
-                </CiaPermission>
+                    :settingPermissions("list_companies")[0] === 1 ?
+                    <div className="w-full rounded border-color-secondary border">
+                            <DataTableCompanies />
+                    </div>
+                    :<div></div>
+                }
             </div>
         </Fragment>
     );

@@ -5,13 +5,9 @@ import UserSettings from "./UserSettings";
 
 function FloatUserSetting({children}: {children:any}) {
     const [ toggleSettings, setToggleSettings ] = useState(false);
-
     const handleBtnClick = (): void => setToggleSettings(!toggleSettings);
-
     const closeMenu = (): void => setToggleSettings(false);
-
     const ref = useOnclickOutside(() => closeMenu());
-
 
     return (<Fragment>
         <div ref={ref}>
@@ -24,12 +20,5 @@ function FloatUserSetting({children}: {children:any}) {
         </div>
     </Fragment>);
 }
-
-// const clickOutsideConfig = {
-//     handleClickOutside: () => FloatUserSetting.handleClickOutside,
-// };
-  
-// export default onClickOutside(FloatUserSetting, clickOutsideConfig);
-  
 
 export default FloatUserSetting;

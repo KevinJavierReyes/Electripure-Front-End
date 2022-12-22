@@ -691,3 +691,45 @@ export function validateRequiredControl(input: InputControl): InputControl {
     }
     return input;
 }
+
+export function validateSerial(value: string): ValidationResult {
+    if (!value.match(/^[0-9]+$/)) {
+        return {
+            "valid": false,
+            "error": "Serial Number invalid."
+        }
+    }
+    if (value.length > 20) {
+        return {
+            "valid": false,
+            "error": "Maximum size is 20 characters."
+        }
+    }
+    return {
+        "valid": true,
+        "error": null
+    };
+}
+
+export function validateSerialControl(serial: string): InputControl {
+    let input: InputControl = {
+        "value": serial,
+        "message": "",
+        "state": -1
+    };
+    if (serial == "") {
+        return input;
+    }
+    const validation: ValidationResult = validateSerial(input.value);
+    if (!validation.valid) {
+        return {
+            ...input,
+            "state": 0,
+            "message": validation.error!
+        };
+    }
+    return {
+        ...input,
+        "state": 1
+    };
+}

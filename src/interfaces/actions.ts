@@ -222,5 +222,12 @@ export interface SetMDPDetailPayload{
     transformer: number;
 }
 
-export interface SetPermissionsPayload{
+export interface SetDevicesTablePayload{
+}
+
+export interface jwtDecoded{
+    data: string;
+    fullname: string;
+    role: any;
+    exp: number;
 }
