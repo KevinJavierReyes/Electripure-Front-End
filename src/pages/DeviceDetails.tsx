@@ -21,22 +21,24 @@ import { settingPermissions } from "../libs/permissions"
 function DeviceDetails () {
 
     const [ toggleModal, setToggleModal ] = useState(false)
-    const [ updateValue, setUpdateValue ] = useState({})
+    const [ updateValue, setUpdateValue ] = useState(false)
     const { devId } = useParams()
     const dispatch = useDispatch()
     const navigate = useNavigate();
     const devices = JSON.parse(useSelector((state: ElectripureState) => state.devicesTable));
-    const device:DeviceData = devices.device_list?.filter((element:DeviceData)=> element.id_device === parseInt(devId?? ""))[0];
+    let device:DeviceData = devices.device_list?.filter((element:DeviceData)=> element.id_device === parseInt(devId?? ""))[0];
 
     const submitDeviceUpdateInfo = (data: UpdateDeviceDataForm) =>{
         dispatch(sendUpdateDeviceDetails(data));
-        setToggleModal(false)
         dispatch(sendGetDevicesTable({}));
+        setToggleModal(false)
+        setUpdateValue(prev => !prev)
     }
 
     useEffect(() =>{
         dispatch(sendGetDevicesTable({}));
-    }, [device])
+        device = devices.device_list?.filter((element:DeviceData)=> element.id_device === parseInt(devId?? ""))[0];
+    }, [updateValue])
 
     return (
         <Fragment>
