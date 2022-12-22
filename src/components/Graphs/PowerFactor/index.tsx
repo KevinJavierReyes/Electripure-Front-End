@@ -31,8 +31,8 @@ function PowerFactor ({ defaultMeterId }: { defaultMeterId?: number }) {
         loading: true
     }));
     const response: ResponseGeneric = await ElectripureService.getPowerFactorDataGraph({
-        date_min: timestampToDateLocal(start.getTime()),
-        date_max: timestampToDateLocal(end.getTime()),
+        date_min: start.getTime(),
+        date_max: end.getTime(),
         device: deviceId
     });
     dispatch(setLoading({
