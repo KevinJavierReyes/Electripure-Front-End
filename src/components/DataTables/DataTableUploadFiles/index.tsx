@@ -11,7 +11,8 @@ const DataTableUploadFiles = () => {
     const [ toggleModal, setToggleModal ] = useState(false)
 
     const submitFileInfo = (data: UploadFileDataForm) =>{
-        console.log(data)
+        console.log(data);
+        setToggleModal(false);
     }
 
     return (

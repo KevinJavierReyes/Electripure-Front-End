@@ -267,7 +267,7 @@ function BasicCompanyInformationForm({onSubmit}: { onSubmit: (data: BasicCompany
                 </div>
             </div>
         </div>
-        <Space classes="w-full h-[50px]" />                
+        <Space classes="w-full h-[50px]" />
         <div className="w-[160px] mx-auto">
             <ButtonPrimary onClick={submit}>
                 Next

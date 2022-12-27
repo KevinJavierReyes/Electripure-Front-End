@@ -169,6 +169,11 @@ export interface UpdateDeviceDataForm{
 }
 
 export interface UploadFileDataForm{
-    // TODO 
+    company_id: number;
+    site: string;
+    type: string;
+    date_from: string;
+    date_to: string;
+    id_file: number;
 }
 

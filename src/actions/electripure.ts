@@ -4,6 +4,7 @@ SendCreateUserPayload, SendActivateDeactivateUserPayload,
 SendForgotPasswordPayload, SendGetAmpsDataPayload,
 SendGetCompaniesByUserPayload, SendGetCompaniesPayload,
 SendGetCompaniesTablePayload, SendGetUsersPayload, SendImagePayload,
+SendFilePayload, sendUploadFileDataPayload, 
 SendResendEmailPayload, SendUpdatePasswordPayload, SendUpdateUserPayload,
 SendValidateTokenPayload, SendVerificationCodePayload,
 SendVerificationEmailPayload, SetAmpsDataPayload, SetCompaniesPayload,
@@ -1062,6 +1063,82 @@ export const sendUpdateDeviceDetails = (payload: any): any => (async (dispatch: 
         status: "success"
     }));
     dispatch(sendGetDevicesTable({}))
+    return;
+});
+
+
+export const sendUploadFile = (payload: SendFilePayload): any => (async (dispatch: any) => {
+    dispatch(addTask({
+        "key": payload.taskKey,
+        "state": TASK_STATE.PENDING,
+        "result": null
+    }));
+    dispatch(setLoading({
+        loading: true
+    }));
+
+    const response: ResponseGeneric = await ElectripureService.uploadFile({"file": payload.base64});
+
+    dispatch(setLoading({
+        loading: false
+    }));
+
+    if(!response.success) {
+        dispatch(showToast({
+            message: response.error!,
+            status: "error"
+        }));
+        return;
+    }
+
+    dispatch(addTask({
+        "key": payload.taskKey,
+        "state": TASK_STATE.COMPLETED,
+        "result": response.data.id_file
+    }));
+
+    dispatch(showToast({
+        message: "File upload!",
+        status: "success"
+    }));
+});
+
+export const sendUploadFileData = (payload: sendUploadFileDataPayload): any => (async (dispatch: any) => {
+    dispatch(setLoading({
+        loading: true
+    }));
+
+    const response: ResponseGeneric = await ElectripureService.uploadFileData(payload);
+
+    dispatch(setLoading({
+        loading: false
+    }));
+
+    if(response.data.message == 'Token is invalid!'){
+        dispatch(setTimestampTwoStepVerification({
+            "timestamp": null
+        }));
+        dispatch(setLoginToken({
+            "token": null
+        }));
+        dispatch(setJwt({
+            "token": null
+        }));
+        localStorage.removeItem("electripureJwt");
+        localStorage.removeItem("user_id");
+        localStorage.removeItem("current_user");
+    }
+
+    if(!response.success) {
+        return dispatch(showToast({
+            message: response.error!,
+            status: "error"
+        }))
+    }
+    dispatch(showToast({
+        message: "File Registred Successfully in Company!",
+        status: "success"
+    }));
     return;
 });
 // Amps and Vots
