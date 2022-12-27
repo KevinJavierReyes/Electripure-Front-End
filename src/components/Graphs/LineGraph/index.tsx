@@ -1,6 +1,6 @@
 import { Chart as ChartJS, CategoryScale, ChartOptions, Legend, LinearScale, LineElement, PointElement, Title, Tooltip } from "chart.js";
 import { Fragment, useEffect, useState, useRef } from "react";
-import { Chart, Line } from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
 import zoomPlugin  from  'chartjs-plugin-zoom';
 import { INPUT_CONTROL_STATE, TYPE_SPACE } from "../../../config/enum";
 import InputCheckbox from "../../FormInput/InputCheckbox";
@@ -22,7 +22,7 @@ ChartJS.register(
 
 function LineGraph({ data, colors, onZoom}: {data: { y: { [key:string]: any}, x: any[] }, colors: { [key: string]: string, default: string}, onZoom: (x1: any, x2: any) => void}) {
   console.log("Render LineGraph......");
-  const chartRef = useRef<ChartJS>(null);
+  // const chartRef = useRef<ChartJS>(null);
   const yLabels: string[] = Object.keys(data.y);
   const yData: { [key:string]: any} = data.y;
   const xData: any[] = data.x;
@@ -118,8 +118,8 @@ function LineGraph({ data, colors, onZoom}: {data: { y: { [key:string]: any}, x:
 
   return (<Fragment>
       <div className="w-full p-[30px]">
-          {/* <Line  className="max-w-full" options={options} data={source} /> */}
-          <Chart ref={chartRef} type="line" className="max-w-full" options={options} data={source} />
+          <Line  className="max-w-full" options={options} data={source} />
+          {/* <Chart ref={chartRef} type="line" className="max-w-full" options={options} data={source} /> */}
       </div>
       
       <div className="flex justify-center flex-wrap p-[30px]">
