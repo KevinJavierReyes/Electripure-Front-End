@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { INPUT_CONTROL_STATE } from "../../../config/enum";
 
-function InputCheckbox({ state, message, name, label, onChange, classes="", defaultChecked=false}: { state: INPUT_CONTROL_STATE, message: string, name: string, label: string, onChange: (checked: boolean) => void, classes?: string, defaultChecked?: boolean }) {
+function InputCheckbox({ state, message, name, label, onChange, classes="", defaultChecked=false, disabled=false}: { state: INPUT_CONTROL_STATE, message: string, name: string, label: string, onChange: (checked: boolean) => void, classes?: string, defaultChecked?: boolean, disabled?: boolean }) {
     function handleChange(event: any) {
         onChange(event.target.checked);
     }
@@ -18,8 +18,9 @@ function InputCheckbox({ state, message, name, label, onChange, classes="", defa
                 <input
                     defaultChecked={defaultChecked}
                     type="checkbox"
+                    disabled={disabled}
                     onChange={handleChange}
-                    className={`w-[20px] border h-[20px] mr-[10px] ${state === INPUT_CONTROL_STATE.OK ? "border-color-success color-success" : state === INPUT_CONTROL_STATE.ERROR ? "border-color-error color-error" : "border-color-black-light color-black"}`}
+                    className={`w-[20px] border h-[20px] mr-[5px] ${state === INPUT_CONTROL_STATE.OK ? "border-color-success color-success" : state === INPUT_CONTROL_STATE.ERROR ? "border-color-error color-error" : "border-color-black-light color-black"}`}
                     id={name}/>
                 <label htmlFor={name} className={`f-medium color-black ${state === INPUT_CONTROL_STATE.OK ? "color-success" : state === INPUT_CONTROL_STATE.ERROR ? "color-error" : ""} ${classes}`}>{label}</label>    
            </div>

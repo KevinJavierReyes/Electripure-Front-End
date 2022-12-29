@@ -210,6 +210,39 @@ export default class ElectripureService extends BaseService {
     return response;
   }
 
+  static async getAmpsDataAGraph(payload: GetAmpsDataRequest) : Promise<ResponseGeneric> {
+    const url = `${environment.ELECTRIPURE_ENDPOINT}/get_chart1_A(A)_v2`;
+    const response = await this.requestPost(url, payload);
+    if (!response.success) {
+      toast.error(response.error, {
+        "position": "bottom-right"
+      });
+    }
+    return response;
+  }
+
+  static async getAmpsDataBGraph(payload: GetAmpsDataRequest) : Promise<ResponseGeneric> {
+    const url = `${environment.ELECTRIPURE_ENDPOINT}/get_chart1_B(A)_v2`;
+    const response = await this.requestPost(url, payload);
+    if (!response.success) {
+      toast.error(response.error, {
+        "position": "bottom-right"
+      });
+    }
+    return response;
+  }
+
+  static async getAmpsDataCGraph(payload: GetAmpsDataRequest) : Promise<ResponseGeneric> {
+    const url = `${environment.ELECTRIPURE_ENDPOINT}/get_chart1_C(A)_v2`;
+    const response = await this.requestPost(url, payload);
+    if (!response.success) {
+      toast.error(response.error, {
+        "position": "bottom-right"
+      });
+    }
+    return response;
+  }
+
   static async getVoltsDataGraph(payload: GetVoltsDataRequest) : Promise<ResponseGeneric> {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/get_chart1_V`;
     const response = await this.requestPost(url, payload);
