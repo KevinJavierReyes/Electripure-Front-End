@@ -148,6 +148,8 @@ export interface SendImagePayload {
 export interface SendFilePayload {
     taskKey: string;
     base64: string;
+    extension: string;
+    name: string;
 }
 
 export interface SendValidateTokenPayload {
@@ -239,8 +241,8 @@ export interface jwtDecoded{
 
 export interface sendUploadFileDataPayload{
     company_id: number;
-    site: string;
-    type: string;
+    site_id: number;
+    file_type: string;
     date_from: string;
     date_to: string;
     id_file: number;

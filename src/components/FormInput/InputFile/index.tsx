@@ -3,14 +3,16 @@ import { INPUT_CONTROL_STATE } from "../../../config/enum";
 
 
 
-const InputFile = ({ name, placeholder, onChange, state, message } : { state: INPUT_CONTROL_STATE, message: string, name: string, placeholder:string, onChange : ({base64, size}:{base64: string, size: number}) => void}) => {
+const InputFile = ({ name, placeholder, onChange, state, message } : { state: INPUT_CONTROL_STATE, message: string, name: string, placeholder:string, onChange : ({base64, size, file}:{base64: string, size: number, file?:any}) => void}) => {
 
     const [image, setImage] = useState("");
     const [size, setSize] = useState(0);
+    const [file, setFile ] = useState({"event":"", "name":""});
 
     function onFileChange(event: any) {
         if (event.target.files && event.target.files[0]) {   
             setSize(event.target.files[0].size);
+            setFile({event: event.target.files[0], name: event.target.files[0].name})
             let reader = new FileReader();
             reader.onload = (e: any) => {
                 setImage(e.target.result);
@@ -24,7 +26,8 @@ const InputFile = ({ name, placeholder, onChange, state, message } : { state: IN
         if (image != "") {
             onChange({
                 "base64": image,
-                "size": size
+                "size": size,
+                "file": file
             });
         }
     }, [image])

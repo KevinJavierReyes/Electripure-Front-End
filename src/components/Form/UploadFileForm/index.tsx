@@ -23,14 +23,15 @@ function UploadFileForm({onSubmit}: {onSubmit: (data: UploadFileDataForm) => voi
     const { ciaId } = useParams()
     const company = JSON.parse(useSelector((state: ElectripureState) => state.companyDetails));
 
-    const uploadLogoTask: TaskEntity = JSON.parse(useSelector((state: ElectripureState) => state.tasks))["UPLOAD_LOGO"] ?? {};
+    const uploadLogoTask: TaskEntity = JSON.parse(useSelector((state: ElectripureState) => state.tasks))["UPLOAD_FILE"] ?? {};
+
     const [ fileControl, setFileControl ] = useState({
         "state": INPUT_CONTROL_STATE.DEFAULT,
         "value": "",
         "message": ""
     })
-    
     const [ validFile, setValidFile ] = useState(false)
+    const [ siteIdSelected, setSiteIdSelected ] = useState(0)
 
     const [ selectSiteControl, setSelectSiteControl ] = useState({
         "state": INPUT_CONTROL_STATE.DEFAULT,
@@ -68,7 +69,7 @@ function UploadFileForm({onSubmit}: {onSubmit: (data: UploadFileDataForm) => voi
         })
     }
 
-    function uploadFile({base64, size}: {base64:string, size:number}) {
+    function uploadFile({base64, size, file}: {base64:string, size:number, file?: any}) {
         if(size > 20971520){
             setFileControl({
                 "message": "Maximum value is 20MB",
@@ -85,7 +86,9 @@ function UploadFileForm({onSubmit}: {onSubmit: (data: UploadFileDataForm) => voi
             });
         dispatch(sendUploadFile({
                 "base64": base64.split(",")[1],
-                "taskKey": "UPLOAD_LOGO"
+                "taskKey": "UPLOAD_FILE",
+                "extension": file.event.type,
+                "name": file.name
             }));
     }
 
@@ -95,12 +98,12 @@ function UploadFileForm({onSubmit}: {onSubmit: (data: UploadFileDataForm) => voi
             dateControl.state === INPUT_CONTROL_STATE.OK
             ) {
                 onSubmit({
-                    company_id: ciaId,
-                    site: selectSiteControl.value,
-                    type: selectTypeControl.value,
+                    company_id: parseInt(ciaId?? '0'),
+                    site_id: siteIdSelected,
+                    file_type: selectTypeControl.value,
                     date_from: selectStartDateControl,
                     date_to: selectEndDateControl,
-                    id_file: fileControl.value
+                    id_file: uploadLogoTask.result
                 });
         } else {
             setFileControl(validateRequiredControl(fileControl));
@@ -145,7 +148,7 @@ function UploadFileForm({onSubmit}: {onSubmit: (data: UploadFileDataForm) => voi
                 name="Select Site"
                 label="Select Site"
                 options={company?.sites?.map((site: any, index:number) => {
-                        return {"id": index, "value": site.name}
+                        return {"id": site.id, "value": site.name}
                 })}
                 placeholder="Select a Site"
                 onChange={(select: {"value": any, "id":any}) => {
@@ -154,6 +157,7 @@ function UploadFileForm({onSubmit}: {onSubmit: (data: UploadFileDataForm) => voi
                         "value": select.value,
                         "message":"" 
                     })
+                    setSiteIdSelected(select.id)
                 }}
                 />
                 <Space type={TYPE_SPACE.INPUT_DISTANCE} />
@@ -162,13 +166,14 @@ function UploadFileForm({onSubmit}: {onSubmit: (data: UploadFileDataForm) => voi
                 message={selectTypeControl.message}
                 name="Select Site"
                 label="Type"
-                options={[{"id": "1", "value": "Analysis"}, {"id": "2", "value": "Bill"}]}
+                options={[{"id": 0, "value": "Analysis"}, {"id": 1, "value": "Bill"}]}
                 onChange={(select: {"value":any, "id": any}) => {
                     setSelectTypeControl({
                         "state": INPUT_CONTROL_STATE.OK,
-                        "value": select.value,
+                        "value": select.id,
                         "message": ""
                     })
+
                 }}
                 />
                 <Space type={TYPE_SPACE.INPUT_DISTANCE} />

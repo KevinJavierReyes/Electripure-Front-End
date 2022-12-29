@@ -505,7 +505,6 @@ export const sendGetCompaniesTable = (payload: SendGetCompaniesTablePayload) : a
         }))
     }
     const companies: CompanyRowEntity[] = CompanyMapper.toCompaniesRows(response.data);
-    console.log(companies)
     dispatch(setCompaniesTable({
         "companies": companies
     }));
@@ -1076,8 +1075,7 @@ export const sendUploadFile = (payload: SendFilePayload): any => (async (dispatc
     dispatch(setLoading({
         loading: true
     }));
-
-    const response: ResponseGeneric = await ElectripureService.uploadFile({"file": payload.base64});
+    const response: ResponseGeneric = await ElectripureService.uploadFile({'file': payload});
 
     dispatch(setLoading({
         loading: false
@@ -1107,7 +1105,6 @@ export const sendUploadFileData = (payload: sendUploadFileDataPayload): any => (
     dispatch(setLoading({
         loading: true
     }));
-
     const response: ResponseGeneric = await ElectripureService.uploadFileData(payload);
 
     dispatch(setLoading({

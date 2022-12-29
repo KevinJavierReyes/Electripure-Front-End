@@ -165,7 +165,6 @@ export default class ElectripureService extends BaseService {
         "position": "bottom-right"
       });
     }
-    console.log(response)
     return response;
   }
 
@@ -487,15 +486,14 @@ export default class ElectripureService extends BaseService {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/upload_file`;
     const header_auth = {"Authorization" : `Bearer ${localStorage.getItem('electripureJwt')}`}
     const response = await this.requestPost(url, payload, header_auth);
-
     if (!response.success) {
       toast.error(response.error, {
         "position": "bottom-right"
       });
     }
     return response;
-  }
-
+    }
+    
   static async uploadFileData(payload: any) : Promise<ResponseGeneric> {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/register_file_company`;
     const header_auth = {"Authorization" : `Bearer ${localStorage.getItem('electripureJwt')}`}

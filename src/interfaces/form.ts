@@ -170,8 +170,8 @@ export interface UpdateDeviceDataForm{
 
 export interface UploadFileDataForm{
     company_id: number;
-    site: string;
-    type: string;
+    site_id: number;
+    file_type: string;
     date_from: string;
     date_to: string;
     id_file: number;
