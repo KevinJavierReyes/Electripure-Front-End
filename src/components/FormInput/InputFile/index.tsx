@@ -3,14 +3,16 @@ import { INPUT_CONTROL_STATE } from "../../../config/enum";
 
 
 
-const InputFile = ({ name, placeholder, onChange, state, message } : { state: INPUT_CONTROL_STATE, message: string, name: string, placeholder:string, onChange : ({base64, size}:{base64: string, size: number}) => void}) => {
+const InputFile = ({ name, placeholder, onChange, state, message } : { state: INPUT_CONTROL_STATE, message: string, name: string, placeholder:string, onChange : ({base64, size, file}:{base64: string, size: number, file?:any}) => void}) => {
 
     const [image, setImage] = useState("");
     const [size, setSize] = useState(0);
+    const [file, setFile ] = useState({"event":"", "name":""});
 
-    function onImageChange(event: any) {
+    function onFileChange(event: any) {
         if (event.target.files && event.target.files[0]) {   
             setSize(event.target.files[0].size);
+            setFile({event: event.target.files[0], name: event.target.files[0].name})
             let reader = new FileReader();
             reader.onload = (e: any) => {
                 setImage(e.target.result);
@@ -24,28 +26,32 @@ const InputFile = ({ name, placeholder, onChange, state, message } : { state: IN
         if (image != "") {
             onChange({
                 "base64": image,
-                "size": size
+                "size": size,
+                "file": file
             });
         }
     }, [image])
 
     return (
-        <div className="w-full h-full">
-            <div className="w-full h-full min-h-[80px] relative overflow-hidden">
-                <div className={"bg-color-secondary  flex justify-center items-center rounded-lg w-full h-full absolute top-0 left-0 " + (state === INPUT_CONTROL_STATE.OK ? "border-color-success color-success" : state === INPUT_CONTROL_STATE.ERROR ? "border-color-error color-error" : "border-color-black-light color-black")}>
-                    { image ? <img src={image} className="max-h-full max-w-full" /> : <p className="color-white f-bold text-base">{placeholder}</p> }
-                    <div className="bg-color-black-opacity absolute bottom-0 right-0 w-[65px] h-[65px] flex items-center justify-center rounded-tl-lg rounded-br-lg">
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 fill-white">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z" />
-                            </svg>
-                            <p className="color-white f-medium text-xs">Add</p>
-                        </div>
-                        <label htmlFor={name} className="absolute w-full h-full top-0 left-0 rounded-tl-lg rounded-br-lg cursor-pointer"></label>
+        <div className="w-full h-[250px]">
+            <div className="w-full h-full min-h-[80px] relative overflow-hidden border">
+                <div className={"flex justify-center items-center w-full h-full  " + (state === INPUT_CONTROL_STATE.OK ? "border-color-success color-success" : state === INPUT_CONTROL_STATE.ERROR ? "border-color-error color-error" : "border-color-black-light color-black")}>
+
+                    <div className="absolute flex items-center w-full flex-wrap justify-around text-center top-[30px] p-[20px]">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4.92188 8.57812C5.48438 9.1875 6.46875 9.1875 7.03125 8.57812L10.5 5.15625V16.5C10.5 17.3438 11.1562 18 12 18C12.7969 18 13.5 17.3438 13.5 16.5V5.15625L16.9219 8.57812C17.4844 9.1875 18.4688 9.1875 19.0312 8.57812C19.6406 8.01562 19.6406 7.03125 19.0312 6.46875L13.0312 0.46875C12.75 0.1875 12.375 0 12 0C11.5781 0 11.2031 0.1875 10.9219 0.46875L4.92188 6.46875C4.3125 7.03125 4.3125 8.01562 4.92188 8.57812ZM22.5 16.5H15C15 18.1875 13.6406 19.5 12 19.5C10.3125 19.5 9 18.1875 9 16.5H1.5C0.65625 16.5 0 17.2031 0 18V22.5C0 23.3438 0.65625 24 1.5 24H22.5C23.2969 24 24 23.3438 24 22.5V18C24 17.2031 23.2969 16.5 22.5 16.5ZM20.25 21.375C19.5938 21.375 19.125 20.9062 19.125 20.25C19.125 19.6406 19.5938 19.125 20.25 19.125C20.8594 19.125 21.375 19.6406 21.375 20.25C21.375 20.9062 20.8594 21.375 20.25 21.375Z" fill="#737373"/>
+                        </svg>
+                        <p>JPG, PNG, PDF, and XLS file size no more than 20MB</p>
                     </div>
+                    <label className="h-[50px] w-[200px] flex absolute bottom-[30px] items-center border cursor-pointer justify-around" htmlFor={name}>Upload File</label>
+                    <input id={name}
+                           className="hidden" 
+                           name={name} 
+                           type="file" 
+                           onChange={onFileChange} 
+                           accept=".png, .jpeg, .pdf, .xls, .jpg"/>
                 </div>
-                <input id={name} className="invisible" name={name} type="file" onChange={onImageChange} accept="image/png, image/jpeg"/>
+
             </div>
             <span className={`${message == "" ? "hidden" : "inline"} ${state === INPUT_CONTROL_STATE.OK ? "color-success" : state === INPUT_CONTROL_STATE.ERROR ? "color-error" : "color-black"}`}>
                 {message}

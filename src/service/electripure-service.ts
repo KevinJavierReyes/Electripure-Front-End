@@ -1,4 +1,10 @@
-import { AddContactRequest, AuthorizationCodeRequest, AuthorizationCodeValidateRequest, CreateUserRequest, ForgotPasswordRequest, GetAmpsDataRequest, GetCompaniesByUserRequest, GetPowerDataRequest, GetVoltsDataRequest, LoginRequest, ResendEmailRequest, ToogleCompanyStateRequest, ToogleUserStateRequest, UpdatePasswordRequest, UpdateUserRequest, UploadImageRequest, ValidateTokenRequest, ValidateUpdateUserRequest } from "../interfaces/electripure-service";
+import { AddContactRequest, AuthorizationCodeRequest,
+AuthorizationCodeValidateRequest, CreateUserRequest, ForgotPasswordRequest,
+GetAmpsDataRequest, GetCompaniesByUserRequest, GetPowerDataRequest,
+GetVoltsDataRequest, LoginRequest, ResendEmailRequest,
+ToogleCompanyStateRequest, ToogleUserStateRequest, UpdatePasswordRequest,
+UpdateUserRequest, UploadImageRequest, ValidateTokenRequest,
+ValidateUpdateUserRequest, UploadFileRequest } from "../interfaces/electripure-service";
 import { BaseService } from "./base-service";
 import environment from "./../config/env";
 import { toast } from "react-toastify";
@@ -159,7 +165,6 @@ export default class ElectripureService extends BaseService {
         "position": "bottom-right"
       });
     }
-    console.log(response)
     return response;
   }
 
@@ -500,6 +505,30 @@ export default class ElectripureService extends BaseService {
 
   static async updateDeviceDetails(payload: any) : Promise<ResponseGeneric> {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/update_device_serial`;
+    const header_auth = {"Authorization" : `Bearer ${localStorage.getItem('electripureJwt')}`}
+    const response = await this.requestPost(url, payload, header_auth);
+    if (!response.success) {
+      toast.error(response.error, {
+        "position": "bottom-right"
+      });
+    }
+    return response;
+  }
+
+  static async uploadFile(payload: UploadFileRequest) : Promise<ResponseGeneric> {
+    const url = `${environment.ELECTRIPURE_ENDPOINT}/upload_file`;
+    const header_auth = {"Authorization" : `Bearer ${localStorage.getItem('electripureJwt')}`}
+    const response = await this.requestPost(url, payload, header_auth);
+    if (!response.success) {
+      toast.error(response.error, {
+        "position": "bottom-right"
+      });
+    }
+    return response;
+    }
+    
+  static async uploadFileData(payload: any) : Promise<ResponseGeneric> {
+    const url = `${environment.ELECTRIPURE_ENDPOINT}/register_file_company`;
     const header_auth = {"Authorization" : `Bearer ${localStorage.getItem('electripureJwt')}`}
     const response = await this.requestPost(url, payload, header_auth);
     if (!response.success) {

@@ -77,6 +77,9 @@ export interface UploadImageRequest {
     image: string;
 }
 
+export interface UploadFileRequest {
+    file: any;
+}
 
 export interface GetAmpsDataRequest {
     date_min: number | null;

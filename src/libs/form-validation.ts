@@ -733,3 +733,4 @@ export function validateSerialControl(serial: string): InputControl {
         "state": 1
     };
 }
+
