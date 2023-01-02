@@ -262,7 +262,7 @@ const SiteUpdateForm = ({onSubmit, siteId}: { onSubmit: (data: SiteUpdateDataFor
                         <InputSelect
                             name="state"
                             label="State"
-                            options={stateList.map((value,index) => ({"id": index, "value":value}))}
+                            options={stateList.map((value,index) => ({"id": index + 1, "value":value}))}
                             defaultSelect={site?.state}
                             placeholder="Select State"
                             state={stateControl.state}

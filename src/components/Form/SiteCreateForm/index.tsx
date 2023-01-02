@@ -330,7 +330,7 @@ function SiteCreateForm({onSubmit, defaultData={}}: { onSubmit: (data: SiteCreat
                             name="state"
                             label="State"
                             options={stateList.map((value, index) => (
-                                {"id": index, "value": value}
+                                {"id": index + 1, "value": value}
                             ))}
                             defaultSelect={defaultData.state ?? "-1"}
                             placeholder="Select State"

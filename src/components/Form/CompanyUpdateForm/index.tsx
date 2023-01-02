@@ -244,7 +244,7 @@ function CompanyUpdateForm({onSubmit}: { onSubmit: (data: CompanyInformationUpda
                         label="State"
                         //options={[{"id": "01", "value": "state 01"}, {"id": "02", "value": "state 02"}]}
                         options={stateList.map((value, index) => (
-                            {"id": index, "value": value}
+                            {"id": index+ 1, "value": value}
                         ))}
                         placeholder="Select State"
                         state={stateControl.state}
