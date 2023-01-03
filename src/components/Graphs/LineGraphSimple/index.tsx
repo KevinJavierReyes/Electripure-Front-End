@@ -17,7 +17,7 @@ ChartJS.register(
   Legend
 );
 
-function LineGraphSimple({ data, colors, onZoom, title, showDatasetMap = {}, showTooltip=true}: { data: { y: { [key: string]: any }, x: any[] }, colors: { [key: string]: string, default: string }, onZoom: (x1: any, x2: any) => void, title: string, showDatasetMap?: any, showTooltip?: boolean }) {
+function LineGraphSimple({ labels, data, colors, onZoom, title, showDatasetMap = {}, showTooltip=true}: { labels: any[], data: { y: { [key: string]: any }, x: any[] }, colors: { [key: string]: string, default: string }, onZoom: (x1: any, x2: any) => void, title: string, showDatasetMap?: any, showTooltip?: boolean }) {
   console.log("Render LineGraphSimple......");
   // const chartRef = useRef<ChartJS>(null);
   const yLabels: string[] = Object.keys(data.y);
@@ -73,6 +73,9 @@ function LineGraphSimple({ data, colors, onZoom, title, showDatasetMap = {}, sho
       "tooltip": {
         "enabled": showTooltip,
         "callbacks": {
+          title: (tooltipItem: any) => {
+            return `${data.x[tooltipItem[0].dataIndex]}`;
+          },
           label: (tooltipItem: any) => {
             return `${tooltipItem.dataset.label}: ${tooltipItem.dataset.data[tooltipItem.dataIndex]}`;
           },
@@ -82,7 +85,7 @@ function LineGraphSimple({ data, colors, onZoom, title, showDatasetMap = {}, sho
   };
   // Data
   const source = {
-    "labels": xData,
+    "labels": labels,
     "datasets": yLabels.filter((key: string) => yFilter[key] == undefined ? true : yFilter[key]).map((yLabel: string) => {
       return {
         "label": yLabel,

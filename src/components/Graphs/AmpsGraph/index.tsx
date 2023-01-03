@@ -161,7 +161,6 @@ function AmpsGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
   }
   // Obtener datos por evento zoom
   async function onZoom(x1:any, x2: any, data: any) {
-    debugger
     const dateMin: number = data.timestamp[x1];
     const dateMax: number = data.timestamp[x2];
     await requestChartsData({
@@ -266,13 +265,13 @@ function AmpsGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
         </div>
         <Space classes="h-[30px]"/>
         { showCharts["anv"] ? <div className="max-h-[300px]">
-            <LineGraphSimple showTooltip={showTooltip} showDatasetMap={showX} data={{"x": dataA.x_label, "y": dataA.y}} colors={colors} onZoom={(x1: any, x2: any) => { onZoom(x1, x2, dataA); }} title="AN(V)"/>
+            <LineGraphSimple labels={dataA.x_label} showTooltip={showTooltip} showDatasetMap={showX} data={{"x": dataA.x, "y": dataA.y}} colors={colors} onZoom={(x1: any, x2: any) => { onZoom(x1, x2, dataA); }} title="AN(V)"/>
           </div> : ""}
         { showCharts["bnv"] ? <div className="max-h-[300px]">
-            <LineGraphSimple showTooltip={showTooltip} showDatasetMap={showX}  data={{"x": dataB.x_label, "y": dataB.y}} colors={colors} onZoom={(x1: any, x2: any) => { onZoom(x1, x2, dataB); }} title="BN(V)"/> 
+            <LineGraphSimple labels={dataB.x_label} showTooltip={showTooltip} showDatasetMap={showX}  data={{"x": dataB.x_label, "y": dataB.y}} colors={colors} onZoom={(x1: any, x2: any) => { onZoom(x1, x2, dataB); }} title="BN(V)"/> 
           </div>: ""}
         { showCharts["cnv"] ? <div className="max-h-[300px]">
-            <LineGraphSimple showTooltip={showTooltip} showDatasetMap={showX} data={{"x": dataC.x_label, "y": dataC.y}} colors={colors} onZoom={(x1: any, x2: any) => { onZoom(x1, x2, dataC); }} title="CN(V)"/>
+            <LineGraphSimple labels={dataC.x_label} showTooltip={showTooltip} showDatasetMap={showX} data={{"x": dataC.x_label, "y": dataC.y}} colors={colors} onZoom={(x1: any, x2: any) => { onZoom(x1, x2, dataC); }} title="CN(V)"/>
           </div>: ""}
         <Space classes="h-[30px]"/>
   </Fragment>);
