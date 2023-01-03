@@ -23,28 +23,28 @@ function AmpsGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
   console.log("Render AmpsGraph......");
   const dispatch = useDispatch();
   // Create states
-  const [dataA, setDataA] = useState(JSON.stringify({ "x": [], "y": {
+  const [rawDataA, setRawDataA] = useState(JSON.stringify({ "x": [], "x_label": [], "y": {
     "max": [],
     "min": [],
     "average": [],
   }}));
-  const [rawDictTimestampsA, setRawDictTimestampsA] = useState(JSON.stringify({}));
-  const [dataB, setDataB] = useState(JSON.stringify({ "x": [], "y": {
+  // const [rawDictTimestampsA, setRawDictTimestampsA] = useState(JSON.stringify({}));
+  const [rawDataB, setRawDataB] = useState(JSON.stringify({ "x": [], "x_label": [], "y": {
     "max": [],
     "min": [],
     "average": [],
   }}));
-  const [rawDictTimestampsB, setRawDictTimestampsB] = useState(JSON.stringify({}));
-  const [dataC, setDataC] = useState(JSON.stringify({ "x": [], "y": {
+  // const [rawDictTimestampsB, setRawDictTimestampsB] = useState(JSON.stringify({}));
+  const [rawDataC, setRawDataC] = useState(JSON.stringify({ "x": [], "x_label": [], "y": {
     "max": [],
     "min": [],
     "average": [],
   }}));
-  const [rawDictTimestampsC, setRawDictTimestampsC] = useState(JSON.stringify({}));
+  // const [rawDictTimestampsC, setRawDictTimestampsC] = useState(JSON.stringify({}));
   const colors: any = {
-    "max": "#00AEE8",
-    "min": "#55BA47",
-    "average": "#263B92",
+    "max": "#fc0303",
+    "min": "#00ff3c",
+    "average": "#000000",
     "default": "#ed4278"
   };
   const [rawShowCharts, setRawShowCharts] = useState(JSON.stringify({
@@ -57,10 +57,18 @@ function AmpsGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
     "min": true,
     "average": true
   }));
+  const [showTooltip, setShowTootip] = useState(true);
   const showX: any = JSON.parse(rawShowX);
   const blockLastInputShowX: boolean = Object.values(showX).filter(show => show).length == 1;
   const showCharts: any = JSON.parse(rawShowCharts);
   const blockLastInputShowChart: boolean = Object.values(showCharts).filter(show => show).length == 1;
+  const dataA = JSON.parse(rawDataA);
+  const dataB = JSON.parse(rawDataB);
+  const dataC = JSON.parse(rawDataC);
+  // Toogle tooltip
+  function toogleTooltip(show: boolean) {
+    setShowTootip(show);
+  }
   // Toogle charts
   function toogleCharts(chart: string, show: boolean) {
     showCharts[chart] = show;
@@ -107,27 +115,33 @@ function AmpsGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
       dispatch(setLoading({
         loading: false
     }));
-    setRawDictTimestampsA(JSON.stringify(toDictTimestamps(dataA)));
-    setRawDictTimestampsB(JSON.stringify(toDictTimestamps(dataB)));
-    setRawDictTimestampsC(JSON.stringify(toDictTimestamps(dataC)));
-    setDataA(JSON.stringify({
+    // setRawDictTimestampsA(JSON.stringify(toDictTimestamps(dataA)));
+    // setRawDictTimestampsB(JSON.stringify(toDictTimestamps(dataB)));
+    // setRawDictTimestampsC(JSON.stringify(toDictTimestamps(dataC)));
+    setRawDataA(JSON.stringify({
       "x": dataA["TS_data"],
+      "x_label": dataA["TS_data_label"],
+      "timestamp": dataA["TS_unix"],
       "y": {
         "max": dataA["A1_MAX_data"],
         "min": dataA["A1_MIN_data"],
         "average": dataA["A1_data"]
       }
     }));
-    setDataB(JSON.stringify({
-      "x": dataB["TS_data"],
+    setRawDataB(JSON.stringify({
+      "x": dataA["TS_data"],
+      "x_label": dataA["TS_data_label"],
+      "timestamp": dataA["TS_unix"],
       "y": {
         "max": dataB["A1_MAX_data"],
         "min": dataB["A1_MIN_data"],
         "average": dataB["A1_data"]
       }
     }));
-    setDataC(JSON.stringify({
-      "x": dataC["TS_data"],
+    setRawDataC(JSON.stringify({
+      "x": dataA["TS_data"],
+      "x_label": dataA["TS_data_label"],
+      "timestamp": dataA["TS_unix"],
       "y": {
         "max": dataC["A1_MAX_data"],
         "min": dataC["A1_MIN_data"],
@@ -136,18 +150,20 @@ function AmpsGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
     }));
   }
   // Obtener datos por filtro
-  async function getVoltsData(start: Date | null, end: Date | null) {
+  async function getAmpsData(start: Date | null, end: Date | null) {
     await requestChartsData({
       date_min: start != null ? toUnix(start.getTime()) : null,
-      date_max: end != null ? toUnix(end.getTime()) : null,
+      // 86400 es igual a un dia mas.
+      date_max: end != null ? toUnix(end.getTime()) + 86400 : null,
       device: deviceId,
       points: null
     });
   }
   // Obtener datos por evento zoom
-  async function onZoom(x1:any, x2: any, dictTimestamps: { [key: string]: number}) {
-    const dateMin: number = dictTimestamps[x1];
-    const dateMax: number = dictTimestamps[x2];
+  async function onZoom(x1:any, x2: any, data: any) {
+    debugger
+    const dateMin: number = data.timestamp[x1];
+    const dateMax: number = data.timestamp[x2];
     await requestChartsData({
       date_min: dateMin,
       date_max: dateMax,
@@ -159,8 +175,11 @@ function AmpsGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
   return (<Fragment>
         <div className="flex justify-between flex-wrap">
           <div className="w-auto">
-            <DateRangeControl onChange={getVoltsData}/>
+            <DateRangeControl onChange={getAmpsData}/>
           </div>
+        </div>
+        <Space classes="h-[30px]"/>
+        <div className="flex justify-between flex-wrap">
           <div className="w-[300px]  flex px-[30px]">
             <InputCheckbox
                 state={INPUT_CONTROL_STATE.DEFAULT}
@@ -231,11 +250,30 @@ function AmpsGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
                   toogleX("average", checked);
                 }} />
           </div>
+          <div className="w-[300px] flex px-[30px]">
+            <InputCheckbox
+                state={INPUT_CONTROL_STATE.DEFAULT}
+                message={""}
+                disabled={false}
+                defaultChecked={showTooltip}
+                classes={`f-semibold`}
+                name={"tooltip"}
+                label={"Tooltip"}
+                onChange={(checked: boolean) => {
+                  toogleTooltip(checked);
+                }} />
+          </div>
         </div>
         <Space classes="h-[30px]"/>
-        { showCharts["anv"] ? <LineGraphSimple showDatasetMap={showX} data={JSON.parse(dataA)} colors={colors} onZoom={(x1: any, x2: any) => { onZoom(x1, x2, JSON.parse(rawDictTimestampsA)); }} title="AN(V)"/> : ""}
-        { showCharts["bnv"] ? <LineGraphSimple showDatasetMap={showX}  data={JSON.parse(dataB)} colors={colors} onZoom={(x1: any, x2: any) => { onZoom(x1, x2, JSON.parse(rawDictTimestampsB)); }} title="BN(V)"/> : ""}
-        { showCharts["cnv"] ? <LineGraphSimple showDatasetMap={showX} data={JSON.parse(dataC)} colors={colors} onZoom={(x1: any, x2: any) => { onZoom(x1, x2, JSON.parse(rawDictTimestampsC)); }} title="CN(V)"/> : ""}
+        { showCharts["anv"] ? <div className="max-h-[300px]">
+            <LineGraphSimple showTooltip={showTooltip} showDatasetMap={showX} data={{"x": dataA.x_label, "y": dataA.y}} colors={colors} onZoom={(x1: any, x2: any) => { onZoom(x1, x2, dataA); }} title="AN(V)"/>
+          </div> : ""}
+        { showCharts["bnv"] ? <div className="max-h-[300px]">
+            <LineGraphSimple showTooltip={showTooltip} showDatasetMap={showX}  data={{"x": dataB.x_label, "y": dataB.y}} colors={colors} onZoom={(x1: any, x2: any) => { onZoom(x1, x2, dataB); }} title="BN(V)"/> 
+          </div>: ""}
+        { showCharts["cnv"] ? <div className="max-h-[300px]">
+            <LineGraphSimple showTooltip={showTooltip} showDatasetMap={showX} data={{"x": dataC.x_label, "y": dataC.y}} colors={colors} onZoom={(x1: any, x2: any) => { onZoom(x1, x2, dataC); }} title="CN(V)"/>
+          </div>: ""}
         <Space classes="h-[30px]"/>
   </Fragment>);
 }
