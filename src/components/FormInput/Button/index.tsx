@@ -9,9 +9,9 @@ export function Button(props: { title: any, classes: String, click: MouseEventHa
     );
 }
 
-export function ButtonPrimary( { children, onClick, classes= ""}: { children: any, onClick: MouseEventHandler, classes?: string}) {
+export function ButtonPrimary( { children, onClick, classes= "", disabled= false}: { children: any, onClick: MouseEventHandler, classes?: string, disabled?: boolean}) {
     return (
-        <button className={"w-full rounded-sm bg-color-primary h-[48px] color-white " + classes} onClick={onClick}>
+        <button className={"w-full rounded-sm bg-color-primary h-[48px] color-white " + ( disabled ? "grayscale ": "") + classes} onClick={onClick} disabled={disabled}>
             {children}
         </button>
     );

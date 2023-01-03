@@ -14,6 +14,7 @@ import LineGraphSimple from "../LineGraphSimple";
 import Space from "../../Space";
 import InputCheckbox from "../../FormInput/InputCheckbox";
 import { INPUT_CONTROL_STATE } from "../../../config/enum";
+import { ButtonPrimary } from "../../FormInput/Button";
 
 
 function AmpsGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
@@ -58,6 +59,9 @@ function AmpsGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
     "average": true
   }));
   const [showTooltip, setShowTootip] = useState(true);
+  const [startTimestampFilter, setStartTimestampFilter] = useState(0);
+  const [endTimestampFilter, setEndTimestampFilter] = useState(0);
+  const [countZoomIn, setCountZoomIn] = useState(0);
   const showX: any = JSON.parse(rawShowX);
   const blockLastInputShowX: boolean = Object.values(showX).filter(show => show).length == 1;
   const showCharts: any = JSON.parse(rawShowCharts);
@@ -151,13 +155,18 @@ function AmpsGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
   }
   // Obtener datos por filtro
   async function getAmpsData(start: Date | null, end: Date | null) {
+    const dateMin: number | null = start != null ? toUnix(start.getTime()) : null;
+    const dateMax: number | null = end != null ? toUnix(end.getTime()) + 86400 : null;
     await requestChartsData({
-      date_min: start != null ? toUnix(start.getTime()) : null,
+      date_min: dateMin,
       // 86400 es igual a un dia mas.
-      date_max: end != null ? toUnix(end.getTime()) + 86400 : null,
+      date_max: dateMax,
       device: deviceId,
       points: null
     });
+    setStartTimestampFilter(dateMin ?? 0);
+    setEndTimestampFilter(dateMax ?? 0);
+    setCountZoomIn(0);
   }
   // Obtener datos por evento zoom
   async function onZoom(x1:any, x2: any, data: any) {
@@ -169,6 +178,18 @@ function AmpsGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
       device: deviceId,
       points: null
     });
+    setCountZoomIn(countZoomIn + 1);
+  }
+
+  async function zoomOut() {
+    await requestChartsData({
+      date_min: startTimestampFilter,
+      // 86400 es igual a un dia mas.
+      date_max: endTimestampFilter,
+      device: deviceId,
+      points: null
+    });
+    setCountZoomIn(0);
   }
 
   return (<Fragment>
@@ -179,7 +200,7 @@ function AmpsGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
         </div>
         <Space classes="h-[30px]"/>
         <div className="flex justify-between flex-wrap">
-          <div className="w-[300px]  flex px-[30px]">
+          <div className="w-[300px]  flex items-center px-[30px]">
             <InputCheckbox
                 state={INPUT_CONTROL_STATE.DEFAULT}
                 message={""}
@@ -214,7 +235,7 @@ function AmpsGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
                   toogleCharts("cnv", checked);
                 }} />
           </div>
-          <div className="w-[400px]  flex px-[30px]">
+          <div className="w-[400px]  flex items-center px-[30px]">
             <InputCheckbox
                 state={INPUT_CONTROL_STATE.DEFAULT}
                 message={""}
@@ -249,7 +270,7 @@ function AmpsGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
                   toogleX("average", checked);
                 }} />
           </div>
-          <div className="w-[300px] flex px-[30px]">
+          <div className="w-[300px] flex items-center px-[30px]">
             <InputCheckbox
                 state={INPUT_CONTROL_STATE.DEFAULT}
                 message={""}
@@ -261,6 +282,12 @@ function AmpsGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
                 onChange={(checked: boolean) => {
                   toogleTooltip(checked);
                 }} />
+            <ButtonPrimary
+              children={"Zoom out"}
+              onClick={zoomOut}
+              classes={"bg-secondary"}
+              disabled={countZoomIn == 0}
+            />
           </div>
         </div>
         <Space classes="h-[30px]"/>
