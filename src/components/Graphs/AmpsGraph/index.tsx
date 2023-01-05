@@ -85,6 +85,10 @@ function AmpsGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
   }
   // Obtener datos de todos los graficos en memoria
   async function requestChartsData(payload: GetAmpsDataRequest) {
+    console.log("Date min");
+    console.log(new Date(payload.date_min! * 1000));
+    console.log("Date max");
+    console.log(new Date(payload.date_max! * 1000));
     dispatch(setLoading({
         loading: true
     }));
@@ -155,8 +159,12 @@ function AmpsGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
   }
   // Obtener datos por filtro
   async function getAmpsData(start: Date | null, end: Date | null) {
-    const dateMin: number | null = start != null ? toUnix(start.getTime()) : null;
-    const dateMax: number | null = end != null ? toUnix(end.getTime()) + 86400 : null;
+    // const dateMin: number | null = start != null ? toUnix(start.getTime()) : null;
+    // const dateMax: number | null = end != null ? toUnix(end.getTime()) + 86400 : null;
+    
+    const dateMin: number | null = start != null ? toUnix(new Date(start.getTime() - (start.getTime() % 86400000)).getTime()) : null;
+    const dateMax: number | null = end != null ? toUnix(new Date(end.getTime() - (end.getTime() % 86400000)).getTime()) + 86400 : null;
+    
     await requestChartsData({
       date_min: dateMin,
       // 86400 es igual a un dia mas.
