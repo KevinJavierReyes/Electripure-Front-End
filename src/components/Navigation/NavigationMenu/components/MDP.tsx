@@ -59,7 +59,12 @@ const MDP = ({site, mdp}: {site: any, mdp: any}) => {
                                 <p><strong className="cursor-pointer" onClick={ () => { 
                                     navigate(`company/${companyId}/meter/${meterId}/harmonic/amp/line1`)
                                 } }>{sub_mdp}</strong></p> :
+                            sub_mdp == "Voltage & Current" ?
+                                <p><strong className="cursor-pointer" onClick={ () => { 
+                                    navigate(`company/${companyId}/meter/${meterId}/voltagecurrent/graph`)
+                                } }>{sub_mdp}</strong></p> :
                                 <p><strong>{sub_mdp}</strong></p>
+                            
                         }
                     </div>
                 ))}

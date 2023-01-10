@@ -39,6 +39,8 @@ import HarmonicVoltLine2 from "../components/Graphs/HarmonicVoltLine2";
 import HarmonicVoltLine3 from "../components/Graphs/HarmonicVoltLine3";
 import DeviceListPage from "../pages/DeviceListPage"
 import DeviceDetails from "../pages/DeviceDetails" 
+import VoltageCurrentGraph from "../components/Graphs/VoltageCurrentGraph";
+import VoltageCurrentPage from "../pages/VoltageCurrent";
 
 const AppRouter = () => {
 
@@ -80,6 +82,9 @@ const AppRouter = () => {
                       <Route path="amps" element={<AmpsGraph />} />
                       <Route path="volts" element={<VoltsGraph />} />
                       <Route path="*" element={<div></div>} />
+                    </Route>
+                    <Route path="voltagecurrent" element={<VoltageCurrentPage />}>
+                      <Route path="*" element={<VoltageCurrentGraph />} />
                     </Route>
                     <Route path="power" element={<PowerPage />}>
                       <Route path="active" element={<PowerActiveGraph />} />
