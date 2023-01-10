@@ -216,7 +216,7 @@ function AmpsGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
                 defaultChecked={showCharts["anv"]}
                 classes={`f-semibold`}
                 name={"anv"}
-                label={"AN(V)"}
+                label={"A(A)"}
                 onChange={(checked: boolean) => {
                   toogleCharts("anv", checked);
                 }} />
@@ -227,7 +227,7 @@ function AmpsGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
                 defaultChecked={showCharts["bnv"]}
                 classes={`f-semibold`}
                 name={"bnv"}
-                label={"BN(V)"}
+                label={"B(A)"}
                 onChange={(checked: boolean) => {
                   toogleCharts("bnv", checked);
                 }} />
@@ -238,7 +238,7 @@ function AmpsGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
                 defaultChecked={showCharts["cnv"]}
                 classes={`f-semibold`}
                 name={"cnv"}
-                label={"CN(V)"}
+                label={"C(A)"}
                 onChange={(checked: boolean) => {
                   toogleCharts("cnv", checked);
                 }} />
