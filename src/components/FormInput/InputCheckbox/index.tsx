@@ -13,7 +13,8 @@ function InputCheckbox({ state, message, name, label, onChange, classes="", defa
     }, []);
 
     return (
-        <div className="w-full">
+        <div className="">
+        {/* <div className="w-full"> */}
             { orientation == ORIENTATION_INPUT.RIGHT ? <div className="w-full flex justify-start items-center">
                 <input
                     defaultChecked={defaultChecked}

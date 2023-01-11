@@ -35,8 +35,8 @@ function DateRangeControlCustom({ onChange, defaultStart, defaultEnd}: { default
     }
 
     return (<Fragment>
-        <div className="w-full flex px-[30px]">
-            <div className="w-[250px]">
+        <div className="w-full flex">
+            <div className="sm:min-w-[250px] w-full">
                 <InputDateRange onChange={onChangeDateRangeCustom} defaultStart={new Date(startDate)} defaultEnd={new Date(endDate)} classes={"min-h-[40px] text-sm"}/>
             </div>
         </div>

@@ -101,9 +101,8 @@ function LineGraphSimple({ labels, data, colors, onZoom, title, showDatasetMap =
   };
 
   return (<Fragment>
-    <div className="max-w-full max-h-full px-[30px]">
+    <div className="max-w-full max-h-full h-full px-[30px]">
       <Line className="w-full h-full max-w-full max-h-full" options={options} data={source} />
-      {/* <Line className="max-w-full" options={options} data={source} /> */}
     </div>
   </Fragment>);
 }
