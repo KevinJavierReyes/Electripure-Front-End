@@ -35,20 +35,29 @@ function SiteManagerForm({onSubmit, onPrevious}: { onSubmit: (data: SiteManagerD
     });
 
     function submit() {
-        if (fullnameControl.state == INPUT_CONTROL_STATE.OK &&
-            emailControl.state == INPUT_CONTROL_STATE.OK &&
-            cellphoneControl.state == INPUT_CONTROL_STATE.OK) {
+        if ((fullnameControl.value == "" || fullnameControl.state == INPUT_CONTROL_STATE.OK) &&
+            (emailControl.value == "" || emailControl.state == INPUT_CONTROL_STATE.OK) &&
+            (cellphoneControl.value == "" || cellphoneControl.state == INPUT_CONTROL_STATE.OK)) {
                 onSubmit({
                     "fullname": fullnameControl.value,
                     "email": emailControl.value,
                     "cellphone": cellphoneControl.value
                 });
-        } else {
-            // Validate required fields
-            setFullnameControl(validateRequiredControl(fullnameControl));
-            setEmailControl(validateRequiredControl(emailControl));
-            setCellphoneControl(validateRequiredControl(cellphoneControl));
         }
+        // if (fullnameControl.state == INPUT_CONTROL_STATE.OK &&
+        //     emailControl.state == INPUT_CONTROL_STATE.OK &&
+        //     cellphoneControl.state == INPUT_CONTROL_STATE.OK) {
+        //         onSubmit({
+        //             "fullname": fullnameControl.value,
+        //             "email": emailControl.value,
+        //             "cellphone": cellphoneControl.value
+        //         });
+        // } else {
+        //     // Validate required fields
+        //     setFullnameControl(validateRequiredControl(fullnameControl));
+        //     setEmailControl(validateRequiredControl(emailControl));
+        //     setCellphoneControl(validateRequiredControl(cellphoneControl));
+        // }
     }
 
 
