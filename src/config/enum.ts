@@ -6,6 +6,13 @@ export enum INPUT_CONTROL_STATE {
     OK = 1
 }
 
+
+export enum ORIENTATION_INPUT {
+    LEFT = 1,
+    RIGHT = 2,
+}
+
+
 export enum NAVEGATION_STATE {
     OPEN = 1,
     CLOSE = 0,

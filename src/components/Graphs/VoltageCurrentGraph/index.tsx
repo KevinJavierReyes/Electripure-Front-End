@@ -13,8 +13,9 @@ import { GetAmpsDataRequest } from "../../../interfaces/electripure-service";
 import LineGraphSimple from "../LineGraphSimple";
 import Space from "../../Space";
 import InputCheckbox from "../../FormInput/InputCheckbox";
-import { INPUT_CONTROL_STATE } from "../../../config/enum";
+import { INPUT_CONTROL_STATE, ORIENTATION_INPUT } from "../../../config/enum";
 import { ButtonPrimary } from "../../FormInput/Button";
+import DateRangeControlCustom from "../DateRangeControlCustom";
 
 
 function VoltageCurrentGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
@@ -49,9 +50,9 @@ function VoltageCurrentGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
     "default": "#ed4278"
   };
   const [rawShowCharts, setRawShowCharts] = useState(JSON.stringify({
-    "anv": true,
-    "bnv": false,
-    "cnv": false
+    "aa": true,
+    "ba": false,
+    "ca": false
   }));
   const [rawShowX, setRawShowX] = useState(JSON.stringify({
     "max": true,
@@ -202,8 +203,70 @@ function VoltageCurrentGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
 
   return (<Fragment>
         <div className="flex justify-between flex-wrap">
-          <div className="w-auto">
-            <DateRangeControl onChange={getAmpsData}/>
+          <div className="max-w-400">
+            <DateRangeControlCustom defaultEnd={new Date()} defaultStart={new Date()} onChange={getAmpsData}/>
+          </div>
+          <div className="max-w-[400px] flex items-center px-[30px]">
+            <InputCheckbox
+                state={INPUT_CONTROL_STATE.DEFAULT}
+                orientation={ORIENTATION_INPUT.LEFT} 
+                message={""}
+                disabled={blockLastInputShowX && showX["max"]}
+                defaultChecked={showX["max"]}
+                classes={`f-semibold`}
+                name={"max"}
+                label={"MAX"}
+                onChange={(checked: boolean) => {
+                  toogleX("max", checked);
+                }} />
+            <Space classes="w-[10px]" />
+            <InputCheckbox
+                state={INPUT_CONTROL_STATE.DEFAULT}
+                orientation={ORIENTATION_INPUT.LEFT} 
+                message={""}
+                disabled={blockLastInputShowX && showX["min"]}
+                defaultChecked={showX["min"]}
+                classes={`f-semibold`}
+                name={"min"}
+                label={"MIN"}
+                onChange={(checked: boolean) => {
+                  toogleX("min", checked);
+                }} />
+            <Space classes="w-[10px]" />
+            <InputCheckbox
+                state={INPUT_CONTROL_STATE.DEFAULT}
+                orientation={ORIENTATION_INPUT.LEFT} 
+                message={""}
+                disabled={blockLastInputShowX && showX["average"]}
+                defaultChecked={showX["average"]}
+                classes={`f-semibold`}
+                name={"average"}
+                label={"AVG"}
+                onChange={(checked: boolean) => {
+                  toogleX("average", checked);
+                }} />
+          </div>
+          <div className="max-w-[300px] flex items-center px-[30px]">
+            <InputCheckbox
+                state={INPUT_CONTROL_STATE.DEFAULT}
+                orientation={ORIENTATION_INPUT.LEFT}
+                message={""}
+                disabled={false}
+                defaultChecked={showTooltip}
+                classes={`f-semibold`}
+                name={"tooltip"}
+                label={"LEGENDS"}
+                onChange={(checked: boolean) => {
+                  toogleTooltip(checked);
+                }} />
+            <Space classes="w-[10px]" />
+            <div className="w-[260px]">
+              <ButtonPrimary
+                children={"Restore Zoom"}
+                onClick={zoomOut}
+                classes={"bg-secondary px-[4px]"}
+                disabled={countZoomIn == 0}/>
+            </div>
           </div>
         </div>
         <Space classes="h-[30px]"/>
@@ -212,101 +275,47 @@ function VoltageCurrentGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
             <InputCheckbox
                 state={INPUT_CONTROL_STATE.DEFAULT}
                 message={""}
-                disabled={blockLastInputShowChart && showCharts["anv"]}
-                defaultChecked={showCharts["anv"]}
+                disabled={blockLastInputShowChart && showCharts["aa"]}
+                defaultChecked={showCharts["aa"]}
                 classes={`f-semibold`}
-                name={"anv"}
+                name={"aa"}
                 label={"A(A)"}
                 onChange={(checked: boolean) => {
-                  toogleCharts("anv", checked);
+                  toogleCharts("aa", checked);
                 }} />
             <InputCheckbox
                 state={INPUT_CONTROL_STATE.DEFAULT}
                 message={""}
-                disabled={blockLastInputShowChart && showCharts["bnv"]}
-                defaultChecked={showCharts["bnv"]}
+                disabled={blockLastInputShowChart && showCharts["ba"]}
+                defaultChecked={showCharts["ba"]}
                 classes={`f-semibold`}
-                name={"bnv"}
+                name={"ba"}
                 label={"B(A)"}
                 onChange={(checked: boolean) => {
-                  toogleCharts("bnv", checked);
+                  toogleCharts("ba", checked);
                 }} />
             <InputCheckbox
                 state={INPUT_CONTROL_STATE.DEFAULT}
                 message={""}
-                disabled={blockLastInputShowChart && showCharts["cnv"]}
-                defaultChecked={showCharts["cnv"]}
+                disabled={blockLastInputShowChart && showCharts["ca"]}
+                defaultChecked={showCharts["ca"]}
                 classes={`f-semibold`}
-                name={"cnv"}
+                name={"ca"}
                 label={"C(A)"}
                 onChange={(checked: boolean) => {
-                  toogleCharts("cnv", checked);
+                  toogleCharts("ca", checked);
                 }} />
-          </div>
-          <div className="w-[400px]  flex items-center px-[30px]">
-            <InputCheckbox
-                state={INPUT_CONTROL_STATE.DEFAULT}
-                message={""}
-                disabled={blockLastInputShowX && showX["max"]}
-                defaultChecked={showX["max"]}
-                classes={`f-semibold`}
-                name={"max"}
-                label={"Maximun"}
-                onChange={(checked: boolean) => {
-                  toogleX("max", checked);
-                }} />
-            <InputCheckbox
-                state={INPUT_CONTROL_STATE.DEFAULT}
-                message={""}
-                disabled={blockLastInputShowX && showX["min"]}
-                defaultChecked={showX["min"]}
-                classes={`f-semibold`}
-                name={"min"}
-                label={"Minimun"}
-                onChange={(checked: boolean) => {
-                  toogleX("min", checked);
-                }} />
-            <InputCheckbox
-                state={INPUT_CONTROL_STATE.DEFAULT}
-                message={""}
-                disabled={blockLastInputShowX && showX["average"]}
-                defaultChecked={showX["average"]}
-                classes={`f-semibold`}
-                name={"average"}
-                label={"Average"}
-                onChange={(checked: boolean) => {
-                  toogleX("average", checked);
-                }} />
-          </div>
-          <div className="w-[300px] flex items-center px-[30px]">
-            <InputCheckbox
-                state={INPUT_CONTROL_STATE.DEFAULT}
-                message={""}
-                disabled={false}
-                defaultChecked={showTooltip}
-                classes={`f-semibold`}
-                name={"tooltip"}
-                label={"Tooltip"}
-                onChange={(checked: boolean) => {
-                  toogleTooltip(checked);
-                }} />
-            <ButtonPrimary
-              children={"Zoom out"}
-              onClick={zoomOut}
-              classes={"bg-secondary"}
-              disabled={countZoomIn == 0}
-            />
           </div>
         </div>
         <Space classes="h-[30px]"/>
-        { showCharts["anv"] ? <div className="max-h-[600px]">
-            <LineGraphSimple labels={dataA.x_label} showTooltip={showTooltip} showDatasetMap={showX} data={{"x": dataA.x, "y": dataA.y}} colors={colors} onZoom={(x1: any, x2: any) => { onZoom(x1, x2, dataA); }} title="AN(V)"/>
+        { showCharts["aa"] ? <div className="max-h-[600px]">
+            <LineGraphSimple labels={dataA.x_label} showTooltip={showTooltip} showDatasetMap={showX} data={{"x": dataA.x, "y": dataA.y}} colors={colors} onZoom={(x1: any, x2: any) => { onZoom(x1, x2, dataA); }} title="A(A)"/>
           </div> : ""}
-        { showCharts["bnv"] ? <div className="max-h-[600px]">
-            <LineGraphSimple labels={dataB.x_label} showTooltip={showTooltip} showDatasetMap={showX}  data={{"x": dataB.x_label, "y": dataB.y}} colors={colors} onZoom={(x1: any, x2: any) => { onZoom(x1, x2, dataB); }} title="BN(V)"/> 
+        { showCharts["ba"] ? <div className="max-h-[600px]">
+            <LineGraphSimple labels={dataB.x_label} showTooltip={showTooltip} showDatasetMap={showX}  data={{"x": dataB.x_label, "y": dataB.y}} colors={colors} onZoom={(x1: any, x2: any) => { onZoom(x1, x2, dataB); }} title="B(A)"/> 
           </div>: ""}
-        { showCharts["cnv"] ? <div className="max-h-[600px]">
-            <LineGraphSimple labels={dataC.x_label} showTooltip={showTooltip} showDatasetMap={showX} data={{"x": dataC.x_label, "y": dataC.y}} colors={colors} onZoom={(x1: any, x2: any) => { onZoom(x1, x2, dataC); }} title="CN(V)"/>
+        { showCharts["ca"] ? <div className="max-h-[600px]">
+            <LineGraphSimple labels={dataC.x_label} showTooltip={showTooltip} showDatasetMap={showX} data={{"x": dataC.x_label, "y": dataC.y}} colors={colors} onZoom={(x1: any, x2: any) => { onZoom(x1, x2, dataC); }} title="C(A)"/>
           </div>: ""}
         <Space classes="h-[30px]"/>
   </Fragment>);

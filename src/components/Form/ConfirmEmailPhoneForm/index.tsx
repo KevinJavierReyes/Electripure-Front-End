@@ -37,7 +37,7 @@ function ConfirmEmailPhoneForm({ onSubmit }: { onSubmit: (data: ConfirmEmailPhon
     
     return (<div className="w-full bg-color-white p-[10px]">
         <Title title="Confirm email & cellphone for two-step verification"></Title>
-        <p>In order to log in to electripure you will need to sign in with two-step verificaiton</p>
+        <p>In order to log in to electripure you will need to sign in with two-step verification</p>
         <br/>
         <InputText
             name="email"
