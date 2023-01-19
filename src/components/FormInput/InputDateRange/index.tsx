@@ -27,7 +27,7 @@ export default function InputDateRange({defaultStart=new Date(), defaultEnd=new 
       <ButtonSecondary onClick={()=>{setShow(true)}} classes={classes}>
         {  timestampToDateLocal(state.startDate.getTime()).replaceAll("-", "/") + " - " + timestampToDateLocal(state.endDate.getTime()).replaceAll("-", "/") }
       </ButtonSecondary>
-      {show ? <div className="absolute top-0 left-0 border border-color-secondary date-range">
+      {show ? <div className="absolute top-0 left-0 border border-color-secondary date-range z-10">
         <DateRange
           editableDateInputs={true}
           onChange={(item: RangeKeyDict) => {

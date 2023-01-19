@@ -14,7 +14,7 @@ function FloatUserSetting({children}: {children:any}) {
             <ButtonNotification onClick={handleBtnClick}>
                 {children}
             </ButtonNotification>
-            {toggleSettings ?  <div className="absolute shadow-md md:top-[110px] lg:top-[70px] bg-white w-[300px] py-[20px] px-[10px] right-[30px] rounded-lg">
+            {toggleSettings ?  <div className="absolute shadow-md md:top-[110px] lg:top-[70px] bg-white w-[300px] py-[20px] px-[10px] right-[30px] rounded-lg z-10">
                 <UserSettings/>
             </div> : ""}
         </div>

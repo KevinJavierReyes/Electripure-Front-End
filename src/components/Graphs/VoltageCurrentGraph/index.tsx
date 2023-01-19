@@ -29,24 +29,49 @@ function VoltageCurrentGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
 
 
   // Create states
-  const [rawDataA, setRawDataA] = useState(JSON.stringify({ "x": [], "x_label": [], "y": {
+  const [rawDataAA, setRawDataAA] = useState(JSON.stringify({ "x": [], "x_label": [], "y": {
     "max": [],
     "min": [],
     "average": [],
   }}));
-  // const [rawDictTimestampsA, setRawDictTimestampsA] = useState(JSON.stringify({}));
-  const [rawDataB, setRawDataB] = useState(JSON.stringify({ "x": [], "x_label": [], "y": {
+  const [rawDataBA, setRawDataBA] = useState(JSON.stringify({ "x": [], "x_label": [], "y": {
     "max": [],
     "min": [],
     "average": [],
   }}));
-  // const [rawDictTimestampsB, setRawDictTimestampsB] = useState(JSON.stringify({}));
-  const [rawDataC, setRawDataC] = useState(JSON.stringify({ "x": [], "x_label": [], "y": {
+  const [rawDataCA, setRawDataCA] = useState(JSON.stringify({ "x": [], "x_label": [], "y": {
     "max": [],
     "min": [],
     "average": [],
   }}));
-  // const [rawDictTimestampsC, setRawDictTimestampsC] = useState(JSON.stringify({}));
+  const [rawDataNA, setRawDataNA] = useState(JSON.stringify({ "x": [], "x_label": [], "y": {
+    "max": [],
+    "min": [],
+    "average": [],
+  }}));
+  const [rawDataAV, setRawDataAV] = useState(JSON.stringify({ "x": [], "x_label": [], "y": {
+    "max": [],
+    "min": [],
+    "average": [],
+  }}));
+  const [rawDataBV, setRawDataBV] = useState(JSON.stringify({ "x": [], "x_label": [], "y": {
+    "max": [],
+    "min": [],
+    "average": [],
+  }}));
+  const [rawDataCV, setRawDataCV] = useState(JSON.stringify({ "x": [], "x_label": [], "y": {
+    "max": [],
+    "min": [],
+    "average": [],
+  }}));
+  const [rawDataGV, setRawDataGV] = useState(JSON.stringify({ "x": [], "x_label": [], "y": {
+    "max": [],
+    "min": [],
+    "average": [],
+  }}));
+
+
+  // Config
   const colors: any = {
     "max": "#fc0303",
     "min": "#00ff3c",
@@ -56,7 +81,12 @@ function VoltageCurrentGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
   const [rawShowCharts, setRawShowCharts] = useState(JSON.stringify({
     "aa": true,
     "ba": false,
-    "ca": false
+    "ca": false,
+    "na": false,
+    "av": true,
+    "bv": false,
+    "cv": false,
+    "gv": false
   }));
   const [rawShowX, setRawShowX] = useState(JSON.stringify({
     "max": true,
@@ -72,9 +102,14 @@ function VoltageCurrentGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
   const showCharts: any = JSON.parse(rawShowCharts);
   const blockLastInputShowChart: boolean = Object.values(showCharts).filter(show => show).length == 1;
   const graphicsVisible: number =  Object.values(showCharts).filter(show => show).length;
-  const dataA = JSON.parse(rawDataA);
-  const dataB = JSON.parse(rawDataB);
-  const dataC = JSON.parse(rawDataC);
+  const dataAA = JSON.parse(rawDataAA);
+  const dataBA = JSON.parse(rawDataBA);
+  const dataCA = JSON.parse(rawDataCA);
+  const dataNA = JSON.parse(rawDataNA);
+  const dataAV = JSON.parse(rawDataAV);
+  const dataBV = JSON.parse(rawDataBV);
+  const dataCV = JSON.parse(rawDataCV);
+  const dataGV = JSON.parse(rawDataGV);
   // Toogle tooltip
   function toogleTooltip(show: boolean) {
     setShowTootip(show);
@@ -98,68 +133,170 @@ function VoltageCurrentGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
     dispatch(setLoading({
         loading: true
     }));
-    const responseA: ResponseGeneric = await ElectripureService.getAmpsDataAGraph(payload);
-    const responseB: ResponseGeneric = await ElectripureService.getAmpsDataBGraph(payload);
-    const responseC: ResponseGeneric = await ElectripureService.getAmpsDataCGraph(payload);
+    // Solitar datos
+    const responseAA: ResponseGeneric = await ElectripureService.getAmpsDataAGraph(payload);
+    const responseBA: ResponseGeneric = await ElectripureService.getAmpsDataBGraph(payload);
+    const responseCA: ResponseGeneric = await ElectripureService.getAmpsDataCGraph(payload);
+    const responseNA: ResponseGeneric = await ElectripureService.getAmpsDataNGraph(payload);
+
+    const responseAV: ResponseGeneric = await ElectripureService.getVoltsDataAGraph(payload);
+    const responseBV: ResponseGeneric = await ElectripureService.getVoltsDataBGraph(payload);
+    const responseCV: ResponseGeneric = await ElectripureService.getVoltsDataCGraph(payload);
+    const responseGV: ResponseGeneric = await ElectripureService.getVoltsDataGGraph(payload);
+
+
     // Validar datos obtenidos
-    if(!responseA.success) {
+    if(!responseAA.success) {
         dispatch(showToast({
-            message: responseA.error!,
+            message: responseAA.error!,
             status: "error"
         }));
         return;
     };
-    let dataA: any = responseA.data;
-    if(!responseB.success) {
+    let dataAA: any = responseAA.data;
+    if(!responseBA.success) {
       dispatch(showToast({
-          message: responseB.error!,
+          message: responseBA.error!,
           status: "error"
       }));
       return;
     };
-    let dataB: any = responseB.data;
-    if(!responseC.success) {
+    let dataBA: any = responseBA.data;
+    if(!responseCA.success) {
       dispatch(showToast({
-          message: responseC.error!,
+          message: responseCA.error!,
           status: "error"
       }));
       return;
     };
-    let dataC: any = responseC.data;
-      dispatch(setLoading({
+    let dataCA: any = responseCA.data;
+    if(!responseNA.success) {
+      dispatch(showToast({
+          message: responseNA.error!,
+          status: "error"
+      }));
+      return;
+    };
+    let dataNA: any = responseNA.data;
+    dispatch(setLoading({
         loading: false
     }));
-    // setRawDictTimestampsA(JSON.stringify(toDictTimestamps(dataA)));
-    // setRawDictTimestampsB(JSON.stringify(toDictTimestamps(dataB)));
-    // setRawDictTimestampsC(JSON.stringify(toDictTimestamps(dataC)));
-    setRawDataA(JSON.stringify({
-      "x": dataA["TS_data"],
-      "x_label": dataA["TS_data_label"],
-      "timestamp": dataA["TS_unix"],
+
+    if(!responseAV.success) {
+      dispatch(showToast({
+          message: responseAV.error!,
+          status: "error"
+      }));
+      return;
+    };
+    let dataAV: any = responseAV.data;
+    if(!responseBV.success) {
+      dispatch(showToast({
+          message: responseBV.error!,
+          status: "error"
+      }));
+      return;
+    };
+    let dataBV: any = responseBV.data;
+    if(!responseCV.success) {
+      dispatch(showToast({
+          message: responseCV.error!,
+          status: "error"
+      }));
+      return;
+    };
+    let dataCV: any = responseCV.data;
+    if(!responseGV.success) {
+      dispatch(showToast({
+          message: responseGV.error!,
+          status: "error"
+      }));
+      return;
+    };
+    let dataGV: any = responseGV.data;
+
+
+    // Almacenar datos
+    setRawDataAA(JSON.stringify({
+      "x": dataAA["TS_data"],
+      "x_label": dataAA["TS_data_label"],
+      "timestamp": dataAA["TS_unix"],
       "y": {
-        "max": dataA["A1_MAX_data"],
-        "min": dataA["A1_MIN_data"],
-        "average": dataA["A1_data"]
+        "max": dataAA["MAX_data"],
+        "min": dataAA["MIN_data"],
+        "average": dataAA["AVERAGE_data"]
       }
     }));
-    setRawDataB(JSON.stringify({
-      "x": dataA["TS_data"],
-      "x_label": dataA["TS_data_label"],
-      "timestamp": dataA["TS_unix"],
+    setRawDataBA(JSON.stringify({
+      "x": dataBA["TS_data"],
+      "x_label": dataBA["TS_data_label"],
+      "timestamp": dataBA["TS_unix"],
       "y": {
-        "max": dataB["A1_MAX_data"],
-        "min": dataB["A1_MIN_data"],
-        "average": dataB["A1_data"]
+        "max": dataBA["MAX_data"],
+        "min": dataBA["MIN_data"],
+        "average": dataBA["AVERAGE_data"]
       }
     }));
-    setRawDataC(JSON.stringify({
-      "x": dataA["TS_data"],
-      "x_label": dataA["TS_data_label"],
-      "timestamp": dataA["TS_unix"],
+    setRawDataCA(JSON.stringify({
+      "x": dataCA["TS_data"],
+      "x_label": dataCA["TS_data_label"],
+      "timestamp": dataCA["TS_unix"],
       "y": {
-        "max": dataC["A1_MAX_data"],
-        "min": dataC["A1_MIN_data"],
-        "average": dataC["A1_data"]
+        "max": dataCA["MAX_data"],
+        "min": dataCA["MIN_data"],
+        "average": dataCA["AVERAGE_data"]
+      }
+    }));
+    setRawDataNA(JSON.stringify({
+      "x": dataNA["TS_data"],
+      "x_label": dataNA["TS_data_label"],
+      "timestamp": dataNA["TS_unix"],
+      "y": {
+        "max": dataNA["MAX_data"],
+        "min": dataNA["MIN_data"],
+        "average": dataNA["AVERAGE_data"]
+      }
+    }));
+
+
+    setRawDataAV(JSON.stringify({
+      "x": dataAV["TS_data"],
+      "x_label": dataAV["TS_data_label"],
+      "timestamp": dataAV["TS_unix"],
+      "y": {
+        "max": dataAV["MAX_data"],
+        "min": dataAV["MIN_data"],
+        "average": dataAV["AVERAGE_data"]
+      }
+    }));
+    setRawDataBV(JSON.stringify({
+      "x": dataBV["TS_data"],
+      "x_label": dataBV["TS_data_label"],
+      "timestamp": dataBV["TS_unix"],
+      "y": {
+        "max": dataBV["MAX_data"],
+        "min": dataBV["MIN_data"],
+        "average": dataBV["AVERAGE_data"]
+      }
+    }));
+    setRawDataCV(JSON.stringify({
+      "x": dataCV["TS_data"],
+      "x_label": dataCV["TS_data_label"],
+      "timestamp": dataCV["TS_unix"],
+      "y": {
+        "max": dataCV["MAX_data"],
+        "min": dataCV["MIN_data"],
+        "average": dataCV["AVERAGE_data"]
+      }
+    }));
+    setRawDataGV(JSON.stringify({
+      "x": dataGV["TS_data"],
+      "x_label": dataGV["TS_data_label"],
+      "timestamp": dataGV["TS_unix"],
+      "y": {
+        "max": dataGV["MAX_data"],
+        "min": dataGV["MIN_data"],
+        "average": dataGV["AVERAGE_data"]
       }
     }));
   }
@@ -326,20 +463,91 @@ function VoltageCurrentGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
                   onChange={(checked: boolean) => {
                     toogleCharts("ca", checked);
                   }} />
+              <InputCheckbox
+                  state={INPUT_CONTROL_STATE.DEFAULT}
+                  message={""}
+                  disabled={blockLastInputShowChart && showCharts["na"]}
+                  defaultChecked={showCharts["na"]}
+                  classes={`f-semibold`}
+                  name={"na"}
+                  label={"N(A)"}
+                  onChange={(checked: boolean) => {
+                    toogleCharts("na", checked);
+                  }} />
+              <InputCheckbox
+                  state={INPUT_CONTROL_STATE.DEFAULT}
+                  message={""}
+                  disabled={blockLastInputShowChart && showCharts["av"]}
+                  defaultChecked={showCharts["av"]}
+                  classes={`f-semibold`}
+                  name={"av"}
+                  label={"A(V)"}
+                  onChange={(checked: boolean) => {
+                    toogleCharts("av", checked);
+                  }} />
+              <InputCheckbox
+                  state={INPUT_CONTROL_STATE.DEFAULT}
+                  message={""}
+                  disabled={blockLastInputShowChart && showCharts["bv"]}
+                  defaultChecked={showCharts["bv"]}
+                  classes={`f-semibold`}
+                  name={"bv"}
+                  label={"B(V)"}
+                  onChange={(checked: boolean) => {
+                    toogleCharts("bv", checked);
+                  }} />
+              <InputCheckbox
+                  state={INPUT_CONTROL_STATE.DEFAULT}
+                  message={""}
+                  disabled={blockLastInputShowChart && showCharts["cv"]}
+                  defaultChecked={showCharts["cv"]}
+                  classes={`f-semibold`}
+                  name={"cv"}
+                  label={"C(V)"}
+                  onChange={(checked: boolean) => {
+                    toogleCharts("cv", checked);
+                  }} />
+              <InputCheckbox
+                  state={INPUT_CONTROL_STATE.DEFAULT}
+                  message={""}
+                  disabled={blockLastInputShowChart && showCharts["gv"]}
+                  defaultChecked={showCharts["gv"]}
+                  classes={`f-semibold`}
+                  name={"gv"}
+                  label={"G(V)"}
+                  onChange={(checked: boolean) => {
+                    toogleCharts("gv", checked);
+                  }} />
             </div>
           </div>
           <Space classes="w-[100%] h-[20px]"/>
         </div>
         <div className="w-full flex justify-start flex-col absolute left-0 bottom-0" style={{"height": `calc(100% - ${heightControl}px)`}}>
           { showCharts["aa"] ? <div className={"w-full "} style={{"height": `${(100/ graphicsVisible)}%`}}>
-              <LineGraphSimple labels={dataA.x_label} showTooltip={showTooltip} showDatasetMap={showX} data={{"x": dataA.x, "y": dataA.y}} colors={colors} onZoom={(x1: any, x2: any) => { onZoom(x1, x2, dataA); }} title="A(A)"/>
+              <LineGraphSimple labels={dataAA.x_label} showTooltip={showTooltip} showDatasetMap={showX} data={{"x": dataAA.x, "y": dataAA.y}} colors={colors} onZoom={(x1: any, x2: any) => { onZoom(x1, x2, dataAA); }} title="A(A)"/>
             </div> : ""}
           { showCharts["ba"] ? <div className={"w-full "} style={{"height": `${(100/ graphicsVisible)}%`}} >
-              <LineGraphSimple labels={dataB.x_label} showTooltip={showTooltip} showDatasetMap={showX}  data={{"x": dataB.x_label, "y": dataB.y}} colors={colors} onZoom={(x1: any, x2: any) => { onZoom(x1, x2, dataB); }} title="B(A)"/> 
+              <LineGraphSimple labels={dataBA.x_label} showTooltip={showTooltip} showDatasetMap={showX}  data={{"x": dataBA.x, "y": dataBA.y}} colors={colors} onZoom={(x1: any, x2: any) => { onZoom(x1, x2, dataBA); }} title="B(A)"/> 
             </div>: ""}
           { showCharts["ca"] ? <div className={"w-full "} style={{"height": `${(100/ graphicsVisible)}%`}} >
-              <LineGraphSimple labels={dataC.x_label} showTooltip={showTooltip} showDatasetMap={showX} data={{"x": dataC.x_label, "y": dataC.y}} colors={colors} onZoom={(x1: any, x2: any) => { onZoom(x1, x2, dataC); }} title="C(A)"/>
+              <LineGraphSimple labels={dataCA.x_label} showTooltip={showTooltip} showDatasetMap={showX} data={{"x": dataCA.x, "y": dataCA.y}} colors={colors} onZoom={(x1: any, x2: any) => { onZoom(x1, x2, dataCA); }} title="C(A)"/>
             </div>: ""}
+          { showCharts["na"] ? <div className={"w-full "} style={{"height": `${(100/ graphicsVisible)}%`}} >
+              <LineGraphSimple labels={dataNA.x_label} showTooltip={showTooltip} showDatasetMap={showX} data={{"x": dataNA.x, "y": dataNA.y}} colors={colors} onZoom={(x1: any, x2: any) => { onZoom(x1, x2, dataNA); }} title="N(A)"/>
+            </div>: ""}
+
+          { showCharts["av"] ? <div className={"w-full "} style={{"height": `${(100/ graphicsVisible)}%`}} >
+            <LineGraphSimple labels={dataAV.x_label} showTooltip={showTooltip} showDatasetMap={showX} data={{"x": dataAV.x, "y": dataAV.y}} colors={colors} onZoom={(x1: any, x2: any) => { onZoom(x1, x2, dataAV); }} title="A(V)"/>
+          </div>: ""}
+          { showCharts["bv"] ? <div className={"w-full "} style={{"height": `${(100/ graphicsVisible)}%`}} >
+            <LineGraphSimple labels={dataBV.x_label} showTooltip={showTooltip} showDatasetMap={showX} data={{"x": dataBV.x, "y": dataBV.y}} colors={colors} onZoom={(x1: any, x2: any) => { onZoom(x1, x2, dataBV); }} title="B(V)"/>
+          </div>: ""}
+          { showCharts["cv"] ? <div className={"w-full "} style={{"height": `${(100/ graphicsVisible)}%`}} >
+            <LineGraphSimple labels={dataCV.x_label} showTooltip={showTooltip} showDatasetMap={showX} data={{"x": dataCV.x, "y": dataCV.y}} colors={colors} onZoom={(x1: any, x2: any) => { onZoom(x1, x2, dataCV); }} title="C(V)"/>
+          </div>: ""}
+          { showCharts["gv"] ? <div className={"w-full "} style={{"height": `${(100/ graphicsVisible)}%`}} >
+            <LineGraphSimple labels={dataGV.x_label} showTooltip={showTooltip} showDatasetMap={showX} data={{"x": dataGV.x, "y": dataGV.y}} colors={colors} onZoom={(x1: any, x2: any) => { onZoom(x1, x2, dataGV); }} title="G(V)"/>
+          </div>: ""}
         </div>
   </div>);
 }

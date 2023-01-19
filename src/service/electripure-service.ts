@@ -248,6 +248,61 @@ export default class ElectripureService extends BaseService {
     return response;
   }
 
+  static async getAmpsDataNGraph(payload: GetAmpsDataRequest) : Promise<ResponseGeneric> {
+    const url = `${environment.ELECTRIPURE_ENDPOINT}/get_chart1_N(A)_v2`;
+    const response = await this.requestPost(url, payload);
+    if (!response.success) {
+      toast.error(response.error, {
+        "position": "bottom-right"
+      });
+    }
+    return response;
+  }
+
+  static async getVoltsDataAGraph(payload: GetVoltsDataRequest) : Promise<ResponseGeneric> {
+    const url = `${environment.ELECTRIPURE_ENDPOINT}/get_chart1_A(V)_v2`;
+    const response = await this.requestPost(url, payload);
+    if (!response.success) {
+      toast.error(response.error, {
+        "position": "bottom-right"
+      });
+    }
+    return response;
+  }
+
+  static async getVoltsDataBGraph(payload: GetVoltsDataRequest) : Promise<ResponseGeneric> {
+    const url = `${environment.ELECTRIPURE_ENDPOINT}/get_chart1_B(V)_v2`;
+    const response = await this.requestPost(url, payload);
+    if (!response.success) {
+      toast.error(response.error, {
+        "position": "bottom-right"
+      });
+    }
+    return response;
+  }
+
+  static async getVoltsDataCGraph(payload: GetVoltsDataRequest) : Promise<ResponseGeneric> {
+    const url = `${environment.ELECTRIPURE_ENDPOINT}/get_chart1_C(V)_v2`;
+    const response = await this.requestPost(url, payload);
+    if (!response.success) {
+      toast.error(response.error, {
+        "position": "bottom-right"
+      });
+    }
+    return response;
+  }
+
+  static async getVoltsDataGGraph(payload: GetVoltsDataRequest) : Promise<ResponseGeneric> {
+    const url = `${environment.ELECTRIPURE_ENDPOINT}/get_chart1_G(V)_v2`;
+    const response = await this.requestPost(url, payload);
+    if (!response.success) {
+      toast.error(response.error, {
+        "position": "bottom-right"
+      });
+    }
+    return response;
+  }
+
   static async getVoltsDataGraph(payload: GetVoltsDataRequest) : Promise<ResponseGeneric> {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/get_chart1_V`;
     const response = await this.requestPost(url, payload);

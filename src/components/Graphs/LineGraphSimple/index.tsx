@@ -69,6 +69,7 @@ function LineGraphSimple({ labels, data, colors, onZoom, title, showDatasetMap =
       "title": {
         "display": true,
         "text": title,
+        "position": "left"
       },
       "tooltip": {
         "enabled": showTooltip,
