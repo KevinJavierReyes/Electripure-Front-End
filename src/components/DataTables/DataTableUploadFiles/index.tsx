@@ -37,7 +37,7 @@ const DataTableUploadFiles = ({companyId}: {companyId: number}) => {
     const data: RowConfig[] = files.map((file: UploadedFileEntity): RowConfig => {
         return {
             "Filename": {
-                "label": <span onClick={()=> {navigate(`/dashboard/download/${file.id}`)}} className="cursor-pointer f-medium color-primary">{file.fileName}</span>,
+                "label": <a download={true}  href={`${file.link}`} className="cursor-pointer f-medium color-primary">{file.fileName}</a>,
                 "value": file.fileName
             },
             "Type": {

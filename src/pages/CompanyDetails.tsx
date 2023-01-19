@@ -113,7 +113,7 @@ const CompanyDetails = () =>{
             </h1>
             {company?.sites? company?.sites.map((site:any, index:number) =>  <SiteDetails key={index} site={site} />) 
             :""}
-            <DataTableUploadFiles companyId={parseInt(ciaId)}/>
+            <DataTableUploadFiles companyId={parseInt(ciaId!)}/>
         </div>
         </Fragment>
     )
