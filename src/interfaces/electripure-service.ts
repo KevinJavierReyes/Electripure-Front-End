@@ -81,6 +81,10 @@ export interface UploadFileRequest {
     file: any;
 }
 
+export interface ListFilesCompanyRequest {
+    id_company: number;
+}
+
 export interface GetAmpsDataRequest {
     date_min: number | null;
     date_max: number | null;

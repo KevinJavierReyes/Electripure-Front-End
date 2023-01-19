@@ -13,21 +13,22 @@ SetJwtPayload, SetLoadingPayload, SetLoginTokenPayload,
 SetPasswordTokenPayload, SetPasswordUserPayload,
 SetTimestampTwoStepVerificationPayload, SetUsersPayload, SetVoltsDataPayload,
 ShowToastPayload, SendActivateDeactivateCompanyPayload,
-SetCompanyDetailPayload, ValidateUpdateUserPayload, SetDevicesTablePayload } from "../interfaces/actions";
+SetCompanyDetailPayload, ValidateUpdateUserPayload, SetDevicesTablePayload, SendGetUploadedFilesPayload, SetUploadedFilePayload } from "../interfaces/actions";
 import { ADD_TASK, FILTER_AMPS_DATA, FILTER_VOLTS_DATA, LOGIN, SET_AMPS_DATA,
 SET_COMPANIES, SET_COMPANIES_TABLE, SET_COMPANY_DETAIL, SET_CURRENT_USER,
 SET_GLOBAL_COMPANIES, SET_JWT, SET_LOADING, SET_LOGIN_TOKEN,
 SET_PASSWORD_TOKEN, SET_PASSWORD_USER, SET_TIMESTAMP_TWO_STEP_VERIFICATION,
-SET_USERS, SET_VOLTS_DATA, SHOW_TOAST, SET_DEVICES_TABLE } from "./types";
+SET_USERS, SET_VOLTS_DATA, SHOW_TOAST, SET_DEVICES_TABLE, SET_UPLOADED_FILES } from "./types";
 import ElectripureService from "../service/electripure-service";
 import { ResponseGeneric } from "../interfaces/base-service";
 
 // Mappers
 import UserMapper from "./../mappers/user-mapper";
-import { CompanyEntity, CompanyRowEntity, GlobalCompanyEntity, UserEntity } from "../interfaces/entities";
+import { CompanyEntity, CompanyRowEntity, GlobalCompanyEntity, UploadedFileEntity, UserEntity } from "../interfaces/entities";
 import { AddContactRequest } from "../interfaces/electripure-service";
 import CompanyMapper from "../mappers/company-mapper";
 import { TASK_STATE } from "../config/enum";
+import FileMapper from "../mappers/file-mapper";
 
 export const setLoading = (payload: SetLoadingPayload): ActionNotification => ({
     "type": SET_LOADING,
@@ -71,6 +72,11 @@ export const setUsers = (payload: SetUsersPayload) => ({
 
 export const setCompanies = (payload: SetCompaniesPayload) => ({
     "type": SET_COMPANIES,
+    "payload": payload
+});
+
+export const setUploadedFile = (payload: SetUploadedFilePayload) => ({
+    "type": SET_UPLOADED_FILES,
     "payload": payload
 });
 
@@ -1168,3 +1174,38 @@ export const sendUploadFileData = (payload: sendUploadFileDataPayload): any => (
 //         }
 //     }));
 // });
+
+
+export const sendGetUploadedFiles = (payload: SendGetUploadedFilesPayload): any => (async (dispatch: any) => {
+    dispatch(setLoading({
+        loading: true
+    }));
+    const response: ResponseGeneric = await ElectripureService.getListFilesCompany({
+        id_company: payload.companyId
+    });
+    dispatch(setLoading({
+        loading: false
+    }));
+    if(response.data.message == 'Token is invalid!'){
+        dispatch(setTimestampTwoStepVerification({
+            "timestamp": null
+        }));
+        dispatch(setLoginToken({
+            "token": null
+        }));
+        dispatch(setJwt({
+            "token": null
+        }));
+        localStorage.removeItem("electripureJwt");
+        localStorage.removeItem("user_id");
+        localStorage.removeItem("current_user");
+    }
+    if(!response.success) {
+        return dispatch(showToast({
+            message: response.error!,
+            status: "error"
+        }))
+    }
+    const uploadedFiles: UploadedFileEntity[] = FileMapper.toUploadedFiles(response.data.table_files);
+    dispatch(setUploadedFile({uploadedFiles: uploadedFiles}));
+});

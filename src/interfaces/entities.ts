@@ -44,6 +44,16 @@ export interface UserEntity {
     cellphone: number;
 }
 
+export interface UploadedFileEntity {
+    id: number;
+    fileName: string;
+    type: string;
+    link: string;
+    dateRange: string;
+    dateAdd: string;
+    addedBy: string;
+}
+
 export interface GlobalCompanyEntity {
     id: number;
     name: String;

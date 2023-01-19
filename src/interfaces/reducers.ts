@@ -16,6 +16,7 @@ export interface ElectripureState {
     users: string;
     companiesTable: string; 
     companies: string;
+    uploadedFiles: string;
     globalCompanies: string;
     tasks: string;
     currentUser: string | null;

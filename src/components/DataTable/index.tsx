@@ -5,7 +5,7 @@ import "./style.css";
 function DataTable (props: {config: TableConfig} ) {
     return (
         <Fragment>
-            <div className="datatable-container overflow-y-auto">
+            <div className="datatable-container">
                 <table className="w-full table-auto">
                     <thead>
                         <tr>

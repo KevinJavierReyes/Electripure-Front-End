@@ -1,5 +1,5 @@
 import { TASK_STATE } from "../config/enum";
-import { AmpsDataEntity, CompanyEntity, CompanyRowEntity, GlobalCompanyEntity, UserEntity, VoltsDataEntity } from "./entities";
+import { AmpsDataEntity, CompanyEntity, CompanyRowEntity, GlobalCompanyEntity, UploadedFileEntity, UserEntity, VoltsDataEntity } from "./entities";
 
 
 export interface ActionNotification {
@@ -26,6 +26,10 @@ export interface SetCompaniesTablePayload {
 
 export interface SetCompaniesPayload {
     companies: CompanyEntity[]
+}
+
+export interface SetUploadedFilePayload {
+    uploadedFiles: UploadedFileEntity[]
 }
 
 export interface SetGlobalCompaniesPayload {
@@ -83,6 +87,11 @@ export interface SendUpdatePasswordPayload {
 
 export interface SendGetUsersPayload {
 }
+
+export interface SendGetUploadedFilesPayload {
+    companyId: number
+}
+
 
 export interface SendGetCompaniesByUserPayload {
     userId: number;
