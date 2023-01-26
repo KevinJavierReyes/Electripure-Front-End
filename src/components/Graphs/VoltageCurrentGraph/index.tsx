@@ -359,7 +359,7 @@ function VoltageCurrentGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
 
   const [leftMenu, setLeftMenu] = useState(0);
   const [topMenu, setTopMenu] = useState(0);
-  const [showMenu, setShowMenu] = useState(true);
+  const [showMenu, setShowMenu] = useState(false);
   const containerRef = useRef(null);
 
   function handlerRight(e: any) {
