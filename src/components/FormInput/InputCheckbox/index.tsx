@@ -17,7 +17,8 @@ function InputCheckbox({ state, message, name, label, onChange, classes="", defa
         {/* <div className="w-full"> */}
             { orientation == ORIENTATION_INPUT.RIGHT ? <div className="w-full flex justify-start items-center">
                 <input
-                    defaultChecked={defaultChecked}
+                    // defaultChecked={defaultChecked}
+                    checked={defaultChecked}
                     type="checkbox"
                     disabled={disabled}
                     onChange={handleChange}
@@ -28,7 +29,8 @@ function InputCheckbox({ state, message, name, label, onChange, classes="", defa
            <div className="w-full flex justify-start items-center">
                 <label htmlFor={name} className={`mr-[5px] f-medium color-black ${state === INPUT_CONTROL_STATE.OK ? "color-success" : state === INPUT_CONTROL_STATE.ERROR ? "color-error" : ""} ${classes}`}>{label}</label> 
                 <input
-                    defaultChecked={defaultChecked}
+                    // defaultChecked={defaultChecked}
+                    checked={defaultChecked}
                     type="checkbox"
                     disabled={disabled}
                     onChange={handleChange}

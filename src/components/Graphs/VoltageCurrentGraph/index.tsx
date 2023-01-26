@@ -16,6 +16,7 @@ import InputCheckbox from "../../FormInput/InputCheckbox";
 import { INPUT_CONTROL_STATE, ORIENTATION_INPUT } from "../../../config/enum";
 import { ButtonPrimary } from "../../FormInput/Button";
 import DateRangeControlCustom from "../DateRangeControlCustom";
+import DateRangeControlCustom2 from "../DateRangeControlCustom2";
 
 
 function VoltageCurrentGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
@@ -94,6 +95,7 @@ function VoltageCurrentGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
     "average": true
   }));
   const [showTooltip, setShowTootip] = useState(true);
+  const [showLegends, setShowLegends] = useState(false);
   const [startTimestampFilter, setStartTimestampFilter] = useState(0);
   const [endTimestampFilter, setEndTimestampFilter] = useState(0);
   const [countZoomIn, setCountZoomIn] = useState(0);
@@ -305,8 +307,11 @@ function VoltageCurrentGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
     // const dateMin: number | null = start != null ? toUnix(start.getTime()) : null;
     // const dateMax: number | null = end != null ? toUnix(end.getTime()) + 86400 : null;
     
-    const dateMin: number | null = start != null ? toUnix(new Date(start.getTime() - (start.getTime() % 86400000)).getTime()) : null;
-    const dateMax: number | null = end != null ? toUnix(new Date(end.getTime() - (end.getTime() % 86400000)).getTime()) + 86400 : null;
+    const dateMin: number | null = start != null ? toUnix(start.getTime()) : null;
+    const dateMax: number | null = end != null ? toUnix(end.getTime()) : null;
+    
+    // const dateMin: number | null = start != null ? toUnix(new Date(start.getTime() - (start.getTime() % 86400000)).getTime()) : null;
+    // const dateMax: number | null = end != null ? toUnix(new Date(end.getTime() - (end.getTime() % 86400000)).getTime()) + 86400 : null;
     
     await requestChartsData({
       date_min: dateMin,
@@ -352,14 +357,46 @@ function VoltageCurrentGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
     setHeightControl((containerGraph.current as any).clientHeight);
   }, []);
 
+  const [leftMenu, setLeftMenu] = useState(0);
+  const [topMenu, setTopMenu] = useState(0);
+  const [showMenu, setShowMenu] = useState(true);
+  const containerRef = useRef(null);
+
+  function handlerRight(e: any) {
+    e = e || window.event;
+    e.preventDefault()
+    let rect = (containerRef.current as any).getBoundingClientRect();
+    let x = e.clientX - rect.left; //x position within the element.
+    let y = e.clientY - rect.top;  //y position within the element.
+    console.log("Left? : " + x + " ; Top? : " + y + ".");
+    setLeftMenu(x);
+    setTopMenu(y);
+    setShowMenu(true);
+    return false;
+  }
+
+  function handlerClick(e: any) {
+    if (showMenu) {
+      setShowMenu(false);
+    }
+  }
+
+
+  function showMinMax() {
+    toogleX("max", true);
+    toogleX("min", true);
+    toogleX("average", false);
+  }
+
+
   return (<div className="relative h-full w-full">
         <div ref={containerGraph}>
           <div className="flex justify-start flex-wrap md:flex-nowrap w-[100%]">
-            <div className="w-full md:w-[250px] flex justify-center">
-              <div className="w-full sm:w-[250px]">
-                <DateRangeControlCustom defaultEnd={new Date()} defaultStart={new Date()} onChange={getAmpsData}/>
-              </div>
-            </div>
+            {/* <div className="w-full md:w-[250px] flex justify-center">
+              <div className="w-full sm:w-[250px]"> */}
+                <DateRangeControlCustom2 defaultEnd={new Date()} defaultStart={new Date(new Date().toDateString())} onChange={getAmpsData}/>
+              {/* </div>
+            </div> */}
             <Space classes="w-[100%] h-[10px]"/>
             <div className="w-full md:w-auto flex justify-center items-center">
               <InputCheckbox
@@ -402,7 +439,7 @@ function VoltageCurrentGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
                   }} />
             </div>     
             <Space classes="w-[100%] h-[10px]"/>
-            <div className="w-full md:w-[250px] flex justify-center items-center">
+            <div className="w-full md:w-[350px] flex justify-center items-center">
               <InputCheckbox
                   state={INPUT_CONTROL_STATE.DEFAULT}
                   orientation={ORIENTATION_INPUT.LEFT}
@@ -411,9 +448,22 @@ function VoltageCurrentGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
                   defaultChecked={showTooltip}
                   classes={`f-semibold`}
                   name={"tooltip"}
-                  label={"LEGENDS"}
+                  label={"CURSOR"}
                   onChange={(checked: boolean) => {
                     toogleTooltip(checked);
+                  }} />
+              <Space classes="w-[10px]" />
+              <InputCheckbox
+                  state={INPUT_CONTROL_STATE.DEFAULT}
+                  orientation={ORIENTATION_INPUT.LEFT}
+                  message={""}
+                  disabled={false}
+                  defaultChecked={showLegends}
+                  classes={`f-semibold`}
+                  name={"legends"}
+                  label={"LEGENDS"}
+                  onChange={(checked: boolean) => {
+                    setShowLegends(checked);
                   }} />
               <Space classes="w-[10px]" />
               <div className="w-[260px]">
@@ -427,7 +477,7 @@ function VoltageCurrentGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
           </div>
           <Space classes="w-[100%] h-[20px]"/>
           <div className="flex justify-between flex-wrap w-[100%]">
-            <div className="flex items-center">
+            <div className="flex items-center flex-wrap">
               <InputCheckbox
                   state={INPUT_CONTROL_STATE.DEFAULT}
                   message={""}
@@ -522,7 +572,25 @@ function VoltageCurrentGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
           </div>
           <Space classes="w-[100%] h-[20px]"/>
         </div>
-        <div className="w-full flex justify-start flex-col absolute left-0 bottom-0" style={{"height": `calc(100% - ${heightControl}px)`}}>
+        <div ref={containerRef} className="w-full flex justify-start flex-col absolute left-0 bottom-0 " style={{"height": `calc(100% - ${heightControl}px)`}} onClick={(e)=> {handlerClick(e)}} onContextMenu={(e)=> {handlerRight(e)}}>
+          { showMenu ? <div className="absolute bg-white p-[5px] shadow shadow-gray-50 border-[1px]" style={{"left": `${leftMenu}px`, "top": `${topMenu}px`}}>
+            <ul>
+              <li className="p-[5px] cursor-pointer" onClick={()=> {toogleTooltip(true)}}>View Cursor</li>
+              <li className="p-[5px] cursor-pointer" onClick={()=> {setShowLegends(true)}}>View Legend</li>
+              <li className="p-[5px] cursor-pointer" onClick={showMinMax}>View max/min values</li>
+            </ul>
+          </div>: ""}
+          { showLegends ? <div className="w-full flex justify-center" >
+                  {Object.keys(colors).map((colorKey)=> {
+                    if (colorKey == "default") {
+                      return "";
+                    }
+                      return (<div className="flex justify-center items-center mx-[10px]">
+                        <div className="w-[10px] h-[10px] mx-[5px]" style={{"backgroundColor": colors[colorKey]}}></div>
+                        <strong>{colorKey.toUpperCase()}</strong>
+                      </div>);
+                  })}
+          </div>: ""}
           { showCharts["aa"] ? <div className={"w-full "} style={{"height": `${(100/ graphicsVisible)}%`}}>
               <LineGraphSimple labels={dataAA.x_label} showTooltip={showTooltip} showDatasetMap={showX} data={{"x": dataAA.x, "y": dataAA.y}} colors={colors} onZoom={(x1: any, x2: any) => { onZoom(x1, x2, dataAA); }} title="A(A)"/>
             </div> : ""}
