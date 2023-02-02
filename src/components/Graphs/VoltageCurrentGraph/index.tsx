@@ -17,6 +17,7 @@ import { INPUT_CONTROL_STATE, ORIENTATION_INPUT } from "../../../config/enum";
 import { ButtonPrimary } from "../../FormInput/Button";
 import DateRangeControlCustom from "../DateRangeControlCustom";
 import DateRangeControlCustom2 from "../DateRangeControlCustom2";
+import InputCheckboxIcon from "../../FormInput/InputCheckboxIcon";
 
 
 function VoltageCurrentGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
@@ -30,42 +31,42 @@ function VoltageCurrentGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
 
 
   // Create states
-  const [rawDataAA, setRawDataAA] = useState(JSON.stringify({ "x": [], "x_label": [], "y": {
+  const [rawDataAA, setRawDataAA] = useState(JSON.stringify({ "x": [], "timestamp": [], "x_label": [], "y": {
     "max": [],
     "min": [],
     "average": [],
   }}));
-  const [rawDataBA, setRawDataBA] = useState(JSON.stringify({ "x": [], "x_label": [], "y": {
+  const [rawDataBA, setRawDataBA] = useState(JSON.stringify({ "x": [], "timestamp": [], "x_label": [], "y": {
     "max": [],
     "min": [],
     "average": [],
   }}));
-  const [rawDataCA, setRawDataCA] = useState(JSON.stringify({ "x": [], "x_label": [], "y": {
+  const [rawDataCA, setRawDataCA] = useState(JSON.stringify({ "x": [], "timestamp": [], "x_label": [], "y": {
     "max": [],
     "min": [],
     "average": [],
   }}));
-  const [rawDataNA, setRawDataNA] = useState(JSON.stringify({ "x": [], "x_label": [], "y": {
+  const [rawDataNA, setRawDataNA] = useState(JSON.stringify({ "x": [], "timestamp": [], "x_label": [], "y": {
     "max": [],
     "min": [],
     "average": [],
   }}));
-  const [rawDataAV, setRawDataAV] = useState(JSON.stringify({ "x": [], "x_label": [], "y": {
+  const [rawDataAV, setRawDataAV] = useState(JSON.stringify({ "x": [], "timestamp": [], "x_label": [], "y": {
     "max": [],
     "min": [],
     "average": [],
   }}));
-  const [rawDataBV, setRawDataBV] = useState(JSON.stringify({ "x": [], "x_label": [], "y": {
+  const [rawDataBV, setRawDataBV] = useState(JSON.stringify({ "x": [], "timestamp": [], "x_label": [], "y": {
     "max": [],
     "min": [],
     "average": [],
   }}));
-  const [rawDataCV, setRawDataCV] = useState(JSON.stringify({ "x": [], "x_label": [], "y": {
+  const [rawDataCV, setRawDataCV] = useState(JSON.stringify({ "x": [], "timestamp": [], "x_label": [], "y": {
     "max": [],
     "min": [],
     "average": [],
   }}));
-  const [rawDataGV, setRawDataGV] = useState(JSON.stringify({ "x": [], "x_label": [], "y": {
+  const [rawDataGV, setRawDataGV] = useState(JSON.stringify({ "x": [], "timestamp": [], "x_label": [], "y": {
     "max": [],
     "min": [],
     "average": [],
@@ -98,7 +99,11 @@ function VoltageCurrentGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
   const [showLegends, setShowLegends] = useState(false);
   const [startTimestampFilter, setStartTimestampFilter] = useState(0);
   const [endTimestampFilter, setEndTimestampFilter] = useState(0);
-  const [countZoomIn, setCountZoomIn] = useState(0);
+  const [rawZoom, setRawZoom] = useState("[]");
+  const zoom: any = JSON.parse(rawZoom);
+  const countZoom: number = zoom.length;
+  console.log("Zoom: ", zoom);
+  console.log("Zoom: ", countZoom);
   const showX: any = JSON.parse(rawShowX);
   const blockLastInputShowX: boolean = Object.values(showX).filter(show => show).length == 1;
   const showCharts: any = JSON.parse(rawShowCharts);
@@ -322,7 +327,7 @@ function VoltageCurrentGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
     });
     setStartTimestampFilter(dateMin ?? 0);
     setEndTimestampFilter(dateMax ?? 0);
-    setCountZoomIn(0);
+    setRawZoom("[]");
   }
   // Obtener datos por evento zoom
   async function onZoom(x1:any, x2: any, data: any) {
@@ -334,10 +339,56 @@ function VoltageCurrentGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
       device: deviceId,
       points: null
     });
-    setCountZoomIn(countZoomIn + 1);
+    setRawZoom(JSON.stringify([...zoom, {
+      date_min: dateMin,
+      date_max: dateMax
+    }]));
   }
 
+  
+
+
   async function zoomOut() {
+    if (zoom.length > 0) {
+      if (zoom.length == 1) {
+        resetZoom()
+      } else if (zoom.length > 1)  {
+        await requestChartsData({
+          date_min: zoom[zoom.length - 2].date_min,
+          // 86400 es igual a un dia mas.
+          date_max: zoom[zoom.length - 2].date_max,
+          device: deviceId,
+          points: null
+        });
+  
+        let tmpZoom = [...zoom];
+        var removed = tmpZoom.splice(-1); 
+        setRawZoom(JSON.stringify(tmpZoom));
+      }
+    }
+  }
+
+  const minData = 100;
+  async function zoomIn() {
+    if (dataAA.timestamp.length < minData) {
+      return;
+    }
+    const split = Math.ceil((dataAA.timestamp.length / 4) / 2)
+    const dateMin: number = dataAA.timestamp[split - 1];
+    const dateMax: number = dataAA.timestamp[dataAA.timestamp.length - split - 1];
+    await requestChartsData({
+      date_min: dateMin,
+      date_max: dateMax,
+      device: deviceId,
+      points: null
+    });
+    setRawZoom(JSON.stringify([...zoom, {
+      date_min: dateMin,
+      date_max: dateMax
+    }]));
+  }
+
+  async function resetZoom() {
     await requestChartsData({
       date_min: startTimestampFilter,
       // 86400 es igual a un dia mas.
@@ -345,9 +396,8 @@ function VoltageCurrentGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
       device: deviceId,
       points: null
     });
-    setCountZoomIn(0);
+    setRawZoom("[]");
   }
-
 
   const [heightControl, setHeightControl] = useState(0);
 
@@ -381,7 +431,6 @@ function VoltageCurrentGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
     }
   }
 
-
   function showMinMax() {
     toogleX("max", true);
     toogleX("min", true);
@@ -392,182 +441,218 @@ function VoltageCurrentGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
   return (<div className="relative h-full w-full">
         <div ref={containerGraph}>
           <div className="flex justify-start flex-wrap md:flex-nowrap w-[100%]">
-            {/* <div className="w-full md:w-[250px] flex justify-center">
-              <div className="w-full sm:w-[250px]"> */}
-                <DateRangeControlCustom2 defaultEnd={new Date()} defaultStart={new Date(new Date().toDateString())} onChange={getAmpsData}/>
-              {/* </div>
-            </div> */}
-            <Space classes="w-[100%] h-[10px]"/>
-            <div className="w-full md:w-auto flex justify-center items-center">
-              <InputCheckbox
-                  state={INPUT_CONTROL_STATE.DEFAULT}
-                  orientation={ORIENTATION_INPUT.LEFT} 
-                  message={""}
-                  disabled={blockLastInputShowX && showX["max"]}
-                  defaultChecked={showX["max"]}
-                  classes={`f-semibold`}
-                  name={"max"}
-                  label={"MAX"}
+            <div className="min-w-full sm:min-w-[250px]">
+              <DateRangeControlCustom2 defaultEnd={new Date()} defaultStart={new Date(new Date().toDateString())} onChange={getAmpsData}/>
+            </div>
+            <Space classes="w-[10px] h-[10px]"/>
+            {/* <Space classes="w-[100%] h-[10px]"/> */}
+            <div className="w-full sm:w-auto flex justify-center items-center">
+              <InputCheckboxIcon
+                  disabled={dataAA.timestamp.length < minData}
+                  defaultChecked={dataAA.timestamp.length < minData}
+                  classes={`f-semibold rounded-l-md`}
+                  name={"zoomin"}
                   onChange={(checked: boolean) => {
-                    toogleX("max", checked);
-                  }} />
+                    zoomIn();
+                  }}>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={`w-8 h-8 ${dataAA.timestamp.length >= minData ? "fill-blue-500" : ""}`}>
+                      <path fillRule="evenodd" d="M10.5 3.75a6.75 6.75 0 100 13.5 6.75 6.75 0 000-13.5zM2.25 10.5a8.25 8.25 0 1114.59 5.28l4.69 4.69a.75.75 0 11-1.06 1.06l-4.69-4.69A8.25 8.25 0 012.25 10.5zm8.25-3.75a.75.75 0 01.75.75v2.25h2.25a.75.75 0 010 1.5h-2.25v2.25a.75.75 0 01-1.5 0v-2.25H7.5a.75.75 0 010-1.5h2.25V7.5a.75.75 0 01.75-.75z" clipRule="evenodd" />
+                    </svg>
+              </InputCheckboxIcon>
+              <InputCheckboxIcon
+                  disabled={countZoom == 0}
+                  defaultChecked={countZoom == 0}
+                  classes={`f-semibold`}
+                  name={"zoomout"}
+                  onChange={(checked: boolean) => {
+                      zoomOut();
+                  }}>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={`w-8 h-8 ${countZoom != 0 ? "fill-blue-500" : ""}`}>
+                      <path fillRule="evenodd" d="M10.5 3.75a6.75 6.75 0 100 13.5 6.75 6.75 0 000-13.5zM2.25 10.5a8.25 8.25 0 1114.59 5.28l4.69 4.69a.75.75 0 11-1.06 1.06l-4.69-4.69A8.25 8.25 0 012.25 10.5zm4.5 0a.75.75 0 01.75-.75h6a.75.75 0 010 1.5h-6a.75.75 0 01-.75-.75z" clipRule="evenodd" />
+                    </svg>
+              </InputCheckboxIcon>
+              <InputCheckboxIcon
+                  disabled={countZoom == 0}
+                  defaultChecked={countZoom == 0}
+                  classes={`f-semibold rounded-r-md`}
+                  name={"normal zoom"}
+                  onChange={(checked: boolean) => {
+                      resetZoom();
+                  }}>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={`w-8 h-8 ${countZoom != 0 ? "fill-blue-500" : ""}`}>
+                      <path fillRule="evenodd" d="M10.5 3.75a6.75 6.75 0 100 13.5 6.75 6.75 0 000-13.5zM2.25 10.5a8.25 8.25 0 1114.59 5.28l4.69 4.69a.75.75 0 11-1.06 1.06l-4.69-4.69A8.25 8.25 0 012.25 10.5z" clipRule="evenodd" />
+                    </svg>
+              </InputCheckboxIcon>
               <Space classes="w-[10px]" />
-              <InputCheckbox
-                  state={INPUT_CONTROL_STATE.DEFAULT}
-                  orientation={ORIENTATION_INPUT.LEFT} 
-                  message={""}
-                  disabled={blockLastInputShowX && showX["min"]}
-                  defaultChecked={showX["min"]}
-                  classes={`f-semibold`}
-                  name={"min"}
-                  label={"MIN"}
-                  onChange={(checked: boolean) => {
-                    toogleX("min", checked);
-                  }} />
-              <Space classes="w-[10px]" />
-              <InputCheckbox
-                  state={INPUT_CONTROL_STATE.DEFAULT}
-                  orientation={ORIENTATION_INPUT.LEFT} 
-                  message={""}
-                  disabled={blockLastInputShowX && showX["average"]}
-                  defaultChecked={showX["average"]}
-                  classes={`f-semibold`}
-                  name={"average"}
-                  label={"AVG"}
-                  onChange={(checked: boolean) => {
-                    toogleX("average", checked);
-                  }} />
-            </div>     
-            <Space classes="w-[100%] h-[10px]"/>
-            <div className="w-full md:w-[350px] flex justify-center items-center">
-              <InputCheckbox
-                  state={INPUT_CONTROL_STATE.DEFAULT}
-                  orientation={ORIENTATION_INPUT.LEFT}
-                  message={""}
+              <InputCheckboxIcon
                   disabled={false}
                   defaultChecked={showTooltip}
-                  classes={`f-semibold`}
+                  classes={`f-semibold rounded-l-md`}
                   name={"tooltip"}
-                  label={"CURSOR"}
                   onChange={(checked: boolean) => {
                     toogleTooltip(checked);
-                  }} />
-              <Space classes="w-[10px]" />
-              <InputCheckbox
-                  state={INPUT_CONTROL_STATE.DEFAULT}
-                  orientation={ORIENTATION_INPUT.LEFT}
-                  message={""}
+                  }}>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={`w-8 h-8 ${showTooltip ? "fill-blue-500" : ""}`}>
+                      <path fillRule="evenodd" d="M12 1.5a.75.75 0 01.75.75V4.5a.75.75 0 01-1.5 0V2.25A.75.75 0 0112 1.5zM5.636 4.136a.75.75 0 011.06 0l1.592 1.591a.75.75 0 01-1.061 1.06l-1.591-1.59a.75.75 0 010-1.061zm12.728 0a.75.75 0 010 1.06l-1.591 1.592a.75.75 0 01-1.06-1.061l1.59-1.591a.75.75 0 011.061 0zm-6.816 4.496a.75.75 0 01.82.311l5.228 7.917a.75.75 0 01-.777 1.148l-2.097-.43 1.045 3.9a.75.75 0 01-1.45.388l-1.044-3.899-1.601 1.42a.75.75 0 01-1.247-.606l.569-9.47a.75.75 0 01.554-.68zM3 10.5a.75.75 0 01.75-.75H6a.75.75 0 010 1.5H3.75A.75.75 0 013 10.5zm14.25 0a.75.75 0 01.75-.75h2.25a.75.75 0 010 1.5H18a.75.75 0 01-.75-.75zm-8.962 3.712a.75.75 0 010 1.061l-1.591 1.591a.75.75 0 11-1.061-1.06l1.591-1.592a.75.75 0 011.06 0z" clipRule="evenodd" />
+                    </svg> 
+              </InputCheckboxIcon>
+              <InputCheckboxIcon
                   disabled={false}
                   defaultChecked={showLegends}
-                  classes={`f-semibold`}
+                  classes={`f-semibold rounded-r-md`}
                   name={"legends"}
-                  label={"LEGENDS"}
                   onChange={(checked: boolean) => {
                     setShowLegends(checked);
-                  }} />
-              <Space classes="w-[10px]" />
-              <div className="w-[260px]">
-                <ButtonPrimary
-                  children={"Restore Zoom"}
-                  onClick={zoomOut}
-                  classes={"bg-secondary px-[4px]"}
-                  disabled={countZoomIn == 0}/>
-              </div>
+                  }}>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"  className={`w-8 h-8 ${showLegends ? "fill-blue-500" : ""}`}>
+                      <path fillRule="evenodd" d="M3 6.75A.75.75 0 013.75 6h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 6.75zM3 12a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 12zm0 5.25a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75a.75.75 0 01-.75-.75z" clipRule="evenodd" />
+                    </svg>
+              </InputCheckboxIcon>
             </div>
           </div>
           <Space classes="w-[100%] h-[20px]"/>
           <div className="flex justify-between flex-wrap w-[100%]">
-            <div className="flex items-center flex-wrap">
-              <InputCheckbox
-                  state={INPUT_CONTROL_STATE.DEFAULT}
-                  message={""}
-                  disabled={blockLastInputShowChart && showCharts["aa"]}
-                  defaultChecked={showCharts["aa"]}
-                  classes={`f-semibold`}
-                  name={"aa"}
-                  label={"A(A)"}
-                  onChange={(checked: boolean) => {
-                    toogleCharts("aa", checked);
-                  }} />
-              <Space classes="w-[10px]" />
-              <InputCheckbox
-                  state={INPUT_CONTROL_STATE.DEFAULT}
-                  message={""}
-                  disabled={blockLastInputShowChart && showCharts["ba"]}
-                  defaultChecked={showCharts["ba"]}
-                  classes={`f-semibold`}
-                  name={"ba"}
-                  label={"B(A)"}
-                  onChange={(checked: boolean) => {
-                    toogleCharts("ba", checked);
-                  }} />
-              <Space classes="w-[10px]" />
-              <InputCheckbox
-                  state={INPUT_CONTROL_STATE.DEFAULT}
-                  message={""}
-                  disabled={blockLastInputShowChart && showCharts["ca"]}
-                  defaultChecked={showCharts["ca"]}
-                  classes={`f-semibold`}
-                  name={"ca"}
-                  label={"C(A)"}
-                  onChange={(checked: boolean) => {
-                    toogleCharts("ca", checked);
-                  }} />
-              <InputCheckbox
-                  state={INPUT_CONTROL_STATE.DEFAULT}
-                  message={""}
-                  disabled={blockLastInputShowChart && showCharts["na"]}
-                  defaultChecked={showCharts["na"]}
-                  classes={`f-semibold`}
-                  name={"na"}
-                  label={"N(A)"}
-                  onChange={(checked: boolean) => {
-                    toogleCharts("na", checked);
-                  }} />
-              <InputCheckbox
-                  state={INPUT_CONTROL_STATE.DEFAULT}
-                  message={""}
-                  disabled={blockLastInputShowChart && showCharts["av"]}
-                  defaultChecked={showCharts["av"]}
-                  classes={`f-semibold`}
-                  name={"av"}
-                  label={"A(V)"}
-                  onChange={(checked: boolean) => {
-                    toogleCharts("av", checked);
-                  }} />
-              <InputCheckbox
-                  state={INPUT_CONTROL_STATE.DEFAULT}
-                  message={""}
-                  disabled={blockLastInputShowChart && showCharts["bv"]}
-                  defaultChecked={showCharts["bv"]}
-                  classes={`f-semibold`}
-                  name={"bv"}
-                  label={"B(V)"}
-                  onChange={(checked: boolean) => {
-                    toogleCharts("bv", checked);
-                  }} />
-              <InputCheckbox
-                  state={INPUT_CONTROL_STATE.DEFAULT}
-                  message={""}
-                  disabled={blockLastInputShowChart && showCharts["cv"]}
-                  defaultChecked={showCharts["cv"]}
-                  classes={`f-semibold`}
-                  name={"cv"}
-                  label={"C(V)"}
-                  onChange={(checked: boolean) => {
-                    toogleCharts("cv", checked);
-                  }} />
-              <InputCheckbox
-                  state={INPUT_CONTROL_STATE.DEFAULT}
-                  message={""}
-                  disabled={blockLastInputShowChart && showCharts["gv"]}
-                  defaultChecked={showCharts["gv"]}
-                  classes={`f-semibold`}
-                  name={"gv"}
-                  label={"G(V)"}
-                  onChange={(checked: boolean) => {
-                    toogleCharts("gv", checked);
-                  }} />
+            <div>
+              <strong>
+                Channels
+              </strong>
+              <div className="flex items-center flex-wrap">
+                <InputCheckbox
+                    state={INPUT_CONTROL_STATE.DEFAULT}
+                    message={""}
+                    disabled={blockLastInputShowChart && showCharts["aa"]}
+                    defaultChecked={showCharts["aa"]}
+                    classes={`f-semibold`}
+                    name={"aa"}
+                    label={"A(A)"}
+                    onChange={(checked: boolean) => {
+                      toogleCharts("aa", checked);
+                    }} />
+                <Space classes="w-[10px]" />
+                <InputCheckbox
+                    state={INPUT_CONTROL_STATE.DEFAULT}
+                    message={""}
+                    disabled={blockLastInputShowChart && showCharts["ba"]}
+                    defaultChecked={showCharts["ba"]}
+                    classes={`f-semibold`}
+                    name={"ba"}
+                    label={"B(A)"}
+                    onChange={(checked: boolean) => {
+                      toogleCharts("ba", checked);
+                    }} />
+                <Space classes="w-[10px]" />
+                <InputCheckbox
+                    state={INPUT_CONTROL_STATE.DEFAULT}
+                    message={""}
+                    disabled={blockLastInputShowChart && showCharts["ca"]}
+                    defaultChecked={showCharts["ca"]}
+                    classes={`f-semibold`}
+                    name={"ca"}
+                    label={"C(A)"}
+                    onChange={(checked: boolean) => {
+                      toogleCharts("ca", checked);
+                    }} />
+                <InputCheckbox
+                    state={INPUT_CONTROL_STATE.DEFAULT}
+                    message={""}
+                    disabled={blockLastInputShowChart && showCharts["na"]}
+                    defaultChecked={showCharts["na"]}
+                    classes={`f-semibold`}
+                    name={"na"}
+                    label={"N(A)"}
+                    onChange={(checked: boolean) => {
+                      toogleCharts("na", checked);
+                    }} />
+                <InputCheckbox
+                    state={INPUT_CONTROL_STATE.DEFAULT}
+                    message={""}
+                    disabled={blockLastInputShowChart && showCharts["av"]}
+                    defaultChecked={showCharts["av"]}
+                    classes={`f-semibold`}
+                    name={"av"}
+                    label={"A(V)"}
+                    onChange={(checked: boolean) => {
+                      toogleCharts("av", checked);
+                    }} />
+                <InputCheckbox
+                    state={INPUT_CONTROL_STATE.DEFAULT}
+                    message={""}
+                    disabled={blockLastInputShowChart && showCharts["bv"]}
+                    defaultChecked={showCharts["bv"]}
+                    classes={`f-semibold`}
+                    name={"bv"}
+                    label={"B(V)"}
+                    onChange={(checked: boolean) => {
+                      toogleCharts("bv", checked);
+                    }} />
+                <InputCheckbox
+                    state={INPUT_CONTROL_STATE.DEFAULT}
+                    message={""}
+                    disabled={blockLastInputShowChart && showCharts["cv"]}
+                    defaultChecked={showCharts["cv"]}
+                    classes={`f-semibold`}
+                    name={"cv"}
+                    label={"C(V)"}
+                    onChange={(checked: boolean) => {
+                      toogleCharts("cv", checked);
+                    }} />
+                <InputCheckbox
+                    state={INPUT_CONTROL_STATE.DEFAULT}
+                    message={""}
+                    disabled={blockLastInputShowChart && showCharts["gv"]}
+                    defaultChecked={showCharts["gv"]}
+                    classes={`f-semibold`}
+                    name={"gv"}
+                    label={"G(V)"}
+                    onChange={(checked: boolean) => {
+                      toogleCharts("gv", checked);
+                    }} />
+              </div>
+            </div>
+            <div>
+              <strong>
+                Display
+              </strong>
+              <div className="flex justify-center items-center">
+                <InputCheckbox
+                    state={INPUT_CONTROL_STATE.DEFAULT}
+                    orientation={ORIENTATION_INPUT.LEFT} 
+                    message={""}
+                    disabled={blockLastInputShowX && showX["max"]}
+                    defaultChecked={showX["max"]}
+                    classes={`f-semibold`}
+                    name={"max"}
+                    label={"MAX"}
+                    onChange={(checked: boolean) => {
+                      toogleX("max", checked);
+                    }} />
+                <Space classes="w-[10px]" />
+                <InputCheckbox
+                    state={INPUT_CONTROL_STATE.DEFAULT}
+                    orientation={ORIENTATION_INPUT.LEFT} 
+                    message={""}
+                    disabled={blockLastInputShowX && showX["min"]}
+                    defaultChecked={showX["min"]}
+                    classes={`f-semibold`}
+                    name={"min"}
+                    label={"MIN"}
+                    onChange={(checked: boolean) => {
+                      toogleX("min", checked);
+                    }} />
+                <Space classes="w-[10px]" />
+                <InputCheckbox
+                    state={INPUT_CONTROL_STATE.DEFAULT}
+                    orientation={ORIENTATION_INPUT.LEFT} 
+                    message={""}
+                    disabled={blockLastInputShowX && showX["average"]}
+                    defaultChecked={showX["average"]}
+                    classes={`f-semibold`}
+                    name={"average"}
+                    label={"AVG"}
+                    onChange={(checked: boolean) => {
+                      toogleX("average", checked);
+                    }} />
+              </div>     
             </div>
           </div>
           <Space classes="w-[100%] h-[20px]"/>

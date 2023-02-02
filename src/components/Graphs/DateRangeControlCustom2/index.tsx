@@ -49,7 +49,7 @@ function DateRangeControlCustom2({ onChange, defaultStart, defaultEnd}: { defaul
     return (<Fragment>
         <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale={"en"}>
             
-            <div className="w-full flex">
+            <div className="w-full flex ">
                 <div className="sm:min-w-[250px] w-full flex justify-center items-center">
                     <strong>Range:</strong>
                     <Space type={TYPE_SPACE.INPUT_DISTANCE_VERTICAL}/>
