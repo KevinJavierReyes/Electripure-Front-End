@@ -622,22 +622,9 @@ function VoltageCurrentGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
                     defaultChecked={showX["max"]}
                     classes={`f-semibold`}
                     name={"max"}
-                    label={"MAX"}
+                    label={"Maximun"}
                     onChange={(checked: boolean) => {
                       toogleX("max", checked);
-                    }} />
-                <Space classes="w-[10px]" />
-                <InputCheckbox
-                    state={INPUT_CONTROL_STATE.DEFAULT}
-                    orientation={ORIENTATION_INPUT.LEFT} 
-                    message={""}
-                    disabled={blockLastInputShowX && showX["min"]}
-                    defaultChecked={showX["min"]}
-                    classes={`f-semibold`}
-                    name={"min"}
-                    label={"MIN"}
-                    onChange={(checked: boolean) => {
-                      toogleX("min", checked);
                     }} />
                 <Space classes="w-[10px]" />
                 <InputCheckbox
@@ -648,9 +635,22 @@ function VoltageCurrentGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
                     defaultChecked={showX["average"]}
                     classes={`f-semibold`}
                     name={"average"}
-                    label={"AVG"}
+                    label={"Average"}
                     onChange={(checked: boolean) => {
                       toogleX("average", checked);
+                    }} />
+                <Space classes="w-[10px]" />
+                <InputCheckbox
+                    state={INPUT_CONTROL_STATE.DEFAULT}
+                    orientation={ORIENTATION_INPUT.LEFT} 
+                    message={""}
+                    disabled={blockLastInputShowX && showX["min"]}
+                    defaultChecked={showX["min"]}
+                    classes={`f-semibold`}
+                    name={"min"}
+                    label={"Minimum"}
+                    onChange={(checked: boolean) => {
+                      toogleX("min", checked);
                     }} />
               </div>     
             </div>
