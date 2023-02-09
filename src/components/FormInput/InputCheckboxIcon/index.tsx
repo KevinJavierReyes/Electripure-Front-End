@@ -6,11 +6,11 @@ function InputCheckboxIcon({ name, children, onChange, classes="", defaultChecke
         onChange(event.target.checked);
     }
 
-    useEffect(()=> {
-        if (defaultChecked) {
-            onChange(defaultChecked);
-        }
-    }, []);
+    // useEffect(()=> {
+    //     if (defaultChecked) {
+    //         onChange(defaultChecked);
+    //     }
+    // }, []);
 
     return (
         <div className="">

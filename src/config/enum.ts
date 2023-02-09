@@ -51,3 +51,17 @@ export enum USER_SETTINGS {
     OPEN = 1,
     CLOSE = 0
 }
+
+
+export enum TYPE_EVENTS_ZOOM {
+    IN = 1,
+    OUT = 2,
+    RESET = 3
+}
+
+export enum TYPE_EVENTS_EVENT {
+    LEGENDS = 1,
+    TOOLTIP = 2
+}
+  
+  

@@ -85,6 +85,14 @@ export interface ListFilesCompanyRequest {
     id_company: number;
 }
 
+export interface GetChartData {
+    date_min: number | null;
+    date_max: number | null;
+    device: number;
+    points: number | null;
+}
+
+
 export interface GetAmpsDataRequest {
     date_min: number | null;
     date_max: number | null;
