@@ -302,11 +302,13 @@ function PowerLogGraph ({ defaultMeterId, resultToData, dataMetadata, graphMetad
     setRawZoomHistory("[]");
   }
 
-  // Show Only max and min 
+  // Show Only max and min
+  const [maxmin, setMaxMin] = useState(true);
   function showOnlyMinMax() {
-    toogleData("max", true);
-    toogleData("min", true);
-    toogleData("average", false);
+    toogleData("max", maxmin);
+    toogleData("min", maxmin);
+    toogleData("average", !maxmin);
+    setMaxMin(!maxmin)
   }
 
   // On Zoom [Not editable]

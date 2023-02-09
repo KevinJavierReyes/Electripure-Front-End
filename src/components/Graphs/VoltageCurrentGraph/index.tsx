@@ -40,11 +40,11 @@ const graphMetadata: GraphMetadata[] = [
     "label": "C(V)",
     "url": "https://apidev.electripuremeter.com/get_chart1_C(V)_v2"
   },
-  {
-    "key": "gv",
-    "label": "G(V)",
-    "url": "https://apidev.electripuremeter.com/get_chart1_G(V)_v2"
-  }
+  // {
+  //   "key": "gv",
+  //   "label": "G(V)",
+  //   "url": "https://apidev.electripuremeter.com/get_chart1_G(V)_v2"
+  // }
 ];
 
 
