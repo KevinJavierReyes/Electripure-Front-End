@@ -4,7 +4,7 @@ GetAmpsDataRequest, GetCompaniesByUserRequest, GetPowerDataRequest,
 GetVoltsDataRequest, LoginRequest, ResendEmailRequest,
 ToogleCompanyStateRequest, ToogleUserStateRequest, UpdatePasswordRequest,
 UpdateUserRequest, UploadImageRequest, ValidateTokenRequest,
-ValidateUpdateUserRequest, UploadFileRequest, ListFilesCompanyRequest } from "../interfaces/electripure-service";
+ValidateUpdateUserRequest, UploadFileRequest, ListFilesCompanyRequest, GetChartData } from "../interfaces/electripure-service";
 import { BaseService } from "./base-service";
 import environment from "./../config/env";
 import { toast } from "react-toastify";
@@ -206,6 +206,17 @@ export default class ElectripureService extends BaseService {
   
   static async getAmpsDataGraph(payload: GetAmpsDataRequest) : Promise<ResponseGeneric> {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/get_chart1_A`;
+    const response = await this.requestPost(url, payload);
+    if (!response.success) {
+      toast.error(response.error, {
+        "position": "bottom-right"
+      });
+    }
+    return response;
+  }
+
+
+  static async getDataGraph(url: string, payload: GetChartData) : Promise<ResponseGeneric> {
     const response = await this.requestPost(url, payload);
     if (!response.success) {
       toast.error(response.error, {

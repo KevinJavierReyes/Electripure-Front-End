@@ -41,6 +41,7 @@ import DeviceListPage from "../pages/DeviceListPage"
 import DeviceDetails from "../pages/DeviceDetails" 
 import VoltageCurrentGraph from "../components/Graphs/VoltageCurrentGraph";
 import VoltageCurrentPage from "../pages/VoltageCurrent";
+import HarmonicGraph from "../components/Graphs/HarmonicGraph";
 
 const AppRouter = () => {
 
@@ -97,13 +98,14 @@ const AppRouter = () => {
                       <Route path="*" element={<div></div>} />
                     </Route>
                     <Route path="harmonic" element={<HarmonicPage />}>
-                      <Route path="amp/line1" element={<HarmonicAmpLine1 />} />
+                      <Route path="*" element={<HarmonicGraph />} />
+                      {/* <Route path="amp/line1" element={<HarmonicAmpLine1 />} />
                       <Route path="amp/line2" element={<HarmonicAmpLine2 />} />
                       <Route path="amp/line3" element={<HarmonicAmpLine3 />} />
                       <Route path="volt/line1" element={<HarmonicVoltLine1 />} />
                       <Route path="volt/line2" element={<HarmonicVoltLine2 />} />
                       <Route path="volt/line3" element={<HarmonicVoltLine3 />} />
-                      <Route path="*" element={<div></div>} />
+                      <Route path="*" element={<div></div>} /> */}
                     </Route>
                   </Route>
                   {/* <Route path="*" index element={<div>Site</div>} />

@@ -10,8 +10,8 @@ function DataMenu({selections, metadata, onChange}: {selections: { [key: string]
   }[], onChange: (seleted:{"key": string,"label": string}, checked: boolean) => void}) {
     const blockLastInputShowChart: boolean = Object.values(selections).filter(show => show).length == 1;
     return (<div className="flex justify-center items-center">
-        {metadata.map((info: {"key": string,"label": string})=> {
-            return (<Fragment>
+        {metadata.map((info: {"key": string,"label": string}, index:number)=> {
+            return (<Fragment key={index}>
                 <InputCheckbox
                     state={INPUT_CONTROL_STATE.DEFAULT}
                     message={""}
