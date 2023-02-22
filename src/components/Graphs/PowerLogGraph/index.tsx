@@ -465,7 +465,7 @@ function PowerLogGraph ({ defaultMeterId, resultToData, dataMetadata, graphMetad
               <li className="p-[5px] cursor-pointer" onClick={showOnlyMinMax}>View max/min values</li>
             </ul>
           </div>: ""}
-          { showLegends ? <div className="w-full flex justify-center" >
+          { showLegends ? <div className="w-full flex justify-center flex-wrap" >
                   {dataMetadata.map((info: any)=> {
                       return (<div className="flex justify-center items-center mx-[10px]">
                         <div className="w-[10px] h-[10px] mx-[5px]" style={{"backgroundColor": colors[info.key]}}></div>
