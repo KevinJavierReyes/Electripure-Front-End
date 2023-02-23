@@ -8,6 +8,7 @@ export interface GraphMetadata {
 
 export interface DataMetadata {
     "key": string;
-    "label": string;
+    "label": string | string[];
+    "group"?: string[];
     "color": string;
 }

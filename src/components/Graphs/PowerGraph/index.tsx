@@ -32,67 +32,82 @@ const dataMetadata: DataMetadata[] = [
   {
     "key": "dpf_max",
     "color": "#fc0303",
-    "label": "DPF Maximun"
+    "label": ["DPF", "Maximun"],
+    "group": ["P. Uni", "Display"]
   }, {
     "key": "dpf_average",
     "color": "#000000",
-    "label": "DPF Average"
+    "label": ["DPF", "Average"],
+    "group": ["P. Uni", "Display"]
   }, {
     "key": "dpf_min",
     "color": "#00ff3c",
-    "label": "DPF Minimum"
+    "label": ["DPF", "Minimum"],
+    "group": ["P. Uni", "Display"]
   },
   {
     "key": "pf_max",
     "color": "#fc0303",
-    "label": "PF Maximun"
+    "label": ["PF", "Maximun"],
+    "group": ["P. Uni", "Display"]
   }, {
     "key": "pf_average",
     "color": "#000000",
-    "label": "PF Average"
+    "label": ["PF", "Average"],
+    "group": ["P. Uni", "Display"]
   }, {
     "key": "pf_min",
     "color": "#00ff3c",
-    "label": "PF Minimum"
+    "label": ["PF", "Minimum"],
+    "group": ["P. Uni", "Display"]
   },
   {
     "key": "var_max",
     "color": "#fc0303",
-    "label": "VAR Maximun"
+    "label": ["VAR", "Maximun"],
+    "group": ["P. Uni", "Display"]
   }, {
     "key": "var_average",
     "color": "#000000",
-    "label": "VAR Average"
+    "label": ["VAR", "Average"],
+    "group": ["P. Uni", "Display"]
   }, {
     "key": "var_min",
     "color": "#00ff3c",
-    "label": "VAR Minimum"
+    "label": ["VAR", "Minimum"],
+    "group": ["P. Uni", "Display"]
   },
   {
     "key": "va_max",
     "color": "#fc0303",
-    "label": "VA Maximun"
+    "label": ["VA", "Maximun"],
+    "group": ["P. Uni", "Display"]
   }, {
     "key": "va_average",
     "color": "#000000",
-    "label": "VA Average"
+    "label": ["VA", "Average"],
+    "group": ["P. Uni", "Display"]
   }, {
     "key": "va_min",
     "color": "#00ff3c",
-    "label": "VA Minimum"
+    "label": ["VA", "Minimum"],
+    "group": ["P. Uni", "Display"]
   },
   {
     "key": "w_max",
     "color": "#fc0303",
-    "label": "W Maximun"
+    "label": ["W", "Maximun"],
+    "group": ["P. Uni", "Display"]
   }, {
     "key": "w_average",
     "color": "#000000",
-    "label": "W Average"
+    "label": ["W", "Average"],
+    "group": ["P. Uni", "Display"]
   }, {
     "key": "w_min",
     "color": "#00ff3c",
-    "label": "W Minimum"
+    "label": ["W", "Minimum"],
+    "group": ["P. Uni", "Display"]
   }
 ];
 

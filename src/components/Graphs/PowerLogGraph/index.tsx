@@ -158,6 +158,29 @@ function generateInitStateShowGraph(metadata: GraphMetadata[]): any {
 }
 
 
+function generateInitStateLabelsGroups(metadata: DataMetadata[]): any {
+  let state: any = {
+
+  };
+  metadata.map((info: DataMetadata, index: number) => {
+    info.group?.map((group: string, index: number) => {
+      if (!state.hasOwnProperty(group)) state[group] = {};
+      if (!state[group].hasOwnProperty(info.label[index])) state[group][info.label[index]] = {"keys":[]};
+      state[group][info.label[index]].show = true;
+      state[group][info.label[index]].keys.push(info.key);
+    });
+  });
+  return state;
+}
+// {
+//   "group": {
+//     "label01": {
+//       "keys": [],
+//       "show": true
+//     }
+//   }
+// }
+
 function PowerLogGraph ({ defaultMeterId, resultToData, dataMetadata, graphMetadata }: { graphMetadata: GraphMetadata[], defaultMeterId?: number, resultToData: (result: any) => string, dataMetadata: DataMetadata[] }) {
   // get deviceId [Not editable]
   let { meterId } = useParams();
@@ -190,10 +213,13 @@ function PowerLogGraph ({ defaultMeterId, resultToData, dataMetadata, graphMetad
   // Create state for show / hide elements [Not editable]
   const [rawShowCharts, setRawShowCharts] = useState(JSON.stringify(generateInitStateShowGraph(graphMetadata)));
   const [rawShowData, setRawShowData] = useState(JSON.stringify(generateInitStateShowData(dataMetadata)));
+  const [rawShowGroupData, setRawShowGroupData] = useState((dataMetadata.length > 0 && dataMetadata[0].hasOwnProperty("group"))? JSON.stringify(generateInitStateLabelsGroups(dataMetadata)) : "[]");
   const [showTooltip, setShowTootip] = useState(true);
   const [showLegends, setShowLegends] = useState(false);
   const colors: any = generateInitStateColor(dataMetadata);
   const showData: any = JSON.parse(rawShowData);
+  const showGroupData: { [key: string ]: { [key: string ]: { "keys": string[], "show": boolean } } } = JSON.parse(rawShowGroupData);
+  const isGroupData: boolean = Object.keys(showGroupData).length > 0;
   const showCharts: any = JSON.parse(rawShowCharts);
 
   // state for the data range  [Not editable]
@@ -217,9 +243,42 @@ function PowerLogGraph ({ defaultMeterId, resultToData, dataMetadata, graphMetad
     setRawShowCharts(JSON.stringify(showCharts));
   }
   // Toogle charts [Not editable]
-  function toogleData(chart: string, show: boolean) {
-    showData[chart] = show;
+  function toogleData(chart: string | string[], show: boolean) {
+    // console.log(showData);
+    if (typeof chart == "string")
+      showData[chart] = show;
+    else 
+      chart.forEach((crt: string) => {
+        showData[crt] = show;
+      });
+    // console.log(showData);
     setRawShowData(JSON.stringify(showData));
+  }
+
+  function toogleGroupData(group: string, label: string, keys: string[], checked: boolean) {
+    
+    
+    // console.log(showGroupData[group])
+    if (checked) {
+      const groupValid = Object.keys(showGroupData).filter( grp => grp != group);
+      let keysBlocked: string[] = [];
+      groupValid.map((grp: string) => {
+        Object.keys(showGroupData[grp]).map((lbl: string) => {
+          if (!showGroupData[grp][lbl].show) {
+            keysBlocked = [...keysBlocked, ...showGroupData[grp][lbl].keys]
+          }
+        })
+      });
+
+      toogleData(keys.filter((key)=> {
+        return keysBlocked.indexOf(key) == -1
+      }), checked);
+
+    } else {
+      toogleData(keys, checked);
+    }
+    showGroupData[group][label].show = checked;
+    setRawShowGroupData(JSON.stringify(showGroupData));
   }
 
   // get the chart data and store it locally [Not editable]
@@ -444,16 +503,46 @@ function PowerLogGraph ({ defaultMeterId, resultToData, dataMetadata, graphMetad
                 }}/>
               </div>
             </div>
-            <div>
+            { isGroupData? 
+            Object.keys(showGroupData).map((key: string, index: number) => {
+              return <div key={index}>
+                <strong>
+                  {key}
+                </strong>
+                <div className="flex justify-center items-center">
+                  <DataMenu metadata={Object.keys(showGroupData[key]).map((label: string)=> {
+                    return {
+                      key: showGroupData[key][label].keys.join("###"),
+                      label: label
+                    };
+                  })} selections={(()=> {
+                    let selected: any = {};
+                    Object.keys(showGroupData[key]).map((label: string)=> {
+                      selected[showGroupData[key][label].keys.join("###")] = showGroupData[key][label].show;
+                    })
+                    console.log(selected)
+                    return selected;
+                  })()} onChange={(info, checked)=> {
+                      toogleGroupData(key, info.label, info.key.split("###"), checked);
+                  }}/>
+                </div>     
+              </div>;
+            })
+            :<div>
               <strong>
                 Display
               </strong>
               <div className="flex justify-center items-center">
-                  <DataMenu metadata={dataMetadata} selections={showData} onChange={(info, checked)=> {
+                  <DataMenu metadata={dataMetadata.map((data: DataMetadata)=> {
+                    return {
+                      key: data.key,
+                      label: data.label as string
+                    };
+                  })} selections={showData} onChange={(info, checked)=> {
                     toogleData(info.key, checked);
                   }}/>
               </div>     
-            </div>
+            </div> }
           </div>
           <Space classes="w-[100%] h-[20px]"/>
         </div>
@@ -481,31 +570,6 @@ function PowerLogGraph ({ defaultMeterId, resultToData, dataMetadata, graphMetad
               </div> : ""}
             </Fragment>);
           })}
-          {/* { showCharts["aa"] ? <div className={"w-full "} style={{"height": `${(100/ graphicsVisible)}%`}}>
-              <LineGraphSimple labels={dataAA.x_label} showTooltip={showTooltip} showDatasetMap={showData} data={{"x": dataAA.x, "y": dataAA.y}} colors={colors} onZoom={(x1: any, x2: any) => { onZoom(x1, x2, dataAA); }} title="A(A)"/>
-            </div> : ""}
-          { showCharts["ba"] ? <div className={"w-full "} style={{"height": `${(100/ graphicsVisible)}%`}} >
-              <LineGraphSimple labels={dataBA.x_label} showTooltip={showTooltip} showDatasetMap={showData}  data={{"x": dataBA.x, "y": dataBA.y}} colors={colors} onZoom={(x1: any, x2: any) => { onZoom(x1, x2, dataBA); }} title="B(A)"/> 
-            </div>: ""}
-          { showCharts["ca"] ? <div className={"w-full "} style={{"height": `${(100/ graphicsVisible)}%`}} >
-              <LineGraphSimple labels={dataCA.x_label} showTooltip={showTooltip} showDatasetMap={showData} data={{"x": dataCA.x, "y": dataCA.y}} colors={colors} onZoom={(x1: any, x2: any) => { onZoom(x1, x2, dataCA); }} title="C(A)"/>
-            </div>: ""}
-          { showCharts["na"] ? <div className={"w-full "} style={{"height": `${(100/ graphicsVisible)}%`}} >
-              <LineGraphSimple labels={dataNA.x_label} showTooltip={showTooltip} showDatasetMap={showData} data={{"x": dataNA.x, "y": dataNA.y}} colors={colors} onZoom={(x1: any, x2: any) => { onZoom(x1, x2, dataNA); }} title="N(A)"/>
-            </div>: ""}
-
-          { showCharts["av"] ? <div className={"w-full "} style={{"height": `${(100/ graphicsVisible)}%`}} >
-            <LineGraphSimple labels={dataAV.x_label} showTooltip={showTooltip} showDatasetMap={showData} data={{"x": dataAV.x, "y": dataAV.y}} colors={colors} onZoom={(x1: any, x2: any) => { onZoom(x1, x2, dataAV); }} title="A(V)"/>
-          </div>: ""}
-          { showCharts["bv"] ? <div className={"w-full "} style={{"height": `${(100/ graphicsVisible)}%`}} >
-            <LineGraphSimple labels={dataBV.x_label} showTooltip={showTooltip} showDatasetMap={showData} data={{"x": dataBV.x, "y": dataBV.y}} colors={colors} onZoom={(x1: any, x2: any) => { onZoom(x1, x2, dataBV); }} title="B(V)"/>
-          </div>: ""}
-          { showCharts["cv"] ? <div className={"w-full "} style={{"height": `${(100/ graphicsVisible)}%`}} >
-            <LineGraphSimple labels={dataCV.x_label} showTooltip={showTooltip} showDatasetMap={showData} data={{"x": dataCV.x, "y": dataCV.y}} colors={colors} onZoom={(x1: any, x2: any) => { onZoom(x1, x2, dataCV); }} title="C(V)"/>
-          </div>: ""}
-          { showCharts["gv"] ? <div className={"w-full "} style={{"height": `${(100/ graphicsVisible)}%`}} >
-            <LineGraphSimple labels={dataGV.x_label} showTooltip={showTooltip} showDatasetMap={showData} data={{"x": dataGV.x, "y": dataGV.y}} colors={colors} onZoom={(x1: any, x2: any) => { onZoom(x1, x2, dataGV); }} title="G(V)"/>
-          </div>: ""} */}
         </div>
   </div>);
 }
