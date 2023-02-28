@@ -29,22 +29,22 @@ const graphMetadata: GraphMetadata[] = [
 
 
 const dataMetadata: DataMetadata[] = [
-  {
-    "key": "dpf_max",
-    "color": "#fc0303",
-    "label": ["DPF", "Maximun"],
-    "group": ["P. Uni", "Display"]
-  }, {
-    "key": "dpf_average",
-    "color": "#000000",
-    "label": ["DPF", "Average"],
-    "group": ["P. Uni", "Display"]
-  }, {
-    "key": "dpf_min",
-    "color": "#00ff3c",
-    "label": ["DPF", "Minimum"],
-    "group": ["P. Uni", "Display"]
-  },
+  // {
+  //   "key": "dpf_max",
+  //   "color": "#fc0303",
+  //   "label": ["DPF", "Maximun"],
+  //   "group": ["P. Uni", "Display"]
+  // }, {
+  //   "key": "dpf_average",
+  //   "color": "#000000",
+  //   "label": ["DPF", "Average"],
+  //   "group": ["P. Uni", "Display"]
+  // }, {
+  //   "key": "dpf_min",
+  //   "color": "#00ff3c",
+  //   "label": ["DPF", "Minimum"],
+  //   "group": ["P. Uni", "Display"]
+  // },
   {
     "key": "pf_max",
     "color": "#fc0303",

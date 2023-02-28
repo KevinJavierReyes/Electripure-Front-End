@@ -12,3 +12,17 @@ export interface DataMetadata {
     "group"?: string[];
     "color": string;
 }
+
+
+export interface DataGraph {
+    "y": { [key: string]: any } | { [key: string]: any }[],
+    "x": any[]
+}
+
+export interface ColorGraph {
+    [key: string]: string,
+    default: string
+}
+
+
+export interface yLabel  { "name": string, "group": string }

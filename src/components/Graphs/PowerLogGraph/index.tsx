@@ -193,23 +193,7 @@ function PowerLogGraph ({ defaultMeterId, resultToData, dataMetadata, graphMetad
 
   const [rawData, setRawData] = useState(JSON.stringify(generateInitStateData(graphMetadata)));
   const data = JSON.parse(rawData);
-  // const [rawDataAA, setRawDataAA] = useState(initStateData);
-  // const [rawDataBA, setRawDataBA] = useState(initStateData);
-  // const [rawDataCA, setRawDataCA] = useState(initStateData);
-  // const [rawDataNA, setRawDataNA] = useState(initStateData);
-  // const [rawDataAV, setRawDataAV] = useState(initStateData);
-  // const [rawDataBV, setRawDataBV] = useState(initStateData);
-  // const [rawDataCV, setRawDataCV] = useState(initStateData);
-  // const [rawDataGV, setRawDataGV] = useState(initStateData);
-  // const dataAA = JSON.parse(rawDataAA);
-  // const dataBA = JSON.parse(rawDataBA);
-  // const dataCA = JSON.parse(rawDataCA);
-  // const dataNA = JSON.parse(rawDataNA);
-  // const dataAV = JSON.parse(rawDataAV);
-  // const dataBV = JSON.parse(rawDataBV);
-  // const dataCV = JSON.parse(rawDataCV);
-  // const dataGV = JSON.parse(rawDataGV);
-
+  
   // Create state for show / hide elements [Not editable]
   const [rawShowCharts, setRawShowCharts] = useState(JSON.stringify(generateInitStateShowGraph(graphMetadata)));
   const [rawShowData, setRawShowData] = useState(JSON.stringify(generateInitStateShowData(dataMetadata)));
@@ -230,11 +214,6 @@ function PowerLogGraph ({ defaultMeterId, resultToData, dataMetadata, graphMetad
   const [rawZoomHistory, setRawZoomHistory] = useState("[]");
   const zoomHistory: any = JSON.parse(rawZoomHistory);
 
-
-  
-  // const blockLastInputShowX: boolean = Object.values(showData).filter(show => show).length == 1;
-  
-  // const blockLastInputShowChart: boolean = Object.values(showCharts).filter(show => show).length == 1;
   const graphicsVisible: number =  Object.values(showCharts).filter(show => show).length;
 
   // Toogle charts [Not editable]
@@ -302,45 +281,9 @@ function PowerLogGraph ({ defaultMeterId, resultToData, dataMetadata, graphMetad
       };
       data[info.key] = resultToData(response.data);
     }));
-    // const responseAA: ResponseGeneric = await ElectripureService.getAmpsDataAGraph(payload);
-    // const responseBA: ResponseGeneric = await ElectripureService.getAmpsDataBGraph(payload);
-    // const responseCA: ResponseGeneric = await ElectripureService.getAmpsDataCGraph(payload);
-    // const responseNA: ResponseGeneric = await ElectripureService.getAmpsDataNGraph(payload);
-    // const responseAV: ResponseGeneric = await ElectripureService.getVoltsDataAGraph(payload);
-    // const responseBV: ResponseGeneric = await ElectripureService.getVoltsDataBGraph(payload);
-    // const responseCV: ResponseGeneric = await ElectripureService.getVoltsDataCGraph(payload);
-    // const responseGV: ResponseGeneric = await ElectripureService.getVoltsDataGGraph(payload);
-    // [responseAA,
-    //   responseBA,
-    //   responseCA,
-    //   responseNA,
-    //   responseAV,
-    //   responseBV,
-    //   responseCV,
-    //   responseGV].map((response) => {
-    //     if(!response.success) {
-    //         dispatch(showToast({
-    //             message: responseAA.error!,
-    //             status: "error"
-    //         }));
-    //         dispatch(setLoading({
-    //           loading: false
-    //         }));
-    //         throw new Error("Problemas al obtener la data de los graficos.");
-    //     };
-    // })
     dispatch(setLoading({
       loading: false
     }));
-    // Store the data obtained
-    // setRawDataAA(resultToData(responseAA.data));
-    // setRawDataBA(resultToData(responseBA.data));
-    // setRawDataCA(resultToData(responseCA.data));
-    // setRawDataNA(resultToData(responseNA.data));
-    // setRawDataAV(resultToData(responseAV.data));
-    // setRawDataBV(resultToData(responseBV.data));
-    // setRawDataCV(resultToData(responseCV.data));
-    // setRawDataGV(resultToData(responseGV.data));
     setRawData(JSON.stringify(data));
   }
 
