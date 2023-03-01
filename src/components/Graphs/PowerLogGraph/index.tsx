@@ -22,110 +22,16 @@ import ZoomMenu from "../../ZoomMenu";
 import EventMenu from "../../EventMenu";
 import GraphMenu from "../../GraphMenu";
 import DataMenu from "../../DataMenu";
-import { DataMetadata, GraphMetadata } from "../../../interfaces/graph";
+import { DataMetadata, GraphMetadata, GroupColorDataPowerLog, GroupDataGraphPowerLog, GroupShowDataPowerLog, GroupShowGraphPowerLog, GroupShowGroupDataPowerLog, ZoomPowerLog } from "../../../interfaces/graph";
 
 
 const initStateData: string = JSON.stringify({ "x": [], "timestamp": [], "x_label": [], "y": {
-  "max": [],
-  "min": [],
-  "average": [],
+  // "max": [],
+  // "min": [],
+  // "average": [],
 }});
 
-// const colors: any = {
-//   "max": "#fc0303",
-//   "min": "#00ff3c",
-//   "average": "#000000",
-//   "default": "#ed4278"
-// };
-
-// const initStateShowGraph: string = JSON.stringify({
-//   "aa": true,
-//   "ba": false,
-//   "ca": false,
-//   "na": false,
-//   "av": false,
-//   "bv": false,
-//   "cv": false,
-//   "gv": false
-// });
-
-// const graphMetadata: GraphMetadata[] = [
-//   {
-//     "key": "aa",
-//     "label": "A(A)",
-//     "url": "https://apidev.electripuremeter.com/get_chart1_A(A)_v2"
-//   },
-//   {
-//     "key": "ba",
-//     "label": "B(A)",
-//     "url": "https://apidev.electripuremeter.com/get_chart1_B(A)_v2"
-//   },
-//   {
-//     "key": "ca",
-//     "label": "C(A)",
-//     "url": "https://apidev.electripuremeter.com/get_chart1_C(A)_v2"
-//   },
-//   {
-//     "key": "na",
-//     "label": "N(A)",
-//     "url": "https://apidev.electripuremeter.com/get_chart1_N(A)_v2"
-//   },
-//   {
-//     "key": "av",
-//     "label": "A(V)",
-//     "url": "https://apidev.electripuremeter.com/get_chart1_A(V)_v2"
-//   },
-//   {
-//     "key": "bv",
-//     "label": "B(V)",
-//     "url": "https://apidev.electripuremeter.com/get_chart1_B(V)_v2"
-//   },
-//   {
-//     "key": "cv",
-//     "label": "C(V)",
-//     "url": "https://apidev.electripuremeter.com/get_chart1_C(V)_v2"
-//   },
-//   {
-//     "key": "gv",
-//     "label": "G(V)",
-//     "url": "https://apidev.electripuremeter.com/get_chart1_G(V)_v2"
-//   }
-// ];
-
-// const initStateShowData: string = JSON.stringify({
-//   "max": true,
-//   "min": true,
-//   "average": true
-// });
-
-// const dataMetadata: DataMetadata[] = [{
-//   "key": "max",
-//   "color": "#fc0303",
-//   "label": "Maximun"
-// }, {
-//   "key": "average",
-//   "color": "#000000",
-//   "label": "Average"
-// }, {
-//   "key": "min",
-//   "color": "#00ff3c",
-//   "label": "Minimum"
-// }];
-
-// function resultToData(result: any): string {
-//   return JSON.stringify({
-//     "x": result["TS_data"],
-//     "x_label": result["TS_data_label"],
-//     "timestamp": result["TS_unix"],
-//     "y": {
-//       "max": result["MAX_data"],
-//       "min": result["MIN_data"],
-//       "average": result["AVERAGE_data"]
-//     }
-//   });
-// }
-
-function generateInitStateData(metadata: GraphMetadata[]): any {
+function generateInitStateData(metadata: GraphMetadata[]): GroupDataGraphPowerLog  {
   let state: any = {}
   metadata.map((info: GraphMetadata) => {
     state[info.key] = initStateData;
@@ -133,7 +39,7 @@ function generateInitStateData(metadata: GraphMetadata[]): any {
   return state;
 }
 
-function generateInitStateColor(metadata: DataMetadata[]): any {
+function generateInitStateColor(metadata: DataMetadata[]): GroupColorDataPowerLog{
   let state: any = {}
   metadata.map((info: DataMetadata) => {
     state[info.key] = info.color;
@@ -141,7 +47,7 @@ function generateInitStateColor(metadata: DataMetadata[]): any {
   return state;
 }
 
-function generateInitStateShowData(metadata: DataMetadata[]): any {
+function generateInitStateShowData(metadata: DataMetadata[]): GroupShowDataPowerLog {
   let state: any = {}
   metadata.map((info: DataMetadata, index: number) => {
     state[info.key] = true;
@@ -149,7 +55,7 @@ function generateInitStateShowData(metadata: DataMetadata[]): any {
   return state;
 }
 
-function generateInitStateShowGraph(metadata: GraphMetadata[]): any {
+function generateInitStateShowGraph(metadata: GraphMetadata[]): GroupShowGraphPowerLog {
   let state: any = {}
   metadata.map((info: GraphMetadata, index: number) => {
     state[info.key] = index == 0;
@@ -157,8 +63,7 @@ function generateInitStateShowGraph(metadata: GraphMetadata[]): any {
   return state;
 }
 
-
-function generateInitStateLabelsGroups(metadata: DataMetadata[]): any {
+function generateInitStateLabelsGroups(metadata: DataMetadata[]): GroupShowGroupDataPowerLog {
   let state: any = {
 
   };
@@ -172,39 +77,32 @@ function generateInitStateLabelsGroups(metadata: DataMetadata[]): any {
   });
   return state;
 }
-// {
-//   "group": {
-//     "label01": {
-//       "keys": [],
-//       "show": true
-//     }
-//   }
-// }
 
-function PowerLogGraph ({ defaultMeterId, resultToData, dataMetadata, graphMetadata }: { graphMetadata: GraphMetadata[], defaultMeterId?: number, resultToData: (result: any) => string, dataMetadata: DataMetadata[] }) {
-  // get deviceId [Not editable]
-  let { meterId } = useParams();
-  let deviceId = defaultMeterId ?? parseInt(meterId!);
-
+function PowerLogGraph ({ deviceId, resultToData, dataMetadata, graphMetadata }: { deviceId: number,  resultToData: (result: any) => string, graphMetadata: GraphMetadata[], dataMetadata: DataMetadata[] }) {
   // Import dispatch [Not editable]
   const dispatch = useDispatch();
 
   // Create states by each graph
-
   const [rawData, setRawData] = useState(JSON.stringify(generateInitStateData(graphMetadata)));
-  const data = JSON.parse(rawData);
+  // Almacena en un diccionario la data de cada grafico
+  const data: GroupDataGraphPowerLog = JSON.parse(rawData);
   
   // Create state for show / hide elements [Not editable]
   const [rawShowCharts, setRawShowCharts] = useState(JSON.stringify(generateInitStateShowGraph(graphMetadata)));
   const [rawShowData, setRawShowData] = useState(JSON.stringify(generateInitStateShowData(dataMetadata)));
-  const [rawShowGroupData, setRawShowGroupData] = useState((dataMetadata.length > 0 && dataMetadata[0].hasOwnProperty("group"))? JSON.stringify(generateInitStateLabelsGroups(dataMetadata)) : "[]");
+  const [rawShowGroupData, setRawShowGroupData] = useState((dataMetadata.length > 0 && dataMetadata[0].hasOwnProperty("group"))? JSON.stringify(generateInitStateLabelsGroups(dataMetadata)) : "{}");
   const [showTooltip, setShowTootip] = useState(true);
   const [showLegends, setShowLegends] = useState(false);
-  const colors: any = generateInitStateColor(dataMetadata);
-  const showData: any = JSON.parse(rawShowData);
-  const showGroupData: { [key: string ]: { [key: string ]: { "keys": string[], "show": boolean } } } = JSON.parse(rawShowGroupData);
+  // Diccionario de colores
+  const colors: GroupColorDataPowerLog = generateInitStateColor(dataMetadata);
+  // Diccionario para guardar el estado show/hide de las lineas
+  const showData: GroupShowDataPowerLog = JSON.parse(rawShowData);
+  // Diccionario para guardar el estado show/hide de las lineas
+  const showGroupData: GroupShowGroupDataPowerLog = JSON.parse(rawShowGroupData);
+  // Diccionario para guardar el estado show/hide de los graficos
+  const showCharts: GroupShowGraphPowerLog = JSON.parse(rawShowCharts);
+  // Flag para saber se mostrara por grupos o no las lineas
   const isGroupData: boolean = Object.keys(showGroupData).length > 0;
-  const showCharts: any = JSON.parse(rawShowCharts);
 
   // state for the data range  [Not editable]
   const [startTimestampFilter, setStartTimestampFilter] = useState(0);
@@ -212,16 +110,16 @@ function PowerLogGraph ({ defaultMeterId, resultToData, dataMetadata, graphMetad
 
   // state for the Zoom [Not editable]
   const [rawZoomHistory, setRawZoomHistory] = useState("[]");
-  const zoomHistory: any = JSON.parse(rawZoomHistory);
+  const zoomHistory: ZoomPowerLog[] = JSON.parse(rawZoomHistory);
 
   const graphicsVisible: number =  Object.values(showCharts).filter(show => show).length;
 
-  // Toogle charts [Not editable]
+  // Toogle charts show/hide [Not editable]
   function toogleCharts(chart: string, show: boolean) {
     showCharts[chart] = show;
     setRawShowCharts(JSON.stringify(showCharts));
   }
-  // Toogle charts [Not editable]
+  // Toogle lines show/hide [Not editable]
   function toogleData(chart: string | string[], show: boolean) {
     // console.log(showData);
     if (typeof chart == "string")
@@ -233,7 +131,7 @@ function PowerLogGraph ({ defaultMeterId, resultToData, dataMetadata, graphMetad
     // console.log(showData);
     setRawShowData(JSON.stringify(showData));
   }
-
+  // Toogle lines show/hide by groups [Not editable]
   function toogleGroupData(group: string, label: string, keys: string[], checked: boolean) {
     
     
@@ -259,7 +157,6 @@ function PowerLogGraph ({ defaultMeterId, resultToData, dataMetadata, graphMetad
     showGroupData[group][label].show = checked;
     setRawShowGroupData(JSON.stringify(showGroupData));
   }
-
   // get the chart data and store it locally [Not editable]
   async function requestData(payload: GetChartData) {
     console.log(`From: ${new Date(payload.date_min! * 1000)} - To: ${new Date(payload.date_max! * 1000)}`);
@@ -279,14 +176,13 @@ function PowerLogGraph ({ defaultMeterId, resultToData, dataMetadata, graphMetad
         }));
         throw new Error("Problemas al obtener la data de los graficos.");
       };
-      data[info.key] = resultToData(response.data);
+      (data as any)[info.key] = resultToData(response.data);
     }));
     dispatch(setLoading({
       loading: false
     }));
     setRawData(JSON.stringify(data));
   }
-
   // On filter [Not editable]
   async function onFilter(start: Date | null, end: Date | null) {
     const dateMin: number | null = start != null ? toUnix(start.getTime()) : null;
@@ -357,7 +253,7 @@ function PowerLogGraph ({ defaultMeterId, resultToData, dataMetadata, graphMetad
     if (keys.length == 0) {
       return;
     }
-    const dataX = JSON.parse(data[keys[0]]);
+    const dataX = JSON.parse((data as any)[keys[0]]);
     const split = Math.ceil((dataX.timestamp.length / 4) / 2)
     const dateMin: number = dataX.timestamp[split - 1];
     const dateMax: number = dataX.timestamp[dataX.timestamp.length - split - 1];
@@ -397,6 +293,7 @@ function PowerLogGraph ({ defaultMeterId, resultToData, dataMetadata, graphMetad
   const [topMenu, setTopMenu] = useState(0);
   const [showMenu, setShowMenu] = useState(false);
   const containerRef = useRef(null);
+  // Open menu
   function handlerRight(e: any) {
     e = e || window.event;
     e.preventDefault()
@@ -408,6 +305,7 @@ function PowerLogGraph ({ defaultMeterId, resultToData, dataMetadata, graphMetad
     setShowMenu(true);
     return false;
   }
+  // Close menu
   function handlerClick(e: any) {
     if (showMenu) {
       setShowMenu(false);
@@ -415,26 +313,48 @@ function PowerLogGraph ({ defaultMeterId, resultToData, dataMetadata, graphMetad
   }
 
   return (<div className="relative h-full w-full">
+
+        {/* Controls and filters */}
         <div ref={containerGraph}>
+          {/* Controls */}
           <div className="flex justify-start flex-wrap md:flex-nowrap w-[100%]">
+
+            {/* Date control */}
             <div className="min-w-full sm:min-w-[250px]">
               <DateRangeControlCustom2 defaultStart={new Date(new Date().toDateString())} defaultEnd={new Date()} onChange={onFilter}/>
             </div>
+
+
             <Space classes="w-[10px] h-[10px]"/>
+
+            {/* Options control */}
             <div className="w-full sm:w-auto flex justify-center items-center">
-              <ZoomMenu records={Object.keys(data).length > 0 ? JSON.parse(data[Object.keys(data)[0]]).timestamp.length : 0 } zooms={zoomHistory.length} onChange={(type:TYPE_EVENTS_ZOOM, checked: boolean)=> {
-                if (type == TYPE_EVENTS_ZOOM.IN) zoomIn()
-                else if (type == TYPE_EVENTS_ZOOM.OUT) zoomOut()
-                else if (type == TYPE_EVENTS_ZOOM.RESET) resetZoom()  
-              }} />
+              <ZoomMenu
+                records={Object.keys(data).length > 0 ? JSON.parse((data as any)[Object.keys(data)[0]]).timestamp.length : 0 } // Cantidad de registros
+                zooms={zoomHistory.length} // Cantidad de zooms realizados
+                onChange={(type:TYPE_EVENTS_ZOOM, checked: boolean)=> {
+                  if (type == TYPE_EVENTS_ZOOM.IN) zoomIn()
+                  else if (type == TYPE_EVENTS_ZOOM.OUT) zoomOut()
+                  else if (type == TYPE_EVENTS_ZOOM.RESET) resetZoom()  
+                }} // Evento 
+              />
               <Space classes="w-[10px]" />
-              <EventMenu legend={showLegends} tooltip={showTooltip}  onChange={(type:TYPE_EVENTS_EVENT, checked: boolean)=> {
-                if (type == TYPE_EVENTS_EVENT.LEGENDS) setShowLegends(checked);
-                else if (type == TYPE_EVENTS_EVENT.TOOLTIP) setShowTootip(checked);
-              }} />
+              <EventMenu
+                legend={showLegends} // Flag para el checkbox show labels
+                tooltip={showTooltip} // Flas para el checkbox show tooltip
+                onChange={(type:TYPE_EVENTS_EVENT, checked: boolean)=> {
+                    if (type == TYPE_EVENTS_EVENT.LEGENDS) setShowLegends(checked);
+                    else if (type == TYPE_EVENTS_EVENT.TOOLTIP) setShowTootip(checked);
+                  }}// Evento
+                />
             </div>
+
           </div>
+
           <Space classes="w-[100%] h-[20px]"/>
+
+
+          {/* Filters */}
           <div className="flex justify-between flex-wrap w-[100%]">
             <div>
               <strong>
@@ -447,73 +367,102 @@ function PowerLogGraph ({ defaultMeterId, resultToData, dataMetadata, graphMetad
               </div>
             </div>
             { isGroupData? 
-            Object.keys(showGroupData).map((key: string, index: number) => {
-              return <div key={index}>
+                Object.keys(showGroupData).map((key: string, index: number) => {
+                  return <div key={index}>
+                    <strong>
+                      {key}
+                    </strong>
+                    <div className="flex justify-center items-center">
+                      <DataMenu metadata={Object.keys(showGroupData[key]).map((label: string)=> {
+                        return {
+                          key: showGroupData[key][label].keys.join("###"),
+                          label: label
+                        };
+                      })} selections={(()=> {
+                        let selected: any = {};
+                        Object.keys(showGroupData[key]).map((label: string)=> {
+                          selected[showGroupData[key][label].keys.join("###")] = showGroupData[key][label].show;
+                        })
+                        console.log(selected)
+                        return selected;
+                      })()} onChange={(info, checked)=> {
+                          toogleGroupData(key, info.label, info.key.split("###"), checked);
+                      }}/>
+                    </div>     
+                  </div>;
+                })
+              :<div>
                 <strong>
-                  {key}
+                  Display
                 </strong>
                 <div className="flex justify-center items-center">
-                  <DataMenu metadata={Object.keys(showGroupData[key]).map((label: string)=> {
-                    return {
-                      key: showGroupData[key][label].keys.join("###"),
-                      label: label
-                    };
-                  })} selections={(()=> {
-                    let selected: any = {};
-                    Object.keys(showGroupData[key]).map((label: string)=> {
-                      selected[showGroupData[key][label].keys.join("###")] = showGroupData[key][label].show;
-                    })
-                    console.log(selected)
-                    return selected;
-                  })()} onChange={(info, checked)=> {
-                      toogleGroupData(key, info.label, info.key.split("###"), checked);
-                  }}/>
+                    <DataMenu
+                    metadata={dataMetadata.map((data: DataMetadata)=> {
+                      return {
+                        key: data.key,
+                        label: data.label as string
+                      };
+                    })} // Lista para generar checkbox
+                    selections={showData} // Checkbox seleccionados
+                    onChange={(info, checked)=> {
+                      toogleData(info.key, checked);
+                    }} // Evento
+                    />
                 </div>     
-              </div>;
-            })
-            :<div>
-              <strong>
-                Display
-              </strong>
-              <div className="flex justify-center items-center">
-                  <DataMenu metadata={dataMetadata.map((data: DataMetadata)=> {
-                    return {
-                      key: data.key,
-                      label: data.label as string
-                    };
-                  })} selections={showData} onChange={(info, checked)=> {
-                    toogleData(info.key, checked);
-                  }}/>
-              </div>     
-            </div> }
+              </div>
+            }
           </div>
           <Space classes="w-[100%] h-[20px]"/>
         </div>
-        <div ref={containerRef} className="w-full flex justify-start flex-col absolute left-0 bottom-0 " style={{"height": `calc(100% - ${heightControl}px)`}} onClick={(e)=> {handlerClick(e)}} onContextMenu={(e)=> {handlerRight(e)}}>
-          { showMenu ? <div className="absolute bg-white p-[5px] shadow shadow-gray-50 border-[1px]" style={{"left": `${leftMenu}px`, "top": `${topMenu}px`}}>
-            <ul>
-              <li className="p-[5px] cursor-pointer" onClick={()=> {setShowTootip(!showTooltip)}}>View Cursor</li>
-              <li className="p-[5px] cursor-pointer" onClick={()=> {setShowLegends(!showLegends)}}>View Legend</li>
-              <li className="p-[5px] cursor-pointer" onClick={showOnlyMinMax}>View max/min values</li>
-            </ul>
-          </div>: ""}
-          { showLegends ? <div className="w-full flex justify-center flex-wrap" >
-                  {dataMetadata.map((info: any)=> {
-                      return (<div className="flex justify-center items-center mx-[10px]">
-                        <div className="w-[10px] h-[10px] mx-[5px]" style={{"backgroundColor": colors[info.key]}}></div>
-                        <strong>{info.label.toUpperCase()}</strong>
-                      </div>);
-                  })}
-          </div>: ""}
+
+        {/* Graphs */}
+        <div ref={containerRef}
+          style={{"height": `calc(100% - ${heightControl}px)`}} // Estilos dinamicos de la altura
+          onClick={(e)=> {handlerClick(e)}} // Agregar evento para cerrar menu
+          onContextMenu={(e)=> {handlerRight(e)}} // Agregar evento para abrir menu
+          className="w-full flex justify-start flex-col absolute left-0 bottom-0">
+            
+            { showMenu ?
+              <div className="absolute bg-white p-[5px] shadow shadow-gray-50 border-[1px]" style={{"left": `${leftMenu}px`, "top": `${topMenu}px`}}>
+                <ul>
+                  <li className="p-[5px] cursor-pointer" onClick={()=> {setShowTootip(!showTooltip)}}>View Cursor</li>
+                  <li className="p-[5px] cursor-pointer" onClick={()=> {setShowLegends(!showLegends)}}>View Legend</li>
+                  <li className="p-[5px] cursor-pointer" onClick={showOnlyMinMax}>View max/min values</li>
+                </ul>
+              </div> : "" }
+
+            { showLegends ?
+              <div className="w-full flex justify-center flex-wrap" >
+                    {dataMetadata.map((info: any)=> {
+                        return (<div className="flex justify-center items-center mx-[10px]">
+                          <div className="w-[10px] h-[10px] mx-[5px]" style={{"backgroundColor": colors[info.key]}}></div>
+                          <strong>{info.label.toUpperCase()}</strong>
+                        </div>);
+                    })}
+              </div> : "" }
           
-          {graphMetadata.map((info: GraphMetadata)=>{
-            return (<Fragment>
-              { showCharts[info.key] && data.hasOwnProperty(info.key) ? <div className={"w-full "} style={{"height": `${(100/ graphicsVisible)}%`}}>
-                <LineGraphSimple labels={JSON.parse(data[info.key]).x_label} showTooltip={showTooltip} showDatasetMap={showData} data={{"x": JSON.parse(data[info.key]).x, "y": JSON.parse(data[info.key]).y}} colors={colors} onZoom={(x1: any, x2: any) => { onZoom(x1, x2, JSON.parse(data[info.key])); }} title={info.label}/>
-              </div> : ""}
-            </Fragment>);
-          })}
+            {graphMetadata.map((info: GraphMetadata)=>{
+              return (<Fragment>
+                { showCharts[info.key] && data.hasOwnProperty(info.key) ?
+                  <div
+                    style={{"height": `${(100/ graphicsVisible)}%`}} // Altura dinamica de cada grafico
+                    className={"w-full"}>
+                      <LineGraphSimple
+                        labels={JSON.parse((data as any)[info.key]).x_label} // Lista de labels para el eje X (No son lo originales)
+                        showTooltip={showTooltip} // Flag show/hide de tooltip
+                        showDatasetMap={showData} // Flag show/hide de lines
+                        data={{"x": JSON.parse((data as any)[info.key]).x, "y": JSON.parse((data as any)[info.key]).y}} // Enviar data del eje X y Y (Original)
+                        colors={colors} // Enviar diccionario de colores
+                        onZoom={(x1: any, x2: any) => { onZoom(x1, x2, JSON.parse((data as any)[info.key])); }} // Evento de Zoom
+                        title={info.label} // Titulo del grafico
+                      />
+                  </div> : ""}
+              </Fragment>);
+            })}
+
         </div>
+
+
   </div>);
 }
 

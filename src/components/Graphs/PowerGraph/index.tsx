@@ -27,75 +27,58 @@ const graphMetadata: GraphMetadata[] = [
   }
 ];
 
-
 const dataMetadata: DataMetadata[] = [
-  // {
-  //   "key": "dpf_max",
-  //   "color": "#fc0303",
-  //   "label": ["DPF", "Maximun"],
-  //   "group": ["P. Uni", "Display"]
-  // }, {
-  //   "key": "dpf_average",
-  //   "color": "#000000",
-  //   "label": ["DPF", "Average"],
-  //   "group": ["P. Uni", "Display"]
-  // }, {
-  //   "key": "dpf_min",
-  //   "color": "#00ff3c",
-  //   "label": ["DPF", "Minimum"],
-  //   "group": ["P. Uni", "Display"]
-  // },
   {
     "key": "pf_max",
-    "color": "#fc0303",
+    "color": "#F21D11",
     "label": ["PF", "Maximun"],
     "group": ["P. Uni", "Display"]
   }, {
     "key": "pf_average",
-    "color": "#000000",
+    "color": "#79018A",
     "label": ["PF", "Average"],
     "group": ["P. Uni", "Display"]
   }, {
     "key": "pf_min",
-    "color": "#00ff3c",
+    "color": "#1A8008",
     "label": ["PF", "Minimum"],
     "group": ["P. Uni", "Display"]
   },
   {
     "key": "var_max",
-    "color": "#fc0303",
+    "color": "#F21D11",
     "label": ["VAR", "Maximun"],
     "group": ["P. Uni", "Display"]
   }, {
     "key": "var_average",
-    "color": "#000000",
+    "color": "#2D7FB8",
     "label": ["VAR", "Average"],
     "group": ["P. Uni", "Display"]
   }, {
     "key": "var_min",
-    "color": "#00ff3c",
+    "color": "#1A8008",
     "label": ["VAR", "Minimum"],
     "group": ["P. Uni", "Display"]
   },
   {
     "key": "va_max",
-    "color": "#fc0303",
+    "color": "#F21D11",
     "label": ["VA", "Maximun"],
     "group": ["P. Uni", "Display"]
   }, {
     "key": "va_average",
-    "color": "#000000",
+    "color": "#0E4440",
     "label": ["VA", "Average"],
     "group": ["P. Uni", "Display"]
   }, {
     "key": "va_min",
-    "color": "#00ff3c",
+    "color": "#1A8008",
     "label": ["VA", "Minimum"],
     "group": ["P. Uni", "Display"]
   },
   {
     "key": "w_max",
-    "color": "#fc0303",
+    "color": "#F21D11",
     "label": ["W", "Maximun"],
     "group": ["P. Uni", "Display"]
   }, {
@@ -105,7 +88,7 @@ const dataMetadata: DataMetadata[] = [
     "group": ["P. Uni", "Display"]
   }, {
     "key": "w_min",
-    "color": "#00ff3c",
+    "color": "#1A8008",
     "label": ["W", "Minimum"],
     "group": ["P. Uni", "Display"]
   }
@@ -140,12 +123,12 @@ function resultToData(result: any): string {
   });
 }
 
-
 function PowerGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
   // get deviceId [Not editable]
   let { meterId } = useParams();
   let deviceId = defaultMeterId ?? parseInt(meterId!);
-  return (<PowerLogGraph dataMetadata={dataMetadata} resultToData={resultToData} defaultMeterId={deviceId} graphMetadata={graphMetadata} />)
+  // Generate Graph
+  return (<PowerLogGraph dataMetadata={dataMetadata} resultToData={resultToData} deviceId={deviceId} graphMetadata={graphMetadata} />)
 }
 
 export default PowerGraph;
