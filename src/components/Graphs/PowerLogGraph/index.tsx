@@ -163,20 +163,31 @@ function PowerLogGraph ({ deviceId, resultToData, dataMetadata, graphMetadata }:
     dispatch(setLoading({
       loading: true
     }));
-    await Promise.all(graphMetadata.map(async (info: GraphMetadata, index: number)=> {
-      const response: ResponseGeneric = await ElectripureService.getDataGraph(info.url, payload);
-      if(!response.success) {
-        dispatch(showToast({
-            message: response.error!,
-            status: "error"
-        }));
-        dispatch(setLoading({
-          loading: false
-        }));
-        throw new Error("Problemas al obtener la data de los graficos.");
-      };
-      (data as any)[info.key] = resultToData(response.data);
-    }));
+    try {
+      await Promise.all(graphMetadata.map(async (info: GraphMetadata, index: number)=> {
+        const response: ResponseGeneric = await ElectripureService.getDataGraph(info.url, payload);
+        if(!response.success) {
+          dispatch(showToast({
+              message: response.error!,
+              status: "error"
+          }));
+          dispatch(setLoading({
+            loading: false
+          }));
+          throw new Error("Problemas al obtener la data de los graficos.");
+        };
+        (data as any)[info.key] = resultToData(response.data);
+      }));
+    } catch (e: any) {
+      dispatch(showToast({
+        "message": e.message,
+        "status": "error"
+      }));
+      dispatch(setLoading({
+        loading: false
+      }));
+      return;
+    }
     dispatch(setLoading({
       loading: false
     }));
