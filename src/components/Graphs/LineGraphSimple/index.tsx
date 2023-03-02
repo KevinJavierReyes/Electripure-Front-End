@@ -22,12 +22,19 @@ ChartJS.register(
 function generateScales(data: DataGraph) {
   let positions: string[] = ["left", "right"];
   let state: any = {};
+  let ticks: any = {
+    callback: function(value: any, index: number, ticks: any) {
+      // console.log(value);
+      return value;
+    }
+  };
   if (Array.isArray(data.y)) {
     data.y.forEach((data: DataGraph, index: number) => {
       state[`y${index + 1}`] ={
         type: "linear",
         display: true,
         position: positions[index],
+        ticks: ticks
       };
     });
   } else if (data.y.hasOwnProperty("pf_average")) {
@@ -36,11 +43,13 @@ function generateScales(data: DataGraph) {
         type: "linear",
         display: true,
         position: positions[0],
+        ticks: ticks
       },
       "y2": {
         type: "linear",
         display: true,
         position: positions[1],
+        ticks: ticks
       }
     }
   } else {
@@ -49,6 +58,7 @@ function generateScales(data: DataGraph) {
         type: "linear",
         display: true,
         position: positions[0],
+        ticks: ticks
       }
     }
   }

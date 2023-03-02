@@ -81,7 +81,6 @@ function generateInitStateLabelsGroups(metadata: DataMetadata[]): GroupShowGroup
 function PowerLogGraph ({ deviceId, resultToData, dataMetadata, graphMetadata }: { deviceId: number,  resultToData: (result: any) => string, graphMetadata: GraphMetadata[], dataMetadata: DataMetadata[] }) {
   // Import dispatch [Not editable]
   const dispatch = useDispatch();
-
   // Create states by each graph
   const [rawData, setRawData] = useState(JSON.stringify(generateInitStateData(graphMetadata)));
   // Almacena en un diccionario la data de cada grafico
@@ -434,9 +433,12 @@ function PowerLogGraph ({ deviceId, resultToData, dataMetadata, graphMetadata }:
             { showLegends ?
               <div className="w-full flex justify-center flex-wrap" >
                     {dataMetadata.map((info: any)=> {
+                        if (!showData[info.key]) {
+                          return "";
+                        }
                         return (<div className="flex justify-center items-center mx-[10px]">
                           <div className="w-[10px] h-[10px] mx-[5px]" style={{"backgroundColor": colors[info.key]}}></div>
-                          <strong>{info.label.toUpperCase()}</strong>
+                          <strong>{isGroupData ? info.label.join(" ").toUpperCase() : info.label.toUpperCase()}</strong>
                         </div>);
                     })}
               </div> : "" }
