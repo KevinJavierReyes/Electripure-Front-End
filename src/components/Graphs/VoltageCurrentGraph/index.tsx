@@ -80,7 +80,7 @@ function VoltageCurrentGraph ({ defaultMeterId }: { defaultMeterId?: number }) {
   // get deviceId [Not editable]
   let { meterId } = useParams();
   let deviceId = defaultMeterId ?? parseInt(meterId!);
-  return (<PowerLogGraph dataMetadata={dataMetadata} resultToData={resultToData} defaultMeterId={deviceId} graphMetadata={graphMetadata} />)
+  return (<PowerLogGraph dataMetadata={dataMetadata} resultToData={resultToData} deviceId={deviceId} graphMetadata={graphMetadata} />)
 }
 
 export default VoltageCurrentGraph;
