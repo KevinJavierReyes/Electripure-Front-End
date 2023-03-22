@@ -16,6 +16,7 @@ const initialState: ElectripureState = {
     "electripureJwt": null,
     "loginToken": null,
     "toastMessage": "",
+    "toastTitle": "",
     "toastType": "",
     "timestampTwoStepVerification": null,
     "users": "[]",
@@ -47,6 +48,7 @@ export const electripureReducer = (state: ElectripureState = initialState, actio
             return {
                 ...state,
                 "toastMessage": showToastPayload.message,
+                "toastTitle": showToastPayload.title ?? "",
                 "toastType": showToastPayload.status
             };
             break;

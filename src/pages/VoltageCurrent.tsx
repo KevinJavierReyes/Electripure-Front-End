@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { Outlet, useNavigate, useParams } from "react-router";
 import Tab from "../components/FormInput/Tab";
-import AmpsGraph from "../components/Graphs/AmpsGraph";
+import AmpsGraph from "../archive/components/Graphs/AmpsGraph";
 
 function VoltageCurrentPage () {
 

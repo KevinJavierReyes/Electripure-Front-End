@@ -1,5 +1,5 @@
-import { TYPE_EVENTS_EVENT } from "../../config/enum";
-import InputCheckboxIcon from "../FormInput/InputCheckboxIcon";
+import { TYPE_EVENTS_EVENT } from "../../../config/enum";
+import InputCheckboxIcon from "../../FormInput/InputCheckboxIcon";
 
 
 

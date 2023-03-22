@@ -1,7 +1,7 @@
 import { Fragment } from "react";
-import { INPUT_CONTROL_STATE } from "../../config/enum";
-import InputCheckbox from "../FormInput/InputCheckbox";
-import Space from "../Space";
+import { INPUT_CONTROL_STATE } from "../../../config/enum";
+import InputCheckbox from "../../FormInput/InputCheckbox";
+import Space from "../../Space";
   
 
 function GraphMenu({selections, metadata, onChange}: {selections: { [key: string]: boolean}, metadata: {

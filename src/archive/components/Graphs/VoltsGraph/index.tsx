@@ -1,14 +1,14 @@
 import { Fragment, useState } from "react";
 import { useDispatch } from "react-redux";
-import DateRangeControl from "../DateRangeControl";
-import { setLoading, showToast } from "../../../actions/electripure";
-import { timestampToDateLocal } from "../../../libs/dateformat";
-import LineGraph from "../LineGraph";
-import ElectripureService from "../../../service/electripure-service";
-import { ResponseGeneric } from "../../../interfaces/base-service";
+import DateRangeControl from "../../../../components/Graphs/DateRangeControl";
+import { setLoading, showToast } from "../../../../actions/electripure";
+import { timestampToDateLocal } from "../../../../libs/dateformat";
+import LineGraph from "../../../../components/Graphs/LineGraph";
+import ElectripureService from "../../../../service/electripure-service";
+import { ResponseGeneric } from "../../../../interfaces/base-service";
 import { useParams } from "react-router";
-import DateRangeControlAndPoint from "../DateRangeControlAndPoint";
-import { toDictTimestamps, toUnix } from "../../../utils/parser";
+import DateRangeControlAndPoint from "../../../../components/Graphs/DateRangeControlAndPoint";
+import { toDictTimestamps, toUnix } from "../../../../utils/parser";
 
 
 function VoltsGraph ({ defaultMeterId }: { defaultMeterId?: number }) {

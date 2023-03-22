@@ -18,10 +18,10 @@ import { ButtonPrimary } from "../../FormInput/Button";
 import DateRangeControlCustom from "../DateRangeControlCustom";
 import DateRangeControlCustom2 from "../DateRangeControlCustom2";
 import InputCheckboxIcon from "../../FormInput/InputCheckboxIcon";
-import ZoomMenu from "../../ZoomMenu";
-import EventMenu from "../../EventMenu";
-import GraphMenu from "../../GraphMenu";
-import DataMenu from "../../DataMenu";
+import ZoomMenu from "../ZoomMenu";
+import EventMenu from "../EventMenu";
+import GraphMenu from "../GraphMenu";
+import DataMenu from "../DataMenu";
 import { DataMetadata, GraphMetadata, GroupColorDataPowerLog, GroupDataGraphPowerLog, GroupShowDataPowerLog, GroupShowGraphPowerLog, GroupShowGroupDataPowerLog, ZoomPowerLog } from "../../../interfaces/graph";
 
 

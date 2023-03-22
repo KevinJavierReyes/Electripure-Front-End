@@ -1,5 +1,5 @@
-import { TYPE_EVENTS_ZOOM } from "../../config/enum";
-import InputCheckboxIcon from "../FormInput/InputCheckboxIcon";
+import { TYPE_EVENTS_ZOOM } from "../../../config/enum";
+import InputCheckboxIcon from "../../FormInput/InputCheckboxIcon";
 
 
 const minRecords = 100;

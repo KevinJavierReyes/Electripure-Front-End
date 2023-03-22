@@ -11,20 +11,38 @@ function Toast () {
     const dispatch = useDispatch();
 
     const toastMessage: string = useSelector((state: ElectripureState) => state.toastMessage);
+    const toastTitle: string = useSelector((state: ElectripureState) => state.toastTitle);
     const toastType: string = useSelector((state: ElectripureState) => state.toastType);
 
     useEffect(() => {
-        if (toastMessage != "") {
-            toast(toastMessage, {
+        if (toastMessage != "" || toastTitle != "") {
+            toast(<div>
+                <strong>
+                    {toastTitle}
+                </strong>
+                <p>
+                    {toastMessage}
+                </p>
+            </div>, {
                 "type": (toastType as TypeOptions),
                 "position": "bottom-right"
             });
             dispatch(showToast({
+                "title": "",
                 "message": "",
                 "status": ""
             }))
         }
     }, [toastMessage])
+
+    // Forcar dispatch a Toast
+    // useEffect(() => {
+    //     dispatch(showToast({
+    //         "title": "Title",
+    //         "message": "Message",
+    //         "status": "warning"
+    //     }))
+    // }, []);
 
     return (<ToastContainer/>);
 

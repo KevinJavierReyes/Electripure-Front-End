@@ -19,24 +19,11 @@ import CompanyDetails from "../pages/CompanyDetails"
 import UserDetails from "../pages/UserDetails"
 import AmpsVoltsPage from "../pages/AmpsVoltsPage";
 import DashboardPage from "../pages/DashboardPage";
-import AmpsGraph from "../components/Graphs/AmpsGraph";
-import VoltsGraph from "../components/Graphs/VoltsGraph";
+import AmpsGraph from "../archive/components/Graphs/AmpsGraph";
+import VoltsGraph from "../archive/components/Graphs/VoltsGraph";
 import PowerPage from "../pages/PowerPage";
-import PowerActiveGraph from "../components/Graphs/PowerActiveGraph";
-import PowerApparent from "../components/Graphs/PowerApparent";
-import PowerLine1 from "../components/Graphs/PowerLine1";
-import PowerLine2 from "../components/Graphs/PowerLine2";
-import PowerLine3 from "../components/Graphs/PowerLine3";
-import PowerReactive from "../components/Graphs/PowerReactive";
-import PowerFactor from "../components/Graphs/PowerFactor";
 import MeterPage from "../pages/MeterPage";
 import HarmonicPage from "../pages/HarmonicPage";
-import HarmonicAmpLine1 from "../components/Graphs/HarmonicAmpLine1";
-import HarmonicAmpLine2 from "../components/Graphs/HarmonicAmpLine2";
-import HarmonicAmpLine3 from "../components/Graphs/HarmonicAmpLine3";
-import HarmonicVoltLine1 from "../components/Graphs/HarmonicVoltLine1";
-import HarmonicVoltLine2 from "../components/Graphs/HarmonicVoltLine2";
-import HarmonicVoltLine3 from "../components/Graphs/HarmonicVoltLine3";
 import DeviceListPage from "../pages/DeviceListPage"
 import DeviceDetails from "../pages/DeviceDetails" 
 import VoltageCurrentGraph from "../components/Graphs/VoltageCurrentGraph";
@@ -48,23 +35,23 @@ import FirebaseNotifications from "../components/FirebaseNotifications";
 import { useFirebaseApp } from "reactfire";
 import { FirebaseApp } from "firebase/app";
 
-async function generateToken(messagingInstance: Messaging) {
-  const supported = await isSupported();
-  if (!supported) {
-    console.log("Messaging not support.");
-    return;
-  }
-  const token: string = await getToken(messagingInstance, { "vapidKey": "BN2CaREzbO05UibxwJjmeXz6HKDdHsjKbh2oBW6fLbr5q00_TlHBZm7JaTF0YKtoQdmSV7qRo2V338qUMTeWVpQ" });
-  console.log("Firebase Token", token);
-}
+// async function generateToken(messagingInstance: Messaging) {
+//   const supported = await isSupported();
+//   if (!supported) {
+//     console.log("Messaging not support.");
+//     return;
+//   }
+//   const token: string = await getToken(messagingInstance, { "vapidKey": "BN2CaREzbO05UibxwJjmeXz6HKDdHsjKbh2oBW6fLbr5q00_TlHBZm7JaTF0YKtoQdmSV7qRo2V338qUMTeWVpQ" });
+//   console.log("Firebase Token", token);
+// }
 
 const AppRouter = () => {
 
-  const firebaseApp: FirebaseApp = useFirebaseApp();
-  const messagingInstance: Messaging = getMessaging(firebaseApp);
-  useEffect(() => {
-    generateToken(messagingInstance);
-  });
+  // const firebaseApp: FirebaseApp = useFirebaseApp();
+  // const messagingInstance: Messaging = getMessaging(firebaseApp);
+  // useEffect(() => {
+  //   generateToken(messagingInstance);
+  // });
 
   return (
     <Fragment>
@@ -81,7 +68,6 @@ const AppRouter = () => {
           <Route path="/confirm/:token/step/2" element={<ConfirmEmailPhonePage />} />
           <Route path="/confirm/:token/step/3" element={<ConfirmCaptchaPage />}  />
           <Route path="/confirm/:token/step/4" element={<CreateBackupContactsPage />}  />
-          {/* <Route path="/confirm/:token/step/4" element={<IsAuthenticated><CreateBackupContactsPage /></IsAuthenticated>}  /> */}
 
           {/* Reset password */}
           <Route path="/reset" element={<RequestResetPasswordPage />} />
@@ -98,11 +84,11 @@ const AppRouter = () => {
               {/* <Route path="site/:siteId">
                 <Route path="mdp/:siteId"> */}
                   <Route path="meter/:meterId" element={<MeterPage />}>
-                    <Route path="apmsvolts" element={<AmpsVoltsPage />}>
+                    {/* <Route path="apmsvolts" element={<AmpsVoltsPage />}>
                       <Route path="amps" element={<AmpsGraph />} />
                       <Route path="volts" element={<VoltsGraph />} />
                       <Route path="*" element={<div></div>} />
-                    </Route>
+                    </Route> */}
                     <Route path="voltagecurrent" element={<VoltageCurrentPage />}>
                       <Route path="*" element={<VoltageCurrentGraph />} />
                     </Route>
@@ -140,7 +126,6 @@ const AppRouter = () => {
 
           {/* Else */}
           <Route path="*" element={<Navigate to="/login"/>} />
-          {/* <Route path="*" element={<label className="mx-auto">No existe la ruta especificada</label>} /> */}
 
         </Routes>
       </HashRouter>

@@ -10,7 +10,9 @@ export interface ElectripureState {
     passwordUser: string;
     // Login
     electripureJwt: string | null;
+    // Toast
     toastMessage: string;
+    toastTitle: string;
     toastType: "success" | "error" | "warning" | "";
     timestampTwoStepVerification: number | null;
     users: string;
