@@ -9,7 +9,7 @@ export interface ActionNotification {
 
 export interface ShowToastPayload {
     message: string;
-    status: "success" | "error" | "warning" | "";
+    status: "success" | "error" | "warning" | "" | any;
 }
 
 export interface SetLoadingPayload {

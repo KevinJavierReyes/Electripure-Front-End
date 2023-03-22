@@ -30,65 +30,65 @@ const graphMetadata: GraphMetadata[] = [
 const dataMetadata: DataMetadata[] = [
   {
     "key": "pf_max",
-    "color": "#F21D11",
+    "color": "#13007F",
     "label": ["PF", "Maximun"],
     "group": ["P. Uni", "Display"]
   }, {
     "key": "pf_average",
-    "color": "#79018A",
+    "color": "#387CFD",
     "label": ["PF", "Average"],
     "group": ["P. Uni", "Display"]
   }, {
     "key": "pf_min",
-    "color": "#1A8008",
+    "color": "#8FFEFE",
     "label": ["PF", "Minimum"],
     "group": ["P. Uni", "Display"]
   },
   {
     "key": "var_max",
-    "color": "#F21D11",
+    "color": "#C8140D",
     "label": ["VAR", "Maximun"],
     "group": ["P. Uni", "Display"]
   }, {
     "key": "var_average",
-    "color": "#2D7FB8",
+    "color": "#F6221B",
     "label": ["VAR", "Average"],
     "group": ["P. Uni", "Display"]
   }, {
     "key": "var_min",
-    "color": "#1A8008",
+    "color": "#F78282",
     "label": ["VAR", "Minimum"],
     "group": ["P. Uni", "Display"]
   },
   {
     "key": "va_max",
-    "color": "#F21D11",
+    "color": "#7C4106",
     "label": ["VA", "Maximun"],
     "group": ["P. Uni", "Display"]
   }, {
     "key": "va_average",
-    "color": "#0E4440",
+    "color": "#F78216",
     "label": ["VA", "Average"],
     "group": ["P. Uni", "Display"]
   }, {
     "key": "va_min",
-    "color": "#1A8008",
+    "color": "#FCFF23",
     "label": ["VA", "Minimum"],
     "group": ["P. Uni", "Display"]
   },
   {
     "key": "w_max",
-    "color": "#F21D11",
+    "color": "#239D0C",
     "label": ["W", "Maximun"],
     "group": ["P. Uni", "Display"]
   }, {
     "key": "w_average",
-    "color": "#000000",
+    "color": "#3FFD1E",
     "label": ["W", "Average"],
     "group": ["P. Uni", "Display"]
   }, {
     "key": "w_min",
-    "color": "#1A8008",
+    "color": "#8BFF83",
     "label": ["W", "Minimum"],
     "group": ["P. Uni", "Display"]
   }
