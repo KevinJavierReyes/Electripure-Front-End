@@ -4,8 +4,9 @@ import { INPUT_CONTROL_STATE } from "../../../config/enum";
 
 
 
-function InputPhoto({ name, placeholder, onChange, state, message } : { state: INPUT_CONTROL_STATE, message: string, name: string, placeholder:string, onChange : ({base64, size}:{base64: string, size: number}) => void}) {
+function InputPhoto({ name, placeholder, onChange, state, message, src } : { src: string, state: INPUT_CONTROL_STATE, message: string, name: string, placeholder:string, onChange : ({base64, size}:{base64: string, size: number}) => void}) {
 
+    // const [srcImage, setSrcImage] = useState(src);
     const [image, setImage] = useState("");
     const [size, setSize] = useState(0);
 
@@ -34,7 +35,7 @@ function InputPhoto({ name, placeholder, onChange, state, message } : { state: I
         <div className="w-full h-full">
             <div className="w-full h-full min-h-[80px] relative overflow-hidden">
                 <div className={"bg-color-secondary  flex justify-center items-center rounded-lg w-full h-full absolute top-0 left-0 " + (state === INPUT_CONTROL_STATE.OK ? "border-color-success color-success" : state === INPUT_CONTROL_STATE.ERROR ? "border-color-error color-error" : "border-color-black-light color-black")}>
-                    { image ? <img src={image} className="max-h-full max-w-full" /> : <p className="color-white f-bold text-base">{placeholder}</p> }
+                    { src ? <img src={src} className="max-h-full max-w-full" /> : <p className="color-white f-bold text-base">{placeholder}</p> }
                     <div className="bg-color-black-opacity absolute bottom-0 right-0 w-[65px] h-[65px] flex items-center justify-center rounded-tl-lg rounded-br-lg">
                         <div>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 fill-white">

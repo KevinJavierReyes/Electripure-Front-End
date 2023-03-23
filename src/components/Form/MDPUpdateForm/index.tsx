@@ -63,7 +63,7 @@ function MDPUpdateForm({onSubmit, siteId,  mdpId}: { onSubmit: (data: UpdateMDPD
             MDP: MDPControl.value,
             switchgear: switchgearControl.value,
             transformer: transformerControl.value
-            })
+        })
     }
 
 

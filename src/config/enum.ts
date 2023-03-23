@@ -63,5 +63,3 @@ export enum TYPE_EVENTS_EVENT {
     LEGENDS = 1,
     TOOLTIP = 2
 }
-  
-  

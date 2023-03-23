@@ -107,16 +107,15 @@ export interface SiteDetailDataForm {
 
 export interface SiteUpdateDataForm {
     site_id: number;
-    id_image: string;
+    logo_id: string;
     name: string;
     address: string;
     address2: string;
     city: string;
     state: string;
     zip: string;
-    image: string;
     payment: string;
-    schematic: string;
+    schematic_id: string;
 }
 
 export interface MDPDataForm {
