@@ -20,7 +20,7 @@ const SiteUpdateForm = ({onSubmit, siteId}: { onSubmit: (data: SiteUpdateDataFor
     const dispatch = useDispatch();
     const company = JSON.parse(useSelector((state: ElectripureState) => state.companyDetails));
     const site = company.sites.filter((element:any)=> element.id === siteId)[0];
-    console.log("Site", site)
+    // console.log("Site", site)
     // Upload images
     const [logoId, setLogoId] = useState(site.id_image);
     const [schematicId, setSchematicId] = useState(site.id_esquematico);
