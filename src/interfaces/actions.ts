@@ -1,3 +1,4 @@
+import { Messaging } from "firebase/messaging";
 import { TASK_STATE } from "../config/enum";
 import { AmpsDataEntity, CompanyEntity, CompanyRowEntity, GlobalCompanyEntity, UploadedFileEntity, UserEntity, VoltsDataEntity } from "./entities";
 
@@ -11,6 +12,14 @@ export interface ShowToastPayload {
     message: string;
     title?: string;
     status: "success" | "error" | "warning" | "" | any;
+}
+
+export interface SetFCMTokenPayload {
+    token: string;
+}
+
+export interface SetRememberTokenPayload {
+    token: string;
 }
 
 export interface SetLoadingPayload {
@@ -64,6 +73,8 @@ export interface SetPasswordUserPayload {
 export interface LoginPayload {
     email: string;
     password: string;
+    remember: boolean;
+    rememberToken: string | null;
 }
 
 export interface SendVerificationEmailPayload {
@@ -256,4 +267,12 @@ export interface sendUploadFileDataPayload{
     date_from: string;
     date_to: string;
     id_file: number;
+}
+
+export interface GenerateFCMTokenPayload  {
+    messaging: Messaging
+}
+
+export interface SaveRememberTokenPayload  {
+    token: string;
 }

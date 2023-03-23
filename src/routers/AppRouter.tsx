@@ -30,28 +30,10 @@ import VoltageCurrentGraph from "../components/Graphs/VoltageCurrentGraph";
 import VoltageCurrentPage from "../pages/VoltageCurrent";
 import HarmonicGraph from "../components/Graphs/HarmonicGraph";
 import PowerGraph from "../components/Graphs/PowerGraph";
-import { Messaging, getMessaging, getToken, isSupported } from "firebase/messaging";
 import FirebaseNotifications from "../components/FirebaseNotifications";
-import { useFirebaseApp } from "reactfire";
-import { FirebaseApp } from "firebase/app";
 
-// async function generateToken(messagingInstance: Messaging) {
-//   const supported = await isSupported();
-//   if (!supported) {
-//     console.log("Messaging not support.");
-//     return;
-//   }
-//   const token: string = await getToken(messagingInstance, { "vapidKey": "BN2CaREzbO05UibxwJjmeXz6HKDdHsjKbh2oBW6fLbr5q00_TlHBZm7JaTF0YKtoQdmSV7qRo2V338qUMTeWVpQ" });
-//   console.log("Firebase Token", token);
-// }
 
 const AppRouter = () => {
-
-  // const firebaseApp: FirebaseApp = useFirebaseApp();
-  // const messagingInstance: Messaging = getMessaging(firebaseApp);
-  // useEffect(() => {
-  //   generateToken(messagingInstance);
-  // });
 
   return (
     <Fragment>

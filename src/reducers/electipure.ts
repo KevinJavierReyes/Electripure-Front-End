@@ -2,19 +2,21 @@ import { SET_LOADING, SET_LOGIN_TOKEN, SET_TIMESTAMP_TWO_STEP_VERIFICATION,
 SHOW_TOAST, SET_JWT, SET_USERS, SET_PASSWORD_TOKEN, SET_PASSWORD_USER,
 SET_COMPANIES, ADD_TASK, SET_GLOBAL_COMPANIES, SET_CURRENT_USER,
 SET_COMPANIES_TABLE, SET_VOLTS_DATA, SET_AMPS_DATA, FILTER_VOLTS_DATA,
-FILTER_AMPS_DATA, SET_COMPANY_DETAIL, SET_DEVICES_TABLE, SET_UPLOADED_FILES } from "../actions/types";
+FILTER_AMPS_DATA, SET_COMPANY_DETAIL, SET_DEVICES_TABLE, SET_UPLOADED_FILES, GENERATE_FCMTOKEN, SET_FCMTOKEN, SET_REMEMBERTOKEN } from "../actions/types";
 import { ActionNotification, SetJwtPayload, SetLoadingPayload,
 SetLoginTokenPayload, SetPasswordTokenPayload, SetPasswordUserPayload,
 SetTimestampTwoStepVerificationPayload, SetUsersPayload, ShowToastPayload,
 SetCompaniesPayload, AddTaskPayload, SetGlobalCompaniesPayload,
 SetCurrentUserPayload, SetCompaniesTablePayload, SetAmpsDataPayload,
 SetVoltsDataPayload, FilterVoltsDataPayload, FilterAmpsDataPayload,
-SetCompanyDetailPayload, SetDevicesTablePayload, SetUploadedFilePayload } from "../interfaces/actions";
+SetCompanyDetailPayload, SetDevicesTablePayload, SetUploadedFilePayload, SetFCMTokenPayload, SetRememberTokenPayload } from "../interfaces/actions";
 import { ElectripureState } from "../interfaces/reducers";
 const initialState: ElectripureState = {
     "loading": false,
     "electripureJwt": null,
     "loginToken": null,
+    "rememberToken": null,
+    "fcmToken": null,
     "toastMessage": "",
     "toastTitle": "",
     "toastType": "",
@@ -42,6 +44,12 @@ export const electripureReducer = (state: ElectripureState = initialState, actio
     switch (action.type) {
         case SET_LOADING:
             return {...state, "loading": (action.payload as SetLoadingPayload).loading};
+            break;
+        case SET_FCMTOKEN:
+            return {...state, "fcmToken": (action.payload as SetFCMTokenPayload).token};
+            break;
+        case SET_REMEMBERTOKEN:
+            return {...state, "rememberToken": (action.payload as SetRememberTokenPayload   ).token};
             break;
         case SHOW_TOAST:
             let showToastPayload: ShowToastPayload = action.payload as ShowToastPayload;

@@ -13,7 +13,7 @@ import { ResponseGeneric } from "../interfaces/base-service";
 export default class ElectripureService extends BaseService {
 
   static async login(payload: LoginRequest): Promise<ResponseGeneric> {
-    const url = `${environment.ELECTRIPURE_ENDPOINT}/login?${this.jsonToQueryParams(payload)}`;
+    const url = `${environment.ELECTRIPURE_ENDPOINT}/login`;
     const response = await this.requestPost(url, payload);
     return response;
   }

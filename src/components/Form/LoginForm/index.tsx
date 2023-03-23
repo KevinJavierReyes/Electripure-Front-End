@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { INPUT_CONTROL_STATE, TYPE_SPACE } from "../../../config/enum";
 import { LoginDataForm } from "../../../interfaces/form";
 import { InputControl } from "../../../interfaces/form-control";
@@ -9,11 +9,29 @@ import InputPassword from "../../FormInput/InputPassword";
 import InputText from "../../FormInput/InputText";
 import Title from "../../FormInput/Title";
 import Space from "../../Space";
+import { useDispatch, useSelector } from "react-redux";
+import { ElectripureState } from "../../../interfaces/reducers";
+import { recoveryRememberToken } from "../../../actions/electripure";
 
 
 function LoginForm({ onSubmit, forgotPassword}: { onSubmit: (data: LoginDataForm) => void, forgotPassword: () => void}) {
 
-    const [remember, setRemember ] = useState(false);
+    const [remember, setRemember] = useState(false);
+    const dispatch = useDispatch();
+    const rememberToken: string|null = useSelector((state: ElectripureState) => state.rememberToken);
+
+    useEffect(()=> {
+        console.log("Remember Token", rememberToken);
+        if (rememberToken) {
+            setRemember(true);
+        }
+    }, [rememberToken]);
+
+    useEffect(()=> {
+        dispatch(recoveryRememberToken({}));
+    }, []);
+   
+  
     
     const [passwordControl, setPasswordControl] = useState({
         "value": "",
@@ -32,7 +50,8 @@ function LoginForm({ onSubmit, forgotPassword}: { onSubmit: (data: LoginDataForm
             onSubmit({
                 "email": emailControl.value,
                 "password": passwordControl.value,
-                "remember": remember
+                "remember": remember,
+                "rememberToken": rememberToken
             });
         }
     }
@@ -64,15 +83,16 @@ function LoginForm({ onSubmit, forgotPassword}: { onSubmit: (data: LoginDataForm
             }}
         />
         <Space type={TYPE_SPACE.INPUT_DISTANCE} />
-        {/*<InputCheckbox
+        <InputCheckbox
             state={INPUT_CONTROL_STATE.DEFAULT}
             message={""}
-            name="rememberpassword"
-            label="Remember password"
+            defaultChecked={remember}
+            name="rememberdevice"
+            label="Remember Device"
             onChange={(checked: boolean)=> {
                 setRemember(checked);
             }}
-        /> */}
+        />
         <Space type={TYPE_SPACE.INPUT_DISTANCE} />
         <div className={"justify-center items-center flex"}>
             <ButtonLink onClick={forgotPassword}>
@@ -83,7 +103,6 @@ function LoginForm({ onSubmit, forgotPassword}: { onSubmit: (data: LoginDataForm
         <ButtonPrimary onClick={submit}>
             Log in
         </ButtonPrimary>
-        {/* <Button title="Log in" classes={buttonPrimaryStyle + " mt-[20px] mb-[50px]"} click={} /> */}
 
         {/* <div className={"justify-center items-center mt-[0px] flex"}>
             <span className="color-black-dark text-sm">Don’t have an account?</span>

@@ -13,12 +13,12 @@ SetJwtPayload, SetLoadingPayload, SetLoginTokenPayload,
 SetPasswordTokenPayload, SetPasswordUserPayload,
 SetTimestampTwoStepVerificationPayload, SetUsersPayload, SetVoltsDataPayload,
 ShowToastPayload, SendActivateDeactivateCompanyPayload,
-SetCompanyDetailPayload, ValidateUpdateUserPayload, SetDevicesTablePayload, SendGetUploadedFilesPayload, SetUploadedFilePayload } from "../interfaces/actions";
+SetCompanyDetailPayload, ValidateUpdateUserPayload, SetDevicesTablePayload, SendGetUploadedFilesPayload, SetUploadedFilePayload, GenerateFCMTokenPayload, SetRememberTokenPayload, SetFCMTokenPayload, SaveRememberTokenPayload } from "../interfaces/actions";
 import { ADD_TASK, FILTER_AMPS_DATA, FILTER_VOLTS_DATA, LOGIN, SET_AMPS_DATA,
 SET_COMPANIES, SET_COMPANIES_TABLE, SET_COMPANY_DETAIL, SET_CURRENT_USER,
 SET_GLOBAL_COMPANIES, SET_JWT, SET_LOADING, SET_LOGIN_TOKEN,
 SET_PASSWORD_TOKEN, SET_PASSWORD_USER, SET_TIMESTAMP_TWO_STEP_VERIFICATION,
-SET_USERS, SET_VOLTS_DATA, SHOW_TOAST, SET_DEVICES_TABLE, SET_UPLOADED_FILES } from "./types";
+SET_USERS, SET_VOLTS_DATA, SHOW_TOAST, SET_DEVICES_TABLE, SET_UPLOADED_FILES, GENERATE_FCMTOKEN, SET_REMEMBERTOKEN, SET_FCMTOKEN } from "./types";
 import ElectripureService from "../service/electripure-service";
 import { ResponseGeneric } from "../interfaces/base-service";
 
@@ -29,6 +29,19 @@ import { AddContactRequest } from "../interfaces/electripure-service";
 import CompanyMapper from "../mappers/company-mapper";
 import { TASK_STATE } from "../config/enum";
 import FileMapper from "../mappers/file-mapper";
+import { generateToken } from "../utils/firebase";
+import { deleteCookie, getCookie, setCookie } from "../libs/cookie";
+import { parseJwt } from "../libs/jwt";
+
+export const setFcmToken = (payload: SetFCMTokenPayload): ActionNotification => ({
+    "type": SET_FCMTOKEN,
+    "payload": payload
+});
+
+export const setRememberToken = (payload: SetRememberTokenPayload): ActionNotification => ({
+    "type": SET_REMEMBERTOKEN,
+    "payload": payload
+});
 
 export const setLoading = (payload: SetLoadingPayload): ActionNotification => ({
     "type": SET_LOADING,
@@ -134,7 +147,12 @@ export const login = (payload: LoginPayload): any => (async (dispatch: any) => {
     dispatch(setLoading({
         loading: true
     }));
-    const response: ResponseGeneric = await ElectripureService.login(payload);
+    const response: ResponseGeneric = await ElectripureService.login({
+        "email": payload.email,
+        "password": payload.password,
+        "token2": payload.rememberToken,
+        "flag_remember": payload.remember
+    });
     dispatch(setLoading({
         loading: false
     }));
@@ -144,6 +162,22 @@ export const login = (payload: LoginPayload): any => (async (dispatch: any) => {
             status: "error"
         }))
     }
+    if(response.data.validate_token) {
+        const jwt: string = response.data.JWT;
+        const session: any = parseJwt(jwt);
+        localStorage.setItem("electripureJwt", jwt)
+        localStorage.setItem("current_user", session.fullname);
+        localStorage.setItem("user_id", session.id);
+        dispatch(setJwt({
+            "token": jwt
+        }));
+        dispatch(setCurrentUser({
+            "fullname": session.fullname, 
+            "id": session.id
+        }));
+        return;
+    }
+    deleteCookie("rememberToken");
     if(response.data.password_correct !== "True") {
         return dispatch(showToast({
             message: "Credentials invalid.",
@@ -220,6 +254,16 @@ export const sendVerificationCode = (payload: SendVerificationCodePayload): any 
             status: "error"
         }))
     }
+    
+    if (response.data.token2) {
+        dispatch(saveRememberToken({
+            "token": response.data.token2
+        }))
+    }
+
+    dispatch(saveRememberToken({
+        "token": response.data.token2
+    }))
     dispatch(setJwt({
         token: `${response.data['token']}`
     }));
@@ -1208,4 +1252,30 @@ export const sendGetUploadedFiles = (payload: SendGetUploadedFilesPayload): any 
     }
     const uploadedFiles: UploadedFileEntity[] = FileMapper.toUploadedFiles(response.data.table_files);
     dispatch(setUploadedFile({uploadedFiles: uploadedFiles}));
+});
+
+
+export const generateFCMToken = (payload: GenerateFCMTokenPayload): any => (async (dispatch: any) => {
+    const token = await generateToken(payload.messaging);
+    if (token) {
+        dispatch(setFcmToken({
+            "token": token
+        }));
+    }
+});
+
+export const recoveryRememberToken = (payload: any): any => (async (dispatch: any) => {
+    const value : string | null = getCookie("rememberToken");
+    if (value != null) {
+        dispatch(setRememberToken({
+            "token": value
+        }));
+    }
+});
+
+export const saveRememberToken = (payload: SaveRememberTokenPayload): any => (async (dispatch: any) => {
+    setCookie("rememberToken", payload.token);
+    dispatch(setRememberToken({
+        "token": payload.token
+    }));
 });

@@ -5,6 +5,8 @@ export interface ElectripureState {
 
     loading: boolean;
     loginToken: string | null;
+    rememberToken: string | null;
+    fcmToken: string | null;
     // Create password
     passwordToken: string | null;
     passwordUser: string;

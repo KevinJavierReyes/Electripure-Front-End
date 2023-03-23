@@ -40,6 +40,7 @@ export interface LoginDataForm {
     email: string;
     password: string;
     remember: boolean;
+    rememberToken: string | null;
 }
 
 export interface RequestResetPasswordDataForm {

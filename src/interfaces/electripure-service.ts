@@ -36,6 +36,8 @@ export interface ToogleUserStateRequest {
 export interface LoginRequest {
     email: string;
     password: string;
+    token2?: string | null;
+    flag_remember?: boolean;
 }
 
 export interface ForgotPasswordRequest {
