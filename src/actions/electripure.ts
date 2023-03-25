@@ -18,7 +18,7 @@ import { ADD_TASK, FILTER_AMPS_DATA, FILTER_VOLTS_DATA, LOGIN, SET_AMPS_DATA,
 SET_COMPANIES, SET_COMPANIES_TABLE, SET_COMPANY_DETAIL, SET_CURRENT_USER,
 SET_GLOBAL_COMPANIES, SET_JWT, SET_LOADING, SET_LOGIN_TOKEN,
 SET_PASSWORD_TOKEN, SET_PASSWORD_USER, SET_TIMESTAMP_TWO_STEP_VERIFICATION,
-SET_USERS, SET_VOLTS_DATA, SHOW_TOAST, SET_DEVICES_TABLE, SET_UPLOADED_FILES, GENERATE_FCMTOKEN, SET_REMEMBERTOKEN, SET_FCMTOKEN } from "./types";
+SET_USERS, SET_VOLTS_DATA, SHOW_TOAST, SET_DEVICES_TABLE, SET_UPLOADED_FILES, SET_REMEMBERTOKEN, SET_FCMTOKEN } from "./types";
 import ElectripureService from "../service/electripure-service";
 import { ResponseGeneric } from "../interfaces/base-service";
 
@@ -1261,6 +1261,10 @@ export const generateFCMToken = (payload: GenerateFCMTokenPayload): any => (asyn
         dispatch(setFcmToken({
             "token": token
         }));
+        const response: ResponseGeneric = await await ElectripureService.saveFCMToken({
+            "fcmtoken": token
+        });
+        // console.log("FCM TOKEN RESPONSE", response);
     }
 });
 

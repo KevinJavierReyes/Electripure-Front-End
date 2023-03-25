@@ -17,10 +17,7 @@ import CreateBackupContactsPage from "../pages/CreatePasswordStepper/CreateBacku
 import CompanyListPage from "../pages/CompanyListPage";
 import CompanyDetails from "../pages/CompanyDetails"
 import UserDetails from "../pages/UserDetails"
-import AmpsVoltsPage from "../pages/AmpsVoltsPage";
 import DashboardPage from "../pages/DashboardPage";
-import AmpsGraph from "../archive/components/Graphs/AmpsGraph";
-import VoltsGraph from "../archive/components/Graphs/VoltsGraph";
 import PowerPage from "../pages/PowerPage";
 import MeterPage from "../pages/MeterPage";
 import HarmonicPage from "../pages/HarmonicPage";

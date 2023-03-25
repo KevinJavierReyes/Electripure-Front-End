@@ -1,8 +1,5 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
-import { Outlet, useNavigate, useParams } from "react-router";
-import Tab from "../components/FormInput/Tab";
-import AmpsGraph from "../archive/components/Graphs/AmpsGraph";
+import React from "react";
+import { Outlet } from "react-router";
 
 function VoltageCurrentPage () {
 

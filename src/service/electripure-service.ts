@@ -4,7 +4,7 @@ GetAmpsDataRequest, GetCompaniesByUserRequest, GetPowerDataRequest,
 GetVoltsDataRequest, LoginRequest, ResendEmailRequest,
 ToogleCompanyStateRequest, ToogleUserStateRequest, UpdatePasswordRequest,
 UpdateUserRequest, UploadImageRequest, ValidateTokenRequest,
-ValidateUpdateUserRequest, UploadFileRequest, ListFilesCompanyRequest, GetChartData } from "../interfaces/electripure-service";
+ValidateUpdateUserRequest, UploadFileRequest, ListFilesCompanyRequest, GetChartData, SetFCMTokenRequest } from "../interfaces/electripure-service";
 import { BaseService } from "./base-service";
 import environment from "./../config/env";
 import { toast } from "react-toastify";
@@ -607,6 +607,18 @@ export default class ElectripureService extends BaseService {
 
   static async getListFilesCompany(payload: ListFilesCompanyRequest): Promise<ResponseGeneric> {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/get_list_files_company`;
+    const header_auth = {"Authorization" : `Bearer ${localStorage.getItem('electripureJwt')}`}
+    const response = await this.requestPost(url, payload, header_auth);
+    if (!response.success) {
+      toast.error(response.error, {
+        "position": "bottom-right"
+      });
+    }
+    return response;
+  }
+  
+  static async saveFCMToken(payload: SetFCMTokenRequest): Promise<ResponseGeneric> {
+    const url = `${environment.ELECTRIPURE_ENDPOINT}/upload_fcmtoken`;
     const header_auth = {"Authorization" : `Bearer ${localStorage.getItem('electripureJwt')}`}
     const response = await this.requestPost(url, payload, header_auth);
     if (!response.success) {

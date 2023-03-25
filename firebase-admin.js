@@ -10,20 +10,19 @@ const app = initializeApp({
 
 const messaging = getMessaging(app);
 const tokens = [
-    "cCiy2zHgfCoYU8xtGcOaWy:APA91bFSPx-IsZsaVl_HhDyV4h0bW3Zf70z2T0eblMUeR6BNfIrRqfhGGFmYTQp8NWt3Iawl-HhJXrbSEwpyAulY49xKWqDHM3kR0sK-n8hb4_MSTpdVhKxptQEsNFMQKmZAl4-IzyW0",
-    "e2Cn1bZLBc8Il_4hDtuWDn:APA91bEY75RA9VNBhN3mtYf_XcrZSvA_-1cS_FMicvm8hHCtstLDhAhNYcEDquo3c8T9o2XnOBnir4p2z1gOCbmyDViAK8GwYxuDXuv1bbGTJOFBn7DPt2FiH-O6lu19T-joWOJcPzIX"
+    "cCiy2zHgfCoYU8xtGcOaWy:APA91bH2IGhfijjD8B5ZG3FEyD4mm0Q923b1UsMI_KQVy2GSSJeFxSrRu5ak9hpmbliBg5rJ_q0lpDAZ0udwztUn0gVvpO7IXMFJunq_bAAPlKYG7n3fAlwGrFyzSvRuyVLNzo1VQLfx"
 ];
 (async () => {
     await messaging.subscribeToTopic(tokens, "worker");
     console.log("SendAll", await messaging.sendAll([{
-        "token": tokens[1],
+        "token": tokens[0],
         // "topic": "worker",
         "notification": {
             "body": "Alert content...",
             "title": "Alert !!!"
         },
         data: {
-            "status": "error"
+            "status": "success"
         }
     }]));
 })();

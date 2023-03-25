@@ -87,6 +87,10 @@ export interface ListFilesCompanyRequest {
     id_company: number;
 }
 
+export interface SetFCMTokenRequest {
+    fcmtoken: string;
+}
+
 export interface GetChartData {
     date_min: number | null;
     date_max: number | null;
