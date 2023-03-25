@@ -11,30 +11,23 @@ import { setDevicesTable } from "../../../actions/electripure"
 
 
 function DataTableDevices({}) {
-
-    const devicesTable = (JSON.parse(useSelector((state: ElectripureState) => state.devicesTable))).device_list ?? [{}];
-    //const [ tableDevices, setTableDevices ] = useState(`[{
-    const [ tableDevices, setTableDevices ] = useState(`[{
-        "id_device": 0,
-        "serial_number": "",
-        "type_device": "",
-        "company_name": "",
-        "MDP_name": "",
-        "date": ""
-    }]`)
     
+    // import Hooks
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    // list of devices
+    const devicesTable = (JSON.parse(useSelector((state: ElectripureState) => state.devicesTable))).device_list ?? [{}];
     
-    const deactivateDevice = (device:any) => {}
-    const activateDevice = (device:any) => {}
-    const device = devicesTable.device_list ?? [{}];
 
-
+    // when the component loaded, it will dispatch the action to get the devices table
     useEffect(() => {
         dispatch(sendGetDevicesTable({}));
     }, []);
 
+    // configuration of the rows 
+    // Label is the content that will be displayed in the table
+    // value is original value of the data
     const data: RowConfig[] = devicesTable.map((deviceRow: DeviceRowEntity): RowConfig => {
         return {
             "Serial": {
@@ -60,6 +53,10 @@ function DataTableDevices({}) {
         }
     });
 
+    // configuration of the headers
+    // key is the key of the header
+    // label is the content that will be displayed in the table
+    // sort is the function that will be called when the header is clicked
     const headers: HeaderConfig[] = [
         {
             key: "Serial",
@@ -82,7 +79,18 @@ function DataTableDevices({}) {
         },
         {
             key: "Company Name",
-            label: "Company Name"
+            label: "Company Name",
+            sort: () => {
+                let devicesSorted = [...devicesTable].sort((a: DeviceRowEntity, b:DeviceRowEntity) => {
+                    return a.company_name.toUpperCase().localeCompare(b.company_name.toUpperCase());
+                });
+                if (JSON.stringify(devicesTable) == JSON.stringify(devicesSorted)) {
+                    devicesSorted.reverse();
+                }
+                dispatch(setDevicesTable({
+                    device_list: devicesSorted
+                }))
+            }
         },
         {
             key: "MDP Name",
