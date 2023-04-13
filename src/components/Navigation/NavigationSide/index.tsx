@@ -17,6 +17,7 @@ import DropdownSelector from "./DropdownSelector"
 
 function NavigationSide() {
     const [isShowModal, setShowModal] = useState(false);
+    const [schematicImg, setSchematicImg] = useState<null | string>(null);
     const [siteDefaultDataForm, setSiteDefaultDataForm] = useState(`{
         "name": "",
         "address": "",
@@ -46,6 +47,7 @@ function NavigationSide() {
                 "city" : data.city,
                 "state": data.state,
                 "zip": data.zip,
+                "hasMeter": data.hasMeter,
                 "imgId" : data.logo
             }
         }));
@@ -88,6 +90,7 @@ function NavigationSide() {
     }
 
     function submitSiteDetailForm(data: SiteDetailDataForm) {
+        setSchematicImg(data.schematicBase64);
         setNewCompany(JSON.stringify({
             ...newCompany,
             "siteDetails" : {
@@ -107,6 +110,8 @@ function NavigationSide() {
     }
 
     function submitCreateMDPForm(data: CreateMDPDataForm[]) {
+        console.log("Step 5", data);
+        return;
         setNewCompany(JSON.stringify({
             ...newCompany,
             "MDP": data.map((mdpData: CreateMDPDataForm) => {
@@ -134,6 +139,8 @@ function NavigationSide() {
                 };
             })
         }));
+        setShowModal(false);
+        setStepCreateCompany(1);
     }
 
     function previousStepCreateCompany() {
@@ -179,8 +186,7 @@ function NavigationSide() {
                     stepCreateCompany == 2 ? <MainPointContactForm onSubmit={submitMainPointContactForm} onPrevious={previousStepCreateCompany}/> :
                     stepCreateCompany == 3 ? <SiteManagerForm onSubmit={submitSiteManagerForm} onPrevious={previousStepCreateCompany}/> :
                     stepCreateCompany == 4 ? <SiteDetailForm defaultData={JSON.parse(siteDefaultDataForm)} onSubmit={submitSiteDetailForm} onPrevious={previousStepCreateCompany}/> :
-                    stepCreateCompany == 5 ? <CreateMDPForm onSubmit={submitCreateMDPForm} onPrevious={previousStepCreateCompany}/> :
-                    stepCreateCompany == 6 ? <FinishCreateMDPForm onClose={()=>{setShowModal(false); setStepCreateCompany(1);}}/> : <div></div>
+                    stepCreateCompany == 5 ? <CreateMDPForm onSubmit={submitCreateMDPForm} onPrevious={previousStepCreateCompany} schematicImg={schematicImg}/>: <div></div>
                 }
             </ModalMiddle>  
         </div>

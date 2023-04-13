@@ -23,6 +23,10 @@ export interface MDPGroup {
     ampCap: InputControl;
     switchgearCap: InputControl;
     transformer: InputControl;
+    location: {
+        x: number,
+        y: number
+    };
     
 }
 

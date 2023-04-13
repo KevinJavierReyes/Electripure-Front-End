@@ -24,6 +24,8 @@ function SiteDetailForm({onSubmit, onPrevious, defaultData={}}: { onSubmit: (dat
     const uploadLogoTask: TaskEntity = JSON.parse(useSelector((state: ElectripureState) => state.tasks))["UPLOAD_SITE_LOGO"] ?? {};
     const uploadSchematicTask: TaskEntity = JSON.parse(useSelector((state: ElectripureState) => state.tasks))["UPLOAD_SITE_SCHEMATIC"] ?? {};
 
+    const [schematicBase64, setSchematicBase64] = useState("");
+
     const stateList: any[] = [
             "Alabama",
             "Alaska",
@@ -164,6 +166,7 @@ function SiteDetailForm({onSubmit, onPrevious, defaultData={}}: { onSubmit: (dat
             return;
         }
         setSchematicValid(true);
+        setSchematicBase64(base64);
         dispatch(SendImage({
             "base64": base64.split(",")[1],
             "taskKey": "UPLOAD_SITE_SCHEMATIC"
@@ -189,7 +192,8 @@ function SiteDetailForm({onSubmit, onPrevious, defaultData={}}: { onSubmit: (dat
                     "zip": zipControl.value,
                     "rate": rateControl.value,
                     "logo": logoControl.value,
-                    "schematic": logoControl.value
+                    "schematic": schematicControl.value,
+                    "schematicBase64": schematicControl.value ? schematicBase64 : null,
                 });
         } else {
             // Validate required fields

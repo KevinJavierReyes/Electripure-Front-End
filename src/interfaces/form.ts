@@ -67,6 +67,7 @@ export interface BasicCompanyInformationDataForm {
     state: string;
     zip: string;
     logo: string;
+    hasMeter: boolean;
 }
 
 export interface CompanyInformationUpdateDataForm {
@@ -103,6 +104,7 @@ export interface SiteDetailDataForm {
     logo: string;
     rate: string;
     schematic: string;
+    schematicBase64: string | null;
 }
 
 export interface SiteUpdateDataForm {

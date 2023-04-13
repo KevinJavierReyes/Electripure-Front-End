@@ -14,6 +14,7 @@ import InputText from "../../FormInput/InputText";
 import Title from "../../FormInput/Title";
 import Space from "../../Space";
 import StepperProgress from "../../StepperProgress";
+import InputCheckbox from '../../FormInput/InputCheckbox';
 
 
 function BasicCompanyInformationForm({onSubmit}: { onSubmit: (data: BasicCompanyInformationDataForm) => void }) {
@@ -109,6 +110,8 @@ function BasicCompanyInformationForm({onSubmit}: { onSubmit: (data: BasicCompany
         "value": "",
         "message": ""
     });
+    
+    const [meterControl, setMeterControl] = useState(false);
 
     const [logoControl, setLogoControl] = useState({
         "state": INPUT_CONTROL_STATE.DEFAULT,
@@ -149,7 +152,8 @@ function BasicCompanyInformationForm({onSubmit}: { onSubmit: (data: BasicCompany
                     "city": cityControl.value,
                     "state": stateControl.value,
                     "zip": zipControl.value,
-                    "logo": logoControl.value
+                    "logo": logoControl.value,
+                    "hasMeter": meterControl
                 })
         } else {
             // Validate required fields
@@ -265,6 +269,17 @@ function BasicCompanyInformationForm({onSubmit}: { onSubmit: (data: BasicCompany
                         }}
                     />
                 </div>
+                <Space type={TYPE_SPACE.INPUT_DISTANCE}/>
+                <InputCheckbox
+                    label="This address will have a meter and appliance"
+                    message={""}
+                    name="meter"
+                    state={INPUT_CONTROL_STATE.DEFAULT}
+                    defaultChecked={meterControl}
+                    onChange={(value: boolean) => {
+                        setMeterControl(value);
+                    }}
+                />
             </div>
         </div>
         <Space classes="w-full h-[50px]" />

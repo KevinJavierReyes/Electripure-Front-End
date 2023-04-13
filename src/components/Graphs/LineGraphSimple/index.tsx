@@ -196,14 +196,15 @@ function LineGraphSimple({ labels, data, colors, onZoom, title, showDatasetMap =
         "enabled": showTooltip,
         "callbacks": {
           "title": (tooltipItem: any) => {
-            try {
-              const title = `${data.x[tooltipItem[0].dataIndex]}`;
-              const dateSplited = title.split(" ")[0].split("/");
-              const dateNewFormat = [dateSplited[1], dateSplited[0], dateSplited[2]].join("/");
-              return `${dateNewFormat} ${title.split(" ")[1]}`;
-            } catch (e) {
-              return `${data.x[tooltipItem[0].dataIndex]}`;
-            }
+            return `${data.x[tooltipItem[0].dataIndex]}`;
+            // try {
+            //   const title = `${data.x[tooltipItem[0].dataIndex]}`;
+            //   const dateSplited = title.split(" ")[0].split("/");
+            //   const dateNewFormat = [dateSplited[1], dateSplited[0], dateSplited[2]].join("/");
+            //   return `${dateNewFormat} ${title.split(" ")[1]}`;
+            // } catch (e) {
+            //   return `${data.x[tooltipItem[0].dataIndex]}`;
+            // }
           },
           "label": (tooltipItem: any) => {
               try {
