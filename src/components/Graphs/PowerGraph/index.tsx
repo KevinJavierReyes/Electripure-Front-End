@@ -5,21 +5,21 @@ import PowerLogGraph from "../PowerLogGraph";
 
 
 const graphMetadata: GraphMetadata[] = [
-  {
-    "key": "a",
-    "label": "A",
-    "url": "https://apidev.electripuremeter.com/get_chart3_A_v2"
-  },
-  {
-    "key": "b",
-    "label": "B",
-    "url": "https://apidev.electripuremeter.com/get_chart3_B_v2"
-  },
-  {
-    "key": "c",
-    "label": "C",
-    "url": "https://apidev.electripuremeter.com/get_chart3_C_v2"
-  },
+  // {
+  //   "key": "a",
+  //   "label": "A",
+  //   "url": "https://apidev.electripuremeter.com/get_chart3_A_v2"
+  // },
+  // {
+  //   "key": "b",
+  //   "label": "B",
+  //   "url": "https://apidev.electripuremeter.com/get_chart3_B_v2"
+  // },
+  // {
+  //   "key": "c",
+  //   "label": "C",
+  //   "url": "https://apidev.electripuremeter.com/get_chart3_C_v2"
+  // },
   {
     "key": "t",
     "label": "T",

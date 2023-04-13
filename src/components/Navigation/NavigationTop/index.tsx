@@ -11,7 +11,7 @@ import FloarUserSetting from "./components/FloarUserSetting";
 import FloatUserSetting from "./components/FloarUserSetting";
 
 
-function NavigationBar() {
+function NavigationTop() {
     
     const user = localStorage.getItem('current_user');
     let name;
@@ -25,7 +25,7 @@ function NavigationBar() {
     }
 
     return (
-        <div className="w-full md:h-[65px]	flex justify-between items-start md:items-center px-[30px] md:flex-nowrap flex-wrap flex-col-reverse md:flex-row">
+        <div className="w-full md:h-[60px] flex justify-between items-start md:items-center px-[30px] md:flex-nowrap flex-wrap flex-col-reverse md:flex-row">
             <Space type={TYPE_SPACE.TEXT_DISTANCE} classes="w-full sm:hidden"/>
             <div className="w-full sm:w-fit h-full flex justify-center items-center">
                 <div className="f-medium text-sm md:text-base">
@@ -76,4 +76,4 @@ function NavigationBar() {
     );
 }
 
-export default NavigationBar;
+export default NavigationTop;

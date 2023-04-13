@@ -5,10 +5,10 @@ function VoltageCurrentPage () {
 
     return (
         <React.Fragment>
-            <div className={"justify-center items-center flex mb-[20px] sm:justify-start flex-col-reverse sm:flex-row"}>
-                <span className="ml-[20px]"><h3 className="f-bold text-lg">Voltage & Current</h3></span>
+            <div className={"h-[30px] flex justify-start items-start"}>
+                <span><h3 className="f-bold text-lg">Voltage & Current</h3></span>
             </div>
-            <div id="container-graph" className="w-full rounded border-color-secondary border bg-white p-[30px]">
+            <div style={{"height": "calc(100% - 30px)"}} className="w-full rounded border-color-secondary border bg-white p-[30px]">
                 <Outlet/>
             </div>
         </React.Fragment>

@@ -15,7 +15,7 @@ import logoUrl from "./../../../assets/svg/Logo.svg";
 import DropdownSelector from "./DropdownSelector"
 
 
-function NavbarMenu() {
+function NavigationSide() {
     const [isShowModal, setShowModal] = useState(false);
     const [siteDefaultDataForm, setSiteDefaultDataForm] = useState(`{
         "name": "",
@@ -163,7 +163,7 @@ function NavbarMenu() {
     // }
 
     return (
-        <div className="w-full h-screen	flex justify-start items-center flex-col shadow-md border-r border-color-black-light">
+        <div className="w-full h-full flex justify-start items-center flex-col shadow-md border-r border-color-black-light">
             <div className="w-full px-[10px] py-[15px]">
                 <img src={logoUrl} className="h-[40px]"></img>
             </div>
@@ -188,4 +188,4 @@ function NavbarMenu() {
     
 }
 
-export default NavbarMenu;
+export default NavigationSide;

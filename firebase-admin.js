@@ -10,7 +10,7 @@ const app = initializeApp({
 
 const messaging = getMessaging(app);
 const tokens = [
-    "cCiy2zHgfCoYU8xtGcOaWy:APA91bH2IGhfijjD8B5ZG3FEyD4mm0Q923b1UsMI_KQVy2GSSJeFxSrRu5ak9hpmbliBg5rJ_q0lpDAZ0udwztUn0gVvpO7IXMFJunq_bAAPlKYG7n3fAlwGrFyzSvRuyVLNzo1VQLfx"
+    "e2Cn1bZLBc8Il_4hDtuWDn:APA91bHwS367mmNYQiaCJYpkZMk-nJE3QQjwANxSi5yYRoh1o5wNDywRp3mmfBG8vHoeqlFhIHe_Ew0Fm5UbA4M44ybT2qU-OabRiCDe2ZCgv746_NaAcWd45w68z7IK3aqaQUr7CjjO"
 ];
 (async () => {
     await messaging.subscribeToTopic(tokens, "worker");

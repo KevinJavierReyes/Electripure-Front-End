@@ -167,8 +167,3 @@ code {
     appearance:none;
 
 }
-
-
-#container-graph {
-	height: calc(100vh - 200px);
-}

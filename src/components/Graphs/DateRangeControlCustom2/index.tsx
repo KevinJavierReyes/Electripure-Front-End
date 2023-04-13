@@ -57,7 +57,7 @@ function DateRangeControlCustom2({ onChange, defaultStart, defaultEnd}: { defaul
                         className="w-[150px]"
                         value={new Date(startDate)}
                         onChange={ (value: any) => {setStartDate(new Date(value.format()).getTime())}}
-                        renderInput={(params) => <TextField {...params} />}
+                        renderInput={(params) => <TextField size="small" {...params} />}
                     />
                     <Space type={TYPE_SPACE.INPUT_DISTANCE_VERTICAL}/>
                     <TimePicker
@@ -65,7 +65,7 @@ function DateRangeControlCustom2({ onChange, defaultStart, defaultEnd}: { defaul
                         value={new Date(startDate)}
                         onChange={ (value: any) => {setStartDate(new Date(value.format()).getTime())}}
                         ampm={false}
-                        renderInput={(params) => <TextField {...params} />}
+                        renderInput={(params) => <TextField size="small" {...params} />}
                     />
                     <Space type={TYPE_SPACE.INPUT_DISTANCE_VERTICAL}/>
                     <strong>To</strong>
@@ -74,7 +74,7 @@ function DateRangeControlCustom2({ onChange, defaultStart, defaultEnd}: { defaul
                         className="w-[150px]"
                         value={new Date(endDate)}
                         onChange={ (value: any) => {setEndDate(new Date(value.format()).getTime())}}
-                        renderInput={(params) => <TextField {...params} />}
+                        renderInput={(params) => <TextField size="small" {...params} />}
                     />
                     <Space type={TYPE_SPACE.INPUT_DISTANCE_VERTICAL}/>
                     <TimePicker
@@ -82,13 +82,8 @@ function DateRangeControlCustom2({ onChange, defaultStart, defaultEnd}: { defaul
                         value={new Date(endDate)}
                         onChange={ (value: any) => {setEndDate(new Date(value.format()).getTime())}}
                         ampm={false}
-                        renderInput={(params) => <TextField {...params} />}
+                        renderInput={(params) => <TextField size="small" {...params} />}
                     />
-                    {/* <ButtonPrimary
-                        classes={""}
-                        onClick={()=> {}}>
-                            Buscar
-                    </ButtonPrimary> */}
                 </div>
             </div>
 

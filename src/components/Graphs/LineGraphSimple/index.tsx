@@ -19,6 +19,25 @@ ChartJS.register(
 );
 
 
+const dictPower: any = {
+  "var_average": "kVAR Average",
+  "var_max": "kVAR Max",
+  "var_min": "kVAR Min",
+  "va_average": "kVA Average",
+  "va_max": "kVA Max",
+  "va_min": "kVA Min",
+  "w_average": "kW Average",
+  "w_max": "kW Max",
+  "w_min": "kW Min",
+  "pf_average": "PF Average",
+  "pf_max": "PF Max",
+  "pf_min": "PF Min"
+};
+
+function replaceTitle(title: string) {
+  return dictPower.hasOwnProperty(title) ? dictPower[title] : title;
+}
+
 function generateScales(data: DataGraph) {
   let positions: string[] = ["left", "right"];
   let state: any = {};
@@ -177,10 +196,21 @@ function LineGraphSimple({ labels, data, colors, onZoom, title, showDatasetMap =
         "enabled": showTooltip,
         "callbacks": {
           "title": (tooltipItem: any) => {
-            return `${data.x[tooltipItem[0].dataIndex]}`;
+            try {
+              const title = `${data.x[tooltipItem[0].dataIndex]}`;
+              const dateSplited = title.split(" ")[0].split("/");
+              const dateNewFormat = [dateSplited[1], dateSplited[0], dateSplited[2]].join("/");
+              return `${dateNewFormat} ${title.split(" ")[1]}`;
+            } catch (e) {
+              return `${data.x[tooltipItem[0].dataIndex]}`;
+            }
           },
           "label": (tooltipItem: any) => {
-            return `${tooltipItem.dataset.label}: ${tooltipItem.dataset.data[tooltipItem.dataIndex]}`;
+              try {
+                return `${replaceTitle(tooltipItem.dataset.label)}: ${tooltipItem.dataset.data[tooltipItem.dataIndex].toFixed(2)}`;
+              } catch (e) {
+                return `${tooltipItem.dataset.label}: ${tooltipItem.dataset.data[tooltipItem.dataIndex]}`;
+              }
           },
         }
       },

@@ -4,7 +4,6 @@ import { Outlet } from "react-router-dom";
 import { useFirebaseApp } from 'reactfire';
 import { Messaging, getMessaging, onMessage } from "firebase/messaging";
 import { FirebaseApp } from "firebase/app";
-import { generateToken } from "../utils/firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { ElectripureState } from "../interfaces/reducers";
 import { generateFCMToken, showToast } from "../actions/electripure";
@@ -37,11 +36,13 @@ function DashboardPage () {
 
     return (
         <React.Fragment>
-            <Navegation>
-                <div className="px-[30px] py-[10px] w-full">
-                    <Outlet />
-                </div>
-            </Navegation>
+            <div className="h-screen w-screen">
+                <Navegation>
+                    <div className="px-[30px] pb-[10px] w-full h-full">
+                        <Outlet />
+                    </div>
+                </Navegation>
+            </div>
         </React.Fragment>
     );
 }

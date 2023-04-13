@@ -10,14 +10,10 @@
         transform: translateX(-100%);
     }
 
+}
 
-    /* .open-navigation-container .navegation {
-        transform: translateX(0%);
+@media (min-width: 1024px) {
+    .content-page {
+        width: calc(100% - 350px);
     }
-
-    .close-navigation-container  .navegation {
-        transform: translateX(-100%);
-    } */
-
-
 }
