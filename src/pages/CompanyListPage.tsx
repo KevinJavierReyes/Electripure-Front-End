@@ -15,7 +15,9 @@ import SiteManagerForm from "./../components/Form/SiteManagerForm";
 import SiteDetailForm from "./../components/Form/SiteDetailForm";
 import CreateMDPForm from "./../components/Form/CreateMDPForm"
 import FinishCreateMDPForm from "./../components/Form/FinishCreateMDPForm"
-import { settingPermissions } from "../libs/permissions"
+import { settingPermissions } from "../libs/permissions";
+
+import mdpImg from "./../assets/img/mdp.png";
 
 // import { useState } from "react";
 // import { useDispatch } from "react-redux";
@@ -193,8 +195,8 @@ function CompanyListPage () {
                                 stepCreateCompany == 2 ? <MainPointContactForm onSubmit={submitMainPointContactForm} onPrevious={previousStepCreateCompany}/> :
                                 stepCreateCompany == 3 ? <SiteManagerForm onSubmit={submitSiteManagerForm} onPrevious={previousStepCreateCompany}/> :
                                 stepCreateCompany == 4 ? <SiteDetailForm defaultData={JSON.parse(siteDefaultDataForm)} onSubmit={submitSiteDetailForm} onPrevious={previousStepCreateCompany}/> :
-                                stepCreateCompany == 5 ? <CreateMDPForm onSubmit={submitCreateMDPForm} onPrevious={previousStepCreateCompany}/> :
-                                stepCreateCompany == 6 ? <FinishCreateMDPForm onClose={()=>{setShowModal(false); setStepCreateCompany(1);}}/> : <div></div>
+                                stepCreateCompany == 5 ? <CreateMDPForm schematicImg={mdpImg} onSubmit={submitCreateMDPForm} onPrevious={previousStepCreateCompany}/> : <div></div>
+                                // stepCreateCompany == 6 ? <FinishCreateMDPForm onClose={()=>{setShowModal(false); setStepCreateCompany(1);}}/> : <div></div>
                             }
                         </ModalMiddle>  
 
