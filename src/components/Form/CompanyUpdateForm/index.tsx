@@ -15,12 +15,23 @@ import Title from "../../FormInput/Title";
 import Space from "../../Space";
 import { useParams } from "react-router";
 
+export interface ICompanyUpdateForm {
+    id: string;
+    address: string;
+    address2: string;
+    url_image: string;
+    id_image: string;
+    city: string;
+    name: string;
+    state: string; // State name
+    zip: string;
+}
 
-function CompanyUpdateForm({onSubmit}: { onSubmit: (data: CompanyInformationUpdateDataForm) => void }) {
-
-    const {ciaId} = useParams()
+function CompanyUpdateForm({company, onSubmit}: { company: ICompanyUpdateForm, onSubmit: (data: ICompanyUpdateForm) => void }) {
+    
+    // const {ciaId} = useParams();
     const dispatch = useDispatch();
-    const company = JSON.parse(useSelector((state: ElectripureState) => state.companyDetails));
+    // const company = JSON.parse(useSelector((state: ElectripureState) => state.companyDetails));
 
     const uploadLogoTask: TaskEntity = JSON.parse(useSelector((state: ElectripureState) => state.tasks))["UPLOAD_LOGO"] ?? {};
     const stateList: any[] = [
@@ -99,10 +110,15 @@ function CompanyUpdateForm({onSubmit}: { onSubmit: (data: CompanyInformationUpda
         "value": company?.city,
         "message": ""
     });
-
+    let stateDefault = "";
+    stateList.forEach((state, index) => {
+        if (state == company.state) {
+            stateDefault = (index + 1).toString();
+        }
+    });
     const [stateControl, setStateControl] = useState({
-        "state": INPUT_CONTROL_STATE.DEFAULT,
-        "value": company?.state,
+        "state": company.state ? INPUT_CONTROL_STATE.OK : INPUT_CONTROL_STATE.DEFAULT,
+        "value": stateDefault,
         "message": ""
     });
 
@@ -114,12 +130,16 @@ function CompanyUpdateForm({onSubmit}: { onSubmit: (data: CompanyInformationUpda
 
     const [logoControl, setLogoControl] = useState({
         "state": INPUT_CONTROL_STATE.DEFAULT,
-        "value": "",
+        "value": company.id_image,
         "message": ""
     });
 
+    const [logoValid, setLogoValid] = useState(false);
+    const [urlImage, setUrlImage] = useState(company.url_image);
+
     function uploadLogo({base64, size}:{base64: string, size: number}) {
         if (size > 500000) {
+            setLogoValid(false);
             setLogoControl({
                 "message": "Image max size is 500kb.",
                 "state": INPUT_CONTROL_STATE.ERROR,
@@ -127,43 +147,45 @@ function CompanyUpdateForm({onSubmit}: { onSubmit: (data: CompanyInformationUpda
             });
             return;
         }
-        setLogoControl({
-            "state": INPUT_CONTROL_STATE.OK,
-            "value": base64.split(",")[1],
-            "message": ""
-        })
+        setLogoValid(true);
+        setUrlImage(base64);
+        dispatch(SendImage({
+            "base64": base64.split(",")[1],
+            "taskKey": "UPLOAD_LOGO"
+        }));
     }
 
     function submit() {
         if (companyControl.state == INPUT_CONTROL_STATE.OK &&
             addressControl.state == INPUT_CONTROL_STATE.OK &&
-            address2Control.state == INPUT_CONTROL_STATE.OK &&
+            // address2Control.state == INPUT_CONTROL_STATE.OK &&
             cityControl.state == INPUT_CONTROL_STATE.OK &&
-            //stateControl.state == INPUT_CONTROL_STATE.OK &&
-            zipControl.state == INPUT_CONTROL_STATE.OK ||
-            logoControl.state == INPUT_CONTROL_STATE.OK) {
+            stateControl.state == INPUT_CONTROL_STATE.OK &&
+            zipControl.state == INPUT_CONTROL_STATE.OK //||
+            // logoControl.state == INPUT_CONTROL_STATE.OK
+            ) {
                 onSubmit({
-                    company: companyControl.value,
+                    name: companyControl.value,
                     address: addressControl.value,
                     address2: address2Control.value,
                     city: cityControl.value,
                     state: stateControl.value,
                     zip: zipControl.value,
-                    company_id: ciaId,
-                    id_image: company.id_image,
-                    image: logoControl.value
+                    id: company.id,
+                    id_image: logoControl.value,
+                    url_image: urlImage
                 })
         }
     }
 
     useEffect(() => {
-        if (uploadLogoTask.state == TASK_STATE.COMPLETED) {
+        if (uploadLogoTask.state == TASK_STATE.COMPLETED && logoValid) {
             setLogoControl({
                 ...logoControl,
                 "message": "",
                 "state": INPUT_CONTROL_STATE.OK,
                 "value": uploadLogoTask.result,
-            })
+            });
         }
     }, [uploadLogoTask.state]);
 
@@ -174,7 +196,7 @@ function CompanyUpdateForm({onSubmit}: { onSubmit: (data: CompanyInformationUpda
         </div>
         <div className="w-full flex">
             <div className="w-[200px] p-[5px]  h-[200px]">
-                <InputPhoto name="companyLogo" placeholder="Add company logo" onChange={uploadLogo} state={logoControl.state} message={logoControl.message}/>
+                <InputPhoto name="companyLogo" src={urlImage} placeholder="Add company logo" onChange={uploadLogo} state={logoControl.state} message={logoControl.message}/>
             </div>
             <div className="w-full pl-[20px]">
                 <InputText
@@ -242,13 +264,12 @@ function CompanyUpdateForm({onSubmit}: { onSubmit: (data: CompanyInformationUpda
                     <InputSelect
                         name="state"
                         label="State"
-                        //options={[{"id": "01", "value": "state 01"}, {"id": "02", "value": "state 02"}]}
                         options={stateList.map((value, index) => (
                             {"id": index+ 1, "value": value}
                         ))}
                         placeholder="Select State"
                         state={stateControl.state}
-                        defaultSelect={company.state}
+                        defaultSelect={stateControl.value}
                         message={stateControl.message}
                         onChange={(select : { "value": any, "id": any }) => {
                             setStateControl({

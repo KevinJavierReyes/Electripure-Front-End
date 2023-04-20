@@ -129,6 +129,10 @@ export interface SendActivateDeactivateCompanyPayload {
     action: string;
 }
 
+export interface SendArchiveCompanyPayload {
+    id: number;
+}
+
 export interface SendActivateUserPayload {
     id: number;
 }

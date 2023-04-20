@@ -85,6 +85,19 @@ export default class ElectripureService extends BaseService {
     return response;
   }
 
+  
+  static async archiveCompany(payload: any) : Promise<ResponseGeneric> {
+    const url = `${environment.ELECTRIPURE_ENDPOINT}/archive_company`;
+    const header_auth = {"Authorization" : `Bearer ${localStorage.getItem('electripureJwt')}`}
+    const response = await this.requestPost(url, payload, header_auth);
+    if (!response.success) {
+      toast.error(response.error, {
+        "position": "bottom-right"
+      });
+    }
+    return response;
+  }
+
   static async getUsers(): Promise<ResponseGeneric> {
     const url = `${environment.ELECTRIPURE_ENDPOINT}/get_users`;
     const header_auth = {"Authorization" : `Bearer ${localStorage.getItem('electripureJwt')}`}

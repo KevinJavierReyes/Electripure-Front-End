@@ -13,7 +13,7 @@ SetJwtPayload, SetLoadingPayload, SetLoginTokenPayload,
 SetPasswordTokenPayload, SetPasswordUserPayload,
 SetTimestampTwoStepVerificationPayload, SetUsersPayload, SetVoltsDataPayload,
 ShowToastPayload, SendActivateDeactivateCompanyPayload,
-SetCompanyDetailPayload, ValidateUpdateUserPayload, SetDevicesTablePayload, SendGetUploadedFilesPayload, SetUploadedFilePayload, GenerateFCMTokenPayload, SetRememberTokenPayload, SetFCMTokenPayload, SaveRememberTokenPayload } from "../interfaces/actions";
+SetCompanyDetailPayload, ValidateUpdateUserPayload, SetDevicesTablePayload, SendGetUploadedFilesPayload, SetUploadedFilePayload, GenerateFCMTokenPayload, SetRememberTokenPayload, SetFCMTokenPayload, SaveRememberTokenPayload, SendArchiveCompanyPayload } from "../interfaces/actions";
 import { ADD_TASK, FILTER_AMPS_DATA, FILTER_VOLTS_DATA, LOGIN, SET_AMPS_DATA,
 SET_COMPANIES, SET_COMPANIES_TABLE, SET_COMPANY_DETAIL, SET_CURRENT_USER,
 SET_GLOBAL_COMPANIES, SET_JWT, SET_LOADING, SET_LOGIN_TOKEN,
@@ -468,29 +468,6 @@ export const sendActivateDeactivateUser = (payload: SendActivateDeactivateUserPa
     dispatch(sendGetUsers({}));
 });
 
-export const sendActivateDeactivateCompany = (payload: SendActivateDeactivateCompanyPayload) : any => (async (dispatch: any) => {
-    dispatch(setLoading({
-        loading: true
-    }));
-    const response: ResponseGeneric = await ElectripureService.toogleCompanyState({
-        "company_id": payload.id
-    });
-    dispatch(setLoading({
-        loading: false
-    }));
-    if(!response.success) {
-        return dispatch(showToast({
-            message: response.error!,
-            status: "error"
-        }))
-    }
-    dispatch(showToast({
-        "message": `Company ${payload.action + "d"}!`,
-        "status": "success"
-    }));
-    dispatch(sendGetCompaniesTable({}));
-});
-
 export const sendCreateUser = (payload: SendCreateUserPayload) : any => (async (dispatch: any) => {
     dispatch(setLoading({
         loading: true
@@ -755,6 +732,62 @@ export const SendImage = (payload : SendImagePayload): any => (async (dispatch: 
 });
 
 
+export const sendActivateDeactivateCompany = (payload: SendActivateDeactivateCompanyPayload) : any => (async (dispatch: any) => {
+    dispatch(setLoading({
+        loading: true
+    }));
+    const response: ResponseGeneric = await ElectripureService.toogleCompanyState({
+        "company_id": payload.id
+    });
+    dispatch(setLoading({
+        loading: false
+    }));
+    if(!response.success) {
+        return dispatch(showToast({
+            message: response.error!,
+            status: "error"
+        }))
+    }
+    dispatch(showToast({
+        "message": `Company ${payload.action + "d"}!`,
+        "status": "success"
+    }));
+    dispatch(sendGetCompaniesTable({}));
+});
+
+/**
+ * Archivate company by id
+ * @param payload 
+ * @returns 
+ */
+export const sendArchiveCompany = (payload: SendArchiveCompanyPayload) : any => (async (dispatch: any) => {
+    // SECTION Archivate company
+    dispatch(setLoading({
+        loading: true
+    }));
+    const response: ResponseGeneric = await ElectripureService.archiveCompany({
+        "company_id": payload.id
+    });
+    dispatch(setLoading({
+        loading: false
+    }));
+    // !SECTION
+    // SECTION Validate response
+    if(!response.success) {
+        return dispatch(showToast({
+            message: response.error!,
+            status: "error"
+        }))
+    }
+    dispatch(showToast({
+        "message": `Company archivated!`,
+        "status": "success"
+    }));
+    // !SECTION
+    // SECTION Update companies list
+    dispatch(sendGetCompaniesTable({}));
+    // !SECTION
+});
 
 export const sendAddCompany = (payload: any) : any => (async (dispatch: any) => {
     dispatch(setLoading({
@@ -799,7 +832,6 @@ export const sendAddCompany = (payload: any) : any => (async (dispatch: any) => 
     return;
 });
 
-
 export const sendUpdateCompany = (payload: any) : any => (async (dispatch: any) => {
     dispatch(setLoading({
         loading: true
@@ -835,7 +867,6 @@ export const sendUpdateCompany = (payload: any) : any => (async (dispatch: any) 
     }));
     return;
 });
-
 
 export const sendUpdateSite = (payload: any) : any => (async (dispatch: any) => {
     dispatch(setLoading({
