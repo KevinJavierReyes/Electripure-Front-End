@@ -110,8 +110,6 @@ function NavigationSide() {
     }
 
     function submitCreateMDPForm(data: CreateMDPDataForm[]) {
-        console.log("Step 5", data);
-        return;
         setNewCompany(JSON.stringify({
             ...newCompany,
             "MDP": data.map((mdpData: CreateMDPDataForm) => {
@@ -121,7 +119,8 @@ function NavigationSide() {
                     "applianceID" : mdpData.applianceId,
                     "MDP" : mdpData.ampCap,
                     "switchgear": mdpData.switchgearCap,
-                    "transformer": mdpData.transformer
+                    "transformer": mdpData.transformer,
+                    "location": mdpData.location
                 };
             })
         }));
@@ -135,7 +134,8 @@ function NavigationSide() {
                     "applianceID" : mdpData.applianceId,
                     "MDP" : mdpData.ampCap,
                     "switchgear": mdpData.switchgearCap,
-                    "transformer": mdpData.transformer
+                    "transformer": mdpData.transformer,
+                    "location": mdpData.location
                 };
             })
         }));

@@ -74,7 +74,8 @@ function CreateMDPForm({schematicImg, onSubmit, onPrevious}: { schematicImg: str
                     "applianceId": mdp.applianceId.value,
                     "ampCap": mdp.ampCap.value,
                     "switchgearCap": mdp.switchgearCap.value,
-                    "transformer": mdp.transformer.value
+                    "transformer": mdp.transformer.value,
+                    "location": mdp.location
                 };
             }))
         } else {
@@ -375,12 +376,11 @@ function CreateMDPForm({schematicImg, onSubmit, onPrevious}: { schematicImg: str
 
         </div> :
         <FinishCreateMDPForm point={{
-            src: mdpLogo,
-            x: (JSON.parse(mdps) as MDPGroup[])[indexMdp].location.x,
-            y: (JSON.parse(mdps) as MDPGroup[])[indexMdp].location.y,
-            width:40,
-            height:40
-        }} schematicImg={schematicImg!} onClose={(point: {src:any, x: number, y: number, width: number, height: number})=>{
+            "x": (JSON.parse(mdps) as MDPGroup[])[indexMdp].location.x,
+            "y": (JSON.parse(mdps) as MDPGroup[])[indexMdp].location.y,
+            "width":40,
+            "height":40
+        }} image={schematicImg!} pointImage={mdpLogo} onSave={(point: { x: number, y: number, width: number, height: number})=>{
             const mdpValidated: any = validateMdp({
                 ...JSON.parse(mdps)[indexMdp],
                 "location": {

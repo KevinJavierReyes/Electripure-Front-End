@@ -12,8 +12,8 @@ interface IPointSelected {
     height: number;
 }
 
-function FinishCreateMDPForm({image, pointImage, point, onSave}: { image: any, pointImage: any, point: IPointSelected, onSave: (point: IPointSelected) => void }) {
-    console.log(point)
+function InputSelectPoint({image, pointImage, point, onSave}: { image: any, pointImage: any, point: IPointSelected, onSave: (point: IPointSelected) => void }) {
+
     // SECTION Create states
     const [height, setHeight] = useState(0);
     const [width, setWidth] = useState(0);
@@ -33,7 +33,7 @@ function FinishCreateMDPForm({image, pointImage, point, onSave}: { image: any, p
             setTop((elem.clientHeight / 100) * point.y);
             setLeft((elem.clientWidth / 100) * point.x);
         }
-    },[]);
+    });
     // !SECTION
     // SECTION Handle mouse down
     function onMouseDown(e: any) {
@@ -64,8 +64,8 @@ function FinishCreateMDPForm({image, pointImage, point, onSave}: { image: any, p
             <ButtonSecondary onClick={()=> {
                 onSave({
                     ...point,
-                    "y": (top/height) * 100,
-                    "x": (left/width) * 100
+                    "y": height/top,
+                    "x": width/left
                 })
             }}>
                 Save
@@ -76,4 +76,4 @@ function FinishCreateMDPForm({image, pointImage, point, onSave}: { image: any, p
 }
 
 
-export default FinishCreateMDPForm;
+export default InputSelectPoint;

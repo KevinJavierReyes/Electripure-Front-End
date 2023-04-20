@@ -136,6 +136,7 @@ export interface CreateMDPDataForm {
     ampCap: string;
     switchgearCap: string;
     transformer: string;
+    location: {x: number, y: number}
 }
 
 

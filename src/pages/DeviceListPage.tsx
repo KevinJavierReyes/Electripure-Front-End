@@ -14,7 +14,7 @@ import { ModalMiddle } from "./../components/Modal";
 import SiteManagerForm from "./../components/Form/SiteManagerForm";
 import SiteDetailForm from "./../components/Form/SiteDetailForm";
 import CreateMDPForm from "./../components/Form/CreateMDPForm"
-import FinishCreateMDPForm from "./../components/Form/FinishCreateMDPForm"
+import FinishCreateMDPForm from "../components/Form/FinishCreateMDPForm"
 import { CiaPermission } from "../routers/Permissions"
 
 import Navegation from "../components/Navigation";
