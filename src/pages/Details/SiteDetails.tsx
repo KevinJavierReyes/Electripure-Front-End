@@ -10,6 +10,7 @@ import { ElectripureState } from "../../interfaces/reducers"
 import { CiaPermission } from "../../routers/Permissions"
 import MDPCreateForm from "../../components/Form/MDPCreateForm" 
 import { settingPermissions } from "../../libs/permissions"
+import mdpIcon from '../../assets/img/mdp_icon.png';
 
 interface ISite {
     address: string;
@@ -38,6 +39,10 @@ interface IMdp {
     meterID: number;
     switchgear: number;
     transformer: number;
+    location: {
+        x: number;
+        y: number;
+    }
 }
 
 const SiteDetails = ({site}:{site: ISite}) => {
@@ -131,11 +136,20 @@ const SiteDetails = ({site}:{site: ISite}) => {
                         </ModalMiddle>
                     </div>
                 </div>
-               
-               <div className="flex justify-between w-[100%]">
-                    <div className="flex w-[50%] py-[10px] px-[30px]">
+                {/* SECTION More detail of site */}
+                <div className="flex justify-between w-[100%]">
+                    {/* SECTION Image schematic */}
+                    <div className="flex w-[50%] my-[10px] mx-[30px] relative">
                         <img src={site.schedule_image} className="w-[100%]"/>
+                        {site.mdps.map((mdp) => {
+                            if (mdp.location && mdp.location.x && mdp.location.y)  {
+                                return <img src={mdpIcon} width={40} height={40} style={{"left": `calc(${mdp.location.x}% - ${40/20}px)`, "top": `calc(${mdp.location.y}% - ${40/20}px)`}} className={`absolute`}/>
+                            }
+                            return ""
+                        })}
                     </div>
+                    {/* !SECTION */}
+                    {/* SECTION MDPs */}
                     <div className="w-[50%] py-[10px] px-[30px]">
                         {/* SECTION Line */}
                         <div className="flex justify-center items-center mb-[20px]">
@@ -155,7 +169,9 @@ const SiteDetails = ({site}:{site: ISite}) => {
                         </ModalMiddle>
                         {site?.mdps? site.mdps.map((mdp:any, mdp_index:number) => <MDPsDetails key={mdp_index} mdps={mdp} siteId={site.id} editMDP={editSite()} />) : ""}
                     </div>
-               </div>
+                    {/* !SECTION */}
+                </div>
+                {/* !SECTION */}
            </div>
         </Fragment>
      )
